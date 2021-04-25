@@ -1,0 +1,36 @@
+{
+    "nodes": [{
+        "id": 1,
+        "name": "Українська правда"
+    },{
+        "id": 2,
+        "name": "Новое Время"
+    },{
+        "id": 3,
+        "name": "LB"
+    },{
+        "id": 4,
+        "name": "LIGA"
+    },{
+        "id": 5,
+        "name": "Факти"
+    },{
+        "id": 6,
+        "name": "Радіо Свобода"
+    },{
+        "id": 7,
+        "name": "Дзеркало тижня"
+    }],
+
+    "edges": [{
+        "source": 1,
+        "target": 2,
+        "reference_count": 300,
+        "weight": 1
+    },{
+        "source": 2,
+        "target": 1,
+        "reference_count": 200,
+        "weight": 2
+    }]
+}
