@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 
 import csvToJson from "~/parsers/csvToJson";
 import { dataFiles } from "~/common/constants";
-import {dataFileExtension} from "../common/constants";
+import { dataFileExtension } from "../common/constants";
 
 interface IItem {
     [key: string]: string | number;
