@@ -1,8 +1,7 @@
-interface IItem {
-    [key: string]: string;
-}
+import { IItem } from "~/hooks/useData";
 
-const csvToJson = (rawData: string, separator: string = ','): Array<IItem> => {
+
+const csvToJson = (rawData: string, separator = ','): Array<IItem> => {
     const [headerRow, ...valueRows] = rawData.split(separator);
     const itemKeys = headerRow.split(separator);
 

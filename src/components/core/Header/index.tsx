@@ -1,9 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 
-import useData from "~/hooks/useData";
+import { HeaderContainer, FilterContainer, StyledDropdown, StyledDatepicker } from "./styles";
+import { IHeaderProps } from "./types";
 
-const Header = () => {
-    const { load } = useData();
+const Header = ({ sticky }: IHeaderProps): React.ReactNode => {
+    return (
+        <HeaderContainer sticky={sticky}>
+            <FilterContainer>
+                <StyledDatepicker onDateChange={() => null} />
+                <StyledDropdown>Items</StyledDropdown>
+                <StyledDropdown multiple>Items</StyledDropdown>
+            </FilterContainer>
+        </HeaderContainer>
+    );
 };
 
 export default Header;
