@@ -2,8 +2,8 @@ import React, { useState } from "react";
 
 import useData from "~/hooks/useData";
 
-import { HeaderContainer, FilterContainer, StyledDropdown, StyledDatepicker } from "./styles";
 import { IHeaderProps } from "./types";
+import { FilterContainer, HeaderContainer, StyledDatepicker, StyledDropdown } from "./styles";
 
 const Header = ({ sticky }: IHeaderProps): JSX.Element => {
     const [date, setDate] = useState<Date>(new Date());

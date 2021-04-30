@@ -1,16 +1,10 @@
 import { TYPES } from "~/common/constants";
 
+import { IData } from "~/providers/DataProvider/types";
+
 export interface IFilterParams {
     category: string;
     media: string[];
-}
-
-export interface IItem {
-    [key: string]: string;
-}
-
-export interface IData {
-    [key: string]: IItem[];
 }
 
 export interface IUseDataResponse {

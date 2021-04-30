@@ -1,23 +1,27 @@
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 
 import csvToJson from "~/parsers/csvToJson";
+
+import { DataContext } from "~/providers/DataProvider";
+import { IData, IDataProviderContext, IItem } from "~/providers/DataProvider/types";
+
 import {
-    ROOT_DIR,
-    FILE_EXTENSION,
     CATEGORIES,
-    TYPES,
+    FILE_EXTENSION,
+    FILTER_BY_CATEGORY_INDEXES,
     FILTER_FLAGS,
     FILTER_MASK_MAP,
-    FILTER_BY_CATEGORY_INDEXES,
+    ROOT_DIR,
+    TYPES,
 } from "~/common/constants";
-import { IData, IFilterParams, IItem, IUseDataResponse } from "~/hooks/useData/types";
+import { IFilterParams, IUseDataResponse } from "~/hooks/useData/types";
 
 const useData = (selectedDate: Date): IUseDataResponse => {
 
     // data will be refreshed automatically when selectedDate will be changed (see Datepicker)
     const [month, setMonth] = useState<string>();
     const [year, setYear] = useState<string>();
-    const [data, setData] = useState<IData>({});
+    const { data, setData } = useContext<IDataProviderContext>(DataContext);
 
     useEffect(() => {
         // we use month and year to detect dir where files to load located

@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import { setDefaultLocale } from "react-datepicker";
 
 import { StyledDatepicker } from "./styles";
 import { IDatePickerProps } from "./types";
+
+setDefaultLocale("ua");
 
 const DatePicker = ({ onDateChange }: IDatePickerProps): JSX.Element => {
     const [date, setDate] = useState<Date>(new Date());

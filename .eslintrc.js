@@ -9,6 +9,15 @@ module.exports = {
         "plugin:@typescript-eslint/recommended",
     ],
     rules: {
-        "@typescript-eslint/ban-types": "off"
+        "@typescript-eslint/ban-types": "off",
+        "sort-imports": ["error", {
+            "allowSeparatedGroups": true,
+            "memberSyntaxSortOrder": ["single", "multiple", "all", "none"]
+        }],
+        "arrow-spacing": ["error", {
+            "before": true,
+            "after": true
+        }],
+        "object-curly-spacing": ["error", "always"]
     }
 };

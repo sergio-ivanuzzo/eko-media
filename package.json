@@ -21,6 +21,7 @@
     "web-vitals": "^1.1.1"
   },
   "scripts": {
+    "lint": "eslint --fix src --ext .ts,.tsx",
     "start": "webpack serve",
     "build": "webpack --mode=production",
     "storybook": "start-storybook -p 6006 -s public",

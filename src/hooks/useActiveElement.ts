@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, RefObject } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 
 const useActiveElement = <T extends HTMLElement | null>(): [RefObject<T>, boolean] => {
     const [isActiveElement, setIsActiveElement] = useState(false);
