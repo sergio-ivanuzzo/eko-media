@@ -14,6 +14,10 @@ export const HeaderContainer = styled.div<IHeaderProps>`
     `}
 `;
 
+export const MenuContainer = styled.div`
+    display: flex;
+`;
+
 export const FilterContainer = styled.div`
     display: flex;
     justify-content: space-between;

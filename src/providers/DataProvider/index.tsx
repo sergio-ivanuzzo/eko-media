@@ -1,6 +1,6 @@
 import React, { createContext, useState } from "react";
 
-import { IData, IDataProviderContext, IDataProviderProps } from "~/providers/DataProvider/types";
+import { IData, IDataProviderContext, IDataProviderProps } from "./types";
 
 export const DataContext = createContext<IDataProviderContext>({ data: {}, setData: () => undefined });
 

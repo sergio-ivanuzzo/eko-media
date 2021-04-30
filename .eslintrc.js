@@ -24,6 +24,9 @@ module.exports = {
             "after": true
         } ],
         "object-curly-spacing": [ "error", "always" ],
-        "array-bracket-spacing": [ "error", "always" ]
+        "array-bracket-spacing": [ "error", "always" ],
+        "eol-last": [ "error", "always" ],
+        "no-var": "error",
+        "arrow-parens": [ "error", "always" ]
     }
 };

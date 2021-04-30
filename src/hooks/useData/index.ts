@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext } from "react";
 
 import csvToJson from "~/parsers/csvToJson";
 
@@ -21,7 +21,7 @@ const useData = (): IUseDataResponse => {
     const { data, setData } = useContext<IDataProviderContext>(DataContext);
 
     const load = useCallback(async (dirPath: string, filename: string): Promise<void> => {
-        // load file and parse it into json object or array of json objects (for csv only)
+        // load file and parse it into object or array of objects (for csv only)
         const [ name, extension ] = filename.split(".");
 
         const response = await fetch(`./${dirPath}/${filename}`);
@@ -53,8 +53,8 @@ const useData = (): IUseDataResponse => {
         if (month && year) {
             const dirPath = `${ROOT_DIR}/${year}/${month}`;
 
-            Object.values(TYPES).forEach(type => {
-                Object.values(CATEGORIES).forEach(async category => {
+            Object.values(TYPES).forEach((type) => {
+                Object.values(CATEGORIES).forEach(async (category) => {
                     const filename = `${type}_${category}_${month}_${year}`;
                     // we don't know 100% which extension filename has, try both
                     await load(dirPath, `${filename}.${FILE_EXTENSION.CSV}`);
@@ -80,7 +80,7 @@ const useData = (): IUseDataResponse => {
             Object.keys(filteredData).forEach((key: string) => {
                 const items = filteredData[key];
                 filteredData[key] = items.filter(
-                    (dataItem: IItem) => media.some(mediaItem => mediaItem in dataItem)
+                    (dataItem: IItem) => media.some((mediaItem) => mediaItem in dataItem)
                 );
             })
         }
