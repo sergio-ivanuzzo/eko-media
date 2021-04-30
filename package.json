@@ -21,7 +21,9 @@
     "web-vitals": "^1.1.1"
   },
   "scripts": {
-    "storybook": "start-storybook -p 6006 -s public/data:/data",
+    "start": "webpack serve",
+    "build": "webpack --mode=production",
+    "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook"
   },
   "eslintConfig": {

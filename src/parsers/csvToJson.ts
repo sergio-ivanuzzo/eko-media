@@ -1,7 +1,7 @@
 import { IItem } from "~/hooks/useData/types";
 
-const csvToJson = (rawData: string, separator = ','): Array<IItem> => {
-    const [headerRow, ...valueRows] = rawData.split(separator);
+const csvToJson = (rawData: string, separator = ","): Array<IItem> => {
+    const [headerRow, ...valueRows] = rawData.split("\n");
     const itemKeys = headerRow.split(separator);
 
     return valueRows.map((row: string) => {
