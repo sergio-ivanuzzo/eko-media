@@ -1,5 +1,4 @@
 export const ROOT_DIR = "data";
-export const FILE_NAME_FORMAT = "{type}_{category}_{month}_{year}.{extension}";
 export const MAP_FILE = `${ROOT_DIR}/month_to_5categories.json`;
 
 export enum TYPES {
@@ -37,7 +36,7 @@ export enum FILE_EXTENSION {
     JSON = "json"
 }
 
-export const enum FILTER_FLAGS {
+export enum FILTER_FLAGS {
     NOT_FILTERED = 0,
     BY_CATEGORY = 1,
     BY_MEDIA = 2,

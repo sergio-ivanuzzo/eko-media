@@ -30,14 +30,14 @@ const useData = (selectedDate: Date): IUseDataResponse => {
     }, [selectedDate]);
 
     const load = useCallback(async (filename: string): Promise<void> => {
-        try {
-            // load file and parse it into json object or array of json objects (for csv only)
-            const dirPath = `${ROOT_DIR}/${year}/${month}`;
-            const [name, extension] = filename.split(".");
+        // load file and parse it into json object or array of json objects (for csv only)
+        const dirPath = `${ROOT_DIR}/${year}/${month}`;
+        const [name, extension] = filename.split(".");
 
-            const response = await fetch(`${dirPath}/${filename}`);
-            const responseText = await response.text();
+        const response = await fetch(`./${dirPath}/${filename}`);
+        const responseText = await response.text();
 
+        if (response.status === 200) {
             if (extension === FILE_EXTENSION.CSV) {
                 setData(prevState => ({
                     ...prevState,
@@ -49,7 +49,7 @@ const useData = (selectedDate: Date): IUseDataResponse => {
                     [name]: [JSON.parse(responseText)],
                 }));
             }
-        } catch (err) {
+        } else {
             // since we try to load files with all combinations of type and category in name
             // we just ignore error if filename starts with combination not exists
         }

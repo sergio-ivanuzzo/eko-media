@@ -35,9 +35,9 @@ const Dropdown = ({ renderTrigger = defaultRender }: IDropdownProps): JSX.Elemen
     }, [isActiveElement]);
 
     // handle close on keyboard events
-    useEffect(() => useKeyboard({
+    useKeyboard({
         Esc: () => close(),
-    }), []);
+    })
 
     return (
         <DropdownContainer ref={dropdownRef}>

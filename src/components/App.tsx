@@ -1,9 +1,11 @@
 import React from "react";
 
+import Header from "~/components/core/Header";
+
 const App = (): JSX.Element => {
     return (
         <div>
-            Test
+            <Header />
         </div>
     );
 };

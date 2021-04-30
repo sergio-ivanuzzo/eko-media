@@ -16,12 +16,14 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
+    "isolatedModules": false,
+    "noEmit": false,
+    "jsx": "react",
+    "baseUrl": ".",
     "paths": {
-      "~*": ["./src/*"]
-    }
+      "~/*": ["./src/*"]
+    },
+    "outDir": "./dist/"
   },
   "include": [
     "src"
