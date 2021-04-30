@@ -6,15 +6,14 @@ import { IHeaderProps } from "./types";
 import { FilterContainer, HeaderContainer, StyledDatepicker, StyledDropdown } from "./styles";
 
 const Header = ({ sticky }: IHeaderProps): JSX.Element => {
-    const [date, setDate] = useState<Date>(new Date());
-    const { data, load, filter } = useData(date);
+    const { data, loadAll } = useData();
 
     console.log(data);
 
     return (
         <HeaderContainer sticky={sticky}>
             <FilterContainer>
-                <StyledDatepicker onDateChange={setDate} />
+                <StyledDatepicker onDateChange={loadAll} />
                 <StyledDropdown>Items</StyledDropdown>
                 <StyledDropdown multiple>Items</StyledDropdown>
             </FilterContainer>

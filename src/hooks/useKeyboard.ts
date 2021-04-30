@@ -17,7 +17,7 @@ const useKeyboard = (listeners: IListeners): void => {
 
         document.addEventListener("keydown", rootListener);
         return () => document.removeEventListener("keydown", rootListener);
-    }, [listeners]);
+    }, [ listeners ]);
 };
 
 export default useKeyboard;

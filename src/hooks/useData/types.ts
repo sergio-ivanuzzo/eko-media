@@ -9,6 +9,6 @@ export interface IFilterParams {
 
 export interface IUseDataResponse {
     data: IData;
-    load: (filename: string) => Promise<void>;
+    loadAll: (selectedDate: Date) => Promise<void>;
     filter: (type: TYPES, params: IFilterParams) => IData;
 }

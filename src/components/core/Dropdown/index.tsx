@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 
+import ConditionalRender from "~/components/core/ConditionalRender";
 import useActiveElement from "~/hooks/useActiveElement";
 import useKeyboard from "~/hooks/useKeyboard";
-import ConditionalRender from "~/components/core/ConditionalRender";
 
-import { IDropdownProps, IRenderTriggerProps } from "./types";
 import { DropdownContainer, TriggerContainer } from "./styles";
+import { IDropdownProps, IRenderTriggerProps } from "./types";
 
 const defaultRender = ({ onClick, isOpen }: IRenderTriggerProps): React.ReactNode => {
     return (
@@ -19,8 +19,8 @@ const defaultRender = ({ onClick, isOpen }: IRenderTriggerProps): React.ReactNod
 };
 
 const Dropdown = ({ renderTrigger = defaultRender }: IDropdownProps): JSX.Element => {
-    const [isOpen, setOpen] = useState(false);
-    const [dropdownRef, isActiveElement] = useActiveElement<HTMLDivElement>();
+    const [ isOpen, setOpen ] = useState(false);
+    const [ dropdownRef, isActiveElement ] = useActiveElement<HTMLDivElement>();
 
     const close = () => setOpen(false);
 
@@ -32,7 +32,7 @@ const Dropdown = ({ renderTrigger = defaultRender }: IDropdownProps): JSX.Elemen
     // handling close on click outside
     useEffect(() => {
         !isActiveElement && setOpen(false);
-    }, [isActiveElement]);
+    }, [ isActiveElement ]);
 
     // handle close on keyboard events
     useKeyboard({

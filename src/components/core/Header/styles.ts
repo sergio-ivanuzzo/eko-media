@@ -17,6 +17,7 @@ export const HeaderContainer = styled.div<IHeaderProps>`
 export const FilterContainer = styled.div`
     display: flex;
     justify-content: space-between;
+    width: 100%;
 `;
 
 export const StyledDropdown = styled(Dropdown)``;

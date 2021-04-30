@@ -1,7 +1,7 @@
 import { RefObject, useEffect, useRef, useState } from "react";
 
 const useActiveElement = <T extends HTMLElement | null>(): [RefObject<T>, boolean] => {
-    const [isActiveElement, setIsActiveElement] = useState(false);
+    const [ isActiveElement, setIsActiveElement ] = useState(false);
     const ref = useRef<T>(null);
 
     useEffect(() => {
@@ -16,9 +16,9 @@ const useActiveElement = <T extends HTMLElement | null>(): [RefObject<T>, boolea
 
             return () => document.removeEventListener("mousedown", handleClick);
         }
-    }, [ref.current]);
+    }, [ ref.current ]);
 
-    return [ref, isActiveElement];
+    return [ ref, isActiveElement ];
 };
 
 export default useActiveElement;

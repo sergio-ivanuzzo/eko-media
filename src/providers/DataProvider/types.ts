@@ -1,4 +1,4 @@
-import React, { Dispatch } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 
 export interface IItem {
     [key: string]: string;
@@ -13,6 +13,6 @@ export interface IDataProviderProps {
 }
 
 export interface IDataProviderContext {
-    data?: IData;
-    setData?: Dispatch<IData>;
+    data: IData;
+    setData: Dispatch<SetStateAction<IData>>;
 }

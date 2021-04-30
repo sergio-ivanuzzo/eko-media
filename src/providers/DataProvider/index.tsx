@@ -1,12 +1,11 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useState } from "react";
 
-import { IData } from "~/hooks/useData/types";
-import { IDataProviderContext, IDataProviderProps } from "~/providers/DataProvider/types";
+import { IData, IDataProviderContext, IDataProviderProps } from "~/providers/DataProvider/types";
 
-export const DataContext = createContext<IDataProviderContext>({});
+export const DataContext = createContext<IDataProviderContext>({ data: {}, setData: () => undefined });
 
 const DataProvider = ({ children }: IDataProviderProps): JSX.Element => {
-    const [data, setData] = useState<IData>({});
+    const [ data, setData ] = useState<IData>({});
 
     return (
         <DataContext.Provider value={{ data, setData }}>

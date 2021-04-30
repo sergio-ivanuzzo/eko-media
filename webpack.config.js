@@ -9,13 +9,17 @@ module.exports = {
                 use: "ts-loader",
                 exclude: /node_modules/,
             },
+            {
+                test: /\.css$/i,
+                use: [ "style-loader", "css-loader" ],
+            },
         ],
     },
     resolve: {
         alias: {
             "~": path.resolve(__dirname, "src"),
         },
-        extensions: [".tsx", ".ts", ".js"],
+        extensions: [ ".tsx", ".ts", ".js" ],
     },
     output: {
         filename: "eko_media.bundle.js",

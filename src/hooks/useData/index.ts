@@ -16,66 +16,56 @@ import {
 } from "~/common/constants";
 import { IFilterParams, IUseDataResponse } from "~/hooks/useData/types";
 
-const useData = (selectedDate: Date): IUseDataResponse => {
+const useData = (): IUseDataResponse => {
 
-    // data will be refreshed automatically when selectedDate will be changed (see Datepicker)
-    const [month, setMonth] = useState<string>();
-    const [year, setYear] = useState<string>();
     const { data, setData } = useContext<IDataProviderContext>(DataContext);
 
-    useEffect(() => {
-        // we use month and year to detect dir where files to load located
-        // and to use for generate filename
-        const month: string = selectedDate.toLocaleString("en-us", { month: "short" }).toLocaleLowerCase();
-        const year = selectedDate.getFullYear().toString();
-
-        setMonth(month);
-        setYear(year);
-    }, [selectedDate]);
-
-    const load = useCallback(async (filename: string): Promise<void> => {
+    const load = useCallback(async (dirPath: string, filename: string): Promise<void> => {
         // load file and parse it into json object or array of json objects (for csv only)
-        const dirPath = `${ROOT_DIR}/${year}/${month}`;
-        const [name, extension] = filename.split(".");
+        const [ name, extension ] = filename.split(".");
 
         const response = await fetch(`./${dirPath}/${filename}`);
         const responseText = await response.text();
 
         if (response.status === 200) {
             if (extension === FILE_EXTENSION.CSV) {
-                setData(prevState => ({
+                setData((prevState: IData) => ({
                     ...prevState,
                     [name]: csvToJson(responseText),
                 }));
             } else if (extension === FILE_EXTENSION.JSON) {
-                setData(prevState => ({
+                setData((prevState: IData) => ({
                     ...prevState,
-                    [name]: [JSON.parse(responseText)],
+                    [name]: [ JSON.parse(responseText) ],
                 }));
             }
         } else {
             // since we try to load files with all combinations of type and category in name
             // we just ignore error if filename starts with combination not exists
         }
-    }, [month, year]);
+    }, [ setData ]);
 
-    useEffect(() => {
+    // we use date here to detect directory with files to load
+    const loadAll = useCallback(async (selectedDate: Date): Promise<void> => {
+        const month: string = selectedDate.toLocaleString("en-us", { month: "short" }).toLocaleLowerCase();
+        const year = selectedDate.getFullYear().toString();
+
         if (month && year) {
-            (async () => {
-                Object.values(TYPES).forEach(type => {
-                    Object.values(CATEGORIES).forEach(async category => {
-                        const filename = `${type}_${category}_${month}_${year}`;
-                        // we don't know 100% which extension filename has, try both
-                        await load(`${filename}.${FILE_EXTENSION.CSV}`);
-                        await load(`${filename}.${FILE_EXTENSION.JSON}`);
-                    })
+            const dirPath = `${ROOT_DIR}/${year}/${month}`;
+
+            Object.values(TYPES).forEach(type => {
+                Object.values(CATEGORIES).forEach(async category => {
+                    const filename = `${type}_${category}_${month}_${year}`;
+                    // we don't know 100% which extension filename has, try both
+                    await load(dirPath, `${filename}.${FILE_EXTENSION.CSV}`);
+                    await load(dirPath, `${filename}.${FILE_EXTENSION.JSON}`);
                 })
-            })();
+            })
         }
-    }, [month, year, load]);
+    }, [ load ]);
 
     // TODO: refactor "all" into const
-    const filter = (type: TYPES, { category = "all", media = ["all"] }: IFilterParams): IData => {
+    const filter = (type: TYPES, { category = "all", media = [ "all" ] }: IFilterParams): IData => {
         const flags: number = FILTER_MASK_MAP[type];
 
         const filteredData: IData = Object.keys(data)
@@ -113,7 +103,7 @@ const useData = (selectedDate: Date): IUseDataResponse => {
 
     return {
         data,
-        load,
+        loadAll,
         filter,
     }
 };
