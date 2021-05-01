@@ -10,10 +10,6 @@ module.exports = {
     "@storybook/addon-essentials",
     "@storybook/addon-actions"
   ],
-  "core": {
-    "builder": "webpack5"
-  },
-
   "webpackFinal": async (config) => {
     return {
       ...config,
