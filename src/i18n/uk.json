@@ -1,3 +1,19 @@
 {
-  "": ""
+  "January": "Січень",
+  "February": "Лютий",
+  "March": "Березень",
+  "April": "Квітень",
+  "May": "Травень",
+  "June": "Червень",
+  "July": "Липень",
+  "August": "Серпень",
+  "September": "Вересень",
+  "October": "Жовтень",
+  "November": "Листопад",
+  "December": "Грудень",
+
+  "link.main": "Головна",
+  "link.feedback": "Зворотний зв’язок",
+  "link.about": "Про Проєкт",
+  "link.details": "Детальніше"
 }

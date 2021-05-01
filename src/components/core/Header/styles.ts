@@ -12,6 +12,7 @@ export const HeaderContainer = styled.div<IHeaderProps>`
     ${({ sticky }: Partial<IHeaderProps>) => sticky && `
         display: fixed;
     `}
+    border-bottom: 1px solid ${({ theme }) => `${theme.palette.gray.silver}`};
 `;
 
 export const MenuContainer = styled.div`

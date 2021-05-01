@@ -1,7 +1,13 @@
 import React from "react";
 
-const Footer = (): React.ReactNode => {
-    return null;
+import { FooterContainer } from "~/components/core/Footer/styles";
+
+const Footer = (): JSX.Element => {
+    return (
+        <FooterContainer>
+            Footer will be soon...
+        </FooterContainer>
+    );
 };
 
 export default Footer;

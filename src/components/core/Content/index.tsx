@@ -1,13 +1,18 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 
-const Content = (): React.ReactNode => {
+import { ContentContainer } from "~/components/core/Content/styles";
+import MainPage from "~/components/pages/Main";
+
+const Content = (): JSX.Element => {
     return (
-        <Switch>
-            <Route path="/">
-                Page will be implemented soon...
-            </Route>
-        </Switch>
+        <ContentContainer>
+            <Switch>
+                <Route path="/">
+                    <MainPage />
+                </Route>
+            </Switch>
+        </ContentContainer>
     );
 };
 
