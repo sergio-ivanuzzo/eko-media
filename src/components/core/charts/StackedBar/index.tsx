@@ -7,25 +7,25 @@ import { CATEGORIES, TYPES } from "~/common/constants";
 
 import { IData, IItem } from "~/providers/DataProvider/types";
 
-import { ChartContainer } from "./styles";
+import { SvgContainer } from "./styles";
 
 const type = TYPES.CATEGORY
 
 const StackedBar = (): JSX.Element => {
     const { filter } = useData();
-    const ref = useRef<HTMLDivElement>(null);
+    const ref = useRef<SVGSVGElement>(null);
 
     const data: IData = filter(type);
 
     const draw = (): void => {
-        d3.select(ref.current)//.data(items);
+        const svg = d3.select(ref.current);
     };
 
     useEffect(() => {
         draw();
     }, [ data ]);
 
-    return <ChartContainer ref={ref} />;
+    return <SvgContainer ref={ref} />;
 };
 
 export default StackedBar;

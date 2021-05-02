@@ -1,17 +1,23 @@
 import { setDefaultLocale } from "react-datepicker";
-import React, { useState } from "react";
+import React, { useContext, useEffect } from "react";
 
+import { DataContext } from "~/providers/DataProvider";
+import { IDataProviderContext } from "~/providers/DataProvider/types";
 import { IDatePickerProps } from "./types";
 import { StyledDatepicker } from "./styles";
 
-setDefaultLocale("ua");
+setDefaultLocale("uk-UA");
 
 const DatePicker = ({ onDateChange }: IDatePickerProps): JSX.Element => {
-    const [ date, setDate ] = useState<Date>(new Date());
+    const { date, setDate } = useContext<IDataProviderContext>(DataContext);
     const handleDateChange = (selectedDate: Date) => {
         setDate(selectedDate);
-        onDateChange(selectedDate);
     };
+
+    // onChange handler should be called after "date" was changed
+    useEffect(() => {
+        onDateChange(date);
+    }, [ date ]);
 
     return <StyledDatepicker onChange={handleDateChange} selected={date} showMonthYearPicker />;
 };
