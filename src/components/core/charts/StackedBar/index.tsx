@@ -12,10 +12,10 @@ import { SvgContainer } from "./styles";
 const type = TYPES.CATEGORY
 
 const StackedBar = (): JSX.Element => {
-    const { filter } = useData();
+    const { getDataset } = useData();
     const ref = useRef<SVGSVGElement>(null);
 
-    const data: IData = filter(type);
+    const data: IItem[] = getDataset(type);
 
     const draw = (): void => {
         const svg = d3.select(ref.current);

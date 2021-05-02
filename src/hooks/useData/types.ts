@@ -1,9 +1,9 @@
-import { TYPES } from "~/common/constants";
+import { CATEGORIES, TYPES } from "~/common/constants";
 
-import { IData } from "~/providers/DataProvider/types";
+import { IData, IItem } from "~/providers/DataProvider/types";
 
 export interface IUseDataResponse {
     data: IData;
     loadAll: (selectedDate: Date) => Promise<void>;
-    filter: (type: TYPES) => IData;
+    getDataset: (type: TYPES, category?: string | CATEGORIES) => IItem[];
 }

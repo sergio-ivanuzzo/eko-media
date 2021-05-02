@@ -18,7 +18,21 @@ import {
 
 const useData = (): IUseDataResponse => {
 
-    const { data, setData, date: selectedDate, category, media } = useContext<IDataProviderContext>(DataContext);
+    const {
+        data,
+        setData,
+        date: selectedDate,
+        category: selectedCategory,
+        media: selectedMedia
+    } = useContext<IDataProviderContext>(DataContext);
+
+    // we need month and year to detect which directory contains files with data
+    const getMonthAndYear = useCallback(() => {
+        const month: string = selectedDate.toLocaleString("en-us", { month: "short" }).toLocaleLowerCase();
+        const year = selectedDate.getFullYear().toString();
+
+        return [ month, year ];
+    }, [ selectedDate ]);
 
     const load = useCallback(async (dirPath: string, filename: string): Promise<void> => {
         // load file and parse it into object or array of objects (for csv only)
@@ -45,11 +59,8 @@ const useData = (): IUseDataResponse => {
         }
     }, [ setData ]);
 
-    // we use date here to detect directory with files to load
     const loadAll = useCallback(async (): Promise<void> => {
-        console.log(selectedDate);
-        const month: string = selectedDate.toLocaleString("en-us", { month: "short" }).toLocaleLowerCase();
-        const year = selectedDate.getFullYear().toString();
+        const [ month, year ] = getMonthAndYear();
 
         if (month && year) {
             const dirPath = `${ROOT_DIR}/${year}/${month}`;
@@ -81,7 +92,7 @@ const useData = (): IUseDataResponse => {
             Object.keys(filteredData).forEach((key: string) => {
                 const items = filteredData[key];
                 filteredData[key] = items.filter(
-                    (dataItem: IItem) => media.some((mediaItem) => mediaItem in dataItem)
+                    (dataItem: IItem) => selectedMedia.some((mediaItem) => mediaItem in dataItem)
                 );
             })
         }
@@ -94,7 +105,7 @@ const useData = (): IUseDataResponse => {
                 const items = filteredData[key];
                 filteredData[key] = items
                     .filter((dataItem: IItem) =>
-                        FILTER_BY_CATEGORY_INDEXES.some((index: string) => dataItem[index] === category)
+                        FILTER_BY_CATEGORY_INDEXES.some((index: string) => dataItem[index] === selectedCategory)
                     );
             })
         }
@@ -102,10 +113,18 @@ const useData = (): IUseDataResponse => {
         return filteredData;
     };
 
+    const getDataset = (type: TYPES, category: string | CATEGORIES = selectedCategory): IItem[] => {
+        const filteredData: IData = filter(type);
+        const [ month, year ] = getMonthAndYear();
+        const key = `${type}_${category}_${month}_${year}`;
+
+        return (key in filteredData) ? filteredData[key] : [];
+    };
+
     return {
         data,
         loadAll,
-        filter,
+        getDataset,
     }
 };
 
