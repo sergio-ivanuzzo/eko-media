@@ -10,10 +10,12 @@ setDefaultLocale("ua");
 
 const DatePicker = ({ onDateChange }: IDatePickerProps): JSX.Element => {
     const { date, setDate } = useContext<IDataProviderContext>(DataContext);
-    const handleDateChange = (date: Date) => {
+    const handleDateChange = (selectedDate: Date) => {
+        console.log("selected:", selectedDate);
+        setDate(selectedDate);
         onDateChange();
-        setDate(date);
     };
+
     return <StyledDatepicker onChange={handleDateChange} selected={date} showMonthYearPicker />;
 };
 
