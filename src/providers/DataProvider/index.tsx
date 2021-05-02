@@ -16,7 +16,7 @@ export const DataContext = createContext<IDataProviderContext>({
 
 const DataProvider = ({ children }: IDataProviderProps): JSX.Element => {
     const [ data, setData ] = useState<IData>({});
-    const [ date, setDate ] = useState<Date>(new Date());
+    const [ date, setDate ] = useState<Date>(new Date("2021-02"));
     const [ category, setCategory ] = useState<CATEGORIES>(CATEGORIES.ALL);
     const [ media, setMedia ] = useState<string[]>([ "all" ]);
 

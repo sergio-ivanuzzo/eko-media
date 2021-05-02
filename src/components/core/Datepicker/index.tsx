@@ -16,7 +16,7 @@ const DatePicker = ({ onDateChange }: IDatePickerProps): JSX.Element => {
 
     // onChange handler should be called after "date" was changed
     useEffect(() => {
-        onDateChange(date);
+        onDateChange();
     }, [ date ]);
 
     return <StyledDatepicker onChange={handleDateChange} selected={date} showMonthYearPicker />;

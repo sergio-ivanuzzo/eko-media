@@ -1,3 +1,3 @@
 import styled from "styled-components";
 
-export const SvgContainer = styled.svg``;
+export const ChartContainer = styled.svg``;

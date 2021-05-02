@@ -4,6 +4,6 @@ import { IData, IItem } from "~/providers/DataProvider/types";
 
 export interface IUseDataResponse {
     data: IData;
-    loadAll: (selectedDate: Date) => Promise<void>;
+    loadAll: () => Promise<void>;
     getDataset: (type: TYPES, category?: string | CATEGORIES) => IItem[];
 }

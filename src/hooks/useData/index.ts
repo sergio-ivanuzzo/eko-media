@@ -76,14 +76,14 @@ const useData = (): IUseDataResponse => {
         }
     }, [ load, selectedDate ]);
 
-    const filter = (type: TYPES): IData => {
+    const filter = useCallback((type: TYPES, category: string | CATEGORIES): IData => {
 
         const flags: number = FILTER_MASK_MAP[type];
 
         const filteredData: IData = Object.keys(data)
-            .filter((key: string) => key.startsWith(type))
+            .filter((key: string) => key.startsWith(`${type}_${category}`))
             .reduce((result: IData, key: string) => {
-                result[key] = data[key];
+                result[key] = [ ...data[key] ];
                 return result;
             }, {});
 
@@ -91,9 +91,9 @@ const useData = (): IUseDataResponse => {
             // detect all items where key equals to media name
             Object.keys(filteredData).forEach((key: string) => {
                 const items = filteredData[key];
-                filteredData[key] = items.filter(
-                    (dataItem: IItem) => selectedMedia.some((mediaItem) => mediaItem in dataItem)
-                );
+                // TODO: refactor ALL media into const
+                filteredData[key] = (selectedMedia.includes("all")) ? items : items
+                    .filter((dataItem: IItem) => selectedMedia.some((mediaItem) => mediaItem in dataItem));
             })
         }
 
@@ -103,7 +103,7 @@ const useData = (): IUseDataResponse => {
             // one of the FILTER_BY_CATEGORY_INDEXES names will be used
             Object.keys(filteredData).forEach((key: string) => {
                 const items = filteredData[key];
-                filteredData[key] = items
+                filteredData[key] = (selectedCategory === CATEGORIES.ALL) ? items : items
                     .filter((dataItem: IItem) =>
                         FILTER_BY_CATEGORY_INDEXES.some((index: string) => dataItem[index] === selectedCategory)
                     );
@@ -111,15 +111,15 @@ const useData = (): IUseDataResponse => {
         }
 
         return filteredData;
-    };
+    }, [ data, selectedCategory, selectedMedia ]);
 
-    const getDataset = (type: TYPES, category: string | CATEGORIES = selectedCategory): IItem[] => {
-        const filteredData: IData = filter(type);
+    const getDataset = useCallback((type: TYPES, category: string | CATEGORIES = selectedCategory): IItem[] => {
+        const filteredData: IData = filter(type, category);
         const [ month, year ] = getMonthAndYear();
         const key = `${type}_${category}_${month}_${year}`;
 
         return (key in filteredData) ? filteredData[key] : [];
-    };
+    }, [ data, getMonthAndYear, selectedCategory ]);
 
     return {
         data,
