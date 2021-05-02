@@ -27,6 +27,7 @@ module.exports = {
         "array-bracket-spacing": [ "error", "always" ],
         "eol-last": [ "error", "always" ],
         "no-var": "error",
-        "arrow-parens": [ "error", "always" ]
+        "arrow-parens": [ "error", "always" ],
+        "quotes": [ "error", "double" ]
     }
 };

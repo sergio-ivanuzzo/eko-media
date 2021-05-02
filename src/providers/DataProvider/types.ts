@@ -1,5 +1,7 @@
 import React, { Dispatch, SetStateAction } from "react";
 
+import { CATEGORIES } from "~/common/constants";
+
 export interface IItem {
     [key: string]: string;
 }
@@ -15,4 +17,10 @@ export interface IDataProviderProps {
 export interface IDataProviderContext {
     data: IData;
     setData: Dispatch<SetStateAction<IData>>;
+    date: Date;
+    setDate: Dispatch<SetStateAction<Date>>;
+    category: CATEGORIES;
+    setCategory: Dispatch<SetStateAction<CATEGORIES>>;
+    media: string[];
+    setMedia: Dispatch<SetStateAction<string[]>>;
 }
