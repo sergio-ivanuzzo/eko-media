@@ -18,8 +18,7 @@ import {
 
 const useData = (): IUseDataResponse => {
 
-    const { data, setData, date: selectedDate, category, media } = useContext<IDataProviderContext>(DataContext);
-    console.log(data);
+    const { data, setData, category, media } = useContext<IDataProviderContext>(DataContext);
 
     const load = useCallback(async (dirPath: string, filename: string): Promise<void> => {
         // load file and parse it into object or array of objects (for csv only)
@@ -47,7 +46,7 @@ const useData = (): IUseDataResponse => {
     }, [ setData ]);
 
     // we use date here to detect directory with files to load
-    const loadAll = useCallback(async (): Promise<void> => {
+    const loadAll = useCallback(async (selectedDate: Date): Promise<void> => {
         const month: string = selectedDate.toLocaleString("en-us", { month: "short" }).toLocaleLowerCase();
         const year = selectedDate.getFullYear().toString();
 
@@ -63,7 +62,7 @@ const useData = (): IUseDataResponse => {
                 })
             })
         }
-    }, [ load, selectedDate ]);
+    }, [ load ]);
 
     const filter = (type: TYPES): IData => {
 

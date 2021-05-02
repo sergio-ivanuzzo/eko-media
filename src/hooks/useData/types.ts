@@ -4,6 +4,6 @@ import { IData } from "~/providers/DataProvider/types";
 
 export interface IUseDataResponse {
     data: IData;
-    loadAll: () => Promise<void>;
+    loadAll: (selectedDate: Date) => Promise<void>;
     filter: (type: TYPES) => IData;
 }

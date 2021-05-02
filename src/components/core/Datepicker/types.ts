@@ -1,3 +1,3 @@
 export interface IDatePickerProps {
-    onDateChange: () => void;
+    onDateChange: (date: Date) => void;
 }

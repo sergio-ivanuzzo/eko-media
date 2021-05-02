@@ -17,8 +17,6 @@ export interface IDataProviderProps {
 export interface IDataProviderContext {
     data: IData;
     setData: Dispatch<SetStateAction<IData>>;
-    date: Date;
-    setDate: Dispatch<SetStateAction<Date>>;
     category: CATEGORIES;
     setCategory: Dispatch<SetStateAction<CATEGORIES>>;
     media: string[];
