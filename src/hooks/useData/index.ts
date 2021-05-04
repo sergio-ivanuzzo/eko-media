@@ -16,7 +16,7 @@ import {
     TYPES,
 } from "~/common/constants";
 
-const useData = <T extends IItem>(): IUseDataResponse<T> => {
+const useData = (): IUseDataResponse => {
 
     const {
         data,
@@ -76,7 +76,7 @@ const useData = <T extends IItem>(): IUseDataResponse<T> => {
         }
     }, [ load, selectedDate ]);
 
-    const filter = useCallback((type: TYPES, category: string | CATEGORIES): IData<T> => {
+    const filter = useCallback((type: TYPES, category: string | CATEGORIES): IData<IItem> => {
 
         const flags: number = FILTER_MASK_MAP[type];
 
@@ -113,7 +113,7 @@ const useData = <T extends IItem>(): IUseDataResponse<T> => {
         return filteredData;
     }, [ data, selectedCategory, selectedMedia ]);
 
-    const getDataset = useCallback((type: TYPES, category: string | CATEGORIES = selectedCategory): T[] => {
+    const getDataset = useCallback((type: TYPES, category: string | CATEGORIES = selectedCategory): IItem[] => {
         const filteredData: IData<IItem> = filter(type, category);
         const [ month, year ] = getMonthAndYear();
         const key = `${type}_${category}_${month}_${year}`;

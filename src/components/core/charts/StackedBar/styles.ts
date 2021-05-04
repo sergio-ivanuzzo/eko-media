@@ -6,13 +6,13 @@ export const BAR_HEIGHT = 27;
 
 export const ChartContainer = styled.svg<IChartContainerProps>`
   width: 800px;
-  height: ${({ height }) => `${height}px;`};
+  height: ${({ itemsAmount }) => `${itemsAmount * BAR_HEIGHT}px;`};
   
-  g.root {
+  g.group {
     transform: translate(200px, 100px);
   }
   
-  g.tick {
+  g.x-axis, g.y-axis {
     font-size: 14px;
   }
 `;

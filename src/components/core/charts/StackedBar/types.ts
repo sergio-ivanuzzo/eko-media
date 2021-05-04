@@ -1,11 +1,11 @@
 import { IData, IItem } from "~/providers/DataProvider/types";
 
-export interface IStackedBarProps {
-    data: IData;
+export interface IStackedBarProps<T extends IItem> {
+    data: IData<T>;
 }
 
 export interface IChartContainerProps {
-    height: number;
+    itemsAmount: number;
 }
 
 export interface ICategorizedItem extends IItem {

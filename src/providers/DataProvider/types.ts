@@ -6,6 +6,10 @@ export interface IItem {
     [key: string]: string;
 }
 
+export interface ICategorizedItem extends IItem {
+    category: string;
+}
+
 export interface IData<T extends IItem> {
     [key: string]: T[];
 }
