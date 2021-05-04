@@ -6,17 +6,17 @@ export interface IItem {
     [key: string]: string;
 }
 
-export interface IData {
-    [key: string]: IItem[];
+export interface IData<T extends IItem> {
+    [key: string]: T[];
 }
 
 export interface IDataProviderProps {
     children: React.ReactNode;
 }
 
-export interface IDataProviderContext {
-    data: IData;
-    setData: Dispatch<SetStateAction<IData>>;
+export interface IDataProviderContext<T extends IItem> {
+    data: IData<T>;
+    setData: Dispatch<SetStateAction<IData<T>>>;
     date: Date;
     setDate: Dispatch<SetStateAction<Date>>;
     category: CATEGORIES;

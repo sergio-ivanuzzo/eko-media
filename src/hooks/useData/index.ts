@@ -16,7 +16,7 @@ import {
     TYPES,
 } from "~/common/constants";
 
-const useData = (): IUseDataResponse => {
+const useData = <T extends IItem>(): IUseDataResponse<T> => {
 
     const {
         data,
@@ -24,7 +24,7 @@ const useData = (): IUseDataResponse => {
         date: selectedDate,
         category: selectedCategory,
         media: selectedMedia
-    } = useContext<IDataProviderContext>(DataContext);
+    } = useContext<IDataProviderContext<IItem>>(DataContext);
 
     // we need month and year to detect which directory contains files with data
     const getMonthAndYear = useCallback(() => {
@@ -43,12 +43,12 @@ const useData = (): IUseDataResponse => {
 
         if (response.status === 200) {
             if (extension === FILE_EXTENSION.CSV) {
-                setData((prevState: IData) => ({
+                setData((prevState: IData<IItem>) => ({
                     ...prevState,
                     [name]: csvToJson(responseText),
                 }));
             } else if (extension === FILE_EXTENSION.JSON) {
-                setData((prevState: IData) => ({
+                setData((prevState: IData<IItem>) => ({
                     ...prevState,
                     [name]: [ JSON.parse(responseText) ],
                 }));
@@ -76,13 +76,13 @@ const useData = (): IUseDataResponse => {
         }
     }, [ load, selectedDate ]);
 
-    const filter = useCallback((type: TYPES, category: string | CATEGORIES): IData => {
+    const filter = useCallback((type: TYPES, category: string | CATEGORIES): IData<T> => {
 
         const flags: number = FILTER_MASK_MAP[type];
 
-        const filteredData: IData = Object.keys(data)
+        const filteredData: IData<IItem> = Object.keys(data)
             .filter((key: string) => key.startsWith(`${type}_${category}`))
-            .reduce((result: IData, key: string) => {
+            .reduce((result: IData<IItem>, key: string) => {
                 result[key] = [ ...data[key] ];
                 return result;
             }, {});
@@ -113,8 +113,8 @@ const useData = (): IUseDataResponse => {
         return filteredData;
     }, [ data, selectedCategory, selectedMedia ]);
 
-    const getDataset = useCallback((type: TYPES, category: string | CATEGORIES = selectedCategory): IItem[] => {
-        const filteredData: IData = filter(type, category);
+    const getDataset = useCallback((type: TYPES, category: string | CATEGORIES = selectedCategory): T[] => {
+        const filteredData: IData<IItem> = filter(type, category);
         const [ month, year ] = getMonthAndYear();
         const key = `${type}_${category}_${month}_${year}`;
 

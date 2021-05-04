@@ -1,9 +1,9 @@
 import React, { createContext, useState } from "react";
 
 import { CATEGORIES } from "~/common/constants";
-import { IData, IDataProviderContext, IDataProviderProps } from "./types";
+import { IData, IDataProviderContext, IDataProviderProps, IItem } from "./types";
 
-export const DataContext = createContext<IDataProviderContext>({
+export const DataContext = createContext<IDataProviderContext<IItem>>({
     data: {},
     setData: () => undefined,
     date: new Date(),
@@ -15,7 +15,7 @@ export const DataContext = createContext<IDataProviderContext>({
 });
 
 const DataProvider = ({ children }: IDataProviderProps): JSX.Element => {
-    const [ data, setData ] = useState<IData>({});
+    const [ data, setData ] = useState<IData<IItem>>({});
     const [ date, setDate ] = useState<Date>(new Date("2021-02"));
     const [ category, setCategory ] = useState<CATEGORIES>(CATEGORIES.ALL);
     const [ media, setMedia ] = useState<string[]>([ "all" ]);
