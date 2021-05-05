@@ -3,7 +3,7 @@ import React, { Dispatch, SetStateAction } from "react";
 import { CATEGORIES } from "~/common/constants";
 
 export interface IItem {
-    [key: string]: string;
+    [key: string]: string | number;
 }
 
 export interface ICategorizedItem extends IItem {

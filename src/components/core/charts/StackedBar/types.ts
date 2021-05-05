@@ -5,7 +5,8 @@ export interface IStackedBarProps<T extends IItem> {
 }
 
 export interface IChartContainerProps {
-    itemsAmount: number;
+    height: number;
+    width: number;
 }
 
 export interface ICategorizedItem extends IItem {

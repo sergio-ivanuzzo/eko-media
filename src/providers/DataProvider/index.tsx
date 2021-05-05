@@ -1,7 +1,7 @@
 import React, { createContext, useState } from "react";
 
 import { CATEGORIES } from "~/common/constants";
-import { ICategorizedItem, IData, IDataProviderContext, IDataProviderProps, IItem } from "./types";
+import { IData, IDataProviderContext, IDataProviderProps, IItem } from "./types";
 
 export const DataContext = createContext<IDataProviderContext<IItem>>({
     data: {},

@@ -4,7 +4,6 @@ import * as d3 from "d3";
 import { ICategorizedItem } from "~/components/core/charts/StackedBar/types";
 import useData from "~/hooks/useData";
 
-import { IData } from "~/providers/DataProvider/types";
 import { BAR_HEIGHT, ChartContainer } from "./styles";
 import { CATEGORIES, FILTER_BY_CATEGORY_INDEXES, TYPES } from "~/common/constants";
 
@@ -24,6 +23,8 @@ const StackedBar = (): JSX.Element => {
         [ dataset ]
     );
 
+    console.log(parsedCategories);
+
     // data for y axis
     const parsedMedia = useMemo(
         () => parsedCategories.length
@@ -33,48 +34,63 @@ const StackedBar = (): JSX.Element => {
         [ parsedCategories ]
     );
 
-    const percentages: Array<{ [key: string]: number }> = useMemo(() => dataset.length
-        ? parsedMedia.map((media: string) => {
-            return dataset.reduce((result: { [key: string]: number }, item: ICategorizedItem) => {
-                result[item.category] = Number(item[media]);
-                return result;
-            }, {});
-        })
-        : [], [ dataset, parsedMedia ]);
-
-    const colors = useMemo((): string[] => {
+    const getColors = useCallback((items: Array<any>): string[] => {
         // main colors (since we use top-5 according to requirements)
         const { orange, gray, cyan, green } = theme.palette;
         const mainColors = [ orange.carrot, gray.silver, green.jade, green.salad, cyan.azure ];
 
         // random colors (if requirements will changed and categories amount will be greater than 5)
-        const randomColors = parsedCategories.slice(5)
-            .map((item: string) => `#${Math.floor(Math.random()*16777215).toString(16)}`);
+        const randomColors = items.slice(5)
+            .map(() => `#${Math.floor(Math.random()*16777215).toString(16)}`);
 
         return mainColors.concat(randomColors);
-    }, [ parsedCategories ]);
+    }, []);
+
+    const colors = getColors(parsedMedia);
+
+    const height = useMemo(() => BAR_HEIGHT * parsedMedia.length, [ parsedMedia ]);
+    const width = 800;
+
+    const margin = ({ top: 30, right: 10, bottom: 0, left: 30 });
+
+    const data = useMemo(() => {
+        return parsedMedia.map((media: string) => {
+            return {
+                key: media,
+                ...parsedCategories.reduce((result: any, category, index) => {
+                    result[category] = dataset[index][media]
+                    return result;
+                }, {})
+            }
+        });
+    }, [ dataset ]);
+    console.log("data");
 
     const draw = useCallback((): void => {
         if (dataset.length) {
-            const series = d3.stack().keys(parsedMedia)(dataset);
+            const series = d3.stack()
+                .keys(parsedCategories)
+                // normalization
+                .offset(d3.stackOffsetExpand)(data as any);
+            console.log(series);
 
-            const svg = d3.select(ref.current);
+            const svg: any = d3.select(ref.current);
 
-            const xScale: d3.ScaleLinear<number, number> = d3.scaleLinear()
-                .range ([ 0, 800 ])
-                .domain([ 20, 40, 60, 80, 100 ]);
+            const xScale = d3.scaleLinear()
+                .range([ margin.left, width - margin.right ])//.domain([ margin.left, width - margin.right ]);
 
             const yScale: d3.ScaleBand<string> = d3.scaleBand()
-                .range ([ 0, 800 ])
+                .range([ margin.left, height ])
+                .padding(0.2)
                 .domain(parsedMedia);
 
             const zScale = d3.scaleOrdinal()
-                .range(colors)
-                .domain(parsedCategories);
+                .range(getColors(parsedMedia))
+                .domain(parsedMedia);
 
             // draw xAxis
             svg.append("g")
-                .attr("class", "x-axis")
+                .attr("class", "axis")
                 .call(d3
                     .axisTop(xScale)
                     .tickSize(0)
@@ -84,7 +100,7 @@ const StackedBar = (): JSX.Element => {
 
             // draw yAxis
             svg.append("g")
-                .attr("class", "y-axis")
+                .attr("class", "axis")
                 .call(
                     d3.axisLeft(yScale)
                     .tickFormat((d: string) => d)
@@ -93,23 +109,18 @@ const StackedBar = (): JSX.Element => {
                     .tickPadding(20)
                 );
 
-            const group = svg.selectAll("g.group")
+            svg.append("g")
+                .selectAll("g")
                 .data(series)
-                .attr("class", "group");
-
-            group.enter().append("g")
-                .attr("fill", (d) => {
-                    console.log(zScale(d.category), d.key, d[0]);
-                    return zScale(d[0][d.key]);
-                });
-
-            group.selectAll("rect").data(series)
-                .enter().append("rect")
-                .attr("x", (d, i) => xScale(d[0]))
-                .attr("y", (d, i) => BAR_HEIGHT * i)
-                .attr("width", (d) => 100)
-                .attr("height", BAR_HEIGHT)
-                .attr("fill", "red")
+                .enter().append("g")
+                .attr("fill", (d: any, i: any) => colors[i])
+                .selectAll("rect")
+                .data((d: any) => d)
+                .join("rect")
+                .attr("x", (d: any) => xScale(d[0]))
+                .attr("y", (d: any, i: any) => yScale(d.data.key))
+                .attr("width", (d: any, i: any) => xScale(d[1]) - xScale(d[0]))
+                .attr("height", yScale.bandwidth())
 
         }
     }, [ dataset ]);
@@ -118,7 +129,7 @@ const StackedBar = (): JSX.Element => {
         draw();
     }, [ dataset ]);
 
-    return <ChartContainer ref={ref} itemsAmount={parsedMedia.length} />;
+    return <ChartContainer ref={ref} height={height} width={width} />;
 };
 
 export default StackedBar;
