@@ -23,8 +23,6 @@ const StackedBar = (): JSX.Element => {
         [ dataset ]
     );
 
-    console.log(parsedCategories);
-
     // data for y axis
     const parsedMedia = useMemo(
         () => parsedCategories.length
@@ -48,44 +46,44 @@ const StackedBar = (): JSX.Element => {
 
     const colors = getColors(parsedMedia);
 
-    const height = useMemo(() => BAR_HEIGHT * parsedMedia.length, [ parsedMedia ]);
-    const width = 800;
-
     const margin = ({ top: 30, right: 10, bottom: 0, left: 30 });
+
+    const height = useMemo(() =>
+        parsedMedia.length
+            ? BAR_HEIGHT * parsedMedia.length - margin.top - margin.bottom
+            : 0,
+        [ parsedMedia ]);
+
+    // TODO: refactor all ANY and all MAGIC NUMBERS
+    const width = 1000 - margin.left - margin.right;
 
     const data = useMemo(() => {
         return parsedMedia.map((media: string) => {
             return {
                 key: media,
-                ...parsedCategories.reduce((result: any, category, index) => {
-                    result[category] = dataset[index][media]
+                ...parsedCategories.reduce((result: { [key: string]: number }, category, index) => {
+                    result[category] = Number(dataset[index][media])
                     return result;
                 }, {})
             }
         });
     }, [ dataset ]);
-    console.log("data");
 
     const draw = useCallback((): void => {
         if (dataset.length) {
             const series = d3.stack()
                 .keys(parsedCategories)
                 // normalization
-                .offset(d3.stackOffsetExpand)(data as any);
-            console.log(series);
+                .offset(d3.stackOffsetExpand)(data);
 
             const svg: any = d3.select(ref.current);
 
             const xScale = d3.scaleLinear()
-                .range([ margin.left, width - margin.right ])//.domain([ margin.left, width - margin.right ]);
+                .rangeRound([ margin.left, width ]).domain([ 0, 1.5 ]);
 
             const yScale: d3.ScaleBand<string> = d3.scaleBand()
                 .range([ margin.left, height ])
                 .padding(0.2)
-                .domain(parsedMedia);
-
-            const zScale = d3.scaleOrdinal()
-                .range(getColors(parsedMedia))
                 .domain(parsedMedia);
 
             // draw xAxis
