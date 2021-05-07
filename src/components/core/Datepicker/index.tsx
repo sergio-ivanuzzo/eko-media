@@ -15,7 +15,7 @@ const DatePicker = ({ onDateChange }: IDatePickerProps): JSX.Element => {
         setDate(selectedDate);
     };
 
-    // onChange handler should be called after "date" was changed
+    // fixing race condition, bc onDataChange should be fired after date was changed
     useEffect(() => {
         onDateChange();
     }, [ date ]);

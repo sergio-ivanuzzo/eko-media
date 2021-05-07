@@ -1,11 +1,17 @@
 import React from "react";
 
-import StackedBar from "~/components/core/charts/StackedBar";
+import Network from "~/components/charts/Network";
+import StackedBar from "~/components/charts/StackedBar";
 
 const MainPage = (): JSX.Element => {
     return (
         <div>
-            <StackedBar />
+            <div>
+                <StackedBar />
+            </div>
+            <div>
+                <Network />
+            </div>
         </div>
     );
 };

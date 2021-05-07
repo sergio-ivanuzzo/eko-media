@@ -1,9 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 
-import Content from "~/components/core/Content";
-import Footer from "~/components/core/Footer";
-import Header from "~/components/core/Header";
+import Content from "~/components/partials/Content";
+import Footer from "~/components/partials/Footer";
+import Header from "~/components/partials/Header";
 
 const App = (): JSX.Element => {
     return (

@@ -34,7 +34,7 @@ const useData = (): IUseDataResponse => {
         return [ month, year ];
     }, [ selectedDate ]);
 
-    const load = useCallback(async (dirPath: string, filename: string): Promise<void> => {
+    const load = useCallback(async (dirPath: string, filename: string): Promise<IData<IItem>> => {
         // load file and parse it into object or array of objects (for csv only)
         const [ name, extension ] = filename.split(".");
 
@@ -43,21 +43,15 @@ const useData = (): IUseDataResponse => {
 
         if (response.status === 200) {
             if (extension === FILE_EXTENSION.CSV) {
-                setData((prevState: IData<IItem>) => ({
-                    ...prevState,
-                    [name]: csvToJson(responseText),
-                }));
+                return { [name]: csvToJson(responseText) };
             } else if (extension === FILE_EXTENSION.JSON) {
-                setData((prevState: IData<IItem>) => ({
-                    ...prevState,
-                    [name]: [ JSON.parse(responseText) ],
-                }));
+                return { [name]: [ JSON.parse(responseText) ] };
             }
-        } else {
-            // since we try to load files with all combinations of type and category in name
-            // we just ignore error if filename starts with combination not exists
         }
-    }, [ setData ]);
+
+        return {};
+
+    }, []);
 
     const loadAll = useCallback(async (): Promise<void> => {
         const [ month, year ] = getMonthAndYear();
@@ -65,16 +59,22 @@ const useData = (): IUseDataResponse => {
         if (month && year) {
             const dirPath = `${ROOT_DIR}/${year}/${month}`;
 
-            Object.values(TYPES).forEach((type) => {
-                Object.values(CATEGORIES).forEach(async (category) => {
+            let items = await Promise.all(Object.values(TYPES).map((type) => {
+                return Promise.all(Object.values(CATEGORIES).map(async (category) => {
                     const filename = `${type}_${category}_${month}_${year}`;
                     // we don't know 100% which extension filename has, try both
-                    await load(dirPath, `${filename}.${FILE_EXTENSION.CSV}`);
-                    await load(dirPath, `${filename}.${FILE_EXTENSION.JSON}`);
-                })
-            })
+                    const csv = await load(dirPath, `${filename}.${FILE_EXTENSION.CSV}`);
+                    const json = await load(dirPath, `${filename}.${FILE_EXTENSION.JSON}`);
+
+                    return { ...csv, ...json };
+                }));
+            }));
+
+            items = items.map((item) => Object.assign({}, ...item));
+
+            setData(Object.assign({}, ...items));
         }
-    }, [ load, selectedDate ]);
+    }, [ load, getMonthAndYear, setData ]);
 
     const filter = useCallback((type: TYPES, category: string | CATEGORIES): IData<IItem> => {
 
@@ -88,7 +88,6 @@ const useData = (): IUseDataResponse => {
             }, {});
 
         if (flags & FILTER_FLAGS.BY_MEDIA) {
-            // detect all items where key equals to media name
             Object.keys(filteredData).forEach((key: string) => {
                 const items = filteredData[key];
                 // TODO: refactor ALL media into const
@@ -98,9 +97,6 @@ const useData = (): IUseDataResponse => {
         }
 
         if (flags & FILTER_FLAGS.BY_CATEGORY) {
-            // detect all items where category field equals to filter category
-            // FILTER_BY_CATEGORY_INDEXES contains all fields which stores category
-            // one of the FILTER_BY_CATEGORY_INDEXES names will be used
             Object.keys(filteredData).forEach((key: string) => {
                 const items = filteredData[key];
                 filteredData[key] = (selectedCategory === CATEGORIES.ALL) ? items : items
@@ -119,7 +115,7 @@ const useData = (): IUseDataResponse => {
         const key = `${type}_${category}_${month}_${year}`;
 
         return (key in filteredData) ? filteredData[key] : [];
-    }, [ data, getMonthAndYear, selectedCategory ]);
+    }, [ filter, getMonthAndYear, selectedCategory ]);
 
     return {
         data,

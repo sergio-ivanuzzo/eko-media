@@ -20,7 +20,7 @@ export interface IDataProviderProps {
 
 export interface IDataProviderContext<T extends IItem> {
     data: IData<T>;
-    setData: Dispatch<SetStateAction<IData<T>>>;
+    setData: Dispatch<IData<T>>;
     date: Date;
     setDate: Dispatch<SetStateAction<Date>>;
     category: CATEGORIES;
