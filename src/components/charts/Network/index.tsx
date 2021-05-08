@@ -52,27 +52,34 @@ const Network = (): JSX.Element => {
             .attr("y2", function(d) { return d.target.y; })
             .attr("stroke-width", function(d) { return Math.sqrt(parseInt(d.weight)); });
 
-        const node = svg.append("g")
-            .attr("class", "nodes")
-            .selectAll("circle")
+        const node = svg.selectAll("g")
             .data(nodes as any)
-            .enter().append("circle")
-            .attr("cx", function(d) { return d.x; })
-            .attr("cy", function(d) { return d.y; })
+            .enter()
+            .append("g")
+            .attr("class", "nodes");
+
+         node.append("circle")
+            .attr("cx", (d) => d.x)
+            .attr("cy", (d) => d.y)
             .attr("r", 10)
             .attr("fill", function(d) { return color(d.name); });
 
-        node.append("title")
-            .text(function(d) { return d.id; });
+        node.append("text")
+            .text((d) => d.name)
+            .attr("x", (d) => d.x + 15)
+            .attr("y", (d) => d.y + 5)
+            .attr("fill", "black");
 
-        node.on("mouseover", function() {
-            d3.select(this).attr("fill", "red").attr("r", 15);
-            link.attr("stroke-width", (d) => {
-                // console.log(d.source, d.target);
-            })
-        }).on("mouseout", function() {
-            d3.select(this).attr("fill", (d) => color(d.name)).attr("r", 10);
-        })
+        link.on("mouseover", function(event, d) {
+            const connectedNodes = node.selectAll("circle")
+                .filter((e) => e.name == d.source.name || e.name == d.target.name)
+                .attr("fill", "red");
+
+        }).on("mouseout", function(event, d) {
+            const connectedNodes = node
+                .filter((e) => e.name == d.source.name || e.name == d.target.name)
+                .attr("fill", (d) => color(d.name));
+        });
 
     }, [ dataset ]);
 

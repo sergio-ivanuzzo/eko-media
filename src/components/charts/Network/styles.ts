@@ -13,4 +13,11 @@ export const ChartContainer = styled.svg`
       stroke: #fff;
       stroke-width: 1.5px;
     }
+    
+    text {
+      font-family: sans-serif;
+      font-size: 14px;
+      font-weight: bold;
+      color: red;
+    }
 `;
