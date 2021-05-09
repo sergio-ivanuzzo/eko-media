@@ -3,11 +3,11 @@ import React, { Dispatch, SetStateAction } from "react";
 import { CATEGORIES } from "~/common/constants";
 
 export interface IItem {
-    [key: string]: string | number;
-}
-
-export interface ICategorizedItem extends IItem {
-    category: string;
+    [key: string]:
+        string
+        | number
+        | { [key: string]: number | string }
+        | Array<{ [key: string]: number | string }>;
 }
 
 export interface IData<T extends IItem> {

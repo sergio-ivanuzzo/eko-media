@@ -3,10 +3,10 @@ import * as d3 from "d3";
 
 import useData from "~/hooks/useData";
 
-import { IItem } from "~/providers/DataProvider/types";
 import { TYPES } from "~/common/constants";
 
 import { ChartContainer } from "./styles";
+import { IGraphDataset } from "~/components/charts/Network/types";
 
 const MAX_DISTANCE = 2000;
 const MIN_DISTANCE = 200;
@@ -17,11 +17,34 @@ const Network = (): JSX.Element => {
     const { getDataset } = useData();
     const ref = useRef<SVGSVGElement>(null);
 
-    const dataset: IItem[] = getDataset(TYPE, "all") ;
-    const { nodes, edges } = dataset[0];
+    const dataset = getDataset(TYPE, "all");
+    const { nodes, edges } = dataset[0] as IGraphDataset;
 
     const width = 900;
     const height = 600;
+
+    const linked = edges.reduce((result: { [key: string]: number }, edge) => {
+        const { source, target  } = edge;
+        result[`${source},${target}`] = 1;
+        return result;
+    }, {});
+
+    const isConnected = (source: number, target: number) => {
+        return source === target || Object.keys(linked)
+            .some((key: string) => key.includes(`${source}`) || key.includes(`${target}`));
+    }
+
+    const fade = (node: any, link: any) => (opacity: number) => {
+        return (event: MouseEvent, d: any) => {
+            node.style("stroke-opacity", function (o) {
+                const thisOpacity = isConnected(d.index, o.index) ? 1 : opacity;
+                this.setAttribute("fill-opacity", thisOpacity);
+                return thisOpacity;
+            });
+
+            link.style("stroke-opacity", (o) => (o.source === d || o.target === d ? 1 : opacity));
+        };
+    }
 
     const draw = useCallback((): void => {
         const svg = d3.select("svg");
@@ -57,7 +80,7 @@ const Network = (): JSX.Element => {
             .attr("y2", (d: any) => d.target.y)
             .attr("stroke-width", (d: any) => Math.sqrt(parseInt(d.weight)));
 
-        const node = svg.selectAll("g")
+        const node = svg.selectAll("g.nodes")
             .data(nodes as any)
             .enter()
             .append("g")
@@ -75,16 +98,10 @@ const Network = (): JSX.Element => {
             .attr("y", (d: any) => d.y + 5)
             .attr("fill", "black");
 
-        link.on("mouseover", function(event, d: any) {
-            const connectedNodes = node.selectAll("circle")
-                .filter((e: any) => e.name == d.source.name || e.name == d.target.name)
-                .attr("fill", "red");
+        const doFade = fade(node, link);
 
-        }).on("mouseout", function(event, d: any) {
-            const connectedNodes = node
-                .filter((e: any) => e.name == d.source.name || e.name == d.target.name)
-                .attr("fill", (d: any) => color(d.name));
-        });
+        node.on("mouseover.fade", doFade(0.1)).on("mouseout.fade", doFade(1));
+        link.on("mouseout.fade", doFade(1));
 
     }, [ dataset ]);
 
