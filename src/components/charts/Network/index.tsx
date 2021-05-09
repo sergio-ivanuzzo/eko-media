@@ -8,13 +8,16 @@ import { TYPES } from "~/common/constants";
 
 import { ChartContainer } from "./styles";
 
-const type = TYPES.NETWORK;
+const MAX_DISTANCE = 2000;
+const MIN_DISTANCE = 200;
+const RADIUS = 10;
+const TYPE = TYPES.NETWORK;
 
 const Network = (): JSX.Element => {
     const { getDataset } = useData();
     const ref = useRef<SVGSVGElement>(null);
 
-    const dataset: IItem[] = getDataset(type, "all") ;
+    const dataset: IItem[] = getDataset(TYPE, "all") ;
     const { nodes, edges } = dataset[0];
 
     const width = 900;
@@ -24,12 +27,14 @@ const Network = (): JSX.Element => {
         const svg = d3.select("svg");
         const color = d3.scaleOrdinal(d3.schemeCategory10);
 
-        const simulation = d3.forceSimulation(nodes)
-            .force("link", d3.forceLink().id(function(d) { return d.id; }).distance(200))
-            .force("charge", d3.forceManyBody().strength(function (d, i) {
-                const a = i == 0 ? -2000 : -1000;
-                return a;
-            }).distanceMin(200).distanceMax(1000))
+        const simulation: any = d3.forceSimulation(nodes as any)
+            .force("link", d3.forceLink().id((d: any) => d.id).distance(MIN_DISTANCE))
+            .force("charge", d3.forceManyBody()
+                .strength(
+                    (d: any, i) => i == 0
+                        ? -MAX_DISTANCE
+                        : -(MAX_DISTANCE / 2)).distanceMin(MIN_DISTANCE).distanceMax(MAX_DISTANCE)
+            )
             .force("center", d3.forceCenter(width / 2, height / 2))
             .stop();
 
@@ -44,13 +49,13 @@ const Network = (): JSX.Element => {
         const link = svg.append("g")
             .attr("class", "links")
             .selectAll("line")
-            .data(edges)
+            .data(edges as any)
             .enter().append("line")
-            .attr("x1", function(d) { return d.source.x; })
-            .attr("y1", function(d) { return d.source.y; })
-            .attr("x2", function(d) { return d.target.x; })
-            .attr("y2", function(d) { return d.target.y; })
-            .attr("stroke-width", function(d) { return Math.sqrt(parseInt(d.weight)); });
+            .attr("x1", (d: any) => d.source.x)
+            .attr("y1", (d: any) => d.source.y)
+            .attr("x2", (d: any) => d.target.x)
+            .attr("y2", (d: any) => d.target.y)
+            .attr("stroke-width", (d: any) => Math.sqrt(parseInt(d.weight)));
 
         const node = svg.selectAll("g")
             .data(nodes as any)
@@ -59,26 +64,26 @@ const Network = (): JSX.Element => {
             .attr("class", "nodes");
 
          node.append("circle")
-            .attr("cx", (d) => d.x)
-            .attr("cy", (d) => d.y)
-            .attr("r", 10)
-            .attr("fill", function(d) { return color(d.name); });
+            .attr("cx", (d: any) => d.x)
+            .attr("cy", (d: any) => d.y)
+            .attr("r", RADIUS)
+            .attr("fill", (d: any) => color(d.name));
 
         node.append("text")
-            .text((d) => d.name)
-            .attr("x", (d) => d.x + 15)
-            .attr("y", (d) => d.y + 5)
+            .text((d: any) => d.name)
+            .attr("x", (d: any) => d.x + 15)
+            .attr("y", (d: any) => d.y + 5)
             .attr("fill", "black");
 
-        link.on("mouseover", function(event, d) {
+        link.on("mouseover", function(event, d: any) {
             const connectedNodes = node.selectAll("circle")
-                .filter((e) => e.name == d.source.name || e.name == d.target.name)
+                .filter((e: any) => e.name == d.source.name || e.name == d.target.name)
                 .attr("fill", "red");
 
-        }).on("mouseout", function(event, d) {
+        }).on("mouseout", function(event, d: any) {
             const connectedNodes = node
-                .filter((e) => e.name == d.source.name || e.name == d.target.name)
-                .attr("fill", (d) => color(d.name));
+                .filter((e: any) => e.name == d.source.name || e.name == d.target.name)
+                .attr("fill", (d: any) => color(d.name));
         });
 
     }, [ dataset ]);

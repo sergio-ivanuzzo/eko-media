@@ -1,21 +1,21 @@
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import * as d3 from "d3";
 
-import { ICategorizedItem } from "~/components/core/charts/StackedBar/types";
+import { ICategorizedItem } from "~/components/charts/StackedBar/types";
 import useData from "~/hooks/useData";
 
 import { BAR_HEIGHT, ChartContainer } from "./styles";
-import { CATEGORIES, FILTER_BY_CATEGORY_INDEXES, TYPES } from "~/common/constants";
+import { FILTER_BY_CATEGORY_INDEXES, TYPES } from "~/common/constants";
 
 import theme from "~/common/theme";
 
-const type = TYPES.CATEGORY
+const TYPE = TYPES.CATEGORY
 
 const StackedBar = (): JSX.Element => {
     const { getDataset } = useData();
     const ref = useRef<SVGSVGElement>(null);
 
-    const dataset: ICategorizedItem[] = getDataset(type) as Array<ICategorizedItem>;
+    const dataset: ICategorizedItem[] = getDataset(TYPE) as Array<ICategorizedItem>;
 
     // data for legends
     const parsedCategories: string[] = useMemo(
@@ -74,7 +74,7 @@ const StackedBar = (): JSX.Element => {
             const series = d3.stack()
                 .keys(parsedCategories)
                 // normalization
-                .offset(d3.stackOffsetExpand)(data);
+                .offset(d3.stackOffsetExpand)(data as any);
 
             const svg: any = d3.select(ref.current);
 
