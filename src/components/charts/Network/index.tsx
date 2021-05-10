@@ -7,17 +7,21 @@ import { TYPES } from "~/common/constants";
 
 import { ChartContainer } from "./styles";
 import { IGraphDataset } from "~/components/charts/Network/types";
+import theme from "~/common/theme";
 
 const MAX_DISTANCE = 2000;
 const MIN_DISTANCE = 200;
 const RADIUS = 10;
 const TYPE = TYPES.NETWORK;
 
+const { orange, green, cyan } = theme.palette;
+
 const Network = (): JSX.Element => {
     const { getDataset } = useData();
     const ref = useRef<SVGSVGElement>(null);
 
     const dataset = getDataset(TYPE, "all");
+    // console.log("dataset:", dataset);
     const { nodes, edges } = dataset[0] as IGraphDataset;
 
     const width = 900;
@@ -34,16 +38,26 @@ const Network = (): JSX.Element => {
             .some((key: string) => key.includes(`${source}`) || key.includes(`${target}`));
     }
 
-    const fade = (node: any, link: any) => (opacity: number) => {
-        return (event: MouseEvent, d: any) => {
-            node.style("stroke-opacity", function (o) {
-                const thisOpacity = isConnected(d.index, o.index) ? 1 : opacity;
-                this.setAttribute("fill-opacity", thisOpacity);
-                return thisOpacity;
-            });
+    const highlight = (node: any) => (color: string, selectedNode: any) => {
+        // all items current node is target for
+        const sources = edges.filter((edge) => edge.target === selectedNode).map((edge) => edge.source.index);
+        // targets for selected node
+        const targets = edges.filter((edge) => edge.source === selectedNode).map((edge) => edge.target.index);
 
-            link.style("stroke-opacity", (o) => (o.source === d || o.target === d ? 1 : opacity));
-        };
+        node.selectAll("circle")
+            .style("fill", (node: any) => {
+                if (sources.concat(targets).includes(node.index)) {
+                    return color;
+                } else if (node.index === selectedNode.index) {
+                    return cyan.azure;
+                } else {
+                    return orange.carrot;
+                }
+            });
+    };
+
+    const fade = (link: any) => (opacity: number, selectedNode: any) => {
+        link.style("stroke-opacity", (o) => ((o.source === selectedNode || o.target === selectedNode) ? 1 : opacity));
     }
 
     const draw = useCallback((): void => {
@@ -65,7 +79,7 @@ const Network = (): JSX.Element => {
             simulation.force("link").links(edges);
         }
 
-        for (let i = 0; i < 300; ++i) {
+        for (let i = 0; i < MIN_DISTANCE; ++i) {
             simulation.tick();
         }
 
@@ -98,10 +112,16 @@ const Network = (): JSX.Element => {
             .attr("y", (d: any) => d.y + 5)
             .attr("fill", "black");
 
-        const doFade = fade(node, link);
+        const doFade = fade(link);
+        const doHighlight = highlight(node);
 
-        node.on("mouseover.fade", doFade(0.1)).on("mouseout.fade", doFade(1));
-        link.on("mouseout.fade", doFade(1));
+        node.on("mouseover.fade", (event, d) => {
+            doFade(0.1, d);
+            doHighlight(green.jade, d)
+        }).on("mouseout.fade", (d) => {
+            doFade(1, d);
+            doHighlight(orange.carrot, d)
+        });
 
     }, [ dataset ]);
 

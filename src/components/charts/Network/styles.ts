@@ -5,13 +5,13 @@ export const ChartContainer = styled.svg`
     width: ${({ width }) => `${width}px;`};
     
     .links line {
-      stroke: #999;
-      stroke-opacity: 0.6;
+      stroke: ${({ theme }) => `${theme.palette.gray.silver}`};
     }
 
     .nodes circle {
-      stroke: #fff;
-      stroke-width: 1.5px;
+      fill: ${({ theme }) => `${theme.palette.orange.carrot}`};
+      stroke: white;
+      stroke-width: 2px;
     }
     
     text {
