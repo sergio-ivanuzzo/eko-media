@@ -53,7 +53,22 @@ const Network = (): JSX.Element => {
                 } else {
                     return orange.carrot;
                 }
+            })
+            .style("r", (node: any) => {
+                if (node.index === selectedNode.index) {
+                    return RADIUS * 1.3;
+                } else {
+                    return RADIUS;
+                }
             });
+
+        node.selectAll("text").style("fill", (node: any) => {
+            if (node.index === selectedNode.index) {
+                return cyan.azure;
+            } else {
+                return "black";
+            }
+        })
     };
 
     const fade = (link: any) => (opacity: number, selectedNode: any) => {

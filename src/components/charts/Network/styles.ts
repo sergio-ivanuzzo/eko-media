@@ -12,12 +12,15 @@ export const ChartContainer = styled.svg`
       fill: ${({ theme }) => `${theme.palette.orange.carrot}`};
       stroke: white;
       stroke-width: 2px;
+      
+      &:hover {
+        cursor: pointer;
+      }
     }
     
     text {
       font-family: sans-serif;
       font-size: 14px;
       font-weight: bold;
-      color: red;
     }
 `;
