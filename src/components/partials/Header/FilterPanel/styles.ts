@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import Datepicker from "~/components/core/Datepicker";
-import Dropdown from "~/components/core/Dropdown";
+import Select from "~/components/core/Select";
 
 export const FilterContainer = styled.div`
     display: flex;
@@ -9,5 +9,5 @@ export const FilterContainer = styled.div`
     width: 100%;
 `;
 
-export const StyledDropdown = styled(Dropdown)``;
+export const StyledSelect = styled(Select)``;
 export const StyledDatepicker = styled(Datepicker)``;

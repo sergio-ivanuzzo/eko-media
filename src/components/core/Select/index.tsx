@@ -1,34 +1,64 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import Dropdown from "~/components/core/Dropdown";
-import { IDropdownTriggerProps } from "~/components/core/Dropdown/types";
-import { ISelectProps, ISelectTriggerProps, TSelectValue } from "~/components/core/Select/types";
+import { IDropdownTriggerProps, IRenderDropdownChildrenProps } from "~/components/core/Dropdown/types";
+import {
+    IHandleSelectProps,
+    ISelectChildrenProps,
+    ISelectItemProps,
+    ISelectProps,
+    ISelectTriggerProps,
+    TSelectOption
+} from "~/components/core/Select/types";
 
 import { MenuItem, Trigger } from "./styles";
 
-const DefaultItem = (
-    option: TSelectValue,
-    handleSelect: (selectedValue: TSelectValue | TSelectValue[]) => void
-): JSX.Element => {
-    return <MenuItem onClick={() => handleSelect(option)}>{option}</MenuItem>;
+const DefaultItem = ({ option, handleSelect, close }: ISelectItemProps): JSX.Element => {
+    return <MenuItem onClick={() => handleSelect({ option, close })}>{option}</MenuItem>;
 };
 
 const DefaultTrigger = ({ selected, ...props }: ISelectTriggerProps): JSX.Element => {
-    return <Trigger {...props}>{selected}</Trigger>
+    return (
+        <Trigger {...props}>
+            {selected.map((item: string | number) => (
+                <div>{`${item}`}</div>
+            ))}
+        </Trigger>);
+};
+
+const SelectChildren = ({ options, renderItem, handleSelect, close }: ISelectChildrenProps): JSX.Element => {
+    return (
+        <>{options.map((option: string | number) => renderItem({ option, handleSelect, close }))}</>
+    );
 };
 
 const Select = ({ renderItem = DefaultItem, renderTrigger = DefaultTrigger, ...props }: ISelectProps): JSX.Element => {
-    const { value, onSelect, options } = props;
-    const [ selected, setSelected ] = useState<TSelectValue | TSelectValue[]>(value);
+    const { value = [], onSelect, options, multiple = false } = props;
+    const [ selected, setSelected ] = useState<TSelectOption[]>(value);
 
-    const handleSelect = useCallback((selectedValue: TSelectValue | TSelectValue[]): void => {
-        setSelected(selectedValue);
-        onSelect(selectedValue);
+    const handleSelect = useCallback(({ option, close }: IHandleSelectProps): void => {
+        if (!multiple) {
+            close();
+        }
+        setSelected([ option ]);
+    }, [ selected ]);
+
+    // fixing race condition, bc most actual "selected" will be available on next render
+    useEffect(() => {
+        onSelect(selected);
     }, [ selected ]);
     
     return (
         <Dropdown renderTrigger={(props: IDropdownTriggerProps) => renderTrigger({ selected, ...props })}>
-            {options.map((option: TSelectValue) => renderItem(option, handleSelect))}
+            {(props: IRenderDropdownChildrenProps) => {
+                return (
+                    <SelectChildren
+                        options={options}
+                        renderItem={renderItem}
+                        handleSelect={handleSelect}
+                        { ...props} />
+                );
+            }}
         </Dropdown>
     );
 };

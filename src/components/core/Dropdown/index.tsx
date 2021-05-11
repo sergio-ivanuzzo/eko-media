@@ -18,11 +18,12 @@ const Dropdown = ({ renderTrigger = DefaultTrigger, children }: IDropdownProps):
     const [ isOpen, setOpen ] = useState(false);
     const [ dropdownRef, isActiveElement ] = useActiveElement<HTMLDivElement>();
 
+    const toggle = () => setOpen(!isOpen);
     const close = () => setOpen(false);
 
     // handling close on click outside
     useEffect(() => {
-        !isActiveElement && setOpen(false);
+        !isActiveElement && close();
     }, [ isActiveElement ]);
 
     // handle close on keyboard events
@@ -34,11 +35,14 @@ const Dropdown = ({ renderTrigger = DefaultTrigger, children }: IDropdownProps):
         <DropdownContainer ref={dropdownRef}>
             <TriggerContainer>
                 {renderTrigger({
-                    onClick: () => setOpen(!isOpen),
+                    onClick: () => toggle ,
                     isOpen,
                 })}
             </TriggerContainer>
-            {children}
+            {children({
+                close,
+                isOpen,
+            })}
         </DropdownContainer>
     );
 };

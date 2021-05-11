@@ -1,19 +1,31 @@
-import { IDropdownTriggerProps } from "~/components/core/Dropdown/types";
+import { IDropdownTriggerProps, IRenderDropdownChildrenProps } from "~/components/core/Dropdown/types";
 
-export type TSelectValue = string | number;
+export type TSelectOption = string | number;
+
+export interface IHandleSelectProps {
+    option: TSelectOption;
+    close: () => void;
+}
+
+export interface ISelectItemProps extends IHandleSelectProps {
+    handleSelect: (props: IHandleSelectProps) => void;
+}
 
 export interface ISelectTriggerProps extends IDropdownTriggerProps {
-    selected: TSelectValue | TSelectValue[];
+    selected: TSelectOption[];
+}
+
+export interface ISelectChildrenProps extends IRenderDropdownChildrenProps {
+    options: TSelectOption[];
+    handleSelect: (props: IHandleSelectProps) => void;
+    renderItem: (props: ISelectItemProps) => JSX.Element;
 }
 
 export interface ISelectProps {
-    value: TSelectValue;
-    onSelect: (selected: TSelectValue | TSelectValue[]) => void;
-    multiple: boolean;
-    renderItem: (
-        option: TSelectValue,
-        handleSelect: (selectedValue: TSelectValue | TSelectValue[]) => void
-    ) => JSX.Element;
-    renderTrigger: (props: ISelectTriggerProps) => JSX.Element;
-    options: TSelectValue[];
+    value?: TSelectOption[];
+    onSelect: (selected: TSelectOption[]) => void;
+    multiple?: boolean;
+    renderItem?: (props: ISelectItemProps) => JSX.Element;
+    renderTrigger?: (props: ISelectTriggerProps) => JSX.Element;
+    options: TSelectOption[];
 }

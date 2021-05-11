@@ -23,7 +23,9 @@ const useData = (): IUseDataResponse => {
         setData,
         date: selectedDate,
         category: selectedCategory,
+        setCategory,
         media: selectedMedia,
+        setMedia,
         topCategories,
         setTopCategories,
     } = useContext<IDataProviderContext<IItem>>(DataContext);
@@ -140,6 +142,10 @@ const useData = (): IUseDataResponse => {
         loadAll,
         getDataset,
         topCategories,
+        selectedCategory,
+        setCategory,
+        selectedMedia,
+        setMedia,
     }
 };
 

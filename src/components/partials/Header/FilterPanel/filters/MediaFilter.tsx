@@ -1,9 +1,24 @@
 import React from "react";
 
-import { StyledDropdown } from "~/components/partials/Header/FilterPanel/styles";
+import { StyledSelect } from "~/components/partials/Header/FilterPanel/styles";
+import useData from "~/hooks/useData";
+
+import { TSelectOption } from "~/components/core/Select/types";
 
 const MediaFilter = (): JSX.Element => {
-    return <StyledDropdown multiple>Items</StyledDropdown>;
+    const { setMedia, selectedMedia } = useData();
+
+    const handleSelect = (media: TSelectOption[]): void => {
+        setMedia(media as string[]);
+    };
+
+    return (
+        <StyledSelect
+            value={selectedMedia}
+            options={selectedMedia as TSelectOption[]}
+            onSelect={handleSelect}
+            multiple />
+    );
 }
 
 export default MediaFilter;
