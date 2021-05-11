@@ -23,7 +23,9 @@ const useData = (): IUseDataResponse => {
         setData,
         date: selectedDate,
         category: selectedCategory,
-        media: selectedMedia
+        media: selectedMedia,
+        topCategories,
+        setTopCategories,
     } = useContext<IDataProviderContext<IItem>>(DataContext);
 
     // we need month and year to detect which directory contains files with data
@@ -53,14 +55,30 @@ const useData = (): IUseDataResponse => {
 
     }, []);
 
+    const loadTopCategories = useCallback(async (): Promise<Array<string>> => {
+        const [ month, year ] = getMonthAndYear();
+        let result: string[] = [];
+
+        if (month && year) {
+            const topCategories = await load(ROOT_DIR, "month_to_5categories.json");
+            result = topCategories["month_to_5categories"][0][`${year}_${month}`] as string[];
+            console.log(topCategories["month_to_5categories"][0][`${year}_${month}`]);
+        }
+
+        return result || [];
+    }, [ getMonthAndYear ]);
+
     const loadAll = useCallback(async (): Promise<void> => {
         const [ month, year ] = getMonthAndYear();
 
         if (month && year) {
             const dirPath = `${ROOT_DIR}/${year}/${month}`;
 
+            const topCategories = await loadTopCategories()
+            setTopCategories(topCategories);
+
             let items = await Promise.all(Object.values(TYPES).map((type) => {
-                return Promise.all(Object.values(CATEGORIES).map(async (category) => {
+                return Promise.all(topCategories.concat("all", "profiles").map(async (category) => {
                     const filename = `${type}_${category}_${month}_${year}`;
                     // we don't know 100% which extension filename has, try both
                     const csv = await load(dirPath, `${filename}.${FILE_EXTENSION.CSV}`);
@@ -76,7 +94,7 @@ const useData = (): IUseDataResponse => {
         }
     }, [ load, getMonthAndYear, setData ]);
 
-    const filter = useCallback((type: TYPES, category: string | CATEGORIES): IData<IItem> => {
+    const filter = useCallback((type: TYPES, category: string): IData<IItem> => {
 
         const flags: number = FILTER_MASK_MAP[type];
 
@@ -99,7 +117,7 @@ const useData = (): IUseDataResponse => {
         if (flags & FILTER_FLAGS.BY_CATEGORY) {
             Object.keys(filteredData).forEach((key: string) => {
                 const items = filteredData[key];
-                filteredData[key] = (selectedCategory === CATEGORIES.ALL) ? items : items
+                filteredData[key] = (selectedCategory === "all") ? items : items
                     .filter((dataItem: IItem) =>
                         FILTER_BY_CATEGORY_INDEXES.some((index: string) => dataItem[index] === selectedCategory)
                     );
@@ -109,7 +127,7 @@ const useData = (): IUseDataResponse => {
         return filteredData;
     }, [ data, selectedCategory, selectedMedia ]);
 
-    const getDataset = useCallback((type: TYPES, category: string | CATEGORIES = selectedCategory): IItem[] => {
+    const getDataset = useCallback((type: TYPES, category: string = selectedCategory): IItem[] => {
         const filteredData: IData<IItem> = filter(type, category);
         const [ month, year ] = getMonthAndYear();
         const key = `${type}_${category}_${month}_${year}`;
@@ -121,6 +139,7 @@ const useData = (): IUseDataResponse => {
         data,
         loadAll,
         getDataset,
+        topCategories,
     }
 };
 

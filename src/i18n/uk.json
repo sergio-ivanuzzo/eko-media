@@ -12,8 +12,12 @@
   "November": "Листопад",
   "December": "Грудень",
 
+  "datepicker.label": "Дані за період:",
+
   "link.main": "Головна",
   "link.feedback": "Зворотний зв’язок",
   "link.about": "Про Проєкт",
-  "link.details": "Детальніше"
+  "link.details": "Детальніше",
+
+  "app.name": "Медійна Екосистема"
 }

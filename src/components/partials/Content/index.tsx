@@ -1,8 +1,9 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 
-import { ContentContainer } from "~/components/core/Content/styles";
 import MainPage from "~/components/pages/Main";
+
+import { ContentContainer } from "./styles";
 
 const Content = (): JSX.Element => {
     return (

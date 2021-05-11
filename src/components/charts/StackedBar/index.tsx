@@ -4,18 +4,20 @@ import * as d3 from "d3";
 import { ICategorizedItem } from "~/components/charts/StackedBar/types";
 import useData from "~/hooks/useData";
 
-import { BAR_HEIGHT, ChartContainer } from "./styles";
+import { BAR_HEIGHT, ChartContainer, Svg } from "./styles";
 import { FILTER_BY_CATEGORY_INDEXES, TYPES } from "~/common/constants";
 
 import theme from "~/common/theme";
+import useElementSize from "~/hooks/useElementSize";
 
 const TYPE = TYPES.CATEGORY
 
 const StackedBar = (): JSX.Element => {
     const { getDataset } = useData();
-    const ref = useRef<SVGSVGElement>(null);
+    const svgRef = useRef<SVGSVGElement>(null);
 
     const dataset: ICategorizedItem[] = getDataset(TYPE) as Array<ICategorizedItem>;
+    console.log("dataset:", dataset);
 
     // data for legends
     const parsedCategories: string[] = useMemo(
@@ -55,7 +57,9 @@ const StackedBar = (): JSX.Element => {
         [ parsedMedia ]);
 
     // TODO: refactor all ANY and all MAGIC NUMBERS
-    const width = 1000 - margin.left - margin.right;
+    // const width = 1000 - margin.left - margin.right;
+
+    const [ containerRef, width ] = useElementSize<HTMLDivElement>();
 
     const data = useMemo(() => {
         return parsedMedia.map((media: string) => {
@@ -70,64 +74,72 @@ const StackedBar = (): JSX.Element => {
     }, [ dataset ]);
 
     const draw = useCallback((): void => {
-        if (dataset.length) {
-            const series = d3.stack()
-                .keys(parsedCategories)
-                // normalization
-                .offset(d3.stackOffsetExpand)(data as any);
+        const series = d3.stack()
+            .keys(parsedCategories)
+            // normalization
+            .offset(d3.stackOffsetExpand)(data as any);
 
-            const svg: any = d3.select(ref.current);
+        const svg: any = d3.select(svgRef.current)
+            .attr("viewBox", `0 0 ${width - margin.left - margin.right} ${height}`);
 
-            const xScale = d3.scaleLinear()
-                .rangeRound([ margin.left, width ]).domain([ 0, 1.5 ]);
+        // clear svg before draw new content
+        svg.selectAll("svg > *").remove();
 
-            const yScale: d3.ScaleBand<string> = d3.scaleBand()
-                .range([ margin.left, height ])
-                .padding(0.2)
-                .domain(parsedMedia);
+        const xScale = d3.scaleLinear()
+            .rangeRound([ margin.left, width - margin.right ]).domain([ 0, 1.5 ]);
 
-            // draw xAxis
-            svg.append("g")
-                .attr("class", "axis")
-                .call(d3
-                    .axisTop(xScale)
-                    .tickSize(0)
-                    // x-axis will contains no text on scale
-                    .tickFormat((d) => "")
-                );
+        const yScale: d3.ScaleBand<string> = d3.scaleBand()
+            .range([ margin.left, height ])
+            .padding(0.2)
+            .domain(parsedMedia);
 
-            // draw yAxis
-            svg.append("g")
-                .attr("class", "axis")
-                .call(
-                    d3.axisLeft(yScale)
+        // draw xAxis
+        svg.append("g")
+            .attr("class", "axis")
+            .call(d3
+                .axisTop(xScale)
+                .tickSize(0)
+                // x-axis will contains no text on scale
+                .tickFormat((d) => "")
+            );
+
+        // draw yAxis
+        svg.append("g")
+            .attr("class", "axis")
+            .call(
+                d3.axisLeft(yScale)
                     .tickFormat((d: string) => d)
                     .ticks(parsedMedia.length)
                     .tickSize(0)
                     .tickPadding(20)
-                );
+            );
 
-            svg.append("g")
-                .selectAll("g")
-                .data(series)
-                .enter().append("g")
-                .attr("fill", (d: any, i: any) => colors[i])
-                .selectAll("rect")
-                .data((d: any) => d)
-                .join("rect")
-                .attr("x", (d: any) => xScale(d[0]))
-                .attr("y", (d: any, i: any) => yScale(d.data.key))
-                .attr("width", (d: any, i: any) => xScale(d[1]) - xScale(d[0]))
-                .attr("height", yScale.bandwidth())
-
-        }
+        svg.append("g")
+            .selectAll("g")
+            .data(series)
+            .enter().append("g")
+            .attr("fill", (d: any, i: any) => colors[i])
+            .selectAll("rect")
+            .data((d: any) => d)
+            .join("rect")
+            .attr("x", (d: any) => xScale(d[0]))
+            .attr("y", (d: any, i: any) => yScale(d.data.key))
+            .attr("width", (d: any, i: any) => xScale(d[1]) - xScale(d[0]))
+            .attr("height", yScale.bandwidth())
     }, [ dataset ]);
 
     useEffect(() => {
-        draw();
-    }, [ dataset ]);
+        // not draw if width or height eq to zero
+        if (width && height) {
+            draw();
+        }
+    }, [ width, height ]);
 
-    return <ChartContainer ref={ref} height={height} width={width} />;
+    return (
+        <ChartContainer ref={containerRef} height={height}>
+            <Svg ref={svgRef} />
+        </ChartContainer>
+    );
 };
 
 export default StackedBar;

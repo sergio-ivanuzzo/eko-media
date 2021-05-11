@@ -1,8 +1,5 @@
 import styled from "styled-components";
 
-import Datepicker from "~/components/core/Datepicker";
-import Dropdown from "~/components/core/Dropdown";
-
 import { IHeaderProps } from "./types";
 
 export const HeaderContainer = styled.div<IHeaderProps>`
@@ -14,17 +11,10 @@ export const HeaderContainer = styled.div<IHeaderProps>`
         display: fixed;
     `};
     border-bottom: 1px solid ${({ theme }) => `${theme.palette.gray.silver}`};
+    
+    // div container for logo and menu
+    div:nth-child(1) {
+      display: flex;
+      width: 100%;
+    }
 `;
-
-export const MenuContainer = styled.div`
-    display: flex;
-`;
-
-export const FilterContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-`;
-
-export const StyledDropdown = styled(Dropdown)``;
-export const StyledDatepicker = styled(Datepicker)``;

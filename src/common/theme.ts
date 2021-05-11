@@ -12,6 +12,12 @@ const theme = {
         },
         cyan: {
             azure: "#1DA1F2",
+        },
+        black: {
+            base: "#000000"
+        },
+        white: {
+            base: "#FFFFFF",
         }
     }
 };

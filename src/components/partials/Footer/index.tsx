@@ -1,6 +1,6 @@
 import React from "react";
 
-import { FooterContainer } from "~/components/core/Footer/styles";
+import { FooterContainer } from "./styles";
 
 const Footer = (): JSX.Element => {
     return (

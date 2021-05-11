@@ -1,13 +1,12 @@
-import React, { Dispatch, SetStateAction } from "react";
-
-import { CATEGORIES } from "~/common/constants";
+import { Dispatch, ReactNode, SetStateAction } from "react";
 
 export interface IItem {
     [key: string]:
         string
         | number
         | { [key: string]: number | string }
-        | Array<{ [key: string]: number | string }>;
+        | Array<{ [key: string]: number | string }>
+        | string[];
 }
 
 export interface IData<T extends IItem> {
@@ -15,7 +14,7 @@ export interface IData<T extends IItem> {
 }
 
 export interface IDataProviderProps {
-    children: React.ReactNode;
+    children: ReactNode;
 }
 
 export interface IDataProviderContext<T extends IItem> {
@@ -23,8 +22,10 @@ export interface IDataProviderContext<T extends IItem> {
     setData: Dispatch<IData<T>>;
     date: Date;
     setDate: Dispatch<SetStateAction<Date>>;
-    category: CATEGORIES;
-    setCategory: Dispatch<SetStateAction<CATEGORIES>>;
+    category: string;
+    setCategory: Dispatch<SetStateAction<string>>;
     media: string[];
     setMedia: Dispatch<SetStateAction<string[]>>;
+    topCategories: string[];
+    setTopCategories: Dispatch<SetStateAction<string[]>>;
 }

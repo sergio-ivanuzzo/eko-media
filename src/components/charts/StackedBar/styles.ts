@@ -1,12 +1,15 @@
 import styled from "styled-components";
 
-import { IChartContainerProps } from "~/components/core/charts/StackedBar/types";
+import { IChartContainerProps } from "~/components/charts/StackedBar/types";
 
 export const BAR_HEIGHT = 32;
 
-export const ChartContainer = styled.svg<IChartContainerProps>`
+export const ChartContainer = styled.div<IChartContainerProps>`
+  width: 100%;
   height: ${({ height }) => `${height}px;`};
-  width: ${({ width }) => `${width}px;`};
+`;
+
+export const Svg = styled.svg`
   
   g {
     font-size: 14px;

@@ -2,47 +2,39 @@ import React, { useCallback, useEffect, useRef } from "react";
 import * as d3 from "d3";
 
 import useData from "~/hooks/useData";
+import useElementSize from "~/hooks/useElementSize";
 
-import { TYPES } from "~/common/constants";
-
-import { ChartContainer } from "./styles";
 import { IGraphDataset } from "~/components/charts/Network/types";
+import { TYPES } from "~/common/constants";
+import { ChartContainer, Svg } from "./styles";
+
 import theme from "~/common/theme";
 
 const MAX_DISTANCE = 2000;
-const MIN_DISTANCE = 200;
+const MIN_DISTANCE = 300;
 const RADIUS = 10;
 const TYPE = TYPES.NETWORK;
 
-const { orange, green, cyan } = theme.palette;
+const { orange, green, cyan, black } = theme.palette;
 
 const Network = (): JSX.Element => {
-    const { getDataset } = useData();
-    const ref = useRef<SVGSVGElement>(null);
+    const { data, getDataset } = useData();
+    const svgRef = useRef<SVGSVGElement>(null);
 
     const dataset = getDataset(TYPE, "all");
-    // console.log("dataset:", dataset);
     const { nodes, edges } = dataset[0] as IGraphDataset;
 
-    const width = 900;
-    const height = 600;
+    const [ containerRef, height, width ] = useElementSize<HTMLDivElement>();
+    // console.log(height, width);
 
-    const linked = edges.reduce((result: { [key: string]: number }, edge) => {
-        const { source, target  } = edge;
-        result[`${source},${target}`] = 1;
-        return result;
-    }, {});
-
-    const isConnected = (source: number, target: number) => {
-        return source === target || Object.keys(linked)
-            .some((key: string) => key.includes(`${source}`) || key.includes(`${target}`));
-    }
+    // const width = 800;
+    // const height = 600;
 
     const highlight = (node: any) => (color: string, selectedNode: any) => {
         // all items current node is target for
-        const sources = edges.filter((edge) => edge.target === selectedNode).map((edge) => edge.source.index);
+        const sources = edges.filter((edge) => edge.target === selectedNode).map((edge: any) => edge.source.index);
         // targets for selected node
-        const targets = edges.filter((edge) => edge.source === selectedNode).map((edge) => edge.target.index);
+        const targets = edges.filter((edge) => edge.source === selectedNode).map((edge: any) => edge.target.index);
 
         node.selectAll("circle")
             .style("fill", (node: any) => {
@@ -66,26 +58,28 @@ const Network = (): JSX.Element => {
             if (node.index === selectedNode.index) {
                 return cyan.azure;
             } else {
-                return "black";
+                return black.base;
             }
         })
     };
 
     const fade = (link: any) => (opacity: number, selectedNode: any) => {
-        link.style("stroke-opacity", (o) => ((o.source === selectedNode || o.target === selectedNode) ? 1 : opacity));
+        link.style("stroke-opacity", (o: any) => (
+            (o.source === selectedNode || o.target === selectedNode) ? 1 : opacity)
+        );
     }
 
     const draw = useCallback((): void => {
-        const svg = d3.select("svg");
-        const color = d3.scaleOrdinal(d3.schemeCategory10);
+        const svg = d3.select(svgRef.current).attr("viewBox", `0 0 ${width} ${height}`);
+        // clear svg before draw new content
+        svg.selectAll("svg > *").remove();
 
         const simulation: any = d3.forceSimulation(nodes as any)
             .force("link", d3.forceLink().id((d: any) => d.id).distance(MIN_DISTANCE))
             .force("charge", d3.forceManyBody()
-                .strength(
-                    (d: any, i) => i == 0
-                        ? -MAX_DISTANCE
-                        : -(MAX_DISTANCE / 2)).distanceMin(MIN_DISTANCE).distanceMax(MAX_DISTANCE)
+                .strength((d: any, i) => i == 0 ? -MAX_DISTANCE : -(MAX_DISTANCE / 2))
+                .distanceMin(MIN_DISTANCE)
+                .distanceMax(MAX_DISTANCE)
             )
             .force("center", d3.forceCenter(width / 2, height / 2))
             .stop();
@@ -118,14 +112,13 @@ const Network = (): JSX.Element => {
          node.append("circle")
             .attr("cx", (d: any) => d.x)
             .attr("cy", (d: any) => d.y)
-            .attr("r", RADIUS)
-            .attr("fill", (d: any) => color(d.name));
+            .attr("r", RADIUS);
 
         node.append("text")
             .text((d: any) => d.name)
             .attr("x", (d: any) => d.x + 15)
             .attr("y", (d: any) => d.y + 5)
-            .attr("fill", "black");
+            .attr("fill", black.base);
 
         const doFade = fade(link);
         const doHighlight = highlight(node);
@@ -141,10 +134,17 @@ const Network = (): JSX.Element => {
     }, [ dataset ]);
 
     useEffect(() => {
-        draw();
-    }, [ dataset ]);
+        // not draw if width or height eq to zero
+        if (width && height) {
+            draw();
+        }
+    }, [ width, height, data ]);
 
-    return <ChartContainer ref={ref} height={height} width={width} />;
+    return (
+        <ChartContainer ref={containerRef}>
+            <Svg ref={svgRef} />
+        </ChartContainer>
+    );
 };
 
 export default Network;

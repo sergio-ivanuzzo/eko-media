@@ -13,6 +13,10 @@ module.exports = {
                 test: /\.css$/i,
                 use: [ "style-loader", "css-loader" ],
             },
+            {
+                test: /\.(woff2|woff|eot|ttf|otf)$/,
+                use: [ "file-loader" ],
+            },
         ],
     },
     resolve: {
@@ -24,5 +28,6 @@ module.exports = {
     output: {
         filename: "eko_media.bundle.js",
         path: path.resolve(__dirname, "dist"),
+        publicPath: "/dist/"
     },
 };
