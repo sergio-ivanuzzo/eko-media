@@ -1,7 +1,7 @@
 import React from "react";
 
-import Network from "~/components/charts/Network";
-import StackedBar from "~/components/charts/StackedBar";
+import Network from "~/components/partials/charts/Network";
+import StackedBar from "~/components/partials/charts/StackedBar";
 import useData from "~/hooks/useData";
 
 import ConditionalRender from "~/components/core/ConditionalRender";

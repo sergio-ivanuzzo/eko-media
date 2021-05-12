@@ -1,40 +1,23 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import { useCallback } from "react";
 import * as d3 from "d3";
 
-import useData from "~/hooks/useData";
-import useElementSize from "~/hooks/useElementSize";
-
-import { IGraphDataset } from "~/components/charts/Network/types";
-import { TYPES } from "~/common/constants";
-import { ChartContainer, Svg } from "./styles";
-
+import { IChartDrawProps } from "~/hooks/useChart/types";
+import { IUseNetworkProps } from "~/hooks/charts/useNetwork/types";
 import theme from "~/common/theme";
 
 const MAX_DISTANCE = 2000;
 const MIN_DISTANCE = 300;
 const RADIUS = 10;
-const TYPE = TYPES.NETWORK;
 
 const { orange, green, cyan, black } = theme.palette;
 
-const Network = (): JSX.Element => {
-    const { data, getDataset } = useData();
-    const svgRef = useRef<SVGSVGElement>(null);
+const useNetwork = ({ nodes, edges }: IUseNetworkProps): { draw: (props: IChartDrawProps) => void } => {
 
-    const dataset = getDataset(TYPE, "all");
-    const { nodes, edges } = dataset[0] as IGraphDataset;
-
-    const [ containerRef, height, width ] = useElementSize<HTMLDivElement>();
-    // console.log(height, width);
-
-    // const width = 800;
-    // const height = 600;
-
-    const highlight = (node: any) => (color: string, selectedNode: any) => {
+    const highlight = useCallback((node: any) => (color: string, selectedNode: any) => {
         // all items current node is target for
-        const sources = edges.filter((edge) => edge.target === selectedNode).map((edge: any) => edge.source.index);
+        const sources = edges.filter((edge: any) => edge.target === selectedNode).map((edge: any) => edge.source.index);
         // targets for selected node
-        const targets = edges.filter((edge) => edge.source === selectedNode).map((edge: any) => edge.target.index);
+        const targets = edges.filter((edge: any) => edge.source === selectedNode).map((edge: any) => edge.target.index);
 
         node.selectAll("circle")
             .style("fill", (node: any) => {
@@ -61,16 +44,17 @@ const Network = (): JSX.Element => {
                 return black.base;
             }
         })
-    };
+    }, []);
 
     const fade = (link: any) => (opacity: number, selectedNode: any) => {
         link.style("stroke-opacity", (o: any) => (
             (o.source === selectedNode || o.target === selectedNode) ? 1 : opacity)
         );
     }
+    
+    const draw = useCallback(({ chartRef, width, height }: IChartDrawProps): void => {
 
-    const draw = useCallback((): void => {
-        const svg = d3.select(svgRef.current).attr("viewBox", `0 0 ${width} ${height}`);
+        const svg = d3.select(chartRef.current).attr("viewBox", `0 0 ${width} ${height}`);
         // clear svg before draw new content
         svg.selectAll("svg > *").remove();
 
@@ -109,7 +93,7 @@ const Network = (): JSX.Element => {
             .append("g")
             .attr("class", "nodes");
 
-         node.append("circle")
+        node.append("circle")
             .attr("cx", (d: any) => d.x)
             .attr("cy", (d: any) => d.y)
             .attr("r", RADIUS);
@@ -123,7 +107,7 @@ const Network = (): JSX.Element => {
         const doFade = fade(link);
         const doHighlight = highlight(node);
 
-        node.on("mouseover.fade", (event, d) => {
+        node.on("mouseover.fade", (event: MouseEvent, d: any) => {
             doFade(0.1, d);
             doHighlight(green.jade, d)
         }).on("mouseout.fade", (d) => {
@@ -131,20 +115,11 @@ const Network = (): JSX.Element => {
             doHighlight(orange.carrot, d)
         });
 
-    }, [ dataset ]);
+    }, [ nodes, edges ]);
 
-    useEffect(() => {
-        // not draw if width or height eq to zero
-        if (width && height) {
-            draw();
-        }
-    }, [ width, height, data ]);
-
-    return (
-        <ChartContainer ref={containerRef}>
-            <Svg ref={svgRef} />
-        </ChartContainer>
-    );
+    return {
+        draw
+    }
 };
 
-export default Network;
+export default useNetwork;

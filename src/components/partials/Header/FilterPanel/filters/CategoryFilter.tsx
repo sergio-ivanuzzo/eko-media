@@ -1,3 +1,4 @@
+import { FormattedMessage } from "react-intl";
 import React from "react";
 
 import { StyledSelect } from "~/components/partials/Header/FilterPanel/styles";
@@ -13,10 +14,16 @@ const CategoryFilter = (): JSX.Element => {
     };
 
     return (
-        <StyledSelect
-            value={[ selectedCategory ]}
-            options={topCategories as TSelectOption[]}
-            onSelect={handleSelect} />
+        <div>
+            <label>
+                <FormattedMessage id="category_filter.label" />
+            </label>
+            <StyledSelect
+                value={[ selectedCategory ]}
+                options={topCategories as TSelectOption[]}
+                onSelect={handleSelect}
+            />
+        </div>
     );
 }
 

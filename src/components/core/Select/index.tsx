@@ -17,9 +17,9 @@ const DefaultItem = ({ option, handleSelect, close }: ISelectItemProps): JSX.Ele
     return <MenuItem onClick={() => handleSelect({ option, close })}>{option}</MenuItem>;
 };
 
-const DefaultTrigger = ({ selected, ...props }: ISelectTriggerProps): JSX.Element => {
+const DefaultTrigger = ({ selected, toggle, ...props }: ISelectTriggerProps): JSX.Element => {
     return (
-        <Trigger {...props}>
+        <Trigger {...props} onClick={() => toggle()}>
             {selected.map((item: string | number) => (
                 <div>{`${item}`}</div>
             ))}
@@ -39,8 +39,12 @@ const Select = ({ renderItem = DefaultItem, renderTrigger = DefaultTrigger, ...p
     const handleSelect = useCallback(({ option, close }: IHandleSelectProps): void => {
         if (!multiple) {
             close();
+            setSelected([ option ]);
+        } else {
+            if (!selected.includes(option)) {
+                setSelected([ ...selected, option ]);
+            }
         }
-        setSelected([ option ]);
     }, [ selected ]);
 
     // fixing race condition, bc most actual "selected" will be available on next render

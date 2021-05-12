@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 
+import ConditionalRender from "~/components/core/ConditionalRender";
 import useActiveElement from "~/hooks/useActiveElement";
 import useKeyboard from "~/hooks/useKeyboard";
 
-import { DropdownContainer, TriggerContainer } from "./styles";
+import { DropdownContainer, Frame, FrameContainer, TriggerContainer } from "./styles";
 import { IDropdownProps, IDropdownTriggerProps } from "./types";
 
-const DefaultTrigger = ({ onClick, isOpen }: IDropdownTriggerProps): JSX.Element => {
+const DefaultTrigger = ({ toggle, isOpen }: IDropdownTriggerProps): JSX.Element => {
     return (
-        <div onClick={onClick}>
+        <div onClick={toggle}>
             <button>{isOpen}</button>
         </div>
     );
@@ -35,14 +36,20 @@ const Dropdown = ({ renderTrigger = DefaultTrigger, children }: IDropdownProps):
         <DropdownContainer ref={dropdownRef}>
             <TriggerContainer>
                 {renderTrigger({
-                    onClick: () => toggle ,
+                    toggle ,
                     isOpen,
                 })}
             </TriggerContainer>
-            {children({
-                close,
-                isOpen,
-            })}
+            <ConditionalRender condition={isOpen}>
+                <FrameContainer>
+                    <Frame>
+                        {children({
+                            close,
+                            isOpen,
+                        })}
+                    </Frame>
+                </FrameContainer>
+            </ConditionalRender>
         </DropdownContainer>
     );
 };

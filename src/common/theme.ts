@@ -5,6 +5,7 @@ const theme = {
         },
         gray: {
             silver: "#C4C4C4",
+            border: "#DFDFDF",
         },
         green: {
             jade: "#1DD1A1",

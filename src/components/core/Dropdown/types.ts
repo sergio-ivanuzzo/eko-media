@@ -1,5 +1,5 @@
 export interface IDropdownTriggerProps {
-    onClick: () => void;
+    toggle: () => void;
     isOpen: boolean;
 }
 
