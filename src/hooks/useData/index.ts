@@ -1,4 +1,4 @@
-import { useCallback, useContext } from "react";
+import { useCallback, useContext, useEffect } from "react";
 
 import csvToJson from "~/parsers/csvToJson";
 
@@ -7,7 +7,6 @@ import { IUseDataResponse } from "~/hooks/useData/types";
 import { IData, IDataProviderContext, IItem } from "~/providers/DataProvider/types";
 
 import {
-    CATEGORIES,
     FILE_EXTENSION,
     FILTER_BY_CATEGORY_INDEXES,
     FILTER_FLAGS,
@@ -32,10 +31,15 @@ const useData = (): IUseDataResponse => {
 
     // we need month and year to detect which directory contains files with data
     const getMonthAndYear = useCallback(() => {
-        const month: string = selectedDate.toLocaleString("en-us", { month: "short" }).toLocaleLowerCase();
+        const month: string = selectedDate.toLocaleString("en-US", { month: "short" }).toLocaleLowerCase();
+        const monthNumber = selectedDate.toLocaleString("en-US", { month: "2-digit" });
         const year = selectedDate.getFullYear().toString();
 
-        return [ month, year ];
+        return {
+            month,
+            year,
+            monthNumber
+        };
     }, [ selectedDate ]);
 
     const load = useCallback(async (dirPath: string, filename: string): Promise<IData<IItem>> => {
@@ -57,27 +61,11 @@ const useData = (): IUseDataResponse => {
 
     }, []);
 
-    const loadTopCategories = useCallback(async (): Promise<Array<string>> => {
-        const [ month, year ] = getMonthAndYear();
-        let result: string[] = [];
-
-        if (month && year) {
-            const topCategories = await load(ROOT_DIR, "month_to_5categories.json");
-            result = topCategories["month_to_5categories"][0][`${year}_${month}`] as string[];
-            console.log(topCategories["month_to_5categories"][0][`${year}_${month}`]);
-        }
-
-        return result || [];
-    }, [ getMonthAndYear ]);
-
     const loadAll = useCallback(async (): Promise<void> => {
-        const [ month, year ] = getMonthAndYear();
+        const { month, monthNumber, year } = getMonthAndYear();
 
         if (month && year) {
-            const dirPath = `${ROOT_DIR}/${year}/${month}`;
-
-            const topCategories = await loadTopCategories()
-            setTopCategories(topCategories);
+            const dirPath = `${ROOT_DIR}/${year}/${monthNumber}`;
 
             let items = await Promise.all(Object.values(TYPES).map((type) => {
                 return Promise.all(topCategories.concat("all", "profiles").map(async (category) => {
@@ -129,9 +117,19 @@ const useData = (): IUseDataResponse => {
         return filteredData;
     }, [ data, selectedCategory, selectedMedia ]);
 
+    useEffect(() => {
+        const { month, year } = getMonthAndYear();
+        const categoriesData = data[`category_all_${month}_${year}`];
+
+        if (categoriesData) {
+            const categories = categoriesData.map((item: IItem) => item.category);
+            setTopCategories(categories as string[]);
+        }
+    }, [ data, getMonthAndYear ]);
+
     const getDataset = useCallback((type: TYPES, category: string = selectedCategory): IItem[] => {
         const filteredData: IData<IItem> = filter(type, category);
-        const [ month, year ] = getMonthAndYear();
+        const { month, year } = getMonthAndYear();
         const key = `${type}_${category}_${month}_${year}`;
 
         return (key in filteredData) ? filteredData[key] : [];

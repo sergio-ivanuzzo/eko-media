@@ -1,3 +1,3 @@
-import { IGraphDataset } from "~/components/charts/Network/types";
+import { IGraphDataset } from "~/components/partials/charts/Network/types";
 
 export type IUseNetworkProps = IGraphDataset;
