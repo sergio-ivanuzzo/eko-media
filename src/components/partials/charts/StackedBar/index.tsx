@@ -6,7 +6,7 @@ import useData from "~/hooks/useData";
 import { FILTER_BY_CATEGORY_INDEXES, TYPES } from "~/common/constants";
 
 import { ICategorizedItem } from "./types";
-import useStackedBar from "~/hooks/charts/useStackedBar";
+import useDrawStackedBar from "~/hooks/useChart/draw/useDrawStackedBar";
 
 const BAR_HEIGHT = 32;
 const TYPE = TYPES.CATEGORY;
@@ -50,7 +50,7 @@ const StackedBar = (): JSX.Element => {
         });
     }, [ dataset ]);
 
-    const { draw } = useStackedBar({ data, xData: categories, yData: media });
+    const { draw } = useDrawStackedBar({ data, xData: categories, yData: media });
 
     return <Chart draw={draw} height={height} />
 };

@@ -46,4 +46,11 @@ export const SVG = styled.svg`
     font-size: 14px;
     font-weight: bold;
   }
+  
+  .bubble {
+    text {
+      font-size: 8px !important;
+    }
+  }
+  
 `;

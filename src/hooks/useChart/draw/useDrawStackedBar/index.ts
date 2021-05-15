@@ -2,10 +2,10 @@ import { useCallback, useMemo } from "react";
 import * as d3 from "d3";
 
 import { IChartDrawProps } from "~/hooks/useChart/types";
-import { IUseStackedBarProps } from "~/hooks/charts/useStackedBar/types";
+import { IUseStackedBarProps } from "~/hooks/useChart/draw/useDrawStackedBar/types";
 import theme from "~/common/theme";
 
-const useStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw: (props: IChartDrawProps) => void }  => {
+const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw: (props: IChartDrawProps) => void }  => {
 
     const colors = useMemo(() => {
         const { orange, gray, cyan, green } = theme.palette;
@@ -73,4 +73,4 @@ const useStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw: (pr
     }
 };
 
-export default useStackedBar;
+export default useDrawStackedBar;

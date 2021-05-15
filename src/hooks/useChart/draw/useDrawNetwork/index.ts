@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import * as d3 from "d3";
 
 import { IChartDrawProps } from "~/hooks/useChart/types";
-import { IUseNetworkProps } from "~/hooks/charts/useNetwork/types";
+import { IUseNetworkProps } from "~/hooks/useChart/draw/useDrawNetwork/types";
 import theme from "~/common/theme";
 
 const MAX_DISTANCE = 2000;
@@ -11,7 +11,7 @@ const RADIUS = 10;
 
 const { orange, green, cyan, black } = theme.palette;
 
-const useNetwork = ({ nodes, edges }: IUseNetworkProps): { draw: (props: IChartDrawProps) => void } => {
+const useDrawNetwork = ({ nodes, edges }: IUseNetworkProps): { draw: (props: IChartDrawProps) => void } => {
 
     const highlight = useCallback((node: any) => (color: string, selectedNode: any) => {
         // all items current node is target for
@@ -122,4 +122,4 @@ const useNetwork = ({ nodes, edges }: IUseNetworkProps): { draw: (props: IChartD
     }
 };
 
-export default useNetwork;
+export default useDrawNetwork;

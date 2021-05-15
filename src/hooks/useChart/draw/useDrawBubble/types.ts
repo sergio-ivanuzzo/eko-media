@@ -7,4 +7,5 @@ export interface IBubbleDataItem {
 
 export interface IUseBubbleProps {
     data: Array<IBubbleDataItem>;
+    topCategories: string[];
 }
