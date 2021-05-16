@@ -1,20 +1,22 @@
 import { useCallback } from "react";
 import * as d3 from "d3";
 
-import random from "~/helpers/random";
-
 import { IChartDrawProps } from "~/hooks/useChart/types";
 import { IUseBubbleProps } from "~/hooks/useChart/draw/useDrawBubble/types";
-import theme from "~/common/theme";
-
-const { orange, green, cyan, gray } = theme.palette;
+import useChartColor from "~/hooks/useChart/color/useChartColor";
+import { DEFAULT_TEXT_SIZE, MAX_TEXT_SIZE } from "~/components/core/Chart/styles";
 
 export const MAX_BUBBLE_RADIUS = 200;
+
+const MIN_ZOOM = 1;
+const MAX_ZOOM = 20;
 
 const useDrawBubble = ({ data, topCategories }: IUseBubbleProps): { draw: (props: IChartDrawProps) => void } => {
 
     const topCategoriesCount = topCategories.length;
     const clusters = new Array(topCategories.length);
+
+    const { getColor } = useChartColor();
 
     const cluster = (nodes: any) => {
 
@@ -63,30 +65,6 @@ const useDrawBubble = ({ data, topCategories }: IUseBubbleProps): { draw: (props
 
     }
 
-    const color: any = d3.scaleOrdinal()
-        .domain(new Array(topCategories.length))
-        .range([ orange.carrot, gray.silver, green.jade, green.salad, cyan.azure ]);
-
-    const setColor = (clusterIndex: number): string => {
-        const minOpacity = 0.5;
-        const maxOpacity = 1.1;
-        const randomOpacity = random(minOpacity, maxOpacity);
-
-        const rgb = d3.rgb(color(clusterIndex));
-        const colorWithOpacity = d3.rgb(rgb.r, rgb.g, rgb.b, randomOpacity);
-        const darker = (alpha: number) => colorWithOpacity.darker(alpha);
-        const brighter = (alpha: number) => colorWithOpacity.brighter(alpha);
-
-        const minAlpha = 0.1;
-        const maxAlpha = 0.8;
-        const randomAlpha = random(minAlpha, maxAlpha);
-
-        const allFunctions = [ darker, brighter, () => colorWithOpacity ];
-        const randomFunc = allFunctions[Math.random() * allFunctions.length | 0]
-
-        return randomFunc(randomAlpha).toString();
-    }
-
     const draw = useCallback(({ chartRef, width, height }: IChartDrawProps): void => {
 
         const nodes = d3.range(data.length).map(function(index) {
@@ -124,7 +102,7 @@ const useDrawBubble = ({ data, topCategories }: IUseBubbleProps): { draw: (props
             .force("y", d3.forceY(0).strength(0.005))
             .force("cluster", cluster(nodes).strength(0.05))
             .force("charge", d3.forceManyBody().strength(50))
-            .force("collision", d3.forceCollide().radius((d: any) => d.radius + 5));
+            .force("collision", d3.forceCollide().radius((d: any) => d.radius + 2));
 
 
         const node = svg.selectAll("g.bubble")
@@ -134,12 +112,16 @@ const useDrawBubble = ({ data, topCategories }: IUseBubbleProps): { draw: (props
             .attr("class", "bubble");
 
         node.attr("pointer-events", "all");
-        node.call(d3.zoom().scaleExtent([ 1, 10 ]).on("zoom", (...rest) => {
-            console.log("zoom:", rest);
-        }));
+        svg.call(d3.zoom().scaleExtent([ MIN_ZOOM, MAX_ZOOM ]).on("zoom", (event: d3.D3ZoomEvent<any, any>) => {
+            const scale = event.transform.k;
+            const textSize = DEFAULT_TEXT_SIZE * scale > MAX_TEXT_SIZE ? MAX_TEXT_SIZE / scale : DEFAULT_TEXT_SIZE;
+
+            node.selectAll("circle,text").attr("transform", event.transform.toString());
+            node.selectAll("text").style("font-size", `${textSize}px`)//.attr("dy", `-${textSize / scale}px`);
+         }) as any);
 
         node.append("circle")
-            .attr("fill", (d: any) => setColor(d.cluster))
+            .attr("fill", (d: any) => getColor(d.cluster, { randomShade: true, randomOpacity: true }))
             .attr("cx", (d: any) => d.x)
             .attr("cy", (d: any) => d.y)
             .attr("r", (d: any) => d.radius);
@@ -148,8 +130,7 @@ const useDrawBubble = ({ data, topCategories }: IUseBubbleProps): { draw: (props
 
         node.append("text")
             .text((d) => d.word)
-            .attr("y", (d) => d.y)
-            .attr("x", (d) => d.x)
+            .attr("dy", () => "0.3em")
             .attr("text-anchor", "middle");
 
         simulation.on("tick", () => {
@@ -162,8 +143,9 @@ const useDrawBubble = ({ data, topCategories }: IUseBubbleProps): { draw: (props
                 .attr("r", (d: any) => d.radius);
 
             node.selectAll("text")
-                .attr("x", (d) => d.x)
-                .attr("y", (d) => d.y)
+                .attr("text-anchor", "middle")
+                .attr("x", (d: any) => d.x)
+                .attr("y", (d: any) => d.y);
         });
 
     }, [ data ]);

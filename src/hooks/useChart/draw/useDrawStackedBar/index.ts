@@ -1,16 +1,13 @@
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 import * as d3 from "d3";
 
 import { IChartDrawProps } from "~/hooks/useChart/types";
 import { IUseStackedBarProps } from "~/hooks/useChart/draw/useDrawStackedBar/types";
-import theme from "~/common/theme";
+import useChartColor from "~/hooks/useChart/color/useChartColor";
 
 const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw: (props: IChartDrawProps) => void }  => {
 
-    const colors = useMemo(() => {
-        const { orange, gray, cyan, green } = theme.palette;
-        return [ orange.carrot, gray.silver, green.jade, green.salad, cyan.azure ];
-    }, []);
+    const { getColor } = useChartColor();
 
     const draw = useCallback(({ chartRef, width, height }: IChartDrawProps): void => {
 
@@ -58,7 +55,7 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
             .selectAll("g")
             .data(series)
             .enter().append("g")
-            .attr("fill", (d: any, i: any) => colors[i])
+            .attr("fill", (d: any, i: any) => getColor(i))
             .selectAll("rect")
             .data((d: any) => d)
             .join("rect")

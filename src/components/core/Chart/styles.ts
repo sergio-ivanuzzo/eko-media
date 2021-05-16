@@ -4,6 +4,9 @@ import { IChartContainerProps } from "~/components/core/Chart/types";
 
 const DEFAULT_CHART_HEIGHT = 800;
 
+export const DEFAULT_TEXT_SIZE = 10;
+export const MAX_TEXT_SIZE = 30;
+
 export const ChartContainer = styled.div<IChartContainerProps>`
   width: 100%;
   height: ${({ height }) => height ? `${height}px;` : `${DEFAULT_CHART_HEIGHT}px`};
@@ -11,6 +14,7 @@ export const ChartContainer = styled.div<IChartContainerProps>`
 
 export const SVG = styled.svg`
 
+  font-family: "NeueHaasUnica", sans-serif;
   width: 100%;
   height: 100%;
   
@@ -45,14 +49,14 @@ export const SVG = styled.svg`
   }
     
   text {
-    font-family: "NeueHaasUnica", sans-serif;
     font-size: 14px;
     font-weight: bold;
   }
   
   .bubble {
     text {
-      font-size: 8px !important;
+      font-size: ${DEFAULT_TEXT_SIZE}px;
+      font-weight: 400;
     }
   }
   
