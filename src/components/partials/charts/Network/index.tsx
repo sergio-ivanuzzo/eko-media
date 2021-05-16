@@ -18,7 +18,7 @@ const Network = (): JSX.Element => {
 
     const { draw } = useDrawNetwork({ nodes, edges });
 
-    return <Chart draw={draw} />
+    return <Chart draw={draw} height={800} />
 };
 
 export default Network;

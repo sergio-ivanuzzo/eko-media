@@ -7,22 +7,23 @@ import theme from "~/common/theme";
 
 const { orange, green, cyan, gray } = theme.palette;
 
+export const MAX_BUBBLE_RADIUS = 200;
+
 const useDrawBubble = ({ data, topCategories }: IUseBubbleProps): { draw: (props: IChartDrawProps) => void } => {
 
-    const n = data.length;
-    const m = topCategories.length;
+    const topCategoriesCount = topCategories.length;
     const clusters = new Array(topCategories.length);
 
-    const cluster = (nodes) => {
+    const cluster = (nodes: any) => {
 
         let strength = 0.1;
 
-        function force (alpha) {
+        function force (alpha: any) {
 
             // scale + curve alpha value
             alpha *= strength * alpha;
 
-            nodes.forEach(function(d) {
+            nodes.forEach(function(d: any) {
                 const index = topCategories.findIndex(
                     (category: string) => category.toLowerCase() === d.category.toLowerCase()
                 );
@@ -47,11 +48,11 @@ const useDrawBubble = ({ data, topCategories }: IUseBubbleProps): { draw: (props
 
         }
 
-        force.initialize = function (_) {
+        force.initialize = function (_: any) {
             nodes = _;
         }
 
-        force.strength = (_) => {
+        force.strength = (_: any) => {
             strength = _ == null ? strength : _;
             return force;
         };
@@ -61,8 +62,9 @@ const useDrawBubble = ({ data, topCategories }: IUseBubbleProps): { draw: (props
     }
 
     const draw = useCallback(({ chartRef, width, height }: IChartDrawProps): void => {
+        console.log(width, height, clusters, topCategoriesCount)
 
-        const nodes = d3.range(n).map(function(index) {
+        const nodes = d3.range(data.length).map(function(index) {
             const { category: currentCategory, word, wordCount, radius } = data[index];
             const clusterIndex = topCategories.findIndex((category: string) => category.toLowerCase() === currentCategory.toLowerCase());
             // const r = Math.sqrt((clusterIndex + 1) / m * -Math.log(Math.random())) * maxRadius;
@@ -70,8 +72,10 @@ const useDrawBubble = ({ data, topCategories }: IUseBubbleProps): { draw: (props
             const d = {
                     cluster: clusterIndex,
                     radius,
-                    x: Math.cos(clusterIndex / m * 2 * Math.PI) * 200 + width / 2 + Math.random(),
-                    y: Math.sin(clusterIndex / m * 2 * Math.PI) * 200 + height / 2 + Math.random(),
+                    x: Math.cos(clusterIndex / topCategoriesCount * 2 * Math.PI)
+                        * MAX_BUBBLE_RADIUS * 2 + width / 2 + Math.random(),
+                    y: Math.sin(clusterIndex / topCategoriesCount * 2 * Math.PI)
+                        * MAX_BUBBLE_RADIUS * 2 + height / 2 + Math.random(),
                     word,
                     wordCount,
                     category: currentCategory
@@ -94,13 +98,14 @@ const useDrawBubble = ({ data, topCategories }: IUseBubbleProps): { draw: (props
             .range([ orange.carrot, gray.silver, green.jade, green.salad, cyan.azure ]);
 
         const simulation = d3.forceSimulation(nodes)
+            // .nodes(nodes)
             // .velocityDecay(0.2)
-            .force("center", d3.forceCenter(width/2, height/2))
-            // .force("x", d3.forceX(width / 2))
-            // .force("y", d3.forceY(height / 2))
-            .force("cluster", cluster(nodes).strength(0.005))
-            .force("charge", d3.forceManyBody().strength(5))
-            .force("collision", d3.forceCollide().radius((d) => d.radius));
+            .force("center", d3.forceCenter(width / 2, height / 2))
+            .force("x", d3.forceX(width / 2).strength(0.005))
+            .force("y", d3.forceY(0).strength(0.005))
+            .force("cluster", cluster(nodes).strength(0.05))
+            .force("charge", d3.forceManyBody().strength(50))
+            .force("collision", d3.forceCollide().radius((d: any) => d.radius + 5));
             // .force("collide", collide);
 
 
@@ -129,9 +134,9 @@ const useDrawBubble = ({ data, topCategories }: IUseBubbleProps): { draw: (props
             .data((d) => d.word.split(/(?=[A-Z][a-z])|\s+/g))
             .join("tspan")
             // .attr("dy", ".2em")
-            .attr("x", (d) => d.x + 15)
-            .attr("y", (d, i, nodes) => `${i - nodes.length / 2 + 0.8}em`)
-            .text((d) => d.word)
+            .attr("x", (d: any) => d.x + 15)
+            .attr("y", (d: any, i: number, nodes: any) => `${i - nodes.length / 2 + 0.8}em`)
+            .text((d: any) => d.word)
             .style("stroke", "black");
 
         simulation.on("tick", () => {

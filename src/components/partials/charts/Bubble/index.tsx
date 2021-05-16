@@ -2,15 +2,13 @@ import React, { useMemo } from "react";
 
 import Chart from "~/components/core/Chart";
 import useData from "~/hooks/useData";
-import useDrawBubble from "~/hooks/useChart/draw/useDrawBubble";
+import useDrawBubble, { MAX_BUBBLE_RADIUS } from "~/hooks/useChart/draw/useDrawBubble";
 
 import { IBubbleDataItem } from "~/hooks/useChart/draw/useDrawBubble/types";
 import { IBubbleDatasetItem } from "~/components/partials/charts/Bubble/types";
 import { TYPES } from "~/common/constants";
 
 const TYPE = TYPES.WORD_CLOUD;
-
-const MAX_BUBBLE_RADIUS = 100;
 
 const MAX_PERCENTAGE = 50;
 
@@ -42,7 +40,7 @@ const Bubble = (): JSX.Element => {
 
     const { draw } = useDrawBubble({ data, topCategories });
 
-    return <Chart draw={draw} />
+    return <Chart draw={draw} height={700} />
 };
 
 export default Bubble;

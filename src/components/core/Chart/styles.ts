@@ -10,6 +10,9 @@ export const ChartContainer = styled.div<IChartContainerProps>`
 `;
 
 export const SVG = styled.svg`
+
+  width: 100%;
+  height: 100%;
   
   g {
     font-size: 14px;

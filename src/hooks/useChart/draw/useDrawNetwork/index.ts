@@ -13,7 +13,15 @@ const { orange, green, cyan, black } = theme.palette;
 
 const useDrawNetwork = ({ nodes, edges }: IUseNetworkProps): { draw: (props: IChartDrawProps) => void } => {
 
-    const highlight = useCallback((node: any) => (color: string, selectedNode: any) => {
+    const highlight = useCallback((
+        node: d3.Selection<SVGGElement, unknown, SVGSVGElement | null, unknown>
+    ) => (
+        selectedNode: any,
+        linkedNodeColor: string,
+        selectedNodeColor: string,
+        selectedNodeTextColor: string,
+        selectedNodeRadius: number
+    ) => {
         // all items current node is target for
         const sources = edges.filter((edge: any) => edge.target === selectedNode).map((edge: any) => edge.source.index);
         // targets for selected node
@@ -22,16 +30,16 @@ const useDrawNetwork = ({ nodes, edges }: IUseNetworkProps): { draw: (props: ICh
         node.selectAll("circle")
             .style("fill", (node: any) => {
                 if (sources.concat(targets).includes(node.index)) {
-                    return color;
+                    return linkedNodeColor;
                 } else if (node.index === selectedNode.index) {
-                    return cyan.azure;
+                    return selectedNodeColor;
                 } else {
                     return orange.carrot;
                 }
             })
             .style("r", (node: any) => {
                 if (node.index === selectedNode.index) {
-                    return RADIUS * 1.3;
+                    return selectedNodeRadius;
                 } else {
                     return RADIUS;
                 }
@@ -39,16 +47,25 @@ const useDrawNetwork = ({ nodes, edges }: IUseNetworkProps): { draw: (props: ICh
 
         node.selectAll("text").style("fill", (node: any) => {
             if (node.index === selectedNode.index) {
-                return cyan.azure;
+                return selectedNodeTextColor;
             } else {
                 return black.base;
             }
         })
     }, []);
 
-    const fade = (link: any) => (opacity: number, selectedNode: any) => {
+    const fade = (
+        link:  d3.Selection<SVGLineElement, unknown, SVGGElement, unknown>
+    ) => (
+        selectedNode: any,
+        notSelectedOpacity?: number,
+        selectedOpacity?: number
+    ) => {
         link.style("stroke-opacity", (o: any) => (
-            (o.source === selectedNode || o.target === selectedNode) ? 1 : opacity)
+            (o.source === selectedNode || o.target === selectedNode)
+                ? selectedOpacity || o.alpha
+                : notSelectedOpacity || o.alpha
+            )
         );
     }
     
@@ -85,7 +102,8 @@ const useDrawNetwork = ({ nodes, edges }: IUseNetworkProps): { draw: (props: ICh
             .attr("y1", (d: any) => d.source.y)
             .attr("x2", (d: any) => d.target.x)
             .attr("y2", (d: any) => d.target.y)
-            .attr("stroke-width", (d: any) => Math.sqrt(parseInt(d.weight)));
+            .attr("stroke-width", (d: any) => Math.sqrt(parseInt(d.weight)))
+            .attr("stroke-opacity", (d: any) => d.alpha)
 
         const node = svg.selectAll("g.nodes")
             .data(nodes as any)
@@ -108,11 +126,11 @@ const useDrawNetwork = ({ nodes, edges }: IUseNetworkProps): { draw: (props: ICh
         const doHighlight = highlight(node);
 
         node.on("mouseover.fade", (event: MouseEvent, d: any) => {
-            doFade(0.1, d);
-            doHighlight(green.jade, d)
-        }).on("mouseout.fade", (d) => {
-            doFade(1, d);
-            doHighlight(orange.carrot, d)
+            doFade(d, 0.1, 1);
+            doHighlight(d, green.jade, cyan.azure, cyan.azure, RADIUS * 1.3)
+        }).on("mouseout.fade", (event: MouseEvent, d: any) => {
+            doFade(d);
+            doHighlight(d, orange.carrot, orange.carrot, black.base, RADIUS)
         });
 
     }, [ nodes, edges ]);
