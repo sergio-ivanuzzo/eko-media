@@ -1,5 +1,6 @@
 import React from "react";
 
+import Bubble from "~/components/partials/charts/Bubble";
 import Network from "~/components/partials/charts/Network";
 import StackedBar from "~/components/partials/charts/StackedBar";
 import useData from "~/hooks/useData";
@@ -19,6 +20,9 @@ const MainPage = (): JSX.Element => {
                 </Section>
                 <Section>
                     <Network />
+                </Section>
+                <Section>
+                    <Bubble />
                 </Section>
             </>
         </ConditionalRender>

@@ -59,7 +59,7 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
             .selectAll("rect")
             .data((d: any) => d)
             .join("rect")
-            .attr("x", (d: any) => xScale(d[0]))
+            .attr("x", (d: any) => xScale(d[0]) + 50)
             .attr("y", (d: any, i: any) => yScale(d.data.key))
             .attr("width", (d: any, i: any) => xScale(d[1]) - xScale(d[0]))
             .attr("height", yScale.bandwidth())

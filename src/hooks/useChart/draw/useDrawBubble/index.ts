@@ -67,6 +67,21 @@ const useDrawBubble = ({ data, topCategories }: IUseBubbleProps): { draw: (props
 
     const draw = useCallback(({ chartRef, width, height }: IChartDrawProps): void => {
 
+        let centers: Array<[number, number]> | [number, number] = [];
+
+        if (data.length === 1) {
+            centers = [ width / 2, height / 2 ];
+        } else {
+            // according to current requirements we can build 5 or 1 bubble chart
+            centers = [
+                [ 0, 0 ],
+                [ width, 0 ],
+                [ width / 2, height / 2 ],
+                [ 0, height ],
+                [ width, height ]
+            ];
+        }
+
         const nodes = d3.range(data.length).map(function(index) {
             const { category: currentCategory, word, wordCount, radius } = data[index];
             const clusterIndex = topCategories.findIndex((category: string) => category.toLowerCase() === currentCategory.toLowerCase());
@@ -117,7 +132,7 @@ const useDrawBubble = ({ data, topCategories }: IUseBubbleProps): { draw: (props
             const textSize = DEFAULT_TEXT_SIZE * scale > MAX_TEXT_SIZE ? MAX_TEXT_SIZE / scale : DEFAULT_TEXT_SIZE;
 
             node.selectAll("circle,text").attr("transform", event.transform.toString());
-            node.selectAll("text").style("font-size", `${textSize}px`)//.attr("dy", `-${textSize / scale}px`);
+            node.selectAll("text").style("font-size", `${textSize}px`);
          }) as any);
 
         node.append("circle")

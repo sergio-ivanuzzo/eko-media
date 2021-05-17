@@ -10,10 +10,10 @@ import { TYPES } from "~/common/constants";
 
 const TYPE = TYPES.WORD_CLOUD;
 
-const MAX_PERCENTAGE = 50;
+const MAX_PERCENTAGE = 100;
 
 const Bubble = (): JSX.Element => {
-    const { getDataset, topCategories } = useData();
+    const { getDataset, topCategories, selectedCategory } = useData();
 
     const dataset = getDataset(TYPE) as Array<IBubbleDatasetItem>;
 
@@ -21,8 +21,8 @@ const Bubble = (): JSX.Element => {
     const maxWordCount = Math.max(...dataset.map((item: IBubbleDatasetItem) => parseInt(item.word_count)));
 
     const calculateRadius = (wordCount: number) => {
-        const percentage = Math.ceil(MAX_PERCENTAGE * wordCount / maxWordCount);
-        return MAX_BUBBLE_RADIUS * percentage / 100;
+        const percentage = MAX_PERCENTAGE * wordCount / maxWordCount;
+        return MAX_BUBBLE_RADIUS * percentage / MAX_PERCENTAGE;
     };
 
     const data = useMemo(() => {
@@ -40,7 +40,7 @@ const Bubble = (): JSX.Element => {
 
     const { draw } = useDrawBubble({ data, topCategories });
 
-    return <Chart draw={draw} height={700} />
+    return <Chart draw={draw} />
 };
 
 export default Bubble;

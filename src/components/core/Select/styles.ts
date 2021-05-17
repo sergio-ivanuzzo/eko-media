@@ -1,5 +1,7 @@
 import styled, { css } from "styled-components";
 
+import { ITriggerItemProps } from "~/components/core/Select/types";
+
 const MenuItemCss = css`
   padding: 10px;
   font-size: 14px;
@@ -16,6 +18,14 @@ export const MenuItem = styled.div`
 
 export const Trigger = styled.div`
   ${MenuItemCss};
+  display: flex;
+  flex-wrap: wrap;
   border-radius: 10px;
   border: 1px solid ${({ theme }) => theme.palette.gray.border};
+`;
+
+export const TriggerItem = styled.div<ITriggerItemProps>`
+  ${({ multiple, theme }) => multiple && `
+    background: ${theme.palette.gray.silver};
+  `};
 `;

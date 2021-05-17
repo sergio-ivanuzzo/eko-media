@@ -29,3 +29,7 @@ export interface ISelectProps {
     renderTrigger?: (props: ISelectTriggerProps) => JSX.Element;
     options: TSelectOption[];
 }
+
+export interface ITriggerItemProps {
+    multiple?: boolean;
+}

@@ -11,7 +11,7 @@ import {
     TSelectOption
 } from "~/components/core/Select/types";
 
-import { MenuItem, Trigger } from "./styles";
+import { MenuItem, Trigger, TriggerItem } from "./styles";
 
 const DefaultItem = ({ option, handleSelect, close }: ISelectItemProps): JSX.Element => {
     return <MenuItem onClick={() => handleSelect({ option, close })}>{option}</MenuItem>;
@@ -21,7 +21,7 @@ const DefaultTrigger = ({ selected, toggle, ...props }: ISelectTriggerProps): JS
     return (
         <Trigger {...props} onClick={() => toggle()}>
             {selected.map((item: string | number) => (
-                <div>{`${item}`}</div>
+                <TriggerItem>{`${item}`}</TriggerItem>
             ))}
         </Trigger>);
 };
