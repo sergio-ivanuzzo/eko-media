@@ -1,17 +1,23 @@
 import { FormattedMessage } from "react-intl";
-import React from "react";
+import React, { useMemo } from "react";
 
 import { StyledSelect } from "~/components/partials/Header/FilterPanel/styles";
 import useData from "~/hooks/useData";
 
-import { TSelectOption } from "~/components/core/Select/types";
+import { ISelectOption } from "~/components/core/Select/types";
 
 const CategoryFilter = (): JSX.Element => {
-    const { topCategories, setCategory, selectedCategory } = useData();
+    const { allCategories, setCategory } = useData();
 
-    const handleSelect = (category: TSelectOption[]): void => {
+
+    const handleSelect = (category: string[]): void => {
         setCategory(category[0] as string);
     };
+
+    const options = useMemo(() => allCategories.map<ISelectOption>((category: string) => ({
+        key: category,
+        value: category
+    })), [ allCategories ]);
 
     return (
         <div>
@@ -19,9 +25,9 @@ const CategoryFilter = (): JSX.Element => {
                 <FormattedMessage id="category_filter.label" />
             </label>
             <StyledSelect
-                value={[ selectedCategory ]}
-                options={topCategories as TSelectOption[]}
+                options={options}
                 onSelect={handleSelect}
+                allowSelectAll
             />
         </div>
     );

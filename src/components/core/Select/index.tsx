@@ -1,51 +1,91 @@
+import { FormattedMessage, useIntl } from "react-intl";
 import React, { useCallback, useEffect, useState } from "react";
 
 import Dropdown from "~/components/core/Dropdown";
 import { IDropdownTriggerProps, IRenderDropdownChildrenProps } from "~/components/core/Dropdown/types";
 import {
-    IHandleSelectProps,
+    IHandleSelectProps, ISelectAllProps,
     ISelectChildrenProps,
     ISelectItemProps,
+    ISelectOption,
     ISelectProps,
-    ISelectTriggerProps,
-    TSelectOption
+    ISelectTriggerProps
 } from "~/components/core/Select/types";
 
 import { MenuItem, Trigger, TriggerItem } from "./styles";
 
 const DefaultItem = ({ option, handleSelect, close }: ISelectItemProps): JSX.Element => {
-    return <MenuItem onClick={() => handleSelect({ option, close })}>{option}</MenuItem>;
+    return <MenuItem onClick={() => handleSelect({ option, close })}>{option.value}</MenuItem>;
 };
 
 const DefaultTrigger = ({ selected, toggle, ...props }: ISelectTriggerProps): JSX.Element => {
     return (
         <Trigger {...props} onClick={() => toggle()}>
-            {selected.map((item: string | number) => (
-                <TriggerItem>{`${item}`}</TriggerItem>
+            {selected.map((item: string, index: number) => (
+                <TriggerItem key={index}>{`${item}`}</TriggerItem>
             ))}
         </Trigger>);
 };
 
-const SelectChildren = ({ options, renderItem, handleSelect, close }: ISelectChildrenProps): JSX.Element => {
+const DefaultSelectAll = ({ handleSelectAll }: ISelectAllProps): JSX.Element => {
     return (
-        <>{options.map((option: string | number) => renderItem({ option, handleSelect, close }))}</>
+        <MenuItem onClick={() => handleSelectAll()}>
+            <FormattedMessage id="select.default_select_all" />
+        </MenuItem>
+    );
+};
+
+const SelectChildren = ({ renderSelectAll = DefaultSelectAll, ...props }: ISelectChildrenProps): JSX.Element => {
+    const { handleSelect, close, allowSelectAll, options, renderItem, handleSelectAll } = props;
+
+    let children = options.map((option: ISelectOption) => renderItem({ option, handleSelect, close }));
+    if (allowSelectAll) {
+        children = [ renderSelectAll({ handleSelectAll }) ].concat(children);
+    }
+
+    return (
+        <>{children}</>
     );
 };
 
 const Select = ({ renderItem = DefaultItem, renderTrigger = DefaultTrigger, ...props }: ISelectProps): JSX.Element => {
-    const { value = [], onSelect, options, multiple = false } = props;
-    const [ selected, setSelected ] = useState<TSelectOption[]>(value);
+    const {
+        value = [],
+        onSelect,
+        options,
+        multiple = false,
+        allowSelectAll = false,
+        renderSelectAll = DefaultSelectAll
+    } = props;
+
+    const { formatMessage } = useIntl();
+    const itemAll = formatMessage({ id: "select.default_select_all" });
+
+    const [ selected, setSelected ] = useState<string[]>(
+        value.length ? value
+            : allowSelectAll
+                ? [ itemAll ]
+                : []
+    );
 
     const handleSelect = useCallback(({ option, close }: IHandleSelectProps): void => {
         if (!multiple) {
             close();
-            setSelected([ option ]);
+            setSelected([ option.key ]);
         } else {
-            if (!selected.includes(option)) {
-                setSelected([ ...selected, option ]);
+            if (!selected.includes(option.key)) {
+                setSelected([ ...selected, option.key ]);
             }
         }
     }, [ selected ]);
+
+    const handleSelectAll = useCallback((): void => {
+        if (multiple) {
+            setSelected(options.map((item: ISelectOption) => item.key));
+        } else {
+            setSelected([ "all" ])
+        }
+    }, [ options ]);
 
     // fixing race condition, bc most actual "selected" will be available on next render
     useEffect(() => {
@@ -60,6 +100,9 @@ const Select = ({ renderItem = DefaultItem, renderTrigger = DefaultTrigger, ...p
                         options={options}
                         renderItem={renderItem}
                         handleSelect={handleSelect}
+                        allowSelectAll={allowSelectAll}
+                        handleSelectAll={handleSelectAll}
+                        renderSelectAll={renderSelectAll}
                         { ...props} />
                 );
             }}

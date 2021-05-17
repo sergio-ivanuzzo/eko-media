@@ -13,7 +13,7 @@ const TYPE = TYPES.WORD_CLOUD;
 const MAX_PERCENTAGE = 100;
 
 const Bubble = (): JSX.Element => {
-    const { getDataset, topCategories, selectedCategory } = useData();
+    const { getDataset, filteredCategories } = useData();
 
     const dataset = getDataset(TYPE) as Array<IBubbleDatasetItem>;
 
@@ -38,7 +38,7 @@ const Bubble = (): JSX.Element => {
         });
     }, [ dataset ]);
 
-    const { draw } = useDrawBubble({ data, topCategories });
+    const { draw } = useDrawBubble({ data, filteredCategories });
 
     return <Chart draw={draw} />
 };

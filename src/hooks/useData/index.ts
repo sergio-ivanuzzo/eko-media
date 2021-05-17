@@ -1,4 +1,5 @@
-import { useCallback, useContext, useEffect } from "react";
+import { useIntl } from "react-intl";
+import { useCallback, useContext, useEffect, useMemo } from "react";
 
 import csvToJson from "~/parsers/csvToJson";
 
@@ -20,14 +21,22 @@ const useData = (): IUseDataResponse => {
     const {
         data,
         setData,
-        date: selectedDate,
-        category: selectedCategory,
+        date: selectedDate, // filter value
+        category, // filter value
         setCategory,
-        media: selectedMedia,
+        media: selectedMedia, // filter value
         setMedia,
-        topCategories,
-        setTopCategories,
+        // all categories for current month
+        allCategories,
+        setAllCategories,
     } = useContext<IDataProviderContext<IItem>>(DataContext);
+
+    const { formatMessage } = useIntl();
+    const itemAll = formatMessage({ id: "select.default_select_all" });
+
+    const selectedCategory = useMemo(() => {
+        return category === itemAll ? "all" : category;
+    }, [ category ]);
 
     // we need month and year to detect which directory contains files with data
     const getMonthAndYear = useCallback(() => {
@@ -68,7 +77,8 @@ const useData = (): IUseDataResponse => {
             const dirPath = `${ROOT_DIR}/${year}/${monthNumber}`;
 
             let items = await Promise.all(Object.values(TYPES).map((type) => {
-                return Promise.all(topCategories.concat("all", "profiles").map(async (category) => {
+                // TODO: refactor all and profiles
+                return Promise.all(allCategories.concat("all", "profiles").map(async (category) => {
                     const filename = `${type}_${category}_${month}_${year}`;
                     // we don't know 100% which extension filename has, try both
                     const csv = await load(dirPath, `${filename}.${FILE_EXTENSION.CSV}`);
@@ -123,7 +133,7 @@ const useData = (): IUseDataResponse => {
 
         if (categoriesData) {
             const categories = categoriesData.map((item: IItem) => item.category);
-            setTopCategories(categories as string[]);
+            setAllCategories(categories as string[]);
         }
     }, [ data, getMonthAndYear ]);
 
@@ -139,10 +149,10 @@ const useData = (): IUseDataResponse => {
         data,
         loadAll,
         getDataset,
-        topCategories,
-        selectedCategory,
+        allCategories: allCategories,
+        filteredCategories: selectedCategory === "all" ? allCategories : [ selectedCategory ],
         setCategory,
-        selectedMedia,
+        filteredMedia: selectedMedia,
         setMedia,
     }
 };

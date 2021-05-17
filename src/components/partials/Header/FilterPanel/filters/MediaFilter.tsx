@@ -4,11 +4,11 @@ import React, { useMemo } from "react";
 import { StyledSelect } from "~/components/partials/Header/FilterPanel/styles";
 import useData from "~/hooks/useData";
 
-import { TSelectOption } from "~/components/core/Select/types";
+import { ISelectOption } from "~/components/core/Select/types";
 import { FILTER_BY_CATEGORY_INDEXES, TYPES } from "~/common/constants";
 
 const MediaFilter = (): JSX.Element => {
-    const { setMedia, selectedMedia, getDataset } = useData();
+    const { setMedia, filteredMedia, getDataset } = useData();
 
     const dataset = getDataset(TYPES.CATEGORY);
 
@@ -19,9 +19,14 @@ const MediaFilter = (): JSX.Element => {
         [ dataset ]
     );
 
-    const handleSelect = (media: TSelectOption[]): void => {
-        setMedia(media as string[]);
+    const handleSelect = (media: string[]): void => {
+        setMedia(media);
     };
+
+    const options = useMemo(() => parsedMedia.map<ISelectOption>((media: string) => ({
+        key: media,
+        value: media
+    })), [ parsedMedia ]);
 
     return (
         <div>
@@ -29,10 +34,10 @@ const MediaFilter = (): JSX.Element => {
                 <FormattedMessage id="media_filter.label" />
             </label>
             <StyledSelect
-                value={selectedMedia}
-                options={parsedMedia as TSelectOption[]}
+                options={options}
                 onSelect={handleSelect}
                 multiple
+                allowSelectAll
             />
         </div>
     );

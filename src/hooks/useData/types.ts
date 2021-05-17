@@ -7,9 +7,9 @@ export interface IUseDataResponse {
     data: IData<IItem>;
     loadAll: () => Promise<void>;
     getDataset: (type: TYPES, category?: string) => IItem[];
-    topCategories: string[];
-    selectedCategory: string;
+    allCategories: string[];
+    filteredCategories: string[];
     setCategory: Dispatch<SetStateAction<string>>;
-    selectedMedia: string[];
+    filteredMedia: string[];
     setMedia: Dispatch<SetStateAction<string[]>>;
 }

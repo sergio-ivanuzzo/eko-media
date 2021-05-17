@@ -1,3 +1,4 @@
+import { useIntl } from "react-intl";
 import React, { createContext, useState } from "react";
 
 import { IData, IDataProviderContext, IDataProviderProps, IItem } from "./types";
@@ -12,8 +13,8 @@ export const DataContext = createContext<IDataProviderContext<IItem>>({
     // TODO: refactor "all" into const
     media: [ "all" ],
     setMedia: () => undefined,
-    topCategories: [],
-    setTopCategories: () => undefined
+    allCategories: [],
+    setAllCategories: () => undefined
 });
 
 const DataProvider = ({ children }: IDataProviderProps): JSX.Element => {
@@ -24,7 +25,7 @@ const DataProvider = ({ children }: IDataProviderProps): JSX.Element => {
     // TODO: refactor "all" into const
     const [ media, setMedia ] = useState<string[]>([ "all" ]);
 
-    const [ topCategories, setTopCategories ] = useState<string[]>([]);
+    const [ allCategories, setAllCategories ] = useState<string[]>([]);
     
     const context = { 
         data, 
@@ -35,8 +36,8 @@ const DataProvider = ({ children }: IDataProviderProps): JSX.Element => {
         setCategory, 
         media, 
         setMedia,
-        topCategories,
-        setTopCategories,
+        allCategories,
+        setAllCategories,
     };
 
     return (

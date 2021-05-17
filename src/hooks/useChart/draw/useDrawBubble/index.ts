@@ -11,10 +11,10 @@ export const MAX_BUBBLE_RADIUS = 200;
 const MIN_ZOOM = 1;
 const MAX_ZOOM = 20;
 
-const useDrawBubble = ({ data, topCategories }: IUseBubbleProps): { draw: (props: IChartDrawProps) => void } => {
+const useDrawBubble = ({ data, filteredCategories }: IUseBubbleProps): { draw: (props: IChartDrawProps) => void } => {
 
-    const topCategoriesCount = topCategories.length;
-    const clusters = new Array(topCategories.length);
+    const categoriesCount = filteredCategories.length;
+    const clusters = new Array(categoriesCount);
 
     const { getColor } = useChartColor();
 
@@ -28,7 +28,7 @@ const useDrawBubble = ({ data, topCategories }: IUseBubbleProps): { draw: (props
             alpha *= strength * alpha;
 
             nodes.forEach(function(d: any) {
-                const index = topCategories.findIndex(
+                const index = filteredCategories.findIndex(
                     (category: string) => category.toLowerCase() === d.category.toLowerCase()
                 );
                 const cluster = clusters[index];
@@ -69,7 +69,7 @@ const useDrawBubble = ({ data, topCategories }: IUseBubbleProps): { draw: (props
 
         let centers: Array<[number, number]> | [number, number] = [];
 
-        if (data.length === 1) {
+        if (filteredCategories.length === 1) {
             centers = [ width / 2, height / 2 ];
         } else {
             // according to current requirements we can build 5 or 1 bubble chart
@@ -82,17 +82,21 @@ const useDrawBubble = ({ data, topCategories }: IUseBubbleProps): { draw: (props
             ];
         }
 
+        console.log(centers);
+
         const nodes = d3.range(data.length).map(function(index) {
             const { category: currentCategory, word, wordCount, radius } = data[index];
-            const clusterIndex = topCategories.findIndex((category: string) => category.toLowerCase() === currentCategory.toLowerCase());
+            const clusterIndex = filteredCategories.findIndex(
+                (category: string) => category.toLowerCase() === currentCategory.toLowerCase()
+            );
             // const r = Math.sqrt((clusterIndex + 1) / m * -Math.log(Math.random())) * maxRadius;
 
             const d = {
                     cluster: clusterIndex,
                     radius,
-                    x: Math.cos(clusterIndex / topCategoriesCount * 2 * Math.PI)
+                    x: Math.cos(clusterIndex / categoriesCount * 2 * Math.PI)
                         * MAX_BUBBLE_RADIUS * 2 + width / 2 + Math.random(),
-                    y: Math.sin(clusterIndex / topCategoriesCount * 2 * Math.PI)
+                    y: Math.sin(clusterIndex / categoriesCount * 2 * Math.PI)
                         * MAX_BUBBLE_RADIUS * 2 + height / 2 + Math.random(),
                     word,
                     wordCount,

@@ -21,5 +21,7 @@
   "link.about": "Про Проєкт",
   "link.details": "Детальніше",
 
-  "app.name": "Медійна Екосистема"
+  "app.name": "Медійна Екосистема",
+
+  "select.default_select_all": "Всі"
 }

@@ -13,7 +13,6 @@ export enum TYPES {
 }
 
 export enum CATEGORIES {
-    ALL = "all",
     WAR = "war",
     ECONOMICS = "economics",
     LIFESTYLE = "lifestyle",
