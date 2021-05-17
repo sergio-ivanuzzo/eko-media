@@ -8,7 +8,7 @@ import { DEFAULT_TEXT_SIZE, MAX_TEXT_SIZE } from "~/components/core/Chart/styles
 
 export const MAX_BUBBLE_RADIUS = 200;
 
-const MIN_ZOOM = 1;
+const MIN_ZOOM = -5;
 const MAX_ZOOM = 20;
 
 const useDrawBubble = ({ data, filteredCategories }: IUseBubbleProps): { draw: (props: IChartDrawProps) => void } => {
@@ -67,10 +67,10 @@ const useDrawBubble = ({ data, filteredCategories }: IUseBubbleProps): { draw: (
 
     const draw = useCallback(({ chartRef, width, height }: IChartDrawProps): void => {
 
-        let centers: Array<[number, number]> | [number, number] = [];
+        let centers: Array<[number, number]> = [];
 
         if (filteredCategories.length === 1) {
-            centers = [ width / 2, height / 2 ];
+            centers = [ [ width / 2, height / 2 ] ];
         } else {
             // according to current requirements we can build 5 or 1 bubble chart
             centers = [
@@ -117,10 +117,12 @@ const useDrawBubble = ({ data, filteredCategories }: IUseBubbleProps): { draw: (
 
         const simulation = d3.forceSimulation(nodes)
             .force("center", d3.forceCenter(width / 2, height / 2))
-            .force("x", d3.forceX(width / 2).strength(0.005))
-            .force("y", d3.forceY(0).strength(0.005))
+            // .force("x", d3.forceX(width / 2).strength(0.005))
+            // .force("y", d3.forceY(0).strength(0.005))
+            .force("x", d3.forceX().x((d: any) => centers[d.cluster][1]))
+            .force("y", d3.forceY().y((d: any) => centers[d.cluster][0]))
             .force("cluster", cluster(nodes).strength(0.05))
-            .force("charge", d3.forceManyBody().strength(50))
+            .force("charge", d3.forceManyBody().strength(10))
             .force("collision", d3.forceCollide().radius((d: any) => d.radius + 2));
 
 

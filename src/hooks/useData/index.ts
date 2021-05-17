@@ -24,7 +24,7 @@ const useData = (): IUseDataResponse => {
         date: selectedDate, // filter value
         category, // filter value
         setCategory,
-        media: selectedMedia, // filter value
+        media, // filter value
         setMedia,
         // all categories for current month
         allCategories,
@@ -37,6 +37,10 @@ const useData = (): IUseDataResponse => {
     const selectedCategory = useMemo(() => {
         return category === itemAll ? "all" : category;
     }, [ category ]);
+
+    const selectedMedia = useMemo(() => {
+        return media.includes(itemAll) ? [ "all" ] : media;
+    }, [ media ]);
 
     // we need month and year to detect which directory contains files with data
     const getMonthAndYear = useCallback(() => {
@@ -115,6 +119,7 @@ const useData = (): IUseDataResponse => {
         }
 
         if (flags & FILTER_FLAGS.BY_CATEGORY) {
+            console.log("->", selectedCategory);
             Object.keys(filteredData).forEach((key: string) => {
                 const items = filteredData[key];
                 filteredData[key] = (selectedCategory === "all") ? items : items

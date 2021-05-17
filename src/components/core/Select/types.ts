@@ -1,22 +1,31 @@
 import { IDropdownTriggerProps, IRenderDropdownChildrenProps } from "~/components/core/Dropdown/types";
 
+export interface ISelectProps {
+    value?: string[];
+    onSelect: (selected: string[]) => void;
+    multiple?: boolean;
+    renderItem?: (props: ISelectItemProps) => JSX.Element;
+    renderTrigger?: (props: ISelectTriggerProps) => JSX.Element;
+    options: ISelectOption[];
+    allowSelectAll?: boolean;
+    renderSelectAll?: (props: Partial<ISelectItemProps>) => JSX.Element;
+}
+
+export interface IDefaultSelectItemProps {
+    handleSelectAll: (props: IHandleSelectAllProps) => void;
+    close: () => void;
+}
+
+export interface ISelectItemProps extends IDefaultSelectItemProps {
+    handleSelect: (props: IHandleSelectProps) => void;
+    option: ISelectOption;
+}
+
 export interface ISelectOption {
     key: string;
     value: string;
 }
 
-export interface IHandleSelectProps {
-    option: ISelectOption;
-    close: () => void;
-}
-
-export interface ISelectItemProps extends IHandleSelectProps {
-    handleSelect: (props: IHandleSelectProps) => void;
-}
-
-export interface ISelectAllItemProps {
-    handleSelectAll: () => void;
-}
 
 export interface ISelectTriggerProps extends IDropdownTriggerProps {
     selected: string[];
@@ -26,25 +35,19 @@ export interface ISelectChildrenProps extends IRenderDropdownChildrenProps, ISel
     options: ISelectOption[];
     handleSelect: (props: IHandleSelectProps) => void;
     renderItem: (props: ISelectItemProps) => JSX.Element;
-    renderSelectAll: (props: ISelectAllItemProps) => JSX.Element;
+    renderSelectAll: (props: IDefaultSelectItemProps) => JSX.Element;
     allowSelectAll?: boolean;
 }
 
-export interface ISelectProps {
-    value?: string[];
-    onSelect: (selected: string[]) => void;
-    multiple?: boolean;
-    renderItem?: (props: ISelectItemProps) => JSX.Element;
-    renderTrigger?: (props: ISelectTriggerProps) => JSX.Element;
-    options: ISelectOption[];
-    allowSelectAll?: boolean;
-    renderSelectAll?: (props: ISelectAllItemProps) => JSX.Element;
+export interface ISelectAllProps extends IHandleSelectAllProps {
+    handleSelectAll: (props: IHandleSelectAllProps) => void;
 }
 
-export interface ITriggerItemProps {
-    multiple?: boolean;
+export interface IHandleSelectProps {
+    option: ISelectOption;
+    close: () => void;
 }
 
-export interface ISelectAllProps {
-    handleSelectAll: () => void;
+export interface IHandleSelectAllProps {
+    close: () => void;
 }
