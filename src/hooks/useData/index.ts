@@ -119,7 +119,6 @@ const useData = (): IUseDataResponse => {
         }
 
         if (flags & FILTER_FLAGS.BY_CATEGORY) {
-            console.log("->", selectedCategory);
             Object.keys(filteredData).forEach((key: string) => {
                 const items = filteredData[key];
                 filteredData[key] = (selectedCategory === "all") ? items : items

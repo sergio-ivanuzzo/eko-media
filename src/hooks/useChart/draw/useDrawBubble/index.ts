@@ -82,8 +82,6 @@ const useDrawBubble = ({ data, filteredCategories }: IUseBubbleProps): { draw: (
             ];
         }
 
-        console.log(centers);
-
         const nodes = d3.range(data.length).map(function(index) {
             const { category: currentCategory, word, wordCount, radius } = data[index];
             const clusterIndex = filteredCategories.findIndex(
