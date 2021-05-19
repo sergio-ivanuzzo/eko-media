@@ -4,9 +4,7 @@ export interface IItem {
     [key: string]:
         string
         | number
-        | { [key: string]: number | string }
-        | Array<{ [key: string]: number | string }>
-        | string[];
+        | Array<IItem>;
 }
 
 export interface IData<T extends IItem> {

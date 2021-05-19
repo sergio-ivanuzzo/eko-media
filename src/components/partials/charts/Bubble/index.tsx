@@ -27,7 +27,6 @@ const Bubble = (): JSX.Element => {
         );
         return result;
     }, {});
-    console.log("maxWordCountMap:", JSON.stringify(maxWordCountMap));
 
     const calculateRadius = (wordCount: number, category: string) => {
         const maxWordCount = maxWordCountMap[category.toLowerCase()];
@@ -47,7 +46,6 @@ const Bubble = (): JSX.Element => {
             } as IBubbleDataItem
         });
     }, [ dataset ]);
-    console.log("data:", JSON.stringify(data));
 
     const { draw } = useDrawBubble({ data, filteredCategories });
 

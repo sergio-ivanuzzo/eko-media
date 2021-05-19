@@ -11,7 +11,9 @@ const RADIUS = 10;
 
 const { orange, green, cyan, black } = theme.palette;
 
-const useDrawNetwork = ({ nodes, edges }: IUseNetworkProps): { draw: (props: IChartDrawProps) => void } => {
+const useDrawNetwork = (
+    { nodes, edges, handleNodeClick, isSelected, setSelected }: IUseNetworkProps
+): { draw: (props: IChartDrawProps) => void } => {
 
     const highlight = useCallback((
         node: d3.Selection<SVGGElement, unknown, SVGSVGElement | null, unknown>
@@ -20,12 +22,16 @@ const useDrawNetwork = ({ nodes, edges }: IUseNetworkProps): { draw: (props: ICh
         linkedNodeColor: string,
         selectedNodeColor: string,
         selectedNodeTextColor: string,
-        selectedNodeRadius: number
+        selectedNodeRadius: number,
     ) => {
         // all items current node is target for
-        const sources = edges.filter((edge: any) => edge.target === selectedNode).map((edge: any) => edge.source.index);
+        const sources = edges
+            .filter((edge: any) => edge.target === selectedNode)
+            .map((edge: any) => edge.source.index);
         // targets for selected node
-        const targets = edges.filter((edge: any) => edge.source === selectedNode).map((edge: any) => edge.target.index);
+        const targets = edges
+            .filter((edge: any) => edge.source === selectedNode)
+            .map((edge: any) => edge.target.index);
 
         node.selectAll("circle")
             .style("fill", (node: any) => {
@@ -52,24 +58,30 @@ const useDrawNetwork = ({ nodes, edges }: IUseNetworkProps): { draw: (props: ICh
                 return black.base;
             }
         })
-    }, []);
+    }, [ nodes, edges, isSelected ]);
 
-    const fade = (
+    const fade = useCallback((
         link:  d3.Selection<SVGLineElement, unknown, SVGGElement, unknown>
     ) => (
         selectedNode: any,
         notSelectedOpacity?: number,
-        selectedOpacity?: number
+        selectedOpacity?: number,
     ) => {
         link.style("stroke-opacity", (o: any) => (
-            (o.source === selectedNode || o.target === selectedNode)
-                ? selectedOpacity || o.alpha
-                : notSelectedOpacity || o.alpha
+                (o.source === selectedNode || o.target === selectedNode)
+                    ? selectedOpacity || o.alpha
+                    : notSelectedOpacity || o.alpha
             )
         );
-    }
+    }, [ nodes, edges, isSelected ]);
     
     const draw = useCallback(({ chartRef, width, height }: IChartDrawProps): void => {
+        console.log(isSelected)
+
+        // prevent re-draw if node is selected
+        if (isSelected) {
+            return;
+        }
 
         const svg = d3.select(chartRef.current).attr("viewBox", `0 0 ${width} ${height}`);
         // clear svg before draw new content
@@ -83,7 +95,7 @@ const useDrawNetwork = ({ nodes, edges }: IUseNetworkProps): { draw: (props: ICh
                 .distanceMax(MAX_DISTANCE)
             )
             .force("center", d3.forceCenter(width / 2, height / 2))
-            .stop();
+            // .stop();
 
         if (simulation !== undefined) {
             simulation.force("link").links(edges);
@@ -125,15 +137,40 @@ const useDrawNetwork = ({ nodes, edges }: IUseNetworkProps): { draw: (props: ICh
         const doFade = fade(link);
         const doHighlight = highlight(node);
 
-        node.on("mouseover.fade", (event: MouseEvent, d: any) => {
+        const mouseOverFade = (event: MouseEvent, d: any) => {
+            if (!isSelected) {
+                doFade(d, 0.1, 1);
+                doHighlight(d, green.jade, cyan.azure, cyan.azure, RADIUS * 1.3);
+            }
+        };
+
+        const mouseOutFade = (event: MouseEvent, d: any) => {
+            if (!isSelected) {
+                doFade(d);
+                doHighlight(d, orange.carrot, orange.carrot, black.base, RADIUS);
+            }
+        };
+
+        node.on("mouseover.fade", mouseOverFade).on("mouseout.fade", mouseOutFade);
+
+        node.on("click", (event: MouseEvent, d: any) => {
+            // unregister events to prevent fade/highlight override
+            node.on("mouseover.fade", null).on("mouseout.fade", null);
+
+            setSelected(true);
+            handleNodeClick(d.id);
             doFade(d, 0.1, 1);
-            doHighlight(d, green.jade, cyan.azure, cyan.azure, RADIUS * 1.3)
-        }).on("mouseout.fade", (event: MouseEvent, d: any) => {
-            doFade(d);
-            doHighlight(d, orange.carrot, orange.carrot, black.base, RADIUS)
+            doHighlight(d, green.jade, cyan.azure, cyan.azure, RADIUS * 1.3);
         });
 
-    }, [ nodes, edges ]);
+        svg.on("click", (event: MouseEvent) => {
+            const element = event.target as HTMLElement;
+            if (element.tagName.toLowerCase() !== "circle") {
+                setSelected(false);
+            }
+        });
+
+    }, [ nodes, edges, isSelected ]);
 
     return {
         draw
