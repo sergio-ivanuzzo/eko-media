@@ -2,7 +2,7 @@ import { IItem } from "~/providers/DataProvider/types";
 
 export interface IGraphEdgeItem extends IItem {
     source: number;
-    target: string;
+    target: number;
     weight: string;
     alpha: number;
     reference_count: number;

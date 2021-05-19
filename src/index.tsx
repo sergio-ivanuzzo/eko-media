@@ -6,7 +6,7 @@ import { ThemeProvider } from "styled-components";
 
 import App from "~/components/App";
 import DataProvider from "~/providers/DataProvider";
-import { GlobalStyle } from "~/components/styles";
+import { GlobalStyle } from "~/components/global.styles";
 
 import theme from "~/common/theme";
 import translations from "~/i18n";

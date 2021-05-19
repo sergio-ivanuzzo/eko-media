@@ -2,30 +2,33 @@ import React from "react";
 
 import ConditionalRender from "~/components/core/ConditionalRender";
 import {
-    IReferenceBarProps,
-    IReferenceItem,
-    IReferenceItemProps, ReferenceDirection
-} from "~/components/partials/charts/Network/ReferenceBar/types";
-import {
+    ArrowContainer,
+    MediaName,
+    ReferenceCount,
     ReferenceItemContainer,
     ReferenceList,
     StyledArrowLeft,
     StyledArrowRight,
 } from "~/components/partials/charts/Network/ReferenceBar/styles";
+import {
+    IReferenceBarProps,
+    IReferenceItem,
+    IReferenceItemProps, ReferenceDirection
+} from "~/components/partials/charts/Network/ReferenceBar/types";
 
 const ReferenceItem = ({ from, to, direction, referenceCount }: IReferenceItemProps): JSX.Element => {
 
     return (
         <ReferenceItemContainer>
-            <div>{from}</div>
-            <div>
+            <MediaName title={from}>{from}</MediaName>
+            <ArrowContainer>
                 <ConditionalRender condition={direction === ReferenceDirection.FORWARD}>
                     <StyledArrowRight />
                     <StyledArrowLeft />
                 </ConditionalRender>
-            </div>
-            <div>{to}</div>
-            <div>{referenceCount}</div>
+            </ArrowContainer>
+            <MediaName title={to}>{to}</MediaName>
+            <ReferenceCount>{referenceCount}</ReferenceCount>
         </ReferenceItemContainer>
     );
 };

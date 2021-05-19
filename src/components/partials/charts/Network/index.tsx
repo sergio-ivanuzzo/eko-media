@@ -9,7 +9,7 @@ import useDrawNetwork from "~/hooks/useChart/draw/useDrawNetwork";
 import { TYPES } from "~/common/constants";
 
 import { NetworkChartContainer } from "~/components/partials/charts/Network/styles";
-import { IGraphDataset, IGraphEdgeItem } from "./types";
+import { IGraphDataset, IGraphNodeItem } from "./types";
 import { IReferenceItem, ReferenceDirection } from "~/components/partials/charts/Network/ReferenceBar/types";
 
 const TYPE = TYPES.NETWORK;
@@ -23,6 +23,7 @@ const Network = (): JSX.Element => {
     const { nodes, edges } = dataset[0] as IGraphDataset;
 
     // we use this copies because d3 change array items by reference
+    // be careful, edges inside draw function are a bit different from edges here bc of that
     const nodesCopy = nodes.map((d) => Object.create(d));
     const edgesCopy = edges.map((d) => Object.create(d));
 
@@ -30,21 +31,49 @@ const Network = (): JSX.Element => {
         const selectedNode = nodes.find((node) => node.id === selectedNodeId);
 
         if (selectedNode) {
-            const references: IReferenceItem[] = edges
-                .filter(({ source, target }) => [ source, target ].includes(selectedNodeId))
-                .map<[IReferenceItem, IReferenceItem]>((edge: IGraphEdgeItem) => {
+            const sources = edges
+                .filter((edge: any) => edge.target === selectedNodeId)
+                .map(({ source: id, target, reference_count: referenceCount }) => ({
+                    id,
+                    target,
+                    referenceCount
+                }));
+
+            const targets = edges
+                .filter((edge: any) => edge.source === selectedNodeId)
+                .map(({ target: id, source, reference_count: referenceCount }) => ({
+                    id,
+                    source,
+                    referenceCount
+                }));
+
+            const referencedMedia: Array<IGraphNodeItem> = nodes
+                .filter((node) => {
+                    return targets
+                        .map(({ id }) => id)
+                        .concat(sources.map(({ id }) => id))
+                        .map((id) => id)
+                        .includes(node.id)
+                });
+
+            const references: IReferenceItem[] = referencedMedia
+                .map<[IReferenceItem, IReferenceItem]>((media) => {
                     const forward = {
                         from: selectedNode.name,
-                        to: "",
+                        to: media.name,
                         direction: ReferenceDirection.FORWARD,
-                        referenceCount: 0
+                        referenceCount: targets.find(
+                            ({ id, source }) => id === media.id && source === selectedNodeId
+                        )?.referenceCount || 0
                     };
 
                     const back = {
-                        from: "",
-                        to: selectedNode.name,
+                        from: selectedNode.name,
+                        to: media.name,
                         direction: ReferenceDirection.BACK,
-                        referenceCount: 0
+                        referenceCount: sources.find(
+                            ({ id, target }) => id === media.id && target === selectedNodeId
+                        )?.referenceCount || 0
                     };
 
                     return [ forward, back ];

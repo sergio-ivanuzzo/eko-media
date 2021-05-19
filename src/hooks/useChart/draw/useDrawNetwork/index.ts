@@ -76,8 +76,6 @@ const useDrawNetwork = (
     }, [ nodes, edges, isSelected ]);
     
     const draw = useCallback(({ chartRef, width, height }: IChartDrawProps): void => {
-        console.log(isSelected)
-
         // prevent re-draw if node is selected
         if (isSelected) {
             return;
@@ -90,7 +88,7 @@ const useDrawNetwork = (
         const simulation: any = d3.forceSimulation(nodes as any)
             .force("link", d3.forceLink().id((d: any) => d.id).distance(MIN_DISTANCE))
             .force("charge", d3.forceManyBody()
-                .strength((d: any, i) => i == 0 ? -MAX_DISTANCE : -(MAX_DISTANCE / 2))
+                .strength((d: any, i) => i === 0 ? -MAX_DISTANCE : -(MAX_DISTANCE / 2))
                 .distanceMin(MIN_DISTANCE)
                 .distanceMax(MAX_DISTANCE)
             )

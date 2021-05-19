@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle, css } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -9,4 +9,10 @@ export const GlobalStyle = createGlobalStyle`
   svg {
     float: right;
   }
+`;
+
+export const OverflowCSS = css`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
