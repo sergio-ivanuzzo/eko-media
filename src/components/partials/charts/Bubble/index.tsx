@@ -13,14 +13,24 @@ const TYPE = TYPES.WORD_CLOUD;
 const MAX_PERCENTAGE = 100;
 
 const Bubble = (): JSX.Element => {
-    const { getDataset, filteredCategories } = useData();
+    const { getDataset, filteredCategories, allCategories } = useData();
 
     const dataset = getDataset(TYPE) as Array<IBubbleDatasetItem>;
 
     // the top value will be related to MAX_BUBBLE_RADIUS
-    const maxWordCount = Math.max(...dataset.map((item: IBubbleDatasetItem) => parseInt(item.word_count)));
+    // const maxWordCount = Math.max(...dataset.map((item: IBubbleDatasetItem) => parseInt(item.word_count)));
 
-    const calculateRadius = (wordCount: number) => {
+    const maxWordCountMap = allCategories.reduce((result: { [key: string]: number }, category: string) => {
+        result[category.toLowerCase()] = Math.max(
+            ...dataset.filter((item: IBubbleDatasetItem) => item.category.toLowerCase() === category.toLowerCase())
+                .map((item: IBubbleDatasetItem) => parseInt(item.word_count))
+        );
+        return result;
+    }, {});
+    console.log("maxWordCountMap:", JSON.stringify(maxWordCountMap));
+
+    const calculateRadius = (wordCount: number, category: string) => {
+        const maxWordCount = maxWordCountMap[category.toLowerCase()];
         const percentage = MAX_PERCENTAGE * wordCount / maxWordCount;
         return MAX_BUBBLE_RADIUS * percentage / MAX_PERCENTAGE;
     };
@@ -33,10 +43,11 @@ const Bubble = (): JSX.Element => {
                 category,
                 word,
                 wordCount,
-                radius: calculateRadius(wordCount)
+                radius: calculateRadius(wordCount, category)
             } as IBubbleDataItem
         });
     }, [ dataset ]);
+    console.log("data:", JSON.stringify(data));
 
     const { draw } = useDrawBubble({ data, filteredCategories });
 

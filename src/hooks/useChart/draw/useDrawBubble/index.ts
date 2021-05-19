@@ -115,12 +115,10 @@ const useDrawBubble = ({ data, filteredCategories }: IUseBubbleProps): { draw: (
 
         const simulation = d3.forceSimulation(nodes)
             .force("center", d3.forceCenter(width / 2, height / 2))
-            // .force("x", d3.forceX(width / 2).strength(0.005))
-            // .force("y", d3.forceY(0).strength(0.005))
-            .force("x", d3.forceX().x((d: any) => centers[d.cluster][1]))
-            .force("y", d3.forceY().y((d: any) => centers[d.cluster][0]))
+            .force("x", d3.forceX().x((d: any) => centers[d.cluster][1] / 1.5).strength(0.5))
+            .force("y", d3.forceY().y((d: any) => centers[d.cluster][0] / 1.5).strength(0.5))
             .force("cluster", cluster(nodes).strength(0.05))
-            .force("charge", d3.forceManyBody().strength(10))
+            // .force("charge", d3.forceManyBody().strength(10))
             .force("collision", d3.forceCollide().radius((d: any) => d.radius + 2));
 
 

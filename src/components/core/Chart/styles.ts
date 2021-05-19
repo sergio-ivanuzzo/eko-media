@@ -4,7 +4,7 @@ import { IChartContainerProps } from "~/components/core/Chart/types";
 
 const DEFAULT_CHART_HEIGHT = 800;
 
-export const DEFAULT_TEXT_SIZE = 10;
+export const DEFAULT_TEXT_SIZE = 40;
 export const MAX_TEXT_SIZE = 80;
 
 export const ChartContainer = styled.div<IChartContainerProps>`

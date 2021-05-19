@@ -44,14 +44,12 @@ const useData = (): IUseDataResponse => {
 
     // we need month and year to detect which directory contains files with data
     const getMonthAndYear = useCallback(() => {
-        const month: string = selectedDate.toLocaleString("en-US", { month: "short" }).toLocaleLowerCase();
-        const monthNumber = selectedDate.toLocaleString("en-US", { month: "2-digit" });
+        const month = selectedDate.toLocaleString("en-US", { month: "2-digit" });
         const year = selectedDate.getFullYear().toString();
 
         return {
             month,
             year,
-            monthNumber
         };
     }, [ selectedDate ]);
 
@@ -75,10 +73,10 @@ const useData = (): IUseDataResponse => {
     }, []);
 
     const loadAll = useCallback(async (): Promise<void> => {
-        const { month, monthNumber, year } = getMonthAndYear();
+        const { month, year } = getMonthAndYear();
 
         if (month && year) {
-            const dirPath = `${ROOT_DIR}/${year}/${monthNumber}`;
+            const dirPath = `${ROOT_DIR}/${year}/${month}`;
 
             let items = await Promise.all(Object.values(TYPES).map((type) => {
                 // TODO: refactor all and profiles
