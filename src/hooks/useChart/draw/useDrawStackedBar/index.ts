@@ -7,7 +7,7 @@ import useChartColor from "~/hooks/useChart/color/useChartColor";
 
 const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw: (props: IChartDrawProps) => void }  => {
 
-    const { getColor } = useChartColor();
+    const { getColor, getColorIndexByCategory } = useChartColor();
 
     const draw = useCallback(({ chartRef, width, height }: IChartDrawProps): void => {
 
@@ -55,7 +55,10 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
             .selectAll("g")
             .data(series)
             .enter().append("g")
-            .attr("fill", (d: any, i: any) => getColor(i))
+            .attr("fill", (d: any) => {
+                const index = getColorIndexByCategory(d.key);
+                return getColor(index);
+            })
             .selectAll("rect")
             .data((d: any) => d)
             .join("rect")

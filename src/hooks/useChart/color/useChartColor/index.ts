@@ -5,6 +5,7 @@ import randomize from "~/helpers/randomize";
 import { IGetColorProps, IUseChartColorResponse } from "~/hooks/useChart/color/useChartColor/types";
 
 import theme from "~/common/theme";
+import useData from "~/hooks/useData";
 
 const { orange, gray, cyan, green } = theme.palette;
 
@@ -14,6 +15,8 @@ const defaultProps: IGetColorProps = {
 }
 
 const useChartColor = (): IUseChartColorResponse => {
+
+    const { topCategories } = useData();
 
     const colors = [ orange.carrot, gray.silver, green.jade, green.salad, cyan.azure ];
 
@@ -40,8 +43,13 @@ const useChartColor = (): IUseChartColorResponse => {
         return categoryColor;
     };
 
+    const getColorIndexByCategory = (category: string): number => {
+        return topCategories.findIndex((topCategory: string) => topCategory === category);
+    }
+
     return {
-        getColor
+        getColor,
+        getColorIndexByCategory,
     }
 }
 

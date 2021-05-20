@@ -5,4 +5,5 @@ export interface IGetColorProps {
 
 export interface IUseChartColorResponse {
     getColor: (index: number, params?: IGetColorProps) => string;
+    getColorIndexByCategory: (category: string) => number;
 }

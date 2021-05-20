@@ -16,7 +16,7 @@ const useDrawBubble = ({ data, filteredCategories }: IUseBubbleProps): { draw: (
     const categoriesCount = filteredCategories.length;
     const clusters = new Array(categoriesCount);
 
-    const { getColor } = useChartColor();
+    const { getColor, getColorIndexByCategory } = useChartColor();
 
     const cluster = (nodes: any) => {
 
@@ -87,7 +87,6 @@ const useDrawBubble = ({ data, filteredCategories }: IUseBubbleProps): { draw: (
             const clusterIndex = filteredCategories.findIndex(
                 (category: string) => category.toLowerCase() === currentCategory.toLowerCase()
             );
-            // const r = Math.sqrt((clusterIndex + 1) / m * -Math.log(Math.random())) * maxRadius;
 
             const d = {
                     cluster: clusterIndex,
@@ -138,7 +137,10 @@ const useDrawBubble = ({ data, filteredCategories }: IUseBubbleProps): { draw: (
          }) as any);
 
         node.append("circle")
-            .attr("fill", (d: any) => getColor(d.cluster, { randomShade: true, randomOpacity: true }))
+            .attr("fill", (d: any) => {
+                const index = getColorIndexByCategory(d.category);
+                return getColor(index, { randomShade: true, randomOpacity: true });
+            })
             .attr("cx", (d: any) => d.x)
             .attr("cy", (d: any) => d.y)
             .attr("r", (d: any) => d.radius);
