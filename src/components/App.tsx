@@ -8,7 +8,7 @@ import Header from "~/components/partials/Header";
 const App = (): JSX.Element => {
     return (
         <Router>
-            <Header />
+            <Header sticky />
             <Content />
             <Footer />
         </Router>

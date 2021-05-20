@@ -7,7 +7,7 @@ export const GlobalStyle = createGlobalStyle`
   }
   
   svg {
-    float: right;
+    //float: right;
   }
 `;
 

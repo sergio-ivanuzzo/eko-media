@@ -9,7 +9,7 @@ const Chart = ({ draw, width, height }: IChartProps): JSX.Element => {
     const { chartRef, containerRef } = useChart({ draw, width, height });
     return (
         <ChartContainer ref={containerRef} height={height}>
-            <SVG ref={chartRef} height={height} />
+            <SVG ref={chartRef} height={height} preserveAspectRatio="xMidYMin meet" />
         </ChartContainer>
     );
 };

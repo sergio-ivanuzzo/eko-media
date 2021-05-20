@@ -14,7 +14,7 @@ const TYPE = TYPES.CATEGORY;
 const StackedBar = (): JSX.Element => {
     const { getDataset } = useData();
 
-    const dataset: ICategorizedItem[] = getDataset(TYPE) as Array<ICategorizedItem>;
+    const dataset: ICategorizedItem[] = getDataset(TYPE, "all") as Array<ICategorizedItem>;
 
     // data for legends
     const categories: string[] = useMemo(

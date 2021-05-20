@@ -17,12 +17,10 @@ const MainPage = (): JSX.Element => {
             <>
                 <Section>
                     <StackedBar />
+                    <Bubble />
                 </Section>
                 <Section>
                     <Network />
-                </Section>
-                <Section>
-                    <Bubble />
                 </Section>
             </>
         </ConditionalRender>

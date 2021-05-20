@@ -13,14 +13,14 @@ const TYPE = TYPES.WORD_CLOUD;
 const MAX_PERCENTAGE = 100;
 
 const Bubble = (): JSX.Element => {
-    const { getDataset, filteredCategories, allCategories } = useData();
+    const { getDataset, filteredCategories, topCategories } = useData();
 
     const dataset = getDataset(TYPE) as Array<IBubbleDatasetItem>;
 
     // the top value will be related to MAX_BUBBLE_RADIUS
     // const maxWordCount = Math.max(...dataset.map((item: IBubbleDatasetItem) => parseInt(item.word_count)));
 
-    const maxWordCountMap = allCategories.reduce((result: { [key: string]: number }, category: string) => {
+    const maxWordCountMap = topCategories.reduce((result: { [key: string]: number }, category: string) => {
         result[category.toLowerCase()] = Math.max(
             ...dataset.filter((item: IBubbleDatasetItem) => item.category.toLowerCase() === category.toLowerCase())
                 .map((item: IBubbleDatasetItem) => parseInt(item.word_count))

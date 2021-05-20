@@ -1,5 +1,4 @@
 export const ROOT_DIR = "data";
-export const MAP_FILE = `${ROOT_DIR}/month_to_5categories.json`;
 
 export enum TYPES {
     TOPIC = "topics",
@@ -12,22 +11,23 @@ export enum TYPES {
     CONNECTION = "connections"
 }
 
-export enum CATEGORIES {
-    WAR = "war",
-    ECONOMICS = "economics",
-    LIFESTYLE = "lifestyle",
-    AFFAIRS = "affairs",
-    OTHER = "other",
-    QUARANTINE = "quarantine",
-    COVID = "covid",
-    CULTURE = "culture",
-    INCIDENTS = "incidents",
-    SCIENCE = "science",
-    WEATHER = "weather",
-    POLITICS = "politics",
-    WORLD = "world",
-    SPORT = "sport",
-    SOCIETY = "society"
+export const CATEGORIES_MAP: { [key: string]: string } = {
+    "all": "Всі",
+    "war": "Війна/Донбас",
+    "economics": "Економіка",
+    "lifestyle": "Життя/lifestyle",
+    "affairs": "Закордонна політика",
+    "other": "Інше",
+    "quarantine": "Карантин",
+    "covid": "Коронавірус",
+    "culture": "Культура/шоу-бізнес",
+    "incidents": "Інциденти",
+    "science": "Наука/технології",
+    "weather": "Погода",
+    "politics": "Політика",
+    "world": "Світ",
+    "sport": "Спорт",
+    "society": "Суспільство",
 }
 
 export enum FILE_EXTENSION {

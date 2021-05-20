@@ -17,14 +17,18 @@ import { IDropdownTriggerProps, IRenderDropdownChildrenProps } from "~/component
 import { MenuItem, Trigger, TriggerItem } from "./styles";
 
 const DefaultItem = ({ option, handleSelect, close }: ISelectItemProps): JSX.Element => {
-    return <MenuItem onClick={() => handleSelect({ option, close })}>{option.value}</MenuItem>;
+    return (
+        <MenuItem key={option.key} onClick={() => handleSelect({ option, close })}>
+            {option.value}
+        </MenuItem>
+    );
 };
 
 const DefaultTrigger = ({ selected, toggle, ...props }: ISelectTriggerProps): JSX.Element => {
     return (
         <Trigger {...props} onClick={() => toggle()}>
-            {selected.map((item: string, index: number) => (
-                <TriggerItem key={index}>{`${item}`}</TriggerItem>
+            {selected.map((item: ISelectOption) => (
+                <TriggerItem key={item.key}>{`${item.value}`}</TriggerItem>
             ))}
         </Trigger>);
 };
@@ -68,9 +72,9 @@ const Select = ({ renderItem = DefaultItem, renderTrigger = DefaultTrigger, ...p
     } = props;
 
     const { formatMessage } = useIntl();
-    const itemAll = formatMessage({ id: "select.default_select_all" });
+    const itemAll: ISelectOption = { key: "all", value: formatMessage({ id: "select.default_select_all" }) };
 
-    const [ selected, setSelected ] = useState<string[]>(
+    const [ selected, setSelected ] = useState<ISelectOption[]>(
         value.length ? value
             : allowSelectAll
                 ? [ itemAll ]
@@ -80,10 +84,10 @@ const Select = ({ renderItem = DefaultItem, renderTrigger = DefaultTrigger, ...p
     const handleSelect = useCallback(({ option, close }: IHandleSelectProps): void => {
         if (!multiple) {
             close();
-            setSelected([ option.key ]);
+            setSelected([ option ]);
         } else {
-            if (!selected.includes(option.key)) {
-                setSelected([ ...selected, option.key ]);
+            if (!selected.includes(option)) {
+                setSelected([ ...selected, option ]);
             }
         }
     }, [ selected ]);
@@ -91,9 +95,9 @@ const Select = ({ renderItem = DefaultItem, renderTrigger = DefaultTrigger, ...p
     const handleSelectAll = useCallback(({ close }: IHandleSelectAllProps): void => {
         close();
         if (multiple) {
-            setSelected(options.map((item: ISelectOption) => item.key));
+            setSelected(options.map((item: ISelectOption) => item));
         } else {
-            setSelected([ "all" ])
+            setSelected([ itemAll ])
         }
     }, [ options ]);
 

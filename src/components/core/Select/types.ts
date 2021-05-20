@@ -1,8 +1,8 @@
 import { IDropdownTriggerProps, IRenderDropdownChildrenProps } from "~/components/core/Dropdown/types";
 
 export interface ISelectProps {
-    value?: string[];
-    onSelect: (selected: string[]) => void;
+    value?: ISelectOption[];
+    onSelect: (selected: ISelectOption[]) => void;
     multiple?: boolean;
     renderItem?: (props: ISelectItemProps) => JSX.Element;
     renderTrigger?: (props: ISelectTriggerProps) => JSX.Element;
@@ -28,7 +28,7 @@ export interface ISelectOption {
 
 
 export interface ISelectTriggerProps extends IDropdownTriggerProps {
-    selected: string[];
+    selected: ISelectOption[];
 }
 
 export interface ISelectChildrenProps extends IRenderDropdownChildrenProps, ISelectAllProps {

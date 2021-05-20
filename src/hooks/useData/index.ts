@@ -8,6 +8,7 @@ import { IUseDataResponse } from "~/hooks/useData/types";
 import { IData, IDataProviderContext, IItem } from "~/providers/DataProvider/types";
 
 import {
+    CATEGORIES_MAP,
     FILE_EXTENSION,
     FILTER_BY_CATEGORY_INDEXES,
     FILTER_FLAGS,
@@ -22,25 +23,14 @@ const useData = (): IUseDataResponse => {
         data,
         setData,
         date: selectedDate, // filter value
-        category, // filter value
+        category: selectedCategory, // filter value
         setCategory,
-        media, // filter value
+        media: selectedMedia, // filter value
         setMedia,
         // all categories for current month
-        allCategories,
-        setAllCategories,
+        topCategories,
+        setTopCategories,
     } = useContext<IDataProviderContext<IItem>>(DataContext);
-
-    const { formatMessage } = useIntl();
-    const itemAll = formatMessage({ id: "select.default_select_all" });
-
-    const selectedCategory = useMemo(() => {
-        return category === itemAll ? "all" : category;
-    }, [ category ]);
-
-    const selectedMedia = useMemo(() => {
-        return media.includes(itemAll) ? [ "all" ] : media;
-    }, [ media ]);
 
     // we need month and year to detect which directory contains files with data
     const getMonthAndYear = useCallback(() => {
@@ -52,6 +42,21 @@ const useData = (): IUseDataResponse => {
             year,
         };
     }, [ selectedDate ]);
+
+    useEffect(() => {
+        const { month, year } = getMonthAndYear();
+        const categoriesData = data[`category_all_${month}_${year}`];
+
+        if (categoriesData) {
+            const categories = categoriesData.map((item: IItem) => item.category);
+            setTopCategories(categories as string[]);
+            setMedia(
+                Object
+                    .keys(categoriesData[0])
+                    .filter((key: string) => !FILTER_BY_CATEGORY_INDEXES.includes(key))
+            );
+        }
+    }, [ data, getMonthAndYear ]);
 
     const load = useCallback(async (dirPath: string, filename: string): Promise<IData<IItem>> => {
         // load file and parse it into object or array of objects (for csv only)
@@ -80,7 +85,7 @@ const useData = (): IUseDataResponse => {
 
             let items = await Promise.all(Object.values(TYPES).map((type) => {
                 // TODO: refactor all and profiles
-                return Promise.all(allCategories.concat("all", "profiles").map(async (category) => {
+                return Promise.all(topCategories.concat("all", "profiles").map(async (category) => {
                     const filename = `${type}_${category}_${month}_${year}`;
                     // we don't know 100% which extension filename has, try both
                     const csv = await load(dirPath, `${filename}.${FILE_EXTENSION.CSV}`);
@@ -96,8 +101,7 @@ const useData = (): IUseDataResponse => {
         }
     }, [ load, getMonthAndYear, setData ]);
 
-    const filter = useCallback((type: TYPES, category: string): IData<IItem> => {
-
+    const getDataset = useCallback((type: TYPES, category = ""): IItem[] => {
         const flags: number = FILTER_MASK_MAP[type];
 
         const filteredData: IData<IItem> = Object.keys(data)
@@ -110,9 +114,10 @@ const useData = (): IUseDataResponse => {
         if (flags & FILTER_FLAGS.BY_MEDIA) {
             Object.keys(filteredData).forEach((key: string) => {
                 const items = filteredData[key];
-                // TODO: refactor ALL media into const
-                filteredData[key] = (selectedMedia.includes("all")) ? items : items
-                    .filter((dataItem: IItem) => selectedMedia.some((mediaItem) => mediaItem in dataItem));
+                filteredData[key] = items
+                    .filter((dataItem: IItem) => {
+                        return selectedMedia.some((mediaItem) => mediaItem in dataItem);
+                    });
             })
         }
 
@@ -121,40 +126,31 @@ const useData = (): IUseDataResponse => {
                 const items = filteredData[key];
                 filteredData[key] = (selectedCategory === "all") ? items : items
                     .filter((dataItem: IItem) =>
-                        FILTER_BY_CATEGORY_INDEXES.some((index: string) => dataItem[index] === selectedCategory)
+                        FILTER_BY_CATEGORY_INDEXES.some(
+                            (index: string) => {
+                                const category = (dataItem[index]?.toString() ?? "").toLowerCase();
+                                return category === CATEGORIES_MAP[selectedCategory]?.toLowerCase();
+                            }
+                        )
                     );
             })
         }
-
-        return filteredData;
-    }, [ data, selectedCategory, selectedMedia ]);
-
-    useEffect(() => {
         const { month, year } = getMonthAndYear();
-        const categoriesData = data[`category_all_${month}_${year}`];
 
-        if (categoriesData) {
-            const categories = categoriesData.map((item: IItem) => item.category);
-            setAllCategories(categories as string[]);
-        }
-    }, [ data, getMonthAndYear ]);
+        const key = `${type}_${selectedCategory}_${month}_${year}`;
+        const fallbackKey = `${type}_all_${month}_${year}`;
 
-    const getDataset = useCallback((type: TYPES, category: string = selectedCategory): IItem[] => {
-        const filteredData: IData<IItem> = filter(type, category);
-        const { month, year } = getMonthAndYear();
-        const key = `${type}_${category}_${month}_${year}`;
-
-        return (key in filteredData) ? filteredData[key] : [];
-    }, [ filter, getMonthAndYear, selectedCategory ]);
+        return (key in filteredData) ? filteredData[key] : filteredData[fallbackKey] || [];
+    }, [ data, getMonthAndYear, selectedCategory, selectedMedia ]);
 
     return {
         data,
         loadAll,
         getDataset,
-        allCategories: allCategories,
-        filteredCategories: selectedCategory === "all" ? allCategories : [ selectedCategory ],
+        topCategories,
+        filteredCategories: selectedCategory === "all" ? topCategories : [ CATEGORIES_MAP[selectedCategory] ],
         setCategory,
-        filteredMedia: selectedMedia,
+        selectedMedia,
         setMedia,
     }
 };

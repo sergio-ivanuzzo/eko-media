@@ -6,6 +6,7 @@ export const MenuContainer = styled.div`
     align-items: center;
     
     > a {
+      font-family: "NeueHaasUnica", sans-serif;
       margin: 0 10px;
       text-decoration: none;
       font-size: 14px;

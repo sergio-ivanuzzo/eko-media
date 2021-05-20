@@ -8,7 +8,7 @@ import { ISelectOption } from "~/components/core/Select/types";
 import { FILTER_BY_CATEGORY_INDEXES, TYPES } from "~/common/constants";
 
 const MediaFilter = (): JSX.Element => {
-    const { setMedia, filteredMedia, getDataset } = useData();
+    const { setMedia, getDataset } = useData();
 
     const dataset = getDataset(TYPES.CATEGORY);
 
@@ -19,8 +19,8 @@ const MediaFilter = (): JSX.Element => {
         [ dataset ]
     );
 
-    const handleSelect = (media: string[]): void => {
-        setMedia(media);
+    const handleSelect = (media: ISelectOption[]): void => {
+        setMedia(media.map((item: ISelectOption) => item.key));
     };
 
     const options = useMemo(() => parsedMedia.map<ISelectOption>((media: string) => ({

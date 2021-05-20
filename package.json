@@ -1,6 +1,10 @@
 {
   "name": "eko_media",
   "version": "0.1.0",
+  "author": {
+    "name": "Sergio Ivanuzzo",
+    "email": "sergio.ivanuzzo(at)gmail.com"
+  },
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.12.0",

@@ -24,6 +24,6 @@ export interface IDataProviderContext<T extends IItem> {
     setCategory: Dispatch<SetStateAction<string>>;
     media: string[];
     setMedia: Dispatch<SetStateAction<string[]>>;
-    allCategories: string[];
-    setAllCategories: Dispatch<SetStateAction<string[]>>;
+    topCategories: string[];
+    setTopCategories: Dispatch<SetStateAction<string[]>>;
 }

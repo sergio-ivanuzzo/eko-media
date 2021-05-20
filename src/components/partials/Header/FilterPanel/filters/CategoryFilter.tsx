@@ -4,20 +4,21 @@ import React, { useMemo } from "react";
 import { StyledSelect } from "~/components/partials/Header/FilterPanel/styles";
 import useData from "~/hooks/useData";
 
+import { CATEGORIES_MAP } from "~/common/constants";
 import { ISelectOption } from "~/components/core/Select/types";
 
 const CategoryFilter = (): JSX.Element => {
-    const { allCategories, setCategory } = useData();
+    const { topCategories, setCategory } = useData();
 
-
-    const handleSelect = (category: string[]): void => {
-        setCategory(category[0] as string);
+    const handleSelect = (category: ISelectOption[]): void => {
+        setCategory(category[0].key);
     };
 
-    const options = useMemo(() => allCategories.map<ISelectOption>((category: string) => ({
-        key: category,
-        value: category
-    })), [ allCategories ]);
+    const options = useMemo(() => topCategories
+        .map<ISelectOption>((category: string) => ({
+            key: Object.keys(CATEGORIES_MAP).find((key) => CATEGORIES_MAP[key] === category) ?? "",
+            value: category
+        })), [ topCategories ]);
 
     return (
         <div>
