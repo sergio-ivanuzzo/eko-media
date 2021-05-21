@@ -33,19 +33,19 @@ const SphereBar = (): JSX.Element => {
                 result[category] = Number(dataset[index][media])
                 return result;
             }, {});
+
             categoriesData[CATEGORIES_MAP["all"]] = Object
                 .keys(categoriesData)
                 .reduce((acc: number, key: string) => acc + (Number(categoriesData[key]) || 0), 0);
 
             return {
-                sphere: media,
-                [CATEGORIES_MAP[selectedCategory]]: categoriesData[CATEGORIES_MAP[selectedCategory]],
+                key: media,
+                value: categoriesData[CATEGORIES_MAP[selectedCategory]],
             }
         });
     }, [ dataset ]);
-    console.log(dataset)
 
-    const { draw } = useDrawBar({ data, xData: [ selectedCategory ], yData: spheres });
+    const { draw } = useDrawBar({ data, xData: [ CATEGORIES_MAP[selectedCategory] ], yData: spheres });
 
     return <Chart draw={draw} />;
 };

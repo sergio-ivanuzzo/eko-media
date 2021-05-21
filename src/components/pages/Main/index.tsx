@@ -1,3 +1,4 @@
+import { FormattedMessage } from "react-intl";
 import React from "react";
 
 import Bubble from "~/components/partials/charts/Bubble";
@@ -20,6 +21,8 @@ const MainPage = (): JSX.Element => {
                     <Bubble />
                 </Section>
                 <Section>
+                    <h2><FormattedMessage id="network.title" /></h2>
+                    <h3><FormattedMessage id="network.subtitle" /></h3>
                     <Network />
                 </Section>
             </>

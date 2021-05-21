@@ -2,9 +2,11 @@ import { useCallback } from "react";
 import * as d3 from "d3";
 
 import useChartColor from "~/hooks/useChart/color/useChartColor";
-import { DEFAULT_TEXT_SIZE, MAX_TEXT_SIZE } from "~/components/core/Chart/styles";
 
 export const MAX_BUBBLE_RADIUS = 200;
+
+const DEFAULT_TEXT_SIZE = 40;
+const MAX_TEXT_SIZE = 80;
 
 const MIN_ZOOM = -5;
 const MAX_ZOOM = 20;
@@ -148,6 +150,7 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
         node.append("text")
             .text((d) => d.word)
             .attr("dy", () => "0.3em")
+            .attr("font-size", DEFAULT_TEXT_SIZE)
             .attr("text-anchor", "middle");
 
         simulation.on("tick", () => {

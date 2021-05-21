@@ -2,8 +2,8 @@ import styled from "styled-components";
 
 const DEFAULT_CHART_HEIGHT = 800;
 
-export const DEFAULT_TEXT_SIZE = 40;
-export const MAX_TEXT_SIZE = 80;
+// export const DEFAULT_TEXT_SIZE = 40;
+// export const MAX_TEXT_SIZE = 80;
 
 export const ChartContainer = styled.div<IChartContainerProps>`
   width: 100%;
@@ -28,14 +28,17 @@ export const SVG = styled.svg`
     }
   }
     
+  // stacked bar chart
   g.group, rect {
     transform: translate(200px, 0px);
   }
   
+  // network chart
   .links line {
     stroke: ${({ theme }) => `${theme.palette.gray.silver}`};
   }
 
+  // network chart
   .nodes circle {
     fill: ${({ theme }) => `${theme.palette.orange.carrot}`};
     stroke: ${({ theme }) => `${theme.palette.white.base}`};
@@ -47,13 +50,16 @@ export const SVG = styled.svg`
   }
     
   text {
-    font-size: 14px;
-    font-weight: bold;
+    //font-size: 14px;
+    //font-weight: bold;
+    &.node-text {
+      font-weight: bold;
+    }
   }
   
+  // bubble chart
   .bubble {
     text {
-      font-size: ${DEFAULT_TEXT_SIZE}px;
       font-weight: 400;
     }
   }

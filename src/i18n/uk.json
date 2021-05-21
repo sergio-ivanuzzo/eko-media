@@ -23,5 +23,8 @@
 
   "app.name": "Медійна Екосистема",
 
-  "select.default_select_all": "Всі"
+  "select.default_select_all": "Всі",
+
+  "network.title": "Мережевий аналіз ЗМІ/ Як медіа посилаються одне на одного?",
+  "network.subtitle": "Кількість посилань між ЗМІ"
 }

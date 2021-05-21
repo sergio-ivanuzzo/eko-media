@@ -30,4 +30,9 @@ module.exports = {
         path: path.resolve(__dirname, "dist"),
         publicPath: "/dist/"
     },
+    devServer: {
+        open: "http://localhost:8080/public",
+        port: 8080,
+        publicPath: "/dist/"
+    }
 };

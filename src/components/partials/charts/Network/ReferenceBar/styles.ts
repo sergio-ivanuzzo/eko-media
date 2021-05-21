@@ -6,7 +6,7 @@ import { OverflowCSS } from "~/components/global.styles";
 
 export const ReferenceList = styled.div`
   overflow-y: auto;
-  //min-width: 400px;
+  min-width: 400px;
   box-shadow: 0 0 3px 0 ${({ theme }) => theme.palette.gray.silver};
   padding: 2px;
   border-radius: 5px;

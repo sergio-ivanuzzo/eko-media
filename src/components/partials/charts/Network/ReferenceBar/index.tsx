@@ -1,6 +1,7 @@
 import React from "react";
 
 import ConditionalRender from "~/components/core/ConditionalRender";
+import { ReferenceDirection } from "~/components/partials/charts/Network/constants";
 import {
     ArrowContainer,
     MediaName,

@@ -6,6 +6,7 @@ import ReferenceBar from "~/components/partials/charts/Network/ReferenceBar";
 import useData from "~/hooks/useData";
 import useDrawNetwork from "~/hooks/useChart/draw/useDrawNetwork";
 
+import { ReferenceDirection } from "~/components/partials/charts/Network/constants";
 import { TYPES } from "~/common/constants";
 
 import { NetworkChartContainer } from "~/components/partials/charts/Network/styles";
@@ -21,7 +22,7 @@ const Network = (): JSX.Element => {
     const { nodes, edges } = dataset[0] as IGraphDataset;
 
     // we use this copies because d3 change array items by reference
-    // be careful, edges inside draw function are a bit different from edges here bc of that
+    // be careful, "edges" inside draw function are a bit different from "edgesCopy" here bc of that
     const nodesCopy = nodes.map((d) => Object.create(d));
     const edgesCopy = edges.map((d) => Object.create(d));
 

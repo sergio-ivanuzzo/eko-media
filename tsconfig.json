@@ -23,11 +23,7 @@
     "paths": {
       "~/*": ["./src/*"]
     },
-    "outDir": "./dist/",
-    "typeRoots": [
-      "./typings"
-    ],
-    "noImplicitAny": false
+    "outDir": "./dist/"
   },
   "include": [
     "src/**/*"

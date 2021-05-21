@@ -3,9 +3,24 @@ import * as d3 from "d3";
 
 import theme from "~/common/theme";
 
+// edges size
 const MAX_DISTANCE = 2000;
 const MIN_DISTANCE = 300;
-const RADIUS = 10;
+// node size
+const RADIUS = 12;
+
+// multipliers to use for scaling
+const X_MULTIPLIER = 1.8;
+const Y_MULTIPLIER = 1;
+const RADIUS_MULTIPLIER = 1.3;
+const LINE_MULTIPLIER = 0.8;
+
+// offset from node
+const TEXT_X_OFFSET = 15;
+const TEXT_Y_OFFSET = 5;
+
+const MIN_FADE = 0.1;
+const MAX_FADE = 1;
 
 const { orange, green, cyan, black } = theme.palette;
 
@@ -79,7 +94,11 @@ const useDrawNetwork = (
             return;
         }
 
-        const svg = d3.select(chartRef.current).attr("viewBox", `0 0 ${width} ${height}`);
+        const svg = d3.select(chartRef.current)
+            .attr("viewBox", `0 0 ${width * X_MULTIPLIER} ${height}`)
+            .attr("height", height)
+            .attr("width", width);
+
         // clear svg before draw new content
         svg.selectAll("svg > *").remove();
 
@@ -106,11 +125,11 @@ const useDrawNetwork = (
             .selectAll("line")
             .data(edges as any)
             .enter().append("line")
-            .attr("x1", (d: any) => d.source.x)
-            .attr("y1", (d: any) => d.source.y)
-            .attr("x2", (d: any) => d.target.x)
-            .attr("y2", (d: any) => d.target.y)
-            .attr("stroke-width", (d: any) => Math.sqrt(parseInt(d.weight)))
+            .attr("x1", (d: any) => d.source.x * X_MULTIPLIER)
+            .attr("y1", (d: any) => d.source.y * Y_MULTIPLIER)
+            .attr("x2", (d: any) => d.target.x * X_MULTIPLIER)
+            .attr("y2", (d: any) => d.target.y * Y_MULTIPLIER)
+            .attr("stroke-width", (d: any) => Math.sqrt(parseInt(d.weight)) * LINE_MULTIPLIER)
             .attr("stroke-opacity", (d: any) => d.alpha)
 
         const node = svg.selectAll("g.nodes")
@@ -120,14 +139,15 @@ const useDrawNetwork = (
             .attr("class", "nodes");
 
         node.append("circle")
-            .attr("cx", (d: any) => d.x)
-            .attr("cy", (d: any) => d.y)
+            .attr("cx", (d: any) => d.x * X_MULTIPLIER)
+            .attr("cy", (d: any) => d.y * Y_MULTIPLIER)
             .attr("r", RADIUS);
 
         node.append("text")
             .text((d: any) => d.name)
-            .attr("x", (d: any) => d.x + 15)
-            .attr("y", (d: any) => d.y + 5)
+            .attr("class", "node-text")
+            .attr("x", (d: any) => d.x * X_MULTIPLIER + TEXT_X_OFFSET)
+            .attr("y", (d: any) => d.y * Y_MULTIPLIER + TEXT_Y_OFFSET)
             .attr("fill", black.base);
 
         const doFade = fade(link);
@@ -135,8 +155,8 @@ const useDrawNetwork = (
 
         const mouseOverFade = (event: MouseEvent, d: any) => {
             if (!isSelected) {
-                doFade(d, 0.1, 1);
-                doHighlight(d, green.jade, cyan.azure, cyan.azure, RADIUS * 1.3);
+                doFade(d, MIN_FADE, MAX_FADE);
+                doHighlight(d, green.jade, cyan.azure, cyan.azure, RADIUS * RADIUS_MULTIPLIER);
             }
         };
 
@@ -155,10 +175,11 @@ const useDrawNetwork = (
 
             setSelected(true);
             handleNodeClick(d.id);
-            doFade(d, 0.1, 1);
-            doHighlight(d, green.jade, cyan.azure, cyan.azure, RADIUS * 1.3);
+            doFade(d, MIN_FADE, MAX_FADE);
+            doHighlight(d, green.jade, cyan.azure, cyan.azure, RADIUS * RADIUS_MULTIPLIER);
         });
 
+        // unselect node when click outside of it (somewhere on svg)
         svg.on("click", (event: MouseEvent) => {
             const element = event.target as HTMLElement;
             if (element.tagName.toLowerCase() !== "circle") {

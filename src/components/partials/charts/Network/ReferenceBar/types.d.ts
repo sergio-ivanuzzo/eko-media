@@ -10,8 +10,3 @@ declare interface IReferenceItem {
 }
 
 declare type IReferenceItemProps = IReferenceItem;
-
-declare const enum ReferenceDirection {
-    FORWARD = 0,
-    BACK = 1
-}
