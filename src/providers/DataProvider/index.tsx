@@ -1,7 +1,5 @@
 import React, { createContext, useState } from "react";
 
-import { IData, IDataProviderContext, IDataProviderProps, IItem } from "./types";
-
 export const DataContext = createContext<IDataProviderContext<IItem>>({
     data: {},
     setData: () => undefined,

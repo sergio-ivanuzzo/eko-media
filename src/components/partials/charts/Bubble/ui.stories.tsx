@@ -5,8 +5,6 @@ import useData from "~/hooks/useData";
 
 import ConditionalRender from "~/components/core/ConditionalRender";
 import { DataContext } from "~/providers/DataProvider";
-import { IDataProviderContext, IItem } from "~/providers/DataProvider/types";
-
 
 export default {
     title: "Components/Charts"

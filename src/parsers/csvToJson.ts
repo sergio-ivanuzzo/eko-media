@@ -1,4 +1,4 @@
-import { IItem } from "~/providers/DataProvider/types";
+import sanitize from "~/helpers/sanitize";
 
 const csvToJson = (rawData: string, separator = ","): Array<IItem> => {
     const [ headerRow, ...valueRows ] = rawData.split("\n");
@@ -7,8 +7,7 @@ const csvToJson = (rawData: string, separator = ","): Array<IItem> => {
     return valueRows.map((row: string) => {
         const values: string[] = row.split(separator);
         return itemKeys.reduce((item: IItem, key: string, index: number) => {
-            // last csv item will contain \n, so we need trim to remove it
-            item[key.trim()] = values[index];
+            item[sanitize(key)] = sanitize(values[index]);
             return item;
         }, {});
     });

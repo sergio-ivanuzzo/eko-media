@@ -1,14 +1,14 @@
-export interface IDropdownTriggerProps {
+declare interface IDropdownTriggerProps {
     toggle: () => void;
     isOpen: boolean;
 }
 
-export interface IRenderDropdownChildrenProps {
+declare interface IRenderDropdownChildrenProps {
     isOpen: boolean;
     close: () => void;
 }
 
-export interface IDropdownProps {
+declare interface IDropdownProps {
     renderTrigger?: <T extends IDropdownTriggerProps>(props: T) => JSX.Element;
     multiple?: boolean;
     children: (props: IRenderDropdownChildrenProps) => JSX.Element | JSX.Element[];

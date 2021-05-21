@@ -4,8 +4,6 @@ import Chart from "~/components/core/Chart";
 import useData from "~/hooks/useData";
 import useDrawBubble, { MAX_BUBBLE_RADIUS } from "~/hooks/useChart/draw/useDrawBubble";
 
-import { IBubbleDataItem } from "~/hooks/useChart/draw/useDrawBubble/types";
-import { IBubbleDatasetItem } from "~/components/partials/charts/Bubble/types";
 import { TYPES } from "~/common/constants";
 
 const TYPE = TYPES.WORD_CLOUD;
@@ -13,7 +11,7 @@ const TYPE = TYPES.WORD_CLOUD;
 const MAX_PERCENTAGE = 100;
 
 const Bubble = (): JSX.Element => {
-    const { getDataset, filteredCategories, topCategories } = useData();
+    const { getDataset, selectedCategories, topCategories } = useData();
 
     const dataset = getDataset(TYPE) as Array<IBubbleDatasetItem>;
 
@@ -47,7 +45,7 @@ const Bubble = (): JSX.Element => {
         });
     }, [ dataset ]);
 
-    const { draw } = useDrawBubble({ data, filteredCategories });
+    const { draw } = useDrawBubble({ data, selectedCategories: selectedCategories });
 
     return <Chart draw={draw} />
 };

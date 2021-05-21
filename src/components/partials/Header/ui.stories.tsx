@@ -7,5 +7,6 @@ export default {
 };
 
 export const SimpleHeader = (): JSX.Element => {
+    console.log(Header);
     return <Header />;
 }

@@ -2,17 +2,6 @@ import { FormattedMessage, useIntl } from "react-intl";
 import React, { useCallback, useEffect, useState } from "react";
 
 import Dropdown from "~/components/core/Dropdown";
-import {
-    IDefaultSelectItemProps,
-    IHandleSelectAllProps,
-    IHandleSelectProps,
-    ISelectChildrenProps,
-    ISelectItemProps,
-    ISelectOption,
-    ISelectProps,
-    ISelectTriggerProps
-} from "~/components/core/Select/types";
-import { IDropdownTriggerProps, IRenderDropdownChildrenProps } from "~/components/core/Dropdown/types";
 
 import { MenuItem, Trigger, TriggerItem } from "./styles";
 

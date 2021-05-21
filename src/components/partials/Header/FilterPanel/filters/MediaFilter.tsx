@@ -4,7 +4,6 @@ import React, { useMemo } from "react";
 import { StyledSelect } from "~/components/partials/Header/FilterPanel/styles";
 import useData from "~/hooks/useData";
 
-import { ISelectOption } from "~/components/core/Select/types";
 import { FILTER_BY_CATEGORY_INDEXES, TYPES } from "~/common/constants";
 
 const MediaFilter = (): JSX.Element => {

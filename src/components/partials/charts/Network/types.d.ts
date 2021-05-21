@@ -1,6 +1,4 @@
-import { IItem } from "~/providers/DataProvider/types";
-
-export interface IGraphEdgeItem extends IItem {
+declare interface IGraphEdgeItem extends IItem {
     source: number;
     target: number;
     weight: string;
@@ -8,12 +6,12 @@ export interface IGraphEdgeItem extends IItem {
     reference_count: number;
 }
 
-export interface IGraphNodeItem extends IItem {
+declare interface IGraphNodeItem extends IItem {
     id: number;
     name: string;
 }
 
-export interface IGraphDataset extends IItem {
+declare interface IGraphDataset extends IItem {
     nodes: IGraphNodeItem[];
     edges: IGraphEdgeItem[];
 }

@@ -2,8 +2,6 @@ import { useEffect, useRef } from "react";
 
 import useElementSize from "~/hooks/useElementSize";
 
-import { IUseChartProps, IUseChartResponse } from "~/hooks/useChart/types";
-
 const useChart = ({ draw, width: staticWidth = 0, height: staticHeight = 0 }: IUseChartProps): IUseChartResponse => {
     const chartRef = useRef<SVGSVGElement>(null);
     const [ containerRef, dynamicWidth, dynamicHeight ] = useElementSize<HTMLDivElement>();

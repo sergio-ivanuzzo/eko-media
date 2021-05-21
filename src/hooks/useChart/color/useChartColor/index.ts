@@ -2,8 +2,6 @@ import { rgb } from "d3";
 
 import randomize from "~/helpers/randomize";
 
-import { IGetColorProps, IUseChartColorResponse } from "~/hooks/useChart/color/useChartColor/types";
-
 import theme from "~/common/theme";
 import useData from "~/hooks/useData";
 

@@ -1,17 +1,17 @@
-export interface IReferenceBarProps {
+declare interface IReferenceBarProps {
     items: IReferenceItem[];
 }
 
-export interface IReferenceItem {
+declare interface IReferenceItem {
     from: string;
     to: string;
     direction: ReferenceDirection;
     referenceCount: number;
 }
 
-export type IReferenceItemProps = IReferenceItem;
+declare type IReferenceItemProps = IReferenceItem;
 
-export enum ReferenceDirection {
+declare const enum ReferenceDirection {
     FORWARD = 0,
     BACK = 1
 }

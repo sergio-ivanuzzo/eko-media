@@ -2,7 +2,6 @@ import React from "react";
 
 import useChart from "~/hooks/useChart";
 
-import { IChartProps } from "~/components/core/Chart/types";
 import { ChartContainer, SVG } from "./styles";
 
 const Chart = ({ draw, width, height }: IChartProps): JSX.Element => {

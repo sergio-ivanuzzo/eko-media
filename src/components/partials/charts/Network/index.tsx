@@ -9,8 +9,6 @@ import useDrawNetwork from "~/hooks/useChart/draw/useDrawNetwork";
 import { TYPES } from "~/common/constants";
 
 import { NetworkChartContainer } from "~/components/partials/charts/Network/styles";
-import { IGraphDataset, IGraphNodeItem } from "./types";
-import { IReferenceItem, ReferenceDirection } from "~/components/partials/charts/Network/ReferenceBar/types";
 
 const TYPE = TYPES.NETWORK;
 

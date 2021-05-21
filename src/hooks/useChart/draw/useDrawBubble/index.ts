@@ -1,8 +1,6 @@
 import { useCallback } from "react";
 import * as d3 from "d3";
 
-import { IChartDrawProps } from "~/hooks/useChart/types";
-import { IUseBubbleProps } from "~/hooks/useChart/draw/useDrawBubble/types";
 import useChartColor from "~/hooks/useChart/color/useChartColor";
 import { DEFAULT_TEXT_SIZE, MAX_TEXT_SIZE } from "~/components/core/Chart/styles";
 
@@ -11,9 +9,9 @@ export const MAX_BUBBLE_RADIUS = 200;
 const MIN_ZOOM = -5;
 const MAX_ZOOM = 20;
 
-const useDrawBubble = ({ data, filteredCategories }: IUseBubbleProps): { draw: (props: IChartDrawProps) => void } => {
+const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (props: IChartDrawProps) => void } => {
 
-    const categoriesCount = filteredCategories.length;
+    const categoriesCount = selectedCategories.length;
     const clusters = new Array(categoriesCount);
 
     const { getColor, getColorIndexByCategory } = useChartColor();
@@ -28,7 +26,7 @@ const useDrawBubble = ({ data, filteredCategories }: IUseBubbleProps): { draw: (
             alpha *= strength * alpha;
 
             nodes.forEach(function(d: any) {
-                const index = filteredCategories.findIndex(
+                const index = selectedCategories.findIndex(
                     (category: string) => category.toLowerCase() === d.category.toLowerCase()
                 );
                 const cluster = clusters[index];
@@ -69,7 +67,7 @@ const useDrawBubble = ({ data, filteredCategories }: IUseBubbleProps): { draw: (
 
         let centers: Array<[number, number]> = [];
 
-        if (filteredCategories.length === 1) {
+        if (selectedCategories.length === 1) {
             centers = [ [ width / 2, height / 2 ] ];
         } else {
             // according to current requirements we can build 5 or 1 bubble chart
@@ -84,7 +82,7 @@ const useDrawBubble = ({ data, filteredCategories }: IUseBubbleProps): { draw: (
 
         const nodes = d3.range(data.length).map(function(index) {
             const { category: currentCategory, word, wordCount, radius } = data[index];
-            const clusterIndex = filteredCategories.findIndex(
+            const clusterIndex = selectedCategories.findIndex(
                 (category: string) => category.toLowerCase() === currentCategory.toLowerCase()
             );
 

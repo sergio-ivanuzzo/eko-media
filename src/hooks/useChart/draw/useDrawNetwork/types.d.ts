@@ -1,7 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
-import { IGraphEdgeItem, IGraphNodeItem } from "~/components/partials/charts/Network/types";
-
-export interface IUseNetworkProps {
+declare interface IUseNetworkProps {
     nodes: IGraphNodeItem[];
     edges: IGraphEdgeItem[];
     handleNodeClick: (selectedNodeId: number) => void;
@@ -9,7 +6,7 @@ export interface IUseNetworkProps {
     setSelected: Dispatch<SetStateAction<boolean>>;
 }
 
-export interface IHighlightProps {
+declare interface IHighlightProps {
     selectedNode: any;
     linkedNodeColor: string;
     selectedNodeColor: string;
@@ -18,7 +15,7 @@ export interface IHighlightProps {
     checkSelected?: boolean;
 }
 
-export interface IFadeProps {
+declare interface IFadeProps {
     selectedNode: any;
     notSelectedOpacity?: number;
     selectedOpacity?: number;

@@ -23,10 +23,13 @@
     "paths": {
       "~/*": ["./src/*"]
     },
-    "outDir": "./dist/"
+    "outDir": "./dist/",
+    "typeRoots": [
+      "./typings"
+    ],
+    "noImplicitAny": false
   },
   "include": [
-    "src",
-    "typings/**/*.d.ts"
+    "src/**/*"
   ]
 }

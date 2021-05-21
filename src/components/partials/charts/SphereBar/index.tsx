@@ -1,23 +1,53 @@
-import React from "react";
+import React, { useMemo } from "react";
 
 import Chart from "~/components/core/Chart";
+import useData from "~/hooks/useData";
 import useDrawBar from "~/hooks/useChart/draw/useDrawBar";
 
-import { TYPES } from "~/common/constants";
-import useData from "~/hooks/useData";
+import { CATEGORIES_MAP, FILTER_BY_CATEGORY_INDEXES, TYPES } from "~/common/constants";
 
 const TYPE = TYPES.SPHERE;
 
 const SphereBar = (): JSX.Element => {
-    const { getDataset } = useData();
+    const { getDataset, selectedCategory } = useData();
 
-    const dataset = getDataset(TYPE, "all");
+    const dataset = getDataset(TYPE, "all") as Array<ICategorizedItem>;
 
-    const { draw } = useDrawBar();
+    const categories: string[] = useMemo(
+        () => dataset.length ? dataset.map((item: ICategorizedItem) => item.category) : [],
+        [ dataset ]
+    );
 
-    return (
-        <Chart draw={draw} />
-    )
+    // data for y axis
+    const spheres = useMemo(
+        () => categories.length
+            // remove "category" field, keep only media fields
+            ? Object.keys(dataset[0]).filter((key: string) => !FILTER_BY_CATEGORY_INDEXES.includes(key))
+            : [],
+        [ categories ]
+    );
+
+    const data = useMemo(() => {
+        return spheres.map((media: string) => {
+            const categoriesData = categories.reduce((result: { [key: string]: number }, category, index) => {
+                result[category] = Number(dataset[index][media])
+                return result;
+            }, {});
+            categoriesData[CATEGORIES_MAP["all"]] = Object
+                .keys(categoriesData)
+                .reduce((acc: number, key: string) => acc + (Number(categoriesData[key]) || 0), 0);
+
+            return {
+                sphere: media,
+                [CATEGORIES_MAP[selectedCategory]]: categoriesData[CATEGORIES_MAP[selectedCategory]],
+            }
+        });
+    }, [ dataset ]);
+    console.log(dataset)
+
+    const { draw } = useDrawBar({ data, xData: [ selectedCategory ], yData: spheres });
+
+    return <Chart draw={draw} />;
 };
 
 export default SphereBar;

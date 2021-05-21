@@ -5,7 +5,6 @@ import useActiveElement from "~/hooks/useActiveElement";
 import useKeyboard from "~/hooks/useKeyboard";
 
 import { DropdownContainer, Frame, FrameContainer, TriggerContainer } from "./styles";
-import { IDropdownProps, IDropdownTriggerProps } from "./types";
 
 const DefaultTrigger = ({ toggle, isOpen }: IDropdownTriggerProps): JSX.Element => {
     return (

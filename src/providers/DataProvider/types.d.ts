@@ -1,21 +1,19 @@
-import { Dispatch, ReactNode, SetStateAction } from "react";
-
-export interface IItem {
+declare interface IItem {
     [key: string]:
         string
         | number
         | Array<IItem>;
 }
 
-export interface IData<T extends IItem> {
+declare interface IData<T extends IItem> {
     [key: string]: T[];
 }
 
-export interface IDataProviderProps {
+declare interface IDataProviderProps {
     children: ReactNode;
 }
 
-export interface IDataProviderContext<T extends IItem> {
+declare interface IDataProviderContext<T extends IItem> {
     data: IData<T>;
     setData: Dispatch<IData<T>>;
     date: Date;

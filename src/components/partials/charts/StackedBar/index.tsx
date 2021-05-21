@@ -5,7 +5,6 @@ import useData from "~/hooks/useData";
 
 import { FILTER_BY_CATEGORY_INDEXES, TYPES } from "~/common/constants";
 
-import { ICategorizedItem } from "./types";
 import useDrawStackedBar from "~/hooks/useChart/draw/useDrawStackedBar";
 
 const BAR_HEIGHT = 32;
@@ -16,7 +15,6 @@ const StackedBar = (): JSX.Element => {
 
     const dataset: ICategorizedItem[] = getDataset(TYPE, "all") as Array<ICategorizedItem>;
 
-    // data for legends
     const categories: string[] = useMemo(
         () => dataset.length ? dataset.map((item: ICategorizedItem) => item.category) : [],
         [ dataset ]

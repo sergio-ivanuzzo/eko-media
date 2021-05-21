@@ -10,11 +10,6 @@ import {
     StyledArrowLeft,
     StyledArrowRight,
 } from "~/components/partials/charts/Network/ReferenceBar/styles";
-import {
-    IReferenceBarProps,
-    IReferenceItem,
-    IReferenceItemProps, ReferenceDirection
-} from "~/components/partials/charts/Network/ReferenceBar/types";
 
 const ReferenceItem = ({ from, to, direction, referenceCount }: IReferenceItemProps): JSX.Element => {
 

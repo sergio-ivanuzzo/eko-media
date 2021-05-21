@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 import ArrowLeft from "~/components/icons/ArrowLeft";
 import ArrowRight from "~/components/icons/ArrowRight";
-import { IIconProps } from "~/components/icons/types";
 import { OverflowCSS } from "~/components/global.styles";
 
 export const ReferenceList = styled.div`

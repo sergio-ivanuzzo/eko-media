@@ -1,11 +1,11 @@
-export interface IBubbleDataItem {
+declare interface IBubbleDataItem {
     category: string;
     word: string;
     wordCount: number;
     radius: number;
 }
 
-export interface IUseBubbleProps {
+declare interface IUseBubbleProps {
     data: Array<IBubbleDataItem>;
-    filteredCategories: string[];
+    selectedCategories: string[];
 }

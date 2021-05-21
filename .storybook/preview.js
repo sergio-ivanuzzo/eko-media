@@ -3,10 +3,9 @@ import { IntlProvider } from "react-intl";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ThemeProvider } from 'styled-components';
 
-import DataProvider from "~/providers/DataProvider";
-
 import theme from "~/common/theme";
 import translations from "~/i18n";
+import DataProvider from "~/providers/DataProvider";
 
 // in future we can add translations for multiple languages
 const defaultLocale = "uk-UA";

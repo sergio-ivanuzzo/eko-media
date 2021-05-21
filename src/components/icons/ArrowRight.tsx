@@ -1,7 +1,5 @@
 import React from "react";
 
-import { IIconProps } from "~/components/icons/types";
-
 const ArrowRight = ({ width, height }: IIconProps): JSX.Element => {
     const iconWidth = width || "100%";
     const iconHeight = height || "100%";

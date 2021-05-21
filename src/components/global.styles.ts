@@ -5,10 +5,6 @@ export const GlobalStyle = createGlobalStyle`
     font-family: "NeueHaasUnica";
     src: url(../../public/static/fonts/NeueHaasUnica-Regular.ttf);
   }
-  
-  svg {
-    //float: right;
-  }
 `;
 
 export const OverflowCSS = css`

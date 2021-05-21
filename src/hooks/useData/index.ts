@@ -1,11 +1,9 @@
-import { useIntl } from "react-intl";
-import { useCallback, useContext, useEffect, useMemo } from "react";
+import { useCallback, useContext, useEffect } from "react";
 
 import csvToJson from "~/parsers/csvToJson";
 
 import { DataContext } from "~/providers/DataProvider";
 import { IUseDataResponse } from "~/hooks/useData/types";
-import { IData, IDataProviderContext, IItem } from "~/providers/DataProvider/types";
 
 import {
     CATEGORIES_MAP,
@@ -148,7 +146,8 @@ const useData = (): IUseDataResponse => {
         loadAll,
         getDataset,
         topCategories,
-        filteredCategories: selectedCategory === "all" ? topCategories : [ CATEGORIES_MAP[selectedCategory] ],
+        selectedCategories: selectedCategory === "all" ? topCategories : [ CATEGORIES_MAP[selectedCategory] ],
+        selectedCategory,
         setCategory,
         selectedMedia,
         setMedia,

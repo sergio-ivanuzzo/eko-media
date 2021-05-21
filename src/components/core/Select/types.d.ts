@@ -1,6 +1,4 @@
-import { IDropdownTriggerProps, IRenderDropdownChildrenProps } from "~/components/core/Dropdown/types";
-
-export interface ISelectProps {
+declare interface ISelectProps {
     value?: ISelectOption[];
     onSelect: (selected: ISelectOption[]) => void;
     multiple?: boolean;
@@ -11,27 +9,27 @@ export interface ISelectProps {
     renderSelectAll?: (props: Partial<ISelectItemProps>) => JSX.Element;
 }
 
-export interface IDefaultSelectItemProps {
+declare interface IDefaultSelectItemProps {
     handleSelectAll: (props: IHandleSelectAllProps) => void;
     close: () => void;
 }
 
-export interface ISelectItemProps extends IDefaultSelectItemProps {
+declare interface ISelectItemProps extends IDefaultSelectItemProps {
     handleSelect: (props: IHandleSelectProps) => void;
     option: ISelectOption;
 }
 
-export interface ISelectOption {
+declare interface ISelectOption {
     key: string;
     value: string;
 }
 
 
-export interface ISelectTriggerProps extends IDropdownTriggerProps {
+declare interface ISelectTriggerProps extends IDropdownTriggerProps {
     selected: ISelectOption[];
 }
 
-export interface ISelectChildrenProps extends IRenderDropdownChildrenProps, ISelectAllProps {
+declare interface ISelectChildrenProps extends IRenderDropdownChildrenProps, ISelectAllProps {
     options: ISelectOption[];
     handleSelect: (props: IHandleSelectProps) => void;
     renderItem: (props: ISelectItemProps) => JSX.Element;
@@ -39,15 +37,15 @@ export interface ISelectChildrenProps extends IRenderDropdownChildrenProps, ISel
     allowSelectAll?: boolean;
 }
 
-export interface ISelectAllProps extends IHandleSelectAllProps {
+declare interface ISelectAllProps extends IHandleSelectAllProps {
     handleSelectAll: (props: IHandleSelectAllProps) => void;
 }
 
-export interface IHandleSelectProps {
+declare interface IHandleSelectProps {
     option: ISelectOption;
     close: () => void;
 }
 
-export interface IHandleSelectAllProps {
+declare interface IHandleSelectAllProps {
     close: () => void;
 }

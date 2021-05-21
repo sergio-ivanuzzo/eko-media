@@ -1,4 +1,4 @@
-export interface IIconProps {
+declare interface IIconProps {
     width?: number;
     height?: number;
 }

@@ -5,7 +5,6 @@ import { StyledSelect } from "~/components/partials/Header/FilterPanel/styles";
 import useData from "~/hooks/useData";
 
 import { CATEGORIES_MAP } from "~/common/constants";
-import { ISelectOption } from "~/components/core/Select/types";
 
 const CategoryFilter = (): JSX.Element => {
     const { topCategories, setCategory } = useData();

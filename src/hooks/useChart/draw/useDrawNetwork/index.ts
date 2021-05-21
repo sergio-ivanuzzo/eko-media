@@ -1,8 +1,6 @@
 import { useCallback } from "react";
 import * as d3 from "d3";
 
-import { IChartDrawProps } from "~/hooks/useChart/types";
-import { IUseNetworkProps } from "~/hooks/useChart/draw/useDrawNetwork/types";
 import theme from "~/common/theme";
 
 const MAX_DISTANCE = 2000;

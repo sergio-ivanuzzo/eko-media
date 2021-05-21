@@ -1,8 +1,6 @@
 import { useCallback } from "react";
 import * as d3 from "d3";
 
-import { IChartDrawProps } from "~/hooks/useChart/types";
-import { IUseStackedBarProps } from "~/hooks/useChart/draw/useDrawStackedBar/types";
 import useChartColor from "~/hooks/useChart/color/useChartColor";
 
 const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw: (props: IChartDrawProps) => void }  => {
@@ -62,7 +60,7 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
             .selectAll("rect")
             .data((d: any) => d)
             .join("rect")
-            .attr("x", (d: any) => xScale(d[0]) + 50)
+            .attr("x", (d: any) => xScale(d[0]) + 30)
             .attr("y", (d: any, i: any) => yScale(d.data.key))
             .attr("width", (d: any, i: any) => xScale(d[1]) - xScale(d[0]))
             .attr("height", yScale.bandwidth())
