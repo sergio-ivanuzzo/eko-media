@@ -8,7 +8,7 @@ export const GlobalStyle = createGlobalStyle`
 `;
 
 export const OverflowCSS = css`
-  overflow: hidden;
+  overflow-x: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 `;

@@ -1,8 +1,8 @@
 import { FormattedMessage } from "react-intl";
 import React, { useMemo } from "react";
 
-import { StyledSelect } from "~/components/partials/Header/FilterPanel/styles";
 import useData from "~/hooks/useData";
+import { FilterItemContainer, StyledSelect } from "~/components/partials/Header/FilterPanel/styles";
 
 import { FILTER_BY_CATEGORY_INDEXES, TYPES } from "~/common/constants";
 
@@ -28,7 +28,7 @@ const MediaFilter = (): JSX.Element => {
     })), [ parsedMedia ]);
 
     return (
-        <div>
+        <FilterItemContainer>
             <label>
                 <FormattedMessage id="media_filter.label" />
             </label>
@@ -39,7 +39,7 @@ const MediaFilter = (): JSX.Element => {
                 allowSelectAll
                 tabIndex={6}
             />
-        </div>
+        </FilterItemContainer>
     );
 }
 

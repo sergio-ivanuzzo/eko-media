@@ -4,15 +4,15 @@ import FilterPanel from "~/components/partials/Header/FilterPanel";
 import LogoPanel from "~/components/partials/Header/LogoPanel";
 import MenuPanel from "~/components/partials/Header/MenuPanel";
 
-import { HeaderContainer } from "./styles";
+import { HeaderContainer, HeaderRow } from "./styles";
 
 const Header = ({ sticky }: IHeaderProps): JSX.Element => {
     return (
         <HeaderContainer sticky={sticky}>
-            <div>
+            <HeaderRow>
                 <LogoPanel />
                 <MenuPanel />
-            </div>
+            </HeaderRow>
             <FilterPanel />
         </HeaderContainer>
     );

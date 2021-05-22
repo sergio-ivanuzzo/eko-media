@@ -1,4 +1,4 @@
-declare interface ISelectProps extends ISelectableComponent {
+declare interface ISelectProps extends ISelectableComponent, IStylableComponent {
     value?: ISelectOption[];
     onSelect: (selected: ISelectOption[]) => void;
     multiple?: boolean;

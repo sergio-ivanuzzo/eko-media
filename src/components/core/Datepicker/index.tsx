@@ -2,6 +2,7 @@ import { useIntl } from "react-intl";
 import React, { useContext, useEffect, useState } from "react";
 
 import ConditionalRender from "~/components/core/ConditionalRender";
+import DateRange from "~/components/icons/DateRange";
 import Dropdown from "~/components/core/Dropdown";
 import getMonthsList from "~/helpers/getMonthsList";
 import getRange from "~/helpers/getRange";
@@ -18,9 +19,11 @@ const DefaultTrigger = ({ selectedDate, toggle }: IDatePickerTriggerProps): JSX.
     const month = selectedDate.toLocaleString(locale, { month: "long" });
 
     return (
-        <TriggerItem onClick={() => toggle()}>
-            {month} {selectedDate.getFullYear()}
-        </TriggerItem>
+        <>
+            <TriggerItem onClick={() => toggle()}>
+                {month} {selectedDate.getFullYear()} <DateRange width={24} />
+            </TriggerItem>
+        </>
     );
 };
 
@@ -62,7 +65,7 @@ const DatePicker = ({ onDateChange, renderTrigger = DefaultTrigger, renderItem =
                 return (
                     <DatePickerContainer>
                         <ConditionalRender condition={mode === DatePickerMode.SELECTING_YEAR}>
-                            <>
+                            <div>
                                 {yearRange.map((year: number) => renderItem({
                                     value: year.toString(),
                                     onClick: () => {
@@ -70,10 +73,10 @@ const DatePicker = ({ onDateChange, renderTrigger = DefaultTrigger, renderItem =
                                         setMode(DatePickerMode.SELECTING_MONTH);
                                     }
                                 }))}
-                            </>
+                            </div>
                         </ConditionalRender>
                         <ConditionalRender condition={mode === DatePickerMode.SELECTING_MONTH}>
-                            <>
+                            <div>
                                 {renderItem({
                                     value: date.getFullYear().toString(),
                                     onClick: () => setMode(DatePickerMode.SELECTING_YEAR)
@@ -85,7 +88,7 @@ const DatePicker = ({ onDateChange, renderTrigger = DefaultTrigger, renderItem =
                                         close();
                                     }
                                 }))}
-                            </>
+                            </div>
                         </ConditionalRender>
                     </DatePickerContainer>
                 )

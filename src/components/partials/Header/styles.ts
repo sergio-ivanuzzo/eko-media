@@ -15,10 +15,10 @@ export const HeaderContainer = styled.div<IHeaderProps>`
         z-index: 2;
     `};
     border-bottom: 1px solid ${({ theme }) => `${theme.palette.gray.silver}`};
-    
-    // div container for logo and menu
-    div:nth-child(1) {
-      display: flex;
-      width: 100%;
-    }
+`;
+
+export const HeaderRow = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
 `;

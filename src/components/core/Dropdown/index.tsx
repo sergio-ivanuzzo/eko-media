@@ -14,7 +14,8 @@ const DefaultTrigger = ({ toggle, isOpen }: IDropdownTriggerProps): JSX.Element 
     );
 };
 
-const Dropdown = ({ renderTrigger = DefaultTrigger, children, onClose = () => null }: IDropdownProps): JSX.Element => {
+const Dropdown = ({ renderTrigger = DefaultTrigger, ...props }: IDropdownProps): JSX.Element => {
+    const { onClose = () => null, className, children } = props;
     const [ isOpen, setOpen ] = useState(false);
     const [ dropdownRef, isActiveElement ] = useActiveElement<HTMLDivElement>();
 
@@ -37,7 +38,7 @@ const Dropdown = ({ renderTrigger = DefaultTrigger, children, onClose = () => nu
     })
 
     return (
-        <DropdownContainer ref={dropdownRef}>
+        <DropdownContainer ref={dropdownRef} className={className}>
             <TriggerContainer>
                 {renderTrigger({
                     toggle ,

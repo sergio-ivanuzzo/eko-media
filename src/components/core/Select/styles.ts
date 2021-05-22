@@ -4,7 +4,6 @@ const MenuItemCss = css`
   padding: 10px;
   font-size: 14px;
   color: ${({ theme }) => theme.palette.black.base};
-  max-width: 200px;
   background: ${({ theme }) => theme.palette.white.base};
 `;
 

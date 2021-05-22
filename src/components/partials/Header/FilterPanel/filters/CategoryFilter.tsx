@@ -4,7 +4,7 @@ import React, { useMemo } from "react";
 import useData from "~/hooks/useData";
 
 import { CATEGORIES_MAP } from "~/common/constants";
-import { StyledSelect } from "~/components/partials/Header/FilterPanel/styles";
+import { FilterItemContainer, StyledSelect } from "~/components/partials/Header/FilterPanel/styles";
 
 const CategoryFilter = (): JSX.Element => {
     const { topCategories, setCategory } = useData();
@@ -20,7 +20,7 @@ const CategoryFilter = (): JSX.Element => {
         })), [ topCategories ]);
 
     return (
-        <div>
+        <FilterItemContainer>
             <label>
                 <FormattedMessage id="category_filter.label" />
             </label>
@@ -30,7 +30,7 @@ const CategoryFilter = (): JSX.Element => {
                 allowSelectAll
                 tabIndex={5}
             />
-        </div>
+        </FilterItemContainer>
     );
 }
 

@@ -8,7 +8,7 @@ declare interface IRenderDropdownChildrenProps {
     close: () => void;
 }
 
-declare interface IDropdownProps extends ISelectableComponent {
+declare interface IDropdownProps extends ISelectableComponent, IStylableComponent {
     renderTrigger?: <T extends IDropdownTriggerProps>(props: T) => JSX.Element;
     multiple?: boolean;
     children: (props: IRenderDropdownChildrenProps) => JSX.Element | JSX.Element[];

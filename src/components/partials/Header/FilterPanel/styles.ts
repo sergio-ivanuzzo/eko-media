@@ -11,17 +11,22 @@ export const FilterContainer = styled.div`
       flex: 1;
       display: flex;
       align-items: center;
-      
-      > label {
-        margin-right: 20px;
-      }
     }
     
     margin: 20px 0;
 `;
 
+export const FilterItemContainer = styled.div`
+  display: flex;
+  align-items: center;
+  
+  label {
+    white-space: nowrap;
+  }
+`;
+
 export const StyledSelect = styled(Select)`
-  width: 200px;
+  margin: 0 20px;
 `;
 export const StyledDatepicker = styled(Datepicker).attrs(({ tabIndex }) => ({
     tabIndex: tabIndex || 0

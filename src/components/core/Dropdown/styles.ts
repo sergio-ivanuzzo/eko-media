@@ -1,14 +1,16 @@
 import styled from "styled-components";
 
 export const DropdownContainer = styled.div`
-  width: 200px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const TriggerContainer = styled.div``;
 
 export const FrameContainer = styled.div`
   position: relative;
-  width: 220px;
+  width: 100%;
 `;
 
 export const Frame = styled.div`
