@@ -19,7 +19,6 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
 
         // clear svg before draw new content
         svg.selectAll("svg > *").remove();
-        console.log(data, series);
 
         const xScale = d3.scaleLinear()
             .rangeRound([ 0, width ]).domain([ 0, 1.4 ]);

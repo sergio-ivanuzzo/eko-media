@@ -8,13 +8,13 @@ import { MenuContainer } from "./styles";
 const MenuPanel = (): JSX.Element => {
     return (
         <MenuContainer>
-            <Link to="/">
+            <Link to="/" tabIndex={1}>
                 <FormattedMessage id="link.main" />
             </Link>
-            <Link to="/feedback">
+            <Link to="/feedback" tabIndex={2}>
                 <FormattedMessage id="link.feedback" />
             </Link>
-            <Link to="/about">
+            <Link to="/about" tabIndex={3}>
                 <FormattedMessage id="link.about" />
             </Link>
         </MenuContainer>

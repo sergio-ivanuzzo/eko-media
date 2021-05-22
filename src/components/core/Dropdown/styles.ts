@@ -8,6 +8,7 @@ export const TriggerContainer = styled.div``;
 
 export const FrameContainer = styled.div`
   position: relative;
+  width: 220px;
 `;
 
 export const Frame = styled.div`
@@ -16,8 +17,8 @@ export const Frame = styled.div`
   flex-direction: column;
   white-space: nowrap;
   max-height: 300px;
+  width: 100%;
   overflow-y: auto;
-  max-width: 220px;
   overflow-x: hidden;
   box-shadow: 0 0 3px 0 ${({ theme }) => theme.palette.gray.silver};
 `;

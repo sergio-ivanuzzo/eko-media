@@ -23,6 +23,8 @@ export const FilterContainer = styled.div`
 export const StyledSelect = styled(Select)`
   width: 200px;
 `;
-export const StyledDatepicker = styled(Datepicker)`
+export const StyledDatepicker = styled(Datepicker).attrs(({ tabIndex }) => ({
+    tabIndex: tabIndex || 0
+}))`
   width: 200px;
 `;

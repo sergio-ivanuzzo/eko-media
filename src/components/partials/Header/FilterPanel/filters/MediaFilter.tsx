@@ -37,6 +37,7 @@ const MediaFilter = (): JSX.Element => {
                 onSelect={handleSelect}
                 multiple
                 allowSelectAll
+                tabIndex={6}
             />
         </div>
     );

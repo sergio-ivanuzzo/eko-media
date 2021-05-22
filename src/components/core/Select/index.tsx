@@ -57,7 +57,8 @@ const Select = ({ renderItem = DefaultItem, renderTrigger = DefaultTrigger, ...p
         options,
         multiple = false,
         allowSelectAll = false,
-        renderSelectAll = DefaultSelectAll
+        renderSelectAll = DefaultSelectAll,
+        tabIndex,
     } = props;
 
     const { formatMessage } = useIntl();
@@ -96,7 +97,9 @@ const Select = ({ renderItem = DefaultItem, renderTrigger = DefaultTrigger, ...p
     }, [ selected ]);
     
     return (
-        <Dropdown renderTrigger={(props: IDropdownTriggerProps) => renderTrigger({ selected, ...props })}>
+        <Dropdown tabIndex={tabIndex}
+                  renderTrigger={(props: IDropdownTriggerProps) => renderTrigger({ selected, ...props })}
+        >
             {(props: IRenderDropdownChildrenProps) => {
                 return (
                     <SelectChildren

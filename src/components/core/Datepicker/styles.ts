@@ -1,6 +1,20 @@
-import DatePicker from "react-datepicker";
 import styled from "styled-components";
 
-import "react-datepicker/dist/react-datepicker.css";
+export const DatePickerContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 220px;
+`;
 
-export const StyledDatepicker = styled(DatePicker)``;
+export const DatePickerItem = styled.div`
+  text-align: center;
+  padding: 5px;
+  border-bottom: 1px solid ${({ theme }) => theme.palette.gray.silver};
+  background: ${({ theme }) => theme.palette.white.base};
+`;
+
+export const TriggerItem = styled.div`
+  text-align: center;
+  padding: 5px;
+  text-transform: capitalize;
+`;

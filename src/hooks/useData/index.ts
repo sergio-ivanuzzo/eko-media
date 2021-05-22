@@ -84,7 +84,11 @@ const useData = (): IUseDataResponse => {
             let items = await Promise.all(Object.values(TYPES).map((type) => {
                 // TODO: refactor all and profiles
                 return Promise.all(topCategories.concat("all", "profiles").map(async (category) => {
-                    const filename = `${type}_${category}_${month}_${year}`;
+                    const categoryKey = Object.keys(CATEGORIES_MAP).find(
+                        (key: string) => CATEGORIES_MAP[key] === category
+                    ) || category;
+
+                    const filename = `${type}_${categoryKey}_${month}_${year}`;
                     // we don't know 100% which extension filename has, try both
                     const csv = await load(dirPath, `${filename}.${FILE_EXTENSION.CSV}`);
                     const json = await load(dirPath, `${filename}.${FILE_EXTENSION.JSON}`);

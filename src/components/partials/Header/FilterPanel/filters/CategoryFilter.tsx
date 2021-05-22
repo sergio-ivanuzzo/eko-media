@@ -1,10 +1,10 @@
 import { FormattedMessage } from "react-intl";
 import React, { useMemo } from "react";
 
-import { StyledSelect } from "~/components/partials/Header/FilterPanel/styles";
 import useData from "~/hooks/useData";
 
 import { CATEGORIES_MAP } from "~/common/constants";
+import { StyledSelect } from "~/components/partials/Header/FilterPanel/styles";
 
 const CategoryFilter = (): JSX.Element => {
     const { topCategories, setCategory } = useData();
@@ -28,6 +28,7 @@ const CategoryFilter = (): JSX.Element => {
                 options={options}
                 onSelect={handleSelect}
                 allowSelectAll
+                tabIndex={5}
             />
         </div>
     );

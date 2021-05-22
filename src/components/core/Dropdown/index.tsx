@@ -14,21 +14,26 @@ const DefaultTrigger = ({ toggle, isOpen }: IDropdownTriggerProps): JSX.Element 
     );
 };
 
-const Dropdown = ({ renderTrigger = DefaultTrigger, children }: IDropdownProps): JSX.Element => {
+const Dropdown = ({ renderTrigger = DefaultTrigger, children, onClose = () => null }: IDropdownProps): JSX.Element => {
     const [ isOpen, setOpen ] = useState(false);
     const [ dropdownRef, isActiveElement ] = useActiveElement<HTMLDivElement>();
 
     const toggle = () => setOpen(!isOpen);
     const close = () => setOpen(false);
 
+    const handleClose = (): void => {
+        close();
+        onClose();
+    };
+
     // handling close on click outside
     useEffect(() => {
-        !isActiveElement && close();
+        !isActiveElement && handleClose();
     }, [ isActiveElement ]);
 
     // handle close on keyboard events
     useKeyboard({
-        Esc: () => close(),
+        Esc: () => handleClose(),
     })
 
     return (

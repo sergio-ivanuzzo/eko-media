@@ -1,3 +1,19 @@
-declare interface IDatePickerProps {
+declare interface IDatePickerProps extends ISelectableComponent {
     onDateChange: () => void;
+    renderTrigger?: (props: IDatePickerTriggerProps) => JSX.Element;
+    renderItem?: (props: IDatePickerItemProps) => JSX.Element;
+}
+
+declare interface IDatePickerTriggerProps extends IDropdownTriggerProps {
+    selectedDate: Date;
+}
+
+declare interface IDatePickerItemProps {
+    onClick: () => void;
+    value: string;
+}
+
+declare interface IDatePickerHandleChangeProps {
+    month?: number;
+    year?: number;
 }
