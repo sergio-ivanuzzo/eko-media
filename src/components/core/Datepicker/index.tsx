@@ -40,11 +40,12 @@ const DatePicker = ({ onDateChange, renderTrigger = DefaultTrigger, renderItem =
     const [ mode, setMode ] = useState<DatePickerMode>(DatePickerMode.SELECTING_MONTH);
 
     const handleDateChange = ({ month, year }: IDatePickerHandleChangeProps): void => {
-        const date = new Date();
-        year && date.setFullYear(year);
-        month && date.setMonth(month);
+        const newDate = new Date(date);
 
-        setDate(date);
+        typeof year === "number" && newDate.setFullYear(year);
+        typeof month === "number" && newDate.setMonth(month);
+
+        setDate(newDate);
     };
 
     // fixing race condition, bc onDataChange should be fired after date was changed
