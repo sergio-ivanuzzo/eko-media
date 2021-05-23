@@ -12,12 +12,14 @@ const useActiveElement = <T extends HTMLElement | null>(): [RefObject<T>, boolea
                     element.contains(e.target as Node) || document.activeElement === element || e.target === element,
                 );
             };
-            document.addEventListener("mousedown", handleEvent);
-            document.addEventListener("keydown", handleEvent);
+
+            // event SHOULD be mouseUP or keyUP, for DOWN events it works from second call
+            document.addEventListener("mouseup", handleEvent);
+            document.addEventListener("keyup", handleEvent);
 
             return () => {
-                document.removeEventListener("mousedown", handleEvent);
-                document.removeEventListener("keydown", handleEvent);
+                document.removeEventListener("mouseup", handleEvent);
+                document.removeEventListener("keyup", handleEvent);
             };
         }
     }, [ ref.current ]);

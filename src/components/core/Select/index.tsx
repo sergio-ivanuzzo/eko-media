@@ -43,7 +43,7 @@ const DefaultTrigger = ({ selected, ...props }: ISelectTriggerProps): JSX.Elemen
                                         handleUnselect({ option: item });
                                     }}
                                 >
-                                    <Close width={11} />
+                                    <Close />
                                 </CloseButton>
                               )
                             }

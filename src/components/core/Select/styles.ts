@@ -43,4 +43,8 @@ export const CloseButton = styled.button`
   align-items: center;
   background: transparent;
   border: none;
+  
+  svg {
+    width: 11px;
+  }
 `;
