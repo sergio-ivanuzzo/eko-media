@@ -1,11 +1,11 @@
 import React from "react";
 
-import Header from "./index";
+import UIHeader from "./index";
 
 export default {
-    title: "Components/Header"
+    title: "Components/Partials"
 };
 
-export const SimpleHeader = (): JSX.Element => {
-    return <Header />;
+export const Header = (): JSX.Element => {
+    return <UIHeader />;
 }

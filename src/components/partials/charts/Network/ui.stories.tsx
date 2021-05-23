@@ -8,7 +8,7 @@ import { DataContext } from "~/providers/DataProvider";
 
 
 export default {
-    title: "Components/Charts"
+    title: "Components/Partials/Charts"
 };
 
 export const Network = (): JSX.Element => {

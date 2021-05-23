@@ -56,3 +56,11 @@ export const FILTER_MASK_MAP = {
 };
 
 export const FILTER_BY_CATEGORY_INDEXES = [ "category", "Найбільше коментує" ];
+
+// for politician_ type files
+export enum Mention {
+    POSITIVE = "позитивні",
+    NEUTRAL = "нейтральні",
+    NEGATIVE = "негативні",
+    ALL = "загалом",
+}

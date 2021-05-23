@@ -6,7 +6,7 @@ import useData from "~/hooks/useData";
 import { DataContext } from "~/providers/DataProvider";
 
 export default {
-    title: "Components/Charts"
+    title: "Components/Partials/Charts"
 };
 
 export const StackedBar = (): JSX.Element => {

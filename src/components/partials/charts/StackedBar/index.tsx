@@ -29,6 +29,8 @@ const StackedBar = (): JSX.Element => {
         [ categories ]
     );
 
+    console.log(dataset);
+
     const height = useMemo(
         () => media.length
             ? BAR_HEIGHT * media.length

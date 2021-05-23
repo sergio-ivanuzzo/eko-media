@@ -7,7 +7,7 @@ import ConditionalRender from "~/components/core/ConditionalRender";
 import { DataContext } from "~/providers/DataProvider";
 
 export default {
-    title: "Components/Charts"
+    title: "Components/Partials/Charts"
 };
 
 export const Bubble = (): JSX.Element => {

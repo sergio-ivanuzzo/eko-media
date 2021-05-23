@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect } from "react";
+import { useCallback, useContext } from "react";
 
 import csvToJson from "~/parsers/csvToJson";
 
@@ -44,20 +44,20 @@ const useData = (): IUseDataResponse => {
         };
     }, [ selectedDate ]);
 
-    useEffect(() => {
-        const { month, year } = getMonthAndYear();
-        const categoriesData = data[`category_all_${month}_${year}`];
-
-        if (categoriesData) {
-            const categories = categoriesData.map((item: IItem) => item.category);
-            setTopCategories(categories as string[]);
-            setAllMedia(
-                Object
-                    .keys(categoriesData[0])
-                    .filter((key: string) => !FILTER_BY_CATEGORY_INDEXES.includes(key))
-            );
-        }
-    }, [ data, getMonthAndYear ]);
+    // useEffect(() => {
+    //     const { month, year } = getMonthAndYear();
+    //     const categoriesData = data[`category_all_${month}_${year}`];
+    //
+    //     if (categoriesData) {
+    //         const categories = categoriesData.map((item: IItem) => item.category);
+    //         const allMedia = Object.keys(categoriesData[0])
+    //             .filter((key: string) => !FILTER_BY_CATEGORY_INDEXES.includes(key));
+    //
+    //         setTopCategories(categories as string[]);
+    //         setAllMedia(allMedia);
+    //         setMedia(allMedia);
+    //     }
+    // }, [ data, getMonthAndYear ]);
 
     const load = useCallback(async (dirPath: string, filename: string): Promise<IData<IItem>> => {
         // load file and parse it into object or array of objects (for csv only)
@@ -78,32 +78,73 @@ const useData = (): IUseDataResponse => {
 
     }, []);
 
+    const loadCategoriesAndMedia = useCallback(async (): Promise<[string[], string[]]> => {
+        const { month, year } = getMonthAndYear();
+        const dirPath = `${ROOT_DIR}/${year}/${month}`;
+        const result = await load(dirPath, `category_all_${month}_${year}.${FILE_EXTENSION.CSV}`);
+
+        const categoriesData = result[`category_all_${month}_${year}`];
+        let categories: string[] = [];
+        let allMedia: string[] = [];
+        if (categoriesData) {
+            categories = categoriesData.map((item) => item.category.toString());
+            allMedia = Object.keys(categoriesData[0])
+                .filter((key: string) => !FILTER_BY_CATEGORY_INDEXES.includes(key));
+
+            setTopCategories(categories as string[]);
+            setAllMedia(allMedia);
+            setMedia(allMedia);
+        }
+
+        return [ categories, allMedia ];
+    }, [ load, getMonthAndYear ]);
+
     const loadAll = useCallback(async (): Promise<void> => {
         const { month, year } = getMonthAndYear();
+        const dirPath = `${ROOT_DIR}/${year}/${month}`;
 
-        if (month && year) {
-            const dirPath = `${ROOT_DIR}/${year}/${month}`;
+        const [ parsedCategories ] = await loadCategoriesAndMedia();
 
-            let items = await Promise.all(Object.values(TYPES).map((type) => {
-                // TODO: refactor all and profiles
-                return Promise.all(topCategories.concat("all", "profiles").map(async (category) => {
-                    const categoryKey = Object.keys(CATEGORIES_MAP).find(
-                        (key: string) => CATEGORIES_MAP[key] === category
-                    ) || category;
+        const jsonDataAll = await Promise.all([ TYPES.NETWORK, TYPES.CONNECTION ].map(async (type) => {
+            const filename = `${type}_all_${month}_${year}`;
+            return await load(dirPath, `${filename}.${FILE_EXTENSION.JSON}`);
+        }));
 
-                    const filename = `${type}_${categoryKey}_${month}_${year}`;
-                    // we don't know 100% which extension filename has, try both
-                    const csv = await load(dirPath, `${filename}.${FILE_EXTENSION.CSV}`);
-                    const json = await load(dirPath, `${filename}.${FILE_EXTENSION.JSON}`);
+        const csvDataAll = await Promise.all([ TYPES.SPHERE, TYPES.WORD_CLOUD, TYPES.CATEGORY ].map(async (type) => {
+            const filename = `${type}_all_${month}_${year}`;
+            return await load(dirPath, `${filename}.${FILE_EXTENSION.CSV}`);
+        }));
 
-                    return { ...csv, ...json };
-                }));
-            }));
+        const csvDataCategorized = await Promise.all([ TYPES.POLITICIAN, TYPES.EXPERT, TYPES.TOPIC ].map((type) => {
+            return Promise.all(parsedCategories.concat("all", "profiles").map(async (category) => {
+                const categoryKey = Object.keys(CATEGORIES_MAP).find(
+                    (key: string) => CATEGORIES_MAP[key] === category
+                ) || category;
 
-            items = items.map((item) => Object.assign({}, ...item));
+                const filename = `${type}_${categoryKey}_${month}_${year}`;
+                return await load(dirPath, `${filename}.${FILE_EXTENSION.CSV}`);
+            }))
+        }));
 
-            setData(Object.assign({}, ...items));
-        }
+        const items = {
+            ...jsonDataAll.reduce((acc, item) => ({
+                ...acc,
+                ...item
+            }), {}),
+            ...csvDataAll.reduce((acc, item) => ({
+                ...acc,
+                ...item
+            }), {}),
+            ...csvDataCategorized.reduce((acc, dataset) => ({
+                ...acc,
+                ...dataset.reduce((sub, item) => ({
+                    ...sub,
+                    ...item
+                }), {})
+            }), {}),
+        };
+
+        setData(items);
     }, [ load, getMonthAndYear, setData ]);
 
     const getDataset = useCallback((type: TYPES, category = ""): IItem[] => {

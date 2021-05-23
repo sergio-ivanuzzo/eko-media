@@ -32,6 +32,9 @@ export const TriggerContainer = styled.div`
 export const TriggerItem = styled.div<ITriggerItemProps>`
   display: flex;
   align-items: center;
+  padding: 5px;
+  margin: 5px;
+  border-radius: 5px;
   
   ${({ multiple, theme }) => multiple && `
     background: ${theme.palette.gray.silver};

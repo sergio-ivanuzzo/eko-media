@@ -111,7 +111,12 @@ const Select = ({ renderItem = DefaultItem, renderTrigger = DefaultTrigger, ...p
     const { formatMessage } = useIntl();
     const itemAll: ISelectOption = { key: "all", value: formatMessage({ id: "select.default_select_all" }) };
 
-    const [ selected, setSelected ] = useState<ISelectOption[]>(value);
+    const [ selected, setSelected ] = useState<ISelectOption[]>(
+        value.length ? value
+            : allowSelectAll
+            ? [ itemAll ]
+            : []
+    );
 
     const handleSelect = useCallback(({ option, close }: IHandleSelectProps): void => {
         if (!multiple) {
