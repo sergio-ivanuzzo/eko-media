@@ -11,4 +11,5 @@ export const AppName = styled.div`
   font-size: 40px;
   line-height: 40px;
   margin: 0 auto;
+  white-space: nowrap;
 `;

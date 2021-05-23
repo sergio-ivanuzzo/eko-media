@@ -1,12 +1,9 @@
 import React from "react";
 
-const ArrowLeft = ({ width, height }: IIconProps): JSX.Element => {
-    const iconWidth = width || "100%";
-    const iconHeight = height || "100%";
-
+const ArrowLeft = ({ width = "100%", height = "100%" }: IIconProps): JSX.Element => {
     return (
-        <svg width={iconWidth}
-             height={iconHeight}
+        <svg width={width}
+             height={height}
              viewBox="0 0 18 14"
              fill="none"
              xmlns="http://www.w3.org/2000/svg"

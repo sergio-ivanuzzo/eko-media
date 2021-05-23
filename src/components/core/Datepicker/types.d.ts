@@ -1,4 +1,4 @@
-declare interface IDatePickerProps extends ISelectableComponent {
+declare interface IDatePickerProps extends ISelectableComponent, IStylableComponent {
     onDateChange: () => void;
     renderTrigger?: (props: IDatePickerTriggerProps) => JSX.Element;
     renderItem?: (props: IDatePickerItemProps) => JSX.Element;

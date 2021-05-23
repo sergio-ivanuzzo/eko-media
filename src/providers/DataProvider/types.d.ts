@@ -24,4 +24,6 @@ declare interface IDataProviderContext<T extends IItem> {
     setMedia: Dispatch<SetStateAction<string[]>>;
     topCategories: string[];
     setTopCategories: Dispatch<SetStateAction<string[]>>;
+    allMedia: string[];
+    setAllMedia: Dispatch<SetStateAction<string[]>>;
 }

@@ -28,6 +28,9 @@ const useData = (): IUseDataResponse => {
         // all categories for current month
         topCategories,
         setTopCategories,
+        // all media for current month
+        allMedia,
+        setAllMedia,
     } = useContext<IDataProviderContext<IItem>>(DataContext);
 
     // we need month and year to detect which directory contains files with data
@@ -48,7 +51,7 @@ const useData = (): IUseDataResponse => {
         if (categoriesData) {
             const categories = categoriesData.map((item: IItem) => item.category);
             setTopCategories(categories as string[]);
-            setMedia(
+            setAllMedia(
                 Object
                     .keys(categoriesData[0])
                     .filter((key: string) => !FILTER_BY_CATEGORY_INDEXES.includes(key))
@@ -155,6 +158,7 @@ const useData = (): IUseDataResponse => {
         setCategory,
         selectedMedia,
         setMedia,
+        allMedia
     }
 };
 

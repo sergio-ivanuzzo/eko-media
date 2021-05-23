@@ -15,7 +15,5 @@ export const DatePickerItem = styled.div`
 export const TriggerItem = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 5px;
   text-transform: capitalize;
 `;

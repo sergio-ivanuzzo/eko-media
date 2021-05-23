@@ -11,7 +11,9 @@ export const DataContext = createContext<IDataProviderContext<IItem>>({
     media: [ "all" ],
     setMedia: () => undefined,
     topCategories: [],
-    setTopCategories: () => undefined
+    setTopCategories: () => undefined,
+    allMedia: [],
+    setAllMedia: () => undefined,
 });
 
 const DataProvider = ({ children }: IDataProviderProps): JSX.Element => {
@@ -23,7 +25,8 @@ const DataProvider = ({ children }: IDataProviderProps): JSX.Element => {
     const [ media, setMedia ] = useState<string[]>([]);
 
     const [ topCategories, setTopCategories ] = useState<string[]>([]);
-    
+    const [ allMedia, setAllMedia ] = useState<string[]>([]);
+
     const context = { 
         data, 
         setData, 
@@ -35,6 +38,8 @@ const DataProvider = ({ children }: IDataProviderProps): JSX.Element => {
         setMedia,
         topCategories,
         setTopCategories,
+        allMedia,
+        setAllMedia,
     };
 
     return (

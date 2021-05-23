@@ -4,20 +4,22 @@ interface IListeners {
     [keyCode: string]: (e: KeyboardEvent) => void;
 }
 
-const useKeyboard = (listeners: IListeners): void => {
+const useKeyboard = (listeners: IListeners, deps: any[] = []): void => {
     useEffect(() => {
         const rootListener = (e: KeyboardEvent) => {
             e.stopPropagation();
 
-            if (e.key in listeners) {
+            const key = e.key.trim() || e.code.trim();
+
+            if (key in listeners) {
                 e.preventDefault();
-                listeners[e.key](e);
+                listeners[key](e);
             }
         };
 
         document.addEventListener("keydown", rootListener);
         return () => document.removeEventListener("keydown", rootListener);
-    }, [ listeners ]);
+    }, [ listeners, ...deps ]);
 };
 
 export default useKeyboard;

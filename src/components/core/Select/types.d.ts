@@ -16,7 +16,9 @@ declare interface IDefaultSelectItemProps {
 
 declare interface ISelectItemProps extends IDefaultSelectItemProps {
     handleSelect: (props: IHandleSelectProps) => void;
+    handleUnselect: (props: IHandleUnselectProps) => void;
     option: ISelectOption;
+    isActive?: boolean;
 }
 
 declare interface ISelectOption {
@@ -27,6 +29,8 @@ declare interface ISelectOption {
 
 declare interface ISelectTriggerProps extends IDropdownTriggerProps {
     selected: ISelectOption[];
+    multiple?: boolean;
+    handleUnselect: (props: IHandleUnselectProps) => void;
 }
 
 declare interface ISelectChildrenProps extends IRenderDropdownChildrenProps, ISelectAllProps {
@@ -34,7 +38,9 @@ declare interface ISelectChildrenProps extends IRenderDropdownChildrenProps, ISe
     handleSelect: (props: IHandleSelectProps) => void;
     renderItem: (props: ISelectItemProps) => JSX.Element;
     renderSelectAll: (props: IDefaultSelectItemProps) => JSX.Element;
+    selected: ISelectOption[];
     allowSelectAll?: boolean;
+    handleUnselect: (props: IHandleUnselectProps) => void;
 }
 
 declare interface ISelectAllProps extends IHandleSelectAllProps {
@@ -48,4 +54,12 @@ declare interface IHandleSelectProps {
 
 declare interface IHandleSelectAllProps {
     close: () => void;
+}
+
+declare interface IHandleUnselectProps {
+    option: ISelectOption;
+}
+
+declare interface ITriggerItemProps {
+    multiple?: boolean;
 }

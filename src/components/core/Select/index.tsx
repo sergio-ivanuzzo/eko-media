@@ -1,25 +1,60 @@
 import { FormattedMessage, useIntl } from "react-intl";
 import React, { useCallback, useEffect, useState } from "react";
 
+import Close from "~/components/icons/Close";
+import ConditionalRender from "~/components/core/ConditionalRender";
 import Dropdown from "~/components/core/Dropdown";
+import Placeholder from "~/components/core/Placeholder";
 
-import { MenuItem, Trigger, TriggerItem } from "./styles";
+import { PlaceholderTextAlign } from "~/components/core/Placeholder/constants";
+import { CloseButton, MenuItem, TriggerContainer, TriggerItem } from "./styles";
 
-const DefaultItem = ({ option, handleSelect, close }: ISelectItemProps): JSX.Element => {
+const DefaultItem = ({ option, isActive = false, ...props }: ISelectItemProps): JSX.Element => {
+    const {
+        handleUnselect,
+        close,
+        handleSelect
+    } = props;
+
     return (
-        <MenuItem key={option.key} onClick={() => handleSelect({ option, close })}>
+        <MenuItem key={option?.key}
+                  onClick={() => !isActive ? handleSelect({ option, close }) : handleUnselect({ option })}
+                  isActive={isActive}
+        >
             {option.value}
         </MenuItem>
     );
 };
 
-const DefaultTrigger = ({ selected, toggle, ...props }: ISelectTriggerProps): JSX.Element => {
+const DefaultTrigger = ({ selected, ...props }: ISelectTriggerProps): JSX.Element => {
+    const { toggle, multiple, handleUnselect } = props;
+
     return (
-        <Trigger {...props} onClick={() => toggle()}>
-            {selected.map((item: ISelectOption) => (
-                <TriggerItem key={item.key}>{`${item.value}`}</TriggerItem>
-            ))}
-        </Trigger>);
+        <TriggerContainer {...props} onClick={() => toggle()}>
+            <ConditionalRender condition={!!selected.length}>
+                <>
+                    {selected.map((item: ISelectOption) => (
+                        <TriggerItem key={item.key} multiple={multiple}>
+                            {`${item.value}`}
+                            { multiple && (
+                                <CloseButton onClick={
+                                    (e) => {
+                                        e.stopPropagation();
+                                        handleUnselect({ option: item });
+                                    }}
+                                >
+                                    <Close width={11} />
+                                </CloseButton>
+                              )
+                            }
+                        </TriggerItem>
+                    ))}
+                </>
+                <Placeholder align={PlaceholderTextAlign.LEFT}>
+                    <FormattedMessage id="placeholder.empty_select" />
+                </Placeholder>
+            </ConditionalRender>
+        </TriggerContainer>);
 };
 
 const DefaultSelectAll = ({ handleSelectAll, close }: IDefaultSelectItemProps): JSX.Element => {
@@ -31,14 +66,25 @@ const DefaultSelectAll = ({ handleSelectAll, close }: IDefaultSelectItemProps): 
 };
 
 const SelectChildren = ({ renderSelectAll = DefaultSelectAll, ...props }: ISelectChildrenProps): JSX.Element => {
-    const { handleSelect, close, allowSelectAll, options, renderItem, handleSelectAll } = props;
+    const {
+        handleSelect,
+        close = () => null,
+        allowSelectAll,
+        options,
+        renderItem,
+        handleSelectAll,
+        handleUnselect,
+        selected
+    } = props;
 
     let children = options.map(
         (option: ISelectOption) => renderItem({
             option,
             handleSelect,
             close,
-            handleSelectAll
+            handleSelectAll,
+            handleUnselect,
+            isActive: selected.map((item) => item.key).includes(option.key)
         })
     );
     if (allowSelectAll) {
@@ -65,20 +111,15 @@ const Select = ({ renderItem = DefaultItem, renderTrigger = DefaultTrigger, ...p
     const { formatMessage } = useIntl();
     const itemAll: ISelectOption = { key: "all", value: formatMessage({ id: "select.default_select_all" }) };
 
-    const [ selected, setSelected ] = useState<ISelectOption[]>(
-        value.length ? value
-            : allowSelectAll
-                ? [ itemAll ]
-                : []
-    );
+    const [ selected, setSelected ] = useState<ISelectOption[]>(value);
 
     const handleSelect = useCallback(({ option, close }: IHandleSelectProps): void => {
         if (!multiple) {
             close();
             setSelected([ option ]);
         } else {
-            if (!selected.includes(option)) {
-                setSelected([ ...selected, option ]);
+            if (!selected.map((item) => item.key).includes(option.key)) {
+                setSelected((prevSelected) => [ ...prevSelected, option ]);
             }
         }
     }, [ selected ]);
@@ -92,15 +133,30 @@ const Select = ({ renderItem = DefaultItem, renderTrigger = DefaultTrigger, ...p
         }
     }, [ options ]);
 
+    const handleUnselect = ({ option }: IHandleUnselectProps): void => {
+        const index = selected.findIndex((item) => item.key === option.key);
+        if (index >= 0) {
+            setSelected([ ...selected.slice(0, index), ...selected.slice(index + 1) ]);
+        }
+    };
+
     // fixing race condition, bc most actual "selected" will be available on next render
     useEffect(() => {
         onSelect(selected);
     }, [ selected ]);
     
     return (
-        <Dropdown tabIndex={tabIndex}
-                  renderTrigger={(props: IDropdownTriggerProps) => renderTrigger({ selected, ...props })}
-                  className={className}
+        <Dropdown
+            className={className}
+            tabIndex={tabIndex}
+            renderTrigger={
+                (props: IDropdownTriggerProps) => renderTrigger({
+                    selected,
+                    multiple,
+                    handleUnselect,
+                    ...props
+                })
+            }
         >
             {(props: IRenderDropdownChildrenProps) => {
                 return (
@@ -111,6 +167,8 @@ const Select = ({ renderItem = DefaultItem, renderTrigger = DefaultTrigger, ...p
                         allowSelectAll={allowSelectAll}
                         handleSelectAll={handleSelectAll}
                         renderSelectAll={renderSelectAll}
+                        handleUnselect={handleUnselect}
+                        selected={selected}
                         { ...props} />
                 );
             }}

@@ -6,3 +6,7 @@ declare interface ISelectableComponent {
 declare interface IStylableComponent {
     className?: string;
 }
+
+declare interface IActivableComponent {
+    isActive?: boolean;
+}

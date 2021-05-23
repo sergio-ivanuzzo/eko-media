@@ -1,4 +1,4 @@
 declare interface IIconProps {
-    width?: number;
-    height?: number;
+    width?: number | string;
+    height?: number | string;
 }

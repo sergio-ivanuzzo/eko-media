@@ -1,11 +1,8 @@
 import React from "react";
 
-const Logo = ({ width, height }: IIconProps): JSX.Element => {
-    const iconWidth = width || "100%";
-    const iconHeight = height || "100%";
-
+const Logo = ({ width = "100%", height = "100%" }: IIconProps): JSX.Element => {
     return (
-        <svg width={iconWidth} height={iconHeight} viewBox="0 0 88 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width={width} height={height} viewBox="0 0 88 45" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g clip-path="url(#clip0)">
                 <path d="M5.79424 10.2024H2.35391V16.5789H6.15638C8.87243 16.5789 10.1399 15.4858 10.1399
                 13.2996C10.1399 11.1134 8.69136 10.2024 5.79424 10.2024ZM5.97531 2.00405H2.35391V8.01619H5.79424C8.51029
@@ -104,7 +101,7 @@ const Logo = ({ width, height }: IIconProps): JSX.Element => {
             </g>
             <defs>
                 <clipPath id="clip0">
-                    <rect width={iconWidth} height={iconHeight} fill="white" />
+                    <rect width={width} height={height} fill="white" />
                 </clipPath>
             </defs>
         </svg>

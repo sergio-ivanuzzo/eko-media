@@ -12,3 +12,17 @@ export const OverflowCSS = css`
   text-overflow: ellipsis;
   white-space: nowrap;
 `;
+
+export const NoSelectCSS = css`
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+`;
+
+export const NoActiveOutlineCSS = css`
+  &:active, &:focus, &:focus-visible {
+    outline: none !important;
+  }
+`;

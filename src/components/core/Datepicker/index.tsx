@@ -33,13 +33,20 @@ const DefaultItem = ({ onClick, value }: IDatePickerItemProps): JSX.Element => {
     )
 };
 
-const DatePicker = ({ onDateChange, renderTrigger = DefaultTrigger, renderItem = DefaultItem }: IDatePickerProps): JSX.Element => {
+const DatePicker = (props: IDatePickerProps): JSX.Element => {
+    const {
+        onDateChange,
+        renderTrigger = DefaultTrigger,
+        renderItem = DefaultItem,
+        className = "",
+        tabIndex,
+    } = props;
+
     const { locale } = useIntl();
     const monthsList = getMonthsList(locale);
     const yearRange = getRange(MIN_YEAR, MAX_YEAR);
 
     const { date, setDate } = useContext<IDataProviderContext<IItem>>(DataContext);
-
     const [ mode, setMode ] = useState<DatePickerMode>(DatePickerMode.SELECTING_MONTH);
 
     const handleDateChange = ({ month, year }: IDatePickerHandleChangeProps): void => {
@@ -57,10 +64,19 @@ const DatePicker = ({ onDateChange, renderTrigger = DefaultTrigger, renderItem =
     }, [ date ]);
 
     return (
-        <Dropdown renderTrigger={(props: IDropdownTriggerProps) => renderTrigger({ selectedDate: date, ...props })}
-                  onClose={() => {
-                      setMode(DatePickerMode.SELECTING_MONTH);
-                  }}>
+        <Dropdown
+            className={className}
+            tabIndex={tabIndex}
+            renderTrigger={
+                (props: IDropdownTriggerProps) => renderTrigger({
+                    selectedDate: date,
+                    ...props
+                })
+            }
+            onClose={
+                () => setMode(DatePickerMode.SELECTING_MONTH)
+            }
+        >
             {({ close }: IRenderDropdownChildrenProps) => {
                 return (
                     <DatePickerContainer>

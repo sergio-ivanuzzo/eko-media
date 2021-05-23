@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import ConditionalRender from "~/components/core/ConditionalRender";
 import useActiveElement from "~/hooks/useActiveElement";
@@ -8,14 +8,14 @@ import { DropdownContainer, Frame, FrameContainer, TriggerContainer } from "./st
 
 const DefaultTrigger = ({ toggle, isOpen }: IDropdownTriggerProps): JSX.Element => {
     return (
-        <div onClick={toggle}>
+        <TriggerContainer onClick={toggle}>
             <button>{isOpen}</button>
-        </div>
+        </TriggerContainer>
     );
 };
 
 const Dropdown = ({ renderTrigger = DefaultTrigger, ...props }: IDropdownProps): JSX.Element => {
-    const { onClose = () => null, className, children } = props;
+    const { onClose = () => null, className = "", children, tabIndex } = props;
     const [ isOpen, setOpen ] = useState(false);
     const [ dropdownRef, isActiveElement ] = useActiveElement<HTMLDivElement>();
 
@@ -32,13 +32,15 @@ const Dropdown = ({ renderTrigger = DefaultTrigger, ...props }: IDropdownProps):
         !isActiveElement && handleClose();
     }, [ isActiveElement ]);
 
-    // handle close on keyboard events
-    useKeyboard({
-        Esc: () => handleClose(),
-    })
+    const listeners = useMemo(() => ({
+        Escape: () => isActiveElement && handleClose(),
+        Space: () => isActiveElement && toggle(),
+    }), [ isActiveElement ]);
+
+    useKeyboard(listeners, [ isActiveElement ])
 
     return (
-        <DropdownContainer ref={dropdownRef} className={className}>
+        <DropdownContainer ref={dropdownRef} className={className} tabIndex={tabIndex}>
             <TriggerContainer>
                 {renderTrigger({
                     toggle ,

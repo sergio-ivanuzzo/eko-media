@@ -26,5 +26,7 @@
   "select.default_select_all": "Всі",
 
   "network.title": "Мережевий аналіз ЗМІ/ Як медіа посилаються одне на одного?",
-  "network.subtitle": "Кількість посилань між ЗМІ"
+  "network.subtitle": "Кількість посилань між ЗМІ",
+
+  "placeholder.empty_select": "Ще нічого не вибрано"
 }

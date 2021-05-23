@@ -10,4 +10,5 @@ declare interface IUseDataResponse {
     setCategory: Dispatch<SetStateAction<string>>;
     selectedMedia: string[];
     setMedia: Dispatch<SetStateAction<string[]>>;
+    allMedia: string[];
 }

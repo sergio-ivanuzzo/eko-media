@@ -10,7 +10,9 @@ const CategoryFilter = (): JSX.Element => {
     const { topCategories, setCategory } = useData();
 
     const handleSelect = (category: ISelectOption[]): void => {
-        setCategory(category[0].key);
+        if (category.length) {
+            setCategory(category[0].key);
+        }
     };
 
     const options = useMemo(() => topCategories

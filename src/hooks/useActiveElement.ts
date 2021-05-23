@@ -7,14 +7,18 @@ const useActiveElement = <T extends HTMLElement | null>(): [RefObject<T>, boolea
     useEffect(() => {
         const element: HTMLElement | null = ref.current;
         if (element) {
-            const handleClick = (e: MouseEvent) => {
+            const handleEvent = (e: Event) => {
                 setIsActiveElement(
                     element.contains(e.target as Node) || document.activeElement === element || e.target === element,
                 );
             };
-            document.addEventListener("mousedown", handleClick);
+            document.addEventListener("mousedown", handleEvent);
+            document.addEventListener("keydown", handleEvent);
 
-            return () => document.removeEventListener("mousedown", handleClick);
+            return () => {
+                document.removeEventListener("mousedown", handleEvent);
+                document.removeEventListener("keydown", handleEvent);
+            };
         }
     }, [ ref.current ]);
 
