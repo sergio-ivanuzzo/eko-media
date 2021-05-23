@@ -78,7 +78,7 @@ const useData = (): IUseDataResponse => {
 
     }, []);
 
-    const loadCategoriesAndMedia = useCallback(async (): Promise<[string[], string[]]> => {
+    const loadCategoriesAndMedia = useCallback(async (): Promise<[IData<IItem>, string[], string[]]> => {
         const { month, year } = getMonthAndYear();
         const dirPath = `${ROOT_DIR}/${year}/${month}`;
         const result = await load(dirPath, `category_all_${month}_${year}.${FILE_EXTENSION.CSV}`);
@@ -96,21 +96,23 @@ const useData = (): IUseDataResponse => {
             setMedia(allMedia);
         }
 
-        return [ categories, allMedia ];
+        return [ result, categories, allMedia ];
     }, [ load, getMonthAndYear ]);
 
     const loadAll = useCallback(async (): Promise<void> => {
         const { month, year } = getMonthAndYear();
         const dirPath = `${ROOT_DIR}/${year}/${month}`;
 
-        const [ parsedCategories ] = await loadCategoriesAndMedia();
+        const [ categoryItem, parsedCategories ] = await loadCategoriesAndMedia();
 
+        // for now there only 2 json files (with only "all" category)
         const jsonDataAll = await Promise.all([ TYPES.NETWORK, TYPES.CONNECTION ].map(async (type) => {
             const filename = `${type}_all_${month}_${year}`;
             return await load(dirPath, `${filename}.${FILE_EXTENSION.JSON}`);
         }));
 
-        const csvDataAll = await Promise.all([ TYPES.SPHERE, TYPES.WORD_CLOUD, TYPES.CATEGORY ].map(async (type) => {
+        // csv files with only "all" category
+        const csvDataAll = await Promise.all([ TYPES.SPHERE, TYPES.WORD_CLOUD ].map(async (type) => {
             const filename = `${type}_all_${month}_${year}`;
             return await load(dirPath, `${filename}.${FILE_EXTENSION.CSV}`);
         }));
@@ -127,6 +129,7 @@ const useData = (): IUseDataResponse => {
         }));
 
         const items = {
+            ...categoryItem,
             ...jsonDataAll.reduce((acc, item) => ({
                 ...acc,
                 ...item
@@ -160,10 +163,19 @@ const useData = (): IUseDataResponse => {
         if (flags & FILTER_FLAGS.BY_MEDIA) {
             Object.keys(filteredData).forEach((key: string) => {
                 const items = filteredData[key];
-                filteredData[key] = items
-                    .filter((dataItem: IItem) => {
-                        return selectedMedia.some((mediaItem) => mediaItem in dataItem);
-                    });
+
+                const allKeys = Object.keys(items[0]);
+                const nonMediaKeys = allKeys.filter((key) => !allMedia.includes(key));
+                const selectedMediaKeys = allKeys.filter(
+                    (key) => selectedMedia.some((mediaName) => key.includes(mediaName))
+                );
+
+                filteredData[key] = items.map((item) => {
+                    return nonMediaKeys.concat(selectedMediaKeys).reduce((acc, key) => ({
+                        ...acc,
+                        [key]: item[key]
+                    }), {});
+                });
             })
         }
 
