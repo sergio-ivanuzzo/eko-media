@@ -150,7 +150,9 @@ const useData = (): IUseDataResponse => {
                 const items = filteredData[key];
 
                 const allKeys = Object.keys(items[0]);
-                const nonMediaKeys = allKeys.filter((key) => !allMedia.includes(key));
+                const nonMediaKeys = allKeys.filter(
+                    (key) => !allMedia.some((mediaName) => key.includes(mediaName))
+                );
                 const selectedMediaKeys = allKeys.filter(
                     (key) => selectedMedia.some((mediaName) => key.includes(mediaName))
                 );

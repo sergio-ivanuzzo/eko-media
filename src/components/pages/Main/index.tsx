@@ -7,7 +7,9 @@ import StackedBar from "~/components/partials/charts/StackedBar";
 import useData from "~/hooks/useData";
 
 import ConditionalRender from "~/components/core/ConditionalRender";
-import { Section } from "~/components/pages/Main/styles";
+import PoliticianBar from "~/components/partials/Content/PoliticianBar";
+
+import { Section, SubSection } from "./styles";
 
 const MainPage = (): JSX.Element => {
 
@@ -17,7 +19,10 @@ const MainPage = (): JSX.Element => {
         <ConditionalRender condition={!!Object.keys(data).length}>
             <>
                 <Section>
-                    <StackedBar />
+                    <SubSection>
+                        <PoliticianBar />
+                        <StackedBar />
+                    </SubSection>
                     <Bubble />
                 </Section>
                 <Section>
