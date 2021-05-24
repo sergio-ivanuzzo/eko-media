@@ -27,6 +27,8 @@ export const TriggerContainer = styled.div`
   flex-wrap: wrap;
   border-radius: 10px;
   border: 1px solid ${({ theme }) => theme.palette.gray.border};
+  height: 36px;
+  overflow: hidden;
 `;
 
 export const TriggerItem = styled.div<ITriggerItemProps>`

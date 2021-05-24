@@ -12,8 +12,6 @@ export const NetworkChartContainer = styled.div`
 `;
 
 export const StyledChart = styled(Chart)`
-  height: 100%;
-  
   .links line {
     stroke: ${({ theme }) => `${theme.palette.gray.silver}`};
   }

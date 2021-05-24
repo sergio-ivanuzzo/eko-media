@@ -35,6 +35,12 @@ export enum FILE_EXTENSION {
     JSON = "json"
 }
 
+export enum MOUSE_BUTTON {
+    LEFT = 0,
+    MIDDLE = 1,
+    RIGHT = 2
+}
+
 export enum FILTER_FLAGS {
     NOT_FILTERABLE = 0,
     BY_CATEGORY = 1,

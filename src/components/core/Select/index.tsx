@@ -6,6 +6,7 @@ import ConditionalRender from "~/components/core/ConditionalRender";
 import Dropdown from "~/components/core/Dropdown";
 import Placeholder from "~/components/core/Placeholder";
 
+import { MOUSE_BUTTON } from "~/common/constants";
 import { PlaceholderTextAlign } from "~/components/core/Placeholder/constants";
 import { CloseButton, MenuItem, TriggerContainer, TriggerItem } from "./styles";
 
@@ -34,7 +35,17 @@ const DefaultTrigger = ({ selected, ...props }: ISelectTriggerProps): JSX.Elemen
             <ConditionalRender condition={!!selected.length}>
                 <>
                     {selected.map((item: ISelectOption) => (
-                        <TriggerItem key={item.key} multiple={multiple}>
+                        <TriggerItem key={item.key}
+                                     multiple={multiple}
+                                     onMouseDown={(e: React.MouseEvent) => {
+                                         e.preventDefault();
+                                         e.stopPropagation();
+
+                                         if (e.button === MOUSE_BUTTON.MIDDLE) {
+                                             handleUnselect({ option: item });
+                                         }
+                                     }}
+                        >
                             {`${item.value}`}
                             { multiple && (
                                 <CloseButton onClick={

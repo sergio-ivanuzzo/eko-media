@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import * as d3 from "d3";
 
 import useChartColor from "~/hooks/useChart/color/useChartColor";
@@ -7,7 +7,9 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
 
     const { getColor, getColorIndexByCategory } = useChartColor();
 
-    const draw = useCallback(({ chartRef, width, height }: IChartDrawProps): void => {
+    const height = useMemo(() => yData.length * 36, [ yData ]);
+
+    const draw = useCallback(({ chartRef, width, height: containerHeight }: IChartDrawProps): void => {
 
         const series = d3.stack()
             .keys(xData)
@@ -15,12 +17,22 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
             .offset(d3.stackOffsetExpand)(data as any);
 
         const svg: any = d3.select(chartRef.current)
-            .attr("viewBox", `0 0 ${width} ${height}`)
-            .attr("height", height)
-            .attr("width", width);
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox", `0 0 ${width} ${height}`);
+
+        // const svg: any = d3.select(chartRef.current)
+            // .attr("viewBox", `0 0 ${width} ${height}`)
+            // .attr("viewBox", `0 0 ${Math.min(width, height)} ${Math.min(width, height)}`)
+            // .attr("height", height)
+            // .attr("width", width)
+            // .attr("height", "100%")
+            // .attr("width", "100%");
 
         // clear svg before draw new content
         svg.selectAll("svg > *").remove();
+
+        // svg.append("g")
+        //     .attr("transform", "translate(" + Math.min(width,height) / 2 + "," + Math.min(width,height) / 2 + ")");
 
         const xScale = d3.scaleLinear()
             .rangeRound([ 0, width ]).domain([ 0, 1.4 ]);
@@ -66,7 +78,7 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
             .attr("y", (d: any) => yScale(d.data.key))
             .attr("width", (d: any, i: any) => xScale(d[1]) - xScale(d[0]))
             .attr("height", yScale.bandwidth())
-    }, [ data, xData, yData ]);
+    }, [ data ]);
 
     return {
         draw

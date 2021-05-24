@@ -44,21 +44,6 @@ const useData = (): IUseDataResponse => {
         };
     }, [ selectedDate ]);
 
-    // useEffect(() => {
-    //     const { month, year } = getMonthAndYear();
-    //     const categoriesData = data[`category_all_${month}_${year}`];
-    //
-    //     if (categoriesData) {
-    //         const categories = categoriesData.map((item: IItem) => item.category);
-    //         const allMedia = Object.keys(categoriesData[0])
-    //             .filter((key: string) => !FILTER_BY_CATEGORY_INDEXES.includes(key));
-    //
-    //         setTopCategories(categories as string[]);
-    //         setAllMedia(allMedia);
-    //         setMedia(allMedia);
-    //     }
-    // }, [ data, getMonthAndYear ]);
-
     const load = useCallback(async (dirPath: string, filename: string): Promise<IData<IItem>> => {
         // load file and parse it into object or array of objects (for csv only)
         const [ name, extension ] = filename.split(".");

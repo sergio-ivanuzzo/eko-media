@@ -18,7 +18,7 @@ const Network = (): JSX.Element => {
     const { getDataset } = useData();
 
     const dataset = getDataset(TYPE, "all");
-    const { nodes, edges } = dataset[0] as IGraphDataset;
+    const { nodes = [], edges = [] } = (dataset[0] || []) as IGraphDataset;
 
     // we use this copies because d3 change array items by reference
     // be careful, "edges" inside draw function are a bit different from "edgesCopy" here bc of that

@@ -30,12 +30,12 @@ const StackedBar = (): JSX.Element => {
         [ categories ]
     );
 
-    const height = useMemo(
-        () => media.length
-            ? 32 * media.length
-            : 0,
-        [ media ]
-    );
+    // const height = useMemo(
+    //     () => media.length
+    //         ? 32 * media.length
+    //         : 0,
+    //     [ media ]
+    // );
 
     const data = useMemo(() => {
         return media.map((media: string) => {
@@ -51,7 +51,8 @@ const StackedBar = (): JSX.Element => {
 
     const { draw } = useDrawStackedBar({ data, xData: categories, yData: media });
 
-    return <StyledChart draw={draw} height={height} />
+    // return <StyledChart draw={draw} height={height} />
+    return <StyledChart draw={draw} />
 };
 
 export default StackedBar;

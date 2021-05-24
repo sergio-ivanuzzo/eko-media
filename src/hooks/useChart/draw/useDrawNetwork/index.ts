@@ -64,7 +64,7 @@ const useDrawNetwork = (
                 }
             });
 
-        node.selectAll("text").style("fill", (node: any) => {
+        node.selectAll("text").transition().duration(500).style("fill", (node: any) => {
             if (node.index === selectedNode.index) {
                 return selectedNodeTextColor;
             } else {
@@ -80,7 +80,7 @@ const useDrawNetwork = (
         notSelectedOpacity?: number,
         selectedOpacity?: number,
     ) => {
-        link.style("stroke-opacity", (o: any) => (
+        link.transition().duration(500).style("stroke-opacity", (o: any) => (
                 (o.source === selectedNode || o.target === selectedNode)
                     ? selectedOpacity || o.alpha
                     : notSelectedOpacity || o.alpha
@@ -110,16 +110,15 @@ const useDrawNetwork = (
                 .distanceMin(MIN_DISTANCE)
                 .distanceMax(MAX_DISTANCE)
             )
-            .force("center", d3.forceCenter(width / 2, height / 2))
-            // .stop();
+            .force("center", d3.forceCenter(width / 2, height / 2));
 
         if (simulation !== undefined) {
             simulation.force("link").links(edges);
         }
 
-        for (let i = 0; i < MIN_DISTANCE; ++i) {
-            simulation.tick();
-        }
+        // disable animation
+        simulation.stop();
+        simulation.tick(nodes.length);
 
         const link = svg.append("g")
             .attr("class", "links")
