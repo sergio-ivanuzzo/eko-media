@@ -8,10 +8,9 @@ export const HeaderContainer = styled.div<IHeaderProps>`
     font-family: "NeueHaasUnica", sans-serif;
     
     ${({ sticky }: IHeaderProps) => sticky && `
-        position: fixed;
+        position: sticky;
         top: 0;
         width: 100%;
-        margin-bottom: 50px;
         z-index: 2;
     `};
     border-bottom: 1px solid ${({ theme }) => `${theme.palette.gray.silver}`};

@@ -1,9 +1,9 @@
 import React, { useMemo } from "react";
 
-import Chart from "~/components/core/Chart";
 import useData from "~/hooks/useData";
 import useDrawBubble, { MAX_BUBBLE_RADIUS } from "~/hooks/useChart/draw/useDrawBubble";
 
+import { StyledChart } from "./styles";
 import { TYPES } from "~/common/constants";
 
 const TYPE = TYPES.WORD_CLOUD;
@@ -14,9 +14,6 @@ const Bubble = (): JSX.Element => {
     const { getDataset, selectedCategories, topCategories } = useData();
 
     const dataset = getDataset(TYPE) as Array<IBubbleDatasetItem>;
-
-    // the top value will be related to MAX_BUBBLE_RADIUS
-    // const maxWordCount = Math.max(...dataset.map((item: IBubbleDatasetItem) => parseInt(item.word_count)));
 
     const maxWordCountMap = topCategories.reduce((result: { [key: string]: number }, category: string) => {
         result[category.toLowerCase()] = Math.max(
@@ -47,7 +44,7 @@ const Bubble = (): JSX.Element => {
 
     const { draw } = useDrawBubble({ data, selectedCategories: selectedCategories });
 
-    return <Chart draw={draw} />
+    return <StyledChart draw={draw} />
 };
 
 export default Bubble;

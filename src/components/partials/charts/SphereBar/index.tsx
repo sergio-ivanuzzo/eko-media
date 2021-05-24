@@ -1,9 +1,9 @@
 import React, { useMemo } from "react";
 
-import Chart from "~/components/core/Chart";
 import useData from "~/hooks/useData";
 import useDrawBar from "~/hooks/useChart/draw/useDrawBar";
 
+import { StyledChart } from "./styles";
 import { CATEGORIES_MAP, FILTER_BY_CATEGORY_INDEXES, TYPES } from "~/common/constants";
 
 const TYPE = TYPES.SPHERE;
@@ -47,7 +47,7 @@ const SphereBar = (): JSX.Element => {
 
     const { draw } = useDrawBar({ data, xData: [ CATEGORIES_MAP[selectedCategory] ], yData: spheres });
 
-    return <Chart draw={draw} />;
+    return <StyledChart draw={draw} />;
 };
 
 export default SphereBar;

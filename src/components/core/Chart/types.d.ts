@@ -3,6 +3,6 @@ declare interface IChartContainerProps {
     height?: number;
 }
 
-declare interface IChartProps extends IChartContainerProps {
+declare interface IChartProps extends IChartContainerProps, IStylableComponent {
     draw: (props: IChartDrawProps) => void;
 }

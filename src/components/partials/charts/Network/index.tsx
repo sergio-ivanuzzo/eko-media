@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from "react";
 
-import Chart from "~/components/core/Chart";
 import ConditionalRender from "~/components/core/ConditionalRender";
 import ReferenceBar from "~/components/partials/charts/Network/ReferenceBar";
 import useData from "~/hooks/useData";
@@ -9,7 +8,7 @@ import useDrawNetwork from "~/hooks/useChart/draw/useDrawNetwork";
 import { ReferenceDirection } from "~/components/partials/charts/Network/constants";
 import { TYPES } from "~/common/constants";
 
-import { NetworkChartContainer } from "~/components/partials/charts/Network/styles";
+import { NetworkChartContainer, StyledChart } from "~/components/partials/charts/Network/styles";
 
 const TYPE = TYPES.NETWORK;
 
@@ -96,7 +95,7 @@ const Network = (): JSX.Element => {
             <ConditionalRender condition={isSelected}>
                 <ReferenceBar items={references} />
             </ConditionalRender>
-            <Chart draw={draw} height={800} />
+            <StyledChart draw={draw} height={800} />
         </NetworkChartContainer>
     )
 };

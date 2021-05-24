@@ -1,13 +1,14 @@
 import React, { useMemo } from "react";
 
-import Chart from "~/components/core/Chart";
 import useData from "~/hooks/useData";
 
 import { FILTER_BY_CATEGORY_INDEXES, TYPES } from "~/common/constants";
 
 import useDrawStackedBar from "~/hooks/useChart/draw/useDrawStackedBar";
 
-const BAR_HEIGHT = 32;
+import { StyledChart } from "~/components/partials/charts/StackedBar/styles";
+
+// const BAR_HEIGHT = 32;
 const TYPE = TYPES.CATEGORY;
 
 const StackedBar = (): JSX.Element => {
@@ -31,7 +32,7 @@ const StackedBar = (): JSX.Element => {
 
     const height = useMemo(
         () => media.length
-            ? BAR_HEIGHT * media.length
+            ? 32 * media.length
             : 0,
         [ media ]
     );
@@ -50,7 +51,7 @@ const StackedBar = (): JSX.Element => {
 
     const { draw } = useDrawStackedBar({ data, xData: categories, yData: media });
 
-    return <Chart draw={draw} height={height} />
+    return <StyledChart draw={draw} height={height} width={800} />
 };
 
 export default StackedBar;
