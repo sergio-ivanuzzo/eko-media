@@ -15,7 +15,9 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
             .offset(d3.stackOffsetExpand)(data as any);
 
         const svg: any = d3.select(chartRef.current)
-            .attr("viewBox", `0 0 ${width} ${height}`);
+            .attr("viewBox", `0 0 ${width} ${height}`)
+            .attr("height", height)
+            .attr("width", width);
 
         // clear svg before draw new content
         svg.selectAll("svg > *").remove();

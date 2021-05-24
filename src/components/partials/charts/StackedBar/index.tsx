@@ -51,7 +51,7 @@ const StackedBar = (): JSX.Element => {
 
     const { draw } = useDrawStackedBar({ data, xData: categories, yData: media });
 
-    return <StyledChart draw={draw} height={height} width={800} />
+    return <StyledChart draw={draw} height={height} />
 };
 
 export default StackedBar;

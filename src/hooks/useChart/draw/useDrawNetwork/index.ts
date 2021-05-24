@@ -96,6 +96,7 @@ const useDrawNetwork = (
 
         const svg = d3.select(chartRef.current)
             .attr("viewBox", `0 0 ${width * X_MULTIPLIER} ${height}`)
+            .attr("preserveAspectRatio", "xMidYMid meet")
             .attr("height", height)
             .attr("width", width);
 

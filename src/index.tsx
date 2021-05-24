@@ -1,10 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 
 import { IntlProvider } from "react-intl";
 import { ThemeProvider } from "styled-components";
 
-import App from "~/components/App";
+import App from "~/components";
 import DataProvider from "~/providers/DataProvider";
 import { GlobalStyle } from "~/components/global.styles";
 
@@ -20,7 +21,9 @@ ReactDOM.render(
             <ThemeProvider theme={theme}>
                 <>
                     <GlobalStyle />
-                    <App />
+                    <Router>
+                        <App />
+                    </Router>
                 </>
             </ThemeProvider>
         </DataProvider>
