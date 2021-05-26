@@ -2,13 +2,12 @@ import React, { useMemo } from "react";
 
 import useData from "~/hooks/useData";
 
-import { FILTER_BY_CATEGORY_INDEXES, TYPES } from "~/common/constants";
+import { CATEGORY_KEYS, TYPES } from "~/common/constants";
 
-import useDrawStackedBar from "~/hooks/useChart/draw/useDrawStackedBar";
+import useDrawStackedBar, { BAR_HEIGHT } from "~/hooks/useChart/draw/useDrawStackedBar";
 
 import { StyledChart } from "~/components/partials/charts/StackedBar/styles";
 
-// const BAR_HEIGHT = 32;
 const TYPE = TYPES.CATEGORY;
 
 const StackedBar = (): JSX.Element => {
@@ -25,17 +24,17 @@ const StackedBar = (): JSX.Element => {
     const media = useMemo(
         () => categories.length
             // remove "category" field, keep only media fields
-            ? Object.keys(dataset[0]).filter((key: string) => !FILTER_BY_CATEGORY_INDEXES.includes(key))
+            ? Object.keys(dataset[0]).filter((key: string) => !CATEGORY_KEYS.includes(key))
             : [],
         [ categories ]
     );
 
-    // const height = useMemo(
-    //     () => media.length
-    //         ? 32 * media.length
-    //         : 0,
-    //     [ media ]
-    // );
+    const height = useMemo(
+        () => media.length
+            ? BAR_HEIGHT * media.length
+            : 0,
+        [ media ]
+    );
 
     const data = useMemo(() => {
         return media.map((media: string) => {
@@ -51,8 +50,7 @@ const StackedBar = (): JSX.Element => {
 
     const { draw } = useDrawStackedBar({ data, xData: categories, yData: media });
 
-    // return <StyledChart draw={draw} height={height} />
-    return <StyledChart draw={draw} />
+    return <StyledChart draw={draw} height={height} />
 };
 
 export default StackedBar;

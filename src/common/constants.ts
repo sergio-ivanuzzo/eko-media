@@ -61,7 +61,11 @@ export const FILTER_MASK_MAP = {
     [TYPES.CONNECTION]: FILTER_FLAGS.NOT_FILTERABLE,
 };
 
-export const FILTER_BY_CATEGORY_INDEXES = [ "category", "Найбільше коментує" ];
+// mapper for column that contains category
+export const CATEGORY_KEYS = [ "category", "Найбільше коментує" ];
+
+// for filtering media columns
+export const NON_MEDIA_KEYS = [ "name" ];
 
 // for politician_ type files
 export enum Mention {

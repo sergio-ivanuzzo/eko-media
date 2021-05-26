@@ -28,5 +28,13 @@
   "network.title": "Мережевий аналіз ЗМІ/ Як медіа посилаються одне на одного?",
   "network.subtitle": "Кількість посилань між ЗМІ",
 
-  "placeholder.empty_select": "Ще нічого не вибрано"
+  "placeholder.empty_select": "Ще нічого не вибрано",
+
+  "pluralize.mention.first_case": "згадка",
+  "pluralize.mention.second_case": "згадки",
+  "pluralize.mention.third_case": "згадок",
+
+  "pluralize.comment.first_case": "коментар",
+  "pluralize.comment.second_case": "коментаря",
+  "pluralize.comment.third_case": "коментарів"
 }

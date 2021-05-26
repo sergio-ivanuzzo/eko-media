@@ -12,8 +12,8 @@ const MentionBar = ({ positive, neutral, negative }: IMentionBarProps): JSX.Elem
     return (
         <MentionBarContainer>
             <PositiveBar value={positiveValue} />
-            <NeutralBar value={neutralValue} offset={positiveValue} />
-            <NegativeBar value={negativeValue} offset={neutralValue} />
+            <NeutralBar value={neutralValue + positiveValue} />
+            <NegativeBar value={negativeValue + neutralValue + positiveValue} />
         </MentionBarContainer>
     );
 };

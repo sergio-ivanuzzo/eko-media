@@ -4,7 +4,7 @@ import useData from "~/hooks/useData";
 import useDrawBar from "~/hooks/useChart/draw/useDrawBar";
 
 import { StyledChart } from "./styles";
-import { CATEGORIES_MAP, FILTER_BY_CATEGORY_INDEXES, TYPES } from "~/common/constants";
+import { CATEGORIES_MAP, CATEGORY_KEYS, TYPES } from "~/common/constants";
 
 const TYPE = TYPES.SPHERE;
 
@@ -22,7 +22,7 @@ const SphereBar = (): JSX.Element => {
     const spheres = useMemo(
         () => categories.length
             // remove "category" field, keep only media fields
-            ? Object.keys(dataset[0]).filter((key: string) => !FILTER_BY_CATEGORY_INDEXES.includes(key))
+            ? Object.keys(dataset[0]).filter((key: string) => !CATEGORY_KEYS.includes(key))
             : [],
         [ categories ]
     );

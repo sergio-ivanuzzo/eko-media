@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const AvatarContainer = styled.div`
+export const AvatarContainer = styled.div<IAvatarProps>`
   display: inline-block;
   position: relative;
   width: 100px;
@@ -13,6 +13,6 @@ export const AvatarContainer = styled.div`
   > img {
     width: auto;
     height: 100%;
-    margin-left: -50px;
+    margin-left: ${({ offset }) => `${offset}px`};
   }
 `;

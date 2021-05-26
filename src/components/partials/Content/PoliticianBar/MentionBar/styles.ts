@@ -6,8 +6,9 @@ export const MentionBarContainer = styled.div`
   display: flex;
   
   > div {
-    //position: absolute;
-    height: 32px;
+    position: absolute;
+    height: 15px;
+    border-radius: 10px;
   }
 `;
 
@@ -19,14 +20,12 @@ export const PositiveBar = styled.div<ISingleBarProps>`
 
 export const NeutralBar = styled.div<ISingleBarProps>`
   width: ${({ value }) => `${value}%`};
-  //left: ${({ offset }) => `${offset}%`};
   background: ${({ theme }) => theme.palette.gray.silver};
   z-index: 2;
 `;
 
 export const NegativeBar = styled.div<ISingleBarProps>`
   width: ${({ value }) => `${value}%`};
-  //left: ${({ offset }) => `${offset}%`};
   background: ${({ theme }) => theme.palette.orange.carrot};
   z-index: 1;
 `;

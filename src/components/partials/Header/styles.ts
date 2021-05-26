@@ -11,7 +11,7 @@ export const HeaderContainer = styled.div<IHeaderProps>`
         position: sticky;
         top: 0;
         width: 100%;
-        z-index: 2;
+        z-index: 5;
     `};
     border-bottom: 1px solid ${({ theme }) => `${theme.palette.gray.silver}`};
 `;

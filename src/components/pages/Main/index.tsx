@@ -26,8 +26,12 @@ const MainPage = (): JSX.Element => {
                     <Bubble />
                 </Section>
                 <Section>
-                    <h2><FormattedMessage id="network.title" /></h2>
-                    <h3><FormattedMessage id="network.subtitle" /></h3>
+                    <h2>
+                        <FormattedMessage id="network.title" />
+                    </h2>
+                    <h3>
+                        <FormattedMessage id="network.subtitle" />
+                    </h3>
                     <Network />
                 </Section>
             </>

@@ -7,8 +7,8 @@ import { IUseDataResponse } from "~/hooks/useData/types";
 
 import {
     CATEGORIES_MAP,
+    CATEGORY_KEYS,
     FILE_EXTENSION,
-    FILTER_BY_CATEGORY_INDEXES,
     FILTER_FLAGS,
     FILTER_MASK_MAP,
     ROOT_DIR,
@@ -74,7 +74,7 @@ const useData = (): IUseDataResponse => {
         if (categoriesData) {
             categories = categoriesData.map((item) => item.category.toString());
             allMedia = Object.keys(categoriesData[0])
-                .filter((key: string) => !FILTER_BY_CATEGORY_INDEXES.includes(key));
+                .filter((key: string) => !CATEGORY_KEYS.includes(key));
 
             setTopCategories(categories as string[]);
             setAllMedia(allMedia);
@@ -171,7 +171,7 @@ const useData = (): IUseDataResponse => {
                 const items = filteredData[key];
                 filteredData[key] = (selectedCategory === "all") ? items : items
                     .filter((dataItem: IItem) =>
-                        FILTER_BY_CATEGORY_INDEXES.some(
+                        CATEGORY_KEYS.some(
                             (index: string) => {
                                 const category = (dataItem[index]?.toString() ?? "").toLowerCase();
                                 return category === CATEGORIES_MAP[selectedCategory]?.toLowerCase();

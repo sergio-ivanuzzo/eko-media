@@ -3,6 +3,8 @@ import * as d3 from "d3";
 
 import useChartColor from "~/hooks/useChart/color/useChartColor";
 
+export const BAR_HEIGHT = 32;
+
 const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw: (props: IChartDrawProps) => void }  => {
 
     const { getColor, getColorIndexByCategory } = useChartColor();

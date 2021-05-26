@@ -95,7 +95,7 @@ const Network = (): JSX.Element => {
             <ConditionalRender condition={isSelected}>
                 <ReferenceBar items={references} />
             </ConditionalRender>
-            <StyledChart draw={draw} height={800} />
+            <StyledChart draw={draw} />
         </NetworkChartContainer>
     )
 };

@@ -2,9 +2,9 @@ import React from "react";
 
 import { AvatarContainer } from "~/components/core/Avatar/styles";
 
-const Avatar = ({ src }: IAvatarProps): JSX.Element => {
+const Avatar = ({ src, offset = -50 }: IAvatarProps): JSX.Element => {
     return (
-        <AvatarContainer>
+        <AvatarContainer offset={offset}>
             <img src={src} />
         </AvatarContainer>
     );

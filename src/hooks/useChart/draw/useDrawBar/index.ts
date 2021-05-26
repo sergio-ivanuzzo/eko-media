@@ -8,12 +8,15 @@ const useDrawBar = ({ data, xData, yData }: IDrawBarProps): { draw: (props: ICha
     const { getColor, getColorIndexByCategory } = useChartColor();
 
     const draw = useCallback(({ chartRef, width, height }: IChartDrawProps): void => {
-        const svg = d3.select(chartRef.current).attr("viewBox", `0 0 ${width} ${height}`).attr("height", height).attr("width", width);
+        const svg = d3.select(chartRef.current)
+            .attr("viewBox", `0 0 ${width} ${height}`)
+            .attr("height", height).attr("width", width);
+
         // clear svg before draw new content
         svg.selectAll("svg > *").remove();
 
         const xScale = d3.scaleLinear()
-            .rangeRound([ 0, width * 2 ])
+            .rangeRound([ 0, width ])
             .domain([ 0, d3.max(data, (d) => d.value as any) ]);
 
         const yScale: d3.ScaleBand<string> = d3.scaleBand()
@@ -28,7 +31,7 @@ const useDrawBar = ({ data, xData, yData }: IDrawBarProps): { draw: (props: ICha
             .attr("class", "bar")
             .attr("x", (d: any) => xScale(d[0]))
             .attr("y", (d: any) => yScale(d.key) as any)
-            .attr("width", (d: any) => xScale(d.value) * 2)
+            .attr("width", (d: any) => xScale(d.value))
             .attr("height", yScale.bandwidth());
 
         // draw text on bars

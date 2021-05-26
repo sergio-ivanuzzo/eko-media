@@ -13,52 +13,78 @@ const MAX_ZOOM = 10;
 
 const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (props: IChartDrawProps) => void } => {
 
+    const children = ({
+        children: Array.from(
+            d3.group(
+                Array.from({ length: data.length }, (_, i) => ({
+                    group: Math.random() * selectedCategories.length | 0,
+                    value: -Math.log(Math.random())
+                })),
+                (d) => d.group
+            ),
+            ([ , children ]) => ({ children })
+        )
+    });
+
     const { getColor, getColorIndexByCategory } = useChartColor();
 
     const draw = useCallback(({ chartRef, width, height }: IChartDrawProps): void => {
+
+        const pack = () => d3.pack()
+            .size([ width, height ])
+            .padding(1)(d3.hierarchy(children).sum((d: any) => d.value));
 
         const categoriesCount = selectedCategories.length;
         const clusters = new Array(categoriesCount);
 
         let centers: Array<[number, number]> = [];
 
+        // according to current requirements we can build 5 or 1 bubble chart
+        const centerX = width / 2;
+        const centerY = height / 2;
+
+        const paddingX = centerX / 2;
+        const paddingY = centerY / 2;
+
         if (selectedCategories.length === 1) {
             centers = [ [ width / 2, height / 2 ] ];
         } else {
-            // according to current requirements we can build 5 or 1 bubble chart
             centers = [
-                [ 0, 0 ],
-                [ width, 0 ],
-                [ width / 2, height / 2 ],
-                [ 0, height ],
-                [ width, height ]
+                [ paddingX, paddingY ],
+                [ width - paddingX, paddingY ],
+                [ centerX, centerY ],
+                [ paddingX, height - paddingY ],
+                [ width - paddingX, height - paddingY ]
             ];
         }
 
-        const nodes = d3.range(data.length).map(function(index) {
+        const nodes = pack().leaves().map((leaf, index) => {
+
             const { category: currentCategory, word, wordCount, radius } = data[index];
             const clusterIndex = selectedCategories.findIndex(
                 (category: string) => category.toLowerCase() === currentCategory.toLowerCase()
             );
 
-            const y = Math.sin((clusterIndex / categoriesCount) * (Math.PI / 180)) * width;
-            const x = Math.cos((clusterIndex / categoriesCount) * (Math.PI / 180)) * height;
+            const y = Math.sin((clusterIndex / categoriesCount) * (Math.PI / 180));
+            const x = Math.cos((clusterIndex / categoriesCount) * (Math.PI / 180));
 
-            const d = {
-                    cluster: clusterIndex,
-                    radius,
-                    x,
-                    y,
-                    word,
-                    wordCount,
-                    category: currentCategory
-                };
+            const item = {
+                cluster: clusterIndex,
+                x,
+                y,
+                word,
+                wordCount,
+                category: currentCategory
+            };
 
             if (!clusters[clusterIndex] || (radius > clusters[clusterIndex].radius)) {
-                clusters[clusterIndex] = d;
+                clusters[clusterIndex] = item;
             }
 
-            return d;
+            return {
+                ...leaf,
+                ...item
+            }
         });
 
         const svg = d3.select(chartRef.current)
@@ -72,9 +98,10 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
 
         const simulation = d3.forceSimulation(nodes)
             .force("center", d3.forceCenter(width / 2, height / 2))
-            .force("x", d3.forceX().x((d: any) => centers[d.cluster][1]).strength(0.5))
-            .force("y", d3.forceY().y((d: any) => centers[d.cluster][0]).strength(0.5))
-            .force("collision", d3.forceCollide().radius((d: any) => d.radius + d.radius / 3));
+            .force("x", d3.forceX().x((d: any) => centers[d.cluster][0]).strength(0.05))
+            .force("y", d3.forceY().y((d: any) => centers[d.cluster][1]).strength(0.05))
+            .force("charge", d3.forceManyBody().strength(-10))
+            .force("collision", d3.forceCollide().radius((d: any) => d.r + d.r / 2));
 
         // disable animation
         simulation.stop();
@@ -124,7 +151,7 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
             })
             .attr("cx", (d: any) => d.x)
             .attr("cy", (d: any) => d.y)
-            .attr("r", (d: any) => d.radius);
+            .attr("r", (d: any) => d.r);
 
         node.append("title").text((d) => `${d.category}: ${d.word}`);
 

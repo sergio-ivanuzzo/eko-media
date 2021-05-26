@@ -6,5 +6,4 @@ declare interface IMentionBarProps {
 
 declare interface ISingleBarProps {
     value: number;
-    offset?: number;
 }
