@@ -18,8 +18,8 @@ export const DataContext = createContext<IDataProviderContext<IItem>>({
 
 const DataProvider = ({ children }: IDataProviderProps): JSX.Element => {
     const [ data, setData ] = useState<IData<IItem>>({});
-    // TODO: remove 2021-02 const, this one for test only (since we have data for 2021-02)
-    const [ date, setDate ] = useState<Date>(new Date("2021-02"));
+    // TODO: remove old_2021-03 const, this one for test only (since we have data for old_2021-03)
+    const [ date, setDate ] = useState<Date>(new Date());
     const [ category, setCategory ] = useState<string>("all");
     // TODO: refactor "all" into const
     const [ media, setMedia ] = useState<string[]>([]);

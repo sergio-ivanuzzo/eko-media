@@ -28,7 +28,9 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
 
     const { getColor, getColorIndexByCategory } = useChartColor();
 
-    const draw = useCallback(({ chartRef, width, height }: IChartDrawProps): void => {
+    const draw = useCallback(({ chartRef, width: currentWidth, height }: IChartDrawProps): void => {
+
+        const width = currentWidth * 1.2;
 
         const pack = () => d3.pack()
             .size([ width, height ])
