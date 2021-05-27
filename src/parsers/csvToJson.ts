@@ -7,6 +7,9 @@ const csvToJson = (rawData: string, separator = ","): Array<IItem> => {
     return valueRows.filter(Boolean).map((row: string) => {
         const values: string[] = row.split(separator);
         return itemKeys.reduce((item: IItem, key: string, index: number) => {
+            if (!key) {
+                throw new Error("Error");
+            }
             item[sanitize(key)] = sanitize(values[index]);
             return item;
         }, {});

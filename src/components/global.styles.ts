@@ -1,5 +1,7 @@
 import { createGlobalStyle, css } from "styled-components";
 
+import "react-toastify/dist/ReactToastify.min.css";
+
 export const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: "NeueHaasUnica";

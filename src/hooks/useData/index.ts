@@ -1,6 +1,7 @@
 import { useCallback, useContext } from "react";
 
 import csvToJson from "~/parsers/csvToJson";
+import useNotifyError from "~/hooks/useNotifyError";
 
 import { DataContext } from "~/providers/DataProvider";
 import { IUseDataResponse } from "~/hooks/useData/types";
@@ -33,6 +34,8 @@ const useData = (): IUseDataResponse => {
         setAllMedia,
     } = useContext<IDataProviderContext<IItem>>(DataContext);
 
+    const { catchErrors } = useNotifyError();
+
     // we need month and year to detect which directory contains files with data
     const getMonthAndYear = useCallback(() => {
         const month = selectedDate.toLocaleString("en-US", { month: "2-digit" });
@@ -53,7 +56,7 @@ const useData = (): IUseDataResponse => {
 
         if (response.status === 200) {
             if (extension === FILE_EXTENSION.CSV) {
-                return { [name]: csvToJson(responseText) };
+                return { [name]: await catchErrors(() => csvToJson(responseText)) };
             } else if (extension === FILE_EXTENSION.JSON) {
                 return { [name]: [ JSON.parse(responseText) ] };
             }

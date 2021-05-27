@@ -1,19 +1,19 @@
 import { useCallback } from "react";
 import * as d3 from "d3";
 
+import limitNumber from "~/helpers/limitNumber";
+
 import theme from "~/common/theme";
 
 // edges size
 const MAX_DISTANCE = 2000;
 const MIN_DISTANCE = 300;
 // node size
-const RADIUS = 12;
+const RADIUS = 10;
 
 // multipliers to use for scaling
-const X_MULTIPLIER = 1.8;
-const Y_MULTIPLIER = 1;
 const RADIUS_MULTIPLIER = 1.3;
-const LINE_MULTIPLIER = 0.8;
+const MAX_RADIUS = RADIUS * RADIUS_MULTIPLIER;
 
 // offset from node
 const TEXT_X_OFFSET = 15;
@@ -41,6 +41,7 @@ const useDrawNetwork = (
         const sources = edges
             .filter((edge: any) => edge.target === selectedNode)
             .map((edge: any) => edge.source.index);
+
         // targets for selected node
         const targets = edges
             .filter((edge: any) => edge.source === selectedNode)
@@ -87,18 +88,24 @@ const useDrawNetwork = (
             )
         );
     }, [ nodes, edges, isSelected ]);
-    
-    const draw = useCallback(({ chartRef, width, height }: IChartDrawProps): void => {
+
+    const draw = useCallback(({ chartRef, width: currentWidth, height: currentHeight }: IChartDrawProps): void => {
         // prevent re-draw if node is selected
         if (isSelected) {
             return;
         }
 
+        const width = currentWidth / 1.5;
+        const height = currentHeight / 1.4;
+
+        const limitDraggableX = (x: number) => limitNumber(x, MAX_RADIUS, width - MAX_RADIUS);
+        const limitDraggableY = (y: number) => limitNumber(y, MAX_RADIUS, height - MAX_RADIUS);
+
         const svg = d3.select(chartRef.current)
-            .attr("viewBox", `0 0 ${width * X_MULTIPLIER} ${height}`)
+            .attr("viewBox", `0 0 ${width} ${height}`)
             .attr("preserveAspectRatio", "xMidYMid meet")
-            .attr("height", height)
-            .attr("width", width);
+            .attr("height", currentHeight)
+            .attr("width", currentWidth);
 
         // clear svg before draw new content
         svg.selectAll("svg > *").remove();
@@ -110,6 +117,8 @@ const useDrawNetwork = (
                 .distanceMin(MIN_DISTANCE)
                 .distanceMax(MAX_DISTANCE)
             )
+            .force("x", d3.forceX(width / 2).strength(0.00015))
+            .force("y", d3.forceY(height / 2).strength(0.15))
             .force("center", d3.forceCenter(width / 2, height / 2));
 
         if (simulation !== undefined) {
@@ -117,19 +126,19 @@ const useDrawNetwork = (
         }
 
         // disable animation
-        simulation.stop();
-        simulation.tick(nodes.length);
+        // simulation.stop();
+        // simulation.tick(nodes.length);
 
         const link = svg.append("g")
             .attr("class", "links")
             .selectAll("line")
             .data(edges as any)
             .enter().append("line")
-            .attr("x1", (d: any) => d.source.x * X_MULTIPLIER)
-            .attr("y1", (d: any) => d.source.y * Y_MULTIPLIER)
-            .attr("x2", (d: any) => d.target.x * X_MULTIPLIER)
-            .attr("y2", (d: any) => d.target.y * Y_MULTIPLIER)
-            .attr("stroke-width", (d: any) => Math.sqrt(parseInt(d.weight)) * LINE_MULTIPLIER)
+            .attr("x1", (d: any) => d.source.x)
+            .attr("y1", (d: any) => d.source.y)
+            .attr("x2", (d: any) => d.target.x)
+            .attr("y2", (d: any) => d.target.y)
+            .attr("stroke-width", (d: any) => Math.sqrt(parseInt(d.weight))/* * LINE_MULTIPLIER*/)
             .attr("stroke-opacity", (d: any) => d.alpha)
 
         const node = svg.selectAll("g.nodes")
@@ -138,17 +147,52 @@ const useDrawNetwork = (
             .append("g")
             .attr("class", "nodes");
 
+        node.call((d3.drag() as any)
+            .on("start", (e: DragEvent & { active: number }, d: any) => {
+                if (!e.active) {
+                    simulation.alphaTarget(0.3).restart();
+                }
+                d.fx = limitDraggableX(d.x);
+                d.fy = limitDraggableY(d.y);
+            })
+            .on("drag", (e: DragEvent, d: any) => {
+                d.fx = limitDraggableX(e.x);
+                d.fy = limitDraggableY(e.y);
+            })
+            .on("end", (e: DragEvent & { active: number }) => {
+                if (!e.active) {
+                    simulation.alphaTarget(0);
+                }
+            }));
+
         node.append("circle")
-            .attr("cx", (d: any) => d.x * X_MULTIPLIER)
-            .attr("cy", (d: any) => d.y * Y_MULTIPLIER)
+            .attr("cx", (d: any) => limitDraggableX(d.x))
+            .attr("cy", (d: any) => limitDraggableY(d.y))
             .attr("r", RADIUS);
 
         node.append("text")
             .text((d: any) => d.name)
             .attr("class", "node-text")
-            .attr("x", (d: any) => d.x * X_MULTIPLIER + TEXT_X_OFFSET)
-            .attr("y", (d: any) => d.y * Y_MULTIPLIER + TEXT_Y_OFFSET)
+            .attr("x", (d: any) => limitDraggableX(d.x + TEXT_X_OFFSET))
+            .attr("y", (d: any) => limitDraggableY(d.y + TEXT_Y_OFFSET))
             .attr("fill", black.base);
+
+        simulation.on("tick", () => {
+            link
+                .attr("x1", (d: any) => limitDraggableX(d.source.x))
+                .attr("y1", (d: any) => limitDraggableY(d.source.y))
+                .attr("x2", (d: any) => limitDraggableX(d.target.x))
+                .attr("y2", (d: any) => limitDraggableY(d.target.y));
+
+            node.selectAll("circle")
+                .attr("cx", (d: any) => limitDraggableX(d.x))
+                .attr("cy", (d: any) => limitDraggableY(d.y))
+                .attr("r", RADIUS);
+
+            node.selectAll("text")
+                .attr("x", (d: any) => limitDraggableX(d.x + TEXT_X_OFFSET))
+                .attr("y", (d: any) => limitDraggableY(d.y + TEXT_Y_OFFSET));
+        })
 
         const doFade = fade(link);
         const doHighlight = highlight(node);
@@ -182,7 +226,7 @@ const useDrawNetwork = (
         // unselect node when click outside of it (somewhere on svg)
         svg.on("click", (event: MouseEvent) => {
             const element = event.target as HTMLElement;
-            if (element.tagName.toLowerCase() !== "circle") {
+            if (![ "circle", "text" ].includes(element.tagName.toLowerCase())) {
                 setSelected(false);
             }
         });

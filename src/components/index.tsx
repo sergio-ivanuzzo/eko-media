@@ -1,4 +1,5 @@
 import React from "react";
+import { ToastContainer } from "react-toastify";
 
 import Content from "~/components/partials/Content";
 import Footer from "~/components/partials/Footer";
@@ -10,6 +11,7 @@ const App = (): JSX.Element => {
             <Header sticky />
             <Content />
             <Footer />
+            <ToastContainer />
         </>
     );
 };
