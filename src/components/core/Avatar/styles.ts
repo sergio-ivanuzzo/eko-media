@@ -13,6 +13,5 @@ export const AvatarContainer = styled.div<IAvatarProps>`
   > img {
     width: auto;
     height: 100%;
-    margin-left: ${({ offset }) => `${offset}px`};
   }
 `;

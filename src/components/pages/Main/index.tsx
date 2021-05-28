@@ -9,7 +9,7 @@ import useData from "~/hooks/useData";
 import ConditionalRender from "~/components/core/ConditionalRender";
 import PoliticianBar from "~/components/partials/Content/PoliticianBar";
 
-import { Section, SubSection } from "./styles";
+import { Section, StyledPlaceholder, SubSection } from "./styles";
 
 const MainPage = (): JSX.Element => {
 
@@ -35,6 +35,9 @@ const MainPage = (): JSX.Element => {
                     <Network />
                 </Section>
             </>
+            <StyledPlaceholder>
+                <FormattedMessage id="placeholder.empty_data" />
+            </StyledPlaceholder>
         </ConditionalRender>
     );
 };

@@ -20,7 +20,7 @@ const useNotifyError = ({ throwManually = false }: IUseNotifyErrorProps = {}): I
 
     const throwErrors = () => {
         errors.forEach((e: Error) => {
-            toast.error(e);
+            toast.error(e.toString());
             throw e;
         })
     }

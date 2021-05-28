@@ -13,7 +13,7 @@ const MESSAGE_CASES: [string, string, string] = [
     "pluralize.mention.third_case",
 ];
 
-const PoliticianCard = ({ name, mentions }: IPoliticianBarItem): JSX.Element => {
+const PoliticianCard = ({ name, mentions, avatarUrl }: IPoliticianBarItem): JSX.Element => {
     const { formatMessage } = useIntl();
     const text = formatMessage({ id: maybePluralize(mentions[Mention.ALL], MESSAGE_CASES) });
 
@@ -27,7 +27,12 @@ const PoliticianCard = ({ name, mentions }: IPoliticianBarItem): JSX.Element => 
         );
     };
 
-    return <Card name={name} text={`${mentions[Mention.ALL]} ${text}`} append={renderMentionBar} />;
+    return (
+        <Card avatarUrl={avatarUrl}
+              name={name}
+              text={`${mentions[Mention.ALL]} ${text}`}
+              append={renderMentionBar} />
+    );
 };
 
 export default PoliticianCard;

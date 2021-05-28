@@ -29,6 +29,7 @@
   "network.subtitle": "Кількість посилань між ЗМІ",
 
   "placeholder.empty_select": "Ще нічого не вибрано",
+  "placeholder.empty_data": "Ще нічого не завантажено",
 
   "pluralize.mention.first_case": "згадка",
   "pluralize.mention.second_case": "згадки",

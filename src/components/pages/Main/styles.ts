@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+import Placeholder from "~/components/core/Placeholder";
+
 export const Section = styled.div`
   padding: 5px;
   
@@ -8,4 +10,11 @@ export const Section = styled.div`
 
 export const SubSection = styled.div`
   display: flex;
+`;
+
+export const StyledPlaceholder = styled(Placeholder)`
+  width: 100%;
+  height: 70vh;
+  
+  font-size: 30px;
 `;

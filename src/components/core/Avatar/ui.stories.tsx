@@ -12,10 +12,8 @@ export const Avatar = (props: IAvatarProps): JSX.Element => {
 
 Avatar.argTypes = {
     src: { control: { type: "text" } },
-    offset: { control: { type: "number" } },
 }
 
 Avatar.args = {
     src: "",
-    offset: -50,
 }

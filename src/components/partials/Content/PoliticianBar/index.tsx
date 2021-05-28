@@ -4,7 +4,7 @@ import PoliticianCard from "~/components/partials/Content/PoliticianBar/Politici
 import useData from "~/hooks/useData";
 
 import { PoliticianBarContainer } from "./styles";
-import { Mention, NON_MEDIA_KEYS, TYPES } from "~/common/constants";
+import { Mention, NON_MEDIA_KEYS, POLITICIANS_PHOTOS_DIR, TYPES } from "~/common/constants";
 
 const TYPE = TYPES.POLITICIAN;
 
@@ -19,7 +19,7 @@ const PoliticianBar = (): JSX.Element => {
             )
         });
 
-    const data: IPoliticianBarItem[] = dataset.map(({ name, ...rest }) => {
+    const data: IPoliticianBarItem[] = dataset.map(({ name, image_name, ...rest }) => {
         const positiveTotal = validMediaKeys
             .filter((key) => key.includes(Mention.POSITIVE))
             .reduce((sum, key) => sum + Number(rest[key]), 0);
@@ -39,9 +39,10 @@ const PoliticianBar = (): JSX.Element => {
                 [Mention.NEUTRAL]: neutralTotal,
                 [Mention.NEGATIVE]: negativeTotal,
                 [Mention.ALL]: positiveTotal + neutralTotal + negativeTotal
-            }
+            },
+            avatarUrl: `${POLITICIANS_PHOTOS_DIR}/${image_name}.png`
         }
-    })
+    }).sort((current, next) => next.mentions[Mention.ALL] - current.mentions[Mention.ALL])
 
     return (
         <PoliticianBarContainer>

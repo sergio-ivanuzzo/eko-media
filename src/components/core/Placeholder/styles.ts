@@ -29,15 +29,16 @@ const getCssForAlign = (align: PlaceholderTextAlign): FlattenSimpleInterpolation
             return AlignRightCSS;
         }
         default: {
-            return AlignLeftCSS;
+            return AlignCenterCSS;
         }
     }
 }
 
-export const PlaceholderContainer = styled.div<Partial<IPlaceholderProps>>`
+export const PlaceholderContainer = styled.div<IPlaceholderProps>`
   width: 100%;
   height: 100%;
   display: flex;
+  font-family: "NeueHaasUnica", sans-serif;
   
   ${({ align }) => getCssForAlign(align)};
   color: ${({ theme }) => theme.palette.gray.silver};
