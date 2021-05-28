@@ -1,15 +1,17 @@
 import { FormattedMessage } from "react-intl";
 import React from "react";
 
-import Bubble from "~/components/partials/charts/Bubble";
-import Network from "~/components/partials/charts/Network";
-import StackedBar from "~/components/partials/charts/StackedBar";
+import Bubble from "~/components/charts/Bubble";
+import Network from "~/components/charts/Network";
+import StackedBar from "~/components/charts/StackedBar";
 import useData from "~/hooks/useData";
 
 import ConditionalRender from "~/components/core/ConditionalRender";
 import PoliticianBar from "~/components/partials/Content/PoliticianBar";
 
 import { Section, StyledPlaceholder, SubSection } from "./styles";
+
+const POLITICIAN_BAR_LIMIT = 6;
 
 const MainPage = (): JSX.Element => {
 
@@ -20,7 +22,7 @@ const MainPage = (): JSX.Element => {
             <>
                 <Section>
                     <SubSection>
-                        <PoliticianBar />
+                        <PoliticianBar limit={POLITICIAN_BAR_LIMIT} />
                         <StackedBar />
                     </SubSection>
                     <Bubble />

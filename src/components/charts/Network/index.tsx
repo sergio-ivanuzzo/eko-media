@@ -1,14 +1,14 @@
 import React, { useCallback, useState } from "react";
 
 import ConditionalRender from "~/components/core/ConditionalRender";
-import ReferenceBar from "~/components/partials/charts/Network/ReferenceBar";
+import ReferenceBar from "~/components/charts/Network/ReferenceBar";
 import useData from "~/hooks/useData";
 import useDrawNetwork from "~/hooks/useChart/draw/useDrawNetwork";
 
-import { ReferenceDirection } from "~/components/partials/charts/Network/constants";
+import { ReferenceDirection } from "~/components/charts/Network/constants";
 import { TYPES } from "~/common/constants";
 
-import { NetworkChartContainer, StyledChart } from "~/components/partials/charts/Network/styles";
+import { NetworkChartContainer, StyledChart } from "./styles";
 
 const TYPE = TYPES.NETWORK;
 

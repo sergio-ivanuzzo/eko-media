@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import ArrowLeft from "~/components/icons/ArrowLeft";
 import ArrowRight from "~/components/icons/ArrowRight";
-import { OverflowCSS } from "~/components/global.styles";
+import { NoSelectCSS, OverflowCSS } from "~/components/global.styles";
 
 export const ReferenceList = styled.div`
   overflow-y: auto;
@@ -10,6 +10,7 @@ export const ReferenceList = styled.div`
   box-shadow: 0 0 3px 0 ${({ theme }) => theme.palette.gray.silver};
   padding: 2px;
   border-radius: 5px;
+  ${NoSelectCSS};
 `;
 
 export const ReferenceItemContainer = styled.div`

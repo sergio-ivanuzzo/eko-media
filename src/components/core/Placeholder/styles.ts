@@ -1,5 +1,6 @@
 import styled, { FlattenSimpleInterpolation, css } from "styled-components";
 
+import { NoSelectCSS } from "~/components/global.styles";
 import { PlaceholderTextAlign } from "~/components/core/Placeholder/constants";
 
 const AlignLeftCSS = css`
@@ -42,4 +43,5 @@ export const PlaceholderContainer = styled.div<IPlaceholderProps>`
   
   ${({ align }) => getCssForAlign(align)};
   color: ${({ theme }) => theme.palette.gray.silver};
+  ${NoSelectCSS};
 `;

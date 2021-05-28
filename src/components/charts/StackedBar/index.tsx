@@ -6,7 +6,7 @@ import { CATEGORY_KEYS, TYPES } from "~/common/constants";
 
 import useDrawStackedBar, { BAR_HEIGHT } from "~/hooks/useChart/draw/useDrawStackedBar";
 
-import { StyledChart } from "~/components/partials/charts/StackedBar/styles";
+import { StyledChart } from "./styles";
 
 const TYPE = TYPES.CATEGORY;
 

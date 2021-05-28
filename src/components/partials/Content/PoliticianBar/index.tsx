@@ -1,5 +1,6 @@
 import React from "react";
 
+import PaginatedList from "~/components/core/PaginatedList";
 import PoliticianCard from "~/components/partials/Content/PoliticianBar/PoliticianCard";
 import useData from "~/hooks/useData";
 
@@ -8,7 +9,7 @@ import { Mention, NON_MEDIA_KEYS, POLITICIANS_PHOTOS_DIR, TYPES } from "~/common
 
 const TYPE = TYPES.POLITICIAN;
 
-const PoliticianBar = (): JSX.Element => {
+const PoliticianBar = ({ limit }: IPoliticianBarProps): JSX.Element => {
     const { getDataset, selectedCategory, allMedia } = useData();
     const dataset = getDataset(TYPE, selectedCategory) || [];
 
@@ -19,7 +20,7 @@ const PoliticianBar = (): JSX.Element => {
             )
         });
 
-    const data: IPoliticianBarItem[] = dataset.map(({ name, image_name, ...rest }) => {
+    let data: IPoliticianBarItem[] = dataset.map(({ name, image_name, ...rest }) => {
         const positiveTotal = validMediaKeys
             .filter((key) => key.includes(Mention.POSITIVE))
             .reduce((sum, key) => sum + Number(rest[key]), 0);
@@ -42,11 +43,17 @@ const PoliticianBar = (): JSX.Element => {
             },
             avatarUrl: `${POLITICIANS_PHOTOS_DIR}/${image_name}.png`
         }
-    }).sort((current, next) => next.mentions[Mention.ALL] - current.mentions[Mention.ALL])
+    }).sort((current, next) => next.mentions[Mention.ALL] - current.mentions[Mention.ALL]);
+
+    if (limit) {
+        data = data.slice(0, limit);
+    }
 
     return (
         <PoliticianBarContainer>
-            {data.map((item: IPoliticianBarItem) => <PoliticianCard {...item} />)}
+            <PaginatedList>
+                {data.map((item: IPoliticianBarItem) => <PoliticianCard {...item} />)}
+            </PaginatedList>
         </PoliticianBarContainer>
     );
 };

@@ -1,7 +1,8 @@
 import React from "react";
 
 import ConditionalRender from "~/components/core/ConditionalRender";
-import { ReferenceDirection } from "~/components/partials/charts/Network/constants";
+
+import { ReferenceDirection } from "~/components/charts/Network/constants";
 import {
     ArrowContainer,
     MediaName,
@@ -10,7 +11,7 @@ import {
     ReferenceList,
     StyledArrowLeft,
     StyledArrowRight,
-} from "~/components/partials/charts/Network/ReferenceBar/styles";
+} from "./styles";
 
 const ReferenceItem = ({ from, to, direction, referenceCount }: IReferenceItemProps): JSX.Element => {
 
