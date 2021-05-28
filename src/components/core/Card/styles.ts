@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+import { NoSelectCSS } from "~/components/global.styles";
+
 export const CardContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -17,4 +19,5 @@ export const Name = styled.div`
   text-transform: capitalize;
   font-size: 18px;
   text-align: center;
+  ${NoSelectCSS};
 `;

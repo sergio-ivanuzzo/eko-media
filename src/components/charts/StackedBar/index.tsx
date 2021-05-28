@@ -1,17 +1,20 @@
+import { useIntl } from "react-intl";
 import React, { useMemo } from "react";
 
+import ConditionalRender from "~/components/core/ConditionalRender";
+import FormattedTitle from "~/components/core/FormattedTitle";
 import useData from "~/hooks/useData";
-
-import { CATEGORY_KEYS, TYPES } from "~/common/constants";
 
 import useDrawStackedBar, { BAR_HEIGHT } from "~/hooks/useChart/draw/useDrawStackedBar";
 
-import { StyledChart } from "./styles";
+import { CATEGORIES_MAP, CATEGORY_KEYS, TYPES } from "~/common/constants";
+import { StackedBarContainer, StyledChart } from "./styles";
 
 const TYPE = TYPES.CATEGORY;
 
 const StackedBar = (): JSX.Element => {
-    const { getDataset } = useData();
+    const { getDataset, selectedCategory } = useData();
+    const { formatMessage } = useIntl();
 
     const dataset: ICategorizedItem[] = getDataset(TYPE, "all") as Array<ICategorizedItem>;
 
@@ -50,7 +53,19 @@ const StackedBar = (): JSX.Element => {
 
     const { draw } = useDrawStackedBar({ data, xData: categories, yData: media });
 
-    return <StyledChart draw={draw} height={height} />
+    return (
+        <StackedBarContainer>
+            <ConditionalRender condition={selectedCategory === "all"}>
+                <FormattedTitle
+                    placeholder={formatMessage({ id: "stacked_bar.title.all" })}
+                    params={[ formatMessage({ id: "top5" }) ]} />
+                <FormattedTitle
+                    placeholder={formatMessage({ id: "stacked_bar.title.category" })}
+                    params={[ CATEGORIES_MAP[selectedCategory] ]} />
+            </ConditionalRender>
+            <StyledChart draw={draw} height={height} />
+        </StackedBarContainer>
+    );
 };
 
 export default StackedBar;

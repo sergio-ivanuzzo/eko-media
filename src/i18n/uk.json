@@ -12,6 +12,8 @@
   "November": "Листопад",
   "December": "Грудень",
 
+  "top5": "ТОП-5",
+
   "datepicker.label": "Дані за період:",
   "category_filter.label": "Категорії новин",
   "media_filter.label": "Медіа",
@@ -27,6 +29,9 @@
 
   "network.title": "Мережевий аналіз ЗМІ/ Як медіа посилаються одне на одного?",
   "network.subtitle": "Кількість посилань між ЗМІ",
+  "stacked_bar.title.all": "Частка новин кожної з {0} категорій на обраних медіа",
+  "stacked_bar.title.category": "Частка новин категорії {0} серед ТОП-5 категорій на обраних медіа",
+  "politician_bar.title": "Згадки політиків в категорії {0} на обраних медіа",
 
   "placeholder.empty_select": "Ще нічого не вибрано",
   "placeholder.empty_data": "Ще нічого не завантажено",

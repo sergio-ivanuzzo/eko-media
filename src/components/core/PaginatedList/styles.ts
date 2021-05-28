@@ -3,6 +3,10 @@ import styled from "styled-components";
 export const PaginatedListContainer = styled.div`
   display: flex;
   flex-direction: column;
+  
+  > * {
+    margin: 10px 0;
+  }
 `;
 
 export const NavigationButton = styled.button`

@@ -19,3 +19,14 @@ export const StyledChart = styled(Chart)`
     }
   }
 `;
+
+export const StackedBarContainer = styled.div`
+  width: 100%;
+  flex: 3;
+  margin: 0 10px;
+  
+  > * {
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+`;

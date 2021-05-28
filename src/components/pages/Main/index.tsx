@@ -11,7 +11,7 @@ import PoliticianBar from "~/components/partials/Content/PoliticianBar";
 
 import { Section, StyledPlaceholder, SubSection } from "./styles";
 
-const POLITICIAN_BAR_LIMIT = 6;
+const POLITICIAN_BAR_LIMIT = 3;
 
 const MainPage = (): JSX.Element => {
 

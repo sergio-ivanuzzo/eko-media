@@ -1,17 +1,21 @@
 import React from "react";
+import { useIntl } from "react-intl";
 
+import FormattedTitle from "~/components/core/FormattedTitle";
 import PaginatedList from "~/components/core/PaginatedList";
 import PoliticianCard from "~/components/partials/Content/PoliticianBar/PoliticianCard";
 import useData from "~/hooks/useData";
 
 import { PoliticianBarContainer } from "./styles";
-import { Mention, NON_MEDIA_KEYS, POLITICIANS_PHOTOS_DIR, TYPES } from "~/common/constants";
+import { CATEGORIES_MAP, Mention, NON_MEDIA_KEYS, POLITICIANS_PHOTOS_DIR, TYPES } from "~/common/constants";
 
 const TYPE = TYPES.POLITICIAN;
 
 const PoliticianBar = ({ limit }: IPoliticianBarProps): JSX.Element => {
     const { getDataset, selectedCategory, allMedia } = useData();
     const dataset = getDataset(TYPE, selectedCategory) || [];
+
+    const { formatMessage } = useIntl();
 
     const validMediaKeys = Object.keys(dataset[0] || {})
         .filter((key) => {
@@ -51,6 +55,9 @@ const PoliticianBar = ({ limit }: IPoliticianBarProps): JSX.Element => {
 
     return (
         <PoliticianBarContainer>
+            <FormattedTitle
+                placeholder={formatMessage({ id: "politician_bar.title" })}
+                params={[ CATEGORIES_MAP[selectedCategory] ]} />
             <PaginatedList>
                 {data.map((item: IPoliticianBarItem) => <PoliticianCard {...item} />)}
             </PaginatedList>

@@ -9,9 +9,9 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
 
     const { getColor, getColorIndexByCategory } = useChartColor();
 
-    const height = useMemo(() => yData.length * 36, [ yData ]);
+    const height = useMemo(() => yData.length * BAR_HEIGHT, [ yData ]);
 
-    const draw = useCallback(({ chartRef, width, height: containerHeight }: IChartDrawProps): void => {
+    const draw = useCallback(({ chartRef, width }: IChartDrawProps): void => {
 
         const series = d3.stack()
             .keys(xData)
@@ -19,22 +19,13 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
             .offset(d3.stackOffsetExpand)(data as any);
 
         const svg: any = d3.select(chartRef.current)
-            .attr("preserveAspectRatio", "xMinYMin meet")
-            .attr("viewBox", `0 0 ${width} ${height}`);
-
-        // const svg: any = d3.select(chartRef.current)
-            // .attr("viewBox", `0 0 ${width} ${height}`)
-            // .attr("viewBox", `0 0 ${Math.min(width, height)} ${Math.min(width, height)}`)
-            // .attr("height", height)
-            // .attr("width", width)
-            // .attr("height", "100%")
-            // .attr("width", "100%");
+            .attr("preserveAspectRatio", "xMaxYMin meet")
+            .attr("viewBox", `0 0 ${width} ${height}`)
+            .attr("width", width)
+            .attr("height", height);
 
         // clear svg before draw new content
         svg.selectAll("svg > *").remove();
-
-        // svg.append("g")
-        //     .attr("transform", "translate(" + Math.min(width,height) / 2 + "," + Math.min(width,height) / 2 + ")");
 
         const xScale = d3.scaleLinear()
             .rangeRound([ 0, width ]).domain([ 0, 1.4 ]);
