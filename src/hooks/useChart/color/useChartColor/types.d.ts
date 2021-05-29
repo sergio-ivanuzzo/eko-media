@@ -1,9 +1,14 @@
-declare interface IGetColorProps {
+interface IGetColorParams {
     randomShade?: boolean;
     randomOpacity?: boolean;
 }
 
+declare interface IGetColorProps {
+    index: number;
+    params?: IGetColorParams;
+    colors: string[];
+}
+
 declare interface IUseChartColorResponse {
-    getColor: (index: number, params?: IGetColorProps) => string;
-    getColorIndexByCategory: (category: string) => number;
+    getColor: (props: IGetColorProps) => string;
 }

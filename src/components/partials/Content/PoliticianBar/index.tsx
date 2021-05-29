@@ -50,7 +50,7 @@ const PoliticianBar = ({ limit }: IPoliticianBarProps): JSX.Element => {
 
     return (
         <PaginatedList>
-            {data.map((item: IPoliticianBarItem) => <PoliticianCard {...item} />)}
+            {data.map((item: IPoliticianBarItem, index: number) => <PoliticianCard key={index} {...item} />)}
         </PaginatedList>
     );
 };

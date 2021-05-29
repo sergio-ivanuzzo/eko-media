@@ -7,7 +7,7 @@ const useDrawBar = ({ data, xData, yData }: IDrawBarProps): { draw: (props: ICha
 
     const { getColor } = useChartColor();
 
-    const draw = useCallback(({ chartRef, width, height }: IChartDrawProps): void => {
+    const draw = useCallback(({ chartRef, width, height, colors }: IChartDrawProps): void => {
         const svg = d3.select(chartRef.current)
             .attr("viewBox", `0 0 ${width} ${height}`)
             .attr("height", height).attr("width", width);
@@ -24,7 +24,10 @@ const useDrawBar = ({ data, xData, yData }: IDrawBarProps): { draw: (props: ICha
             .domain(yData);
 
         svg.append("g")
-            .attr("fill", getColor(1))
+            .attr("fill", getColor({
+                index: 0,
+                colors
+            }))
             .selectAll("rect.bar")
             .data(data)
             .join("rect")

@@ -2,6 +2,8 @@ import { useCallback } from "react";
 import * as d3 from "d3";
 
 import useChartColor from "~/hooks/useChart/color/useChartColor";
+import useData from "~/hooks/useData";
+import useNotifyError from "~/hooks/useNotifyError";
 
 export const MAX_BUBBLE_RADIUS = 150;
 
@@ -12,6 +14,10 @@ const MIN_ZOOM = 1;
 const MAX_ZOOM = 10;
 
 const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (props: IChartDrawProps) => void } => {
+
+    const { catchErrorsSync } = useNotifyError();
+    const { getColor } = useChartColor();
+    const { topCategories } = useData();
 
     const children = ({
         children: Array.from(
@@ -26,9 +32,11 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
         )
     });
 
-    const { getColor, getColorIndexByCategory } = useChartColor();
+    const getColorIndexByCategory = (category: string) => topCategories.findIndex(
+        (topCategory) => topCategory.toLowerCase() === category.toLowerCase()
+    );
 
-    const draw = useCallback(({ chartRef, width: currentWidth, height }: IChartDrawProps): void => {
+    const draw = useCallback(({ chartRef, width: currentWidth, height, colors }: IChartDrawProps): void => {
 
         if (!data.length) {
             return;
@@ -45,14 +53,14 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
 
         let centers: Array<[number, number]> = [];
 
-        // according to current requirements we can build 5 or 1 bubble chart
         const centerX = width / 2;
         const centerY = height / 2;
 
         const paddingX = centerX / 2;
         const paddingY = centerY / 2;
 
-        if (selectedCategories.length === 1) {
+        // according to current requirements we can build 5 or 1 bubble chart
+        if (categoriesCount === 1) {
             centers = [ [ width / 2, height / 2 ] ];
         } else {
             centers = [
@@ -152,8 +160,11 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
 
         node.append("circle")
             .attr("fill", (d: any) => {
-                const index = getColorIndexByCategory(d.category);
-                return getColor(index, { randomShade: true, randomOpacity: true });
+                return catchErrorsSync(() => getColor({
+                    index: getColorIndexByCategory(d.category),
+                    params: { randomShade: true, randomOpacity: true },
+                    colors
+                }));
             })
             .attr("cx", (d: any) => d.x)
             .attr("cy", (d: any) => d.y)

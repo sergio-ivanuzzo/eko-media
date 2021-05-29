@@ -42,7 +42,7 @@ const ExpertBar = ({ limit }: IExpertBarProps): JSX.Element => {
                 placeholder={formatMessage({ id: "expert_bar.title" })}
                 params={[ CATEGORIES_MAP[selectedCategory] ]} />
             <PaginatedList>
-                {data.map((item: IExpertBarItem) => <ExpertCard {...item} />)}
+                {data.map((item: IExpertBarItem, index: number) => <ExpertCard key={index} {...item} />)}
             </PaginatedList>
         </ExpertsBarContainer>
     );

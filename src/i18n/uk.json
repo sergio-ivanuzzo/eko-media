@@ -51,5 +51,6 @@
   "pluralize.comment.third_case": "коментарів",
 
   "error_label.file_name": "Помилка в файлі \"{0}\" !",
-  "error.csv.empty_column": "Значення в рядку \"{0}\", стовпці \"{1}\" не може бути порожнім."
+  "error.csv.empty_column": "Значення в рядку \"{0}\", стовпці \"{1}\" не може бути порожнім.",
+  "error.chart_color.unknown_index": "[useChartColor]: Індекс {0} перевищує кількість кольорів ({1})."
 }

@@ -7,7 +7,11 @@ import useDrawStackedBar, { BAR_HEIGHT } from "~/hooks/useChart/draw/useDrawStac
 import { StyledChart } from "./styles";
 import { CATEGORY_KEYS, TYPES } from "~/common/constants";
 
+import theme from "~/common/theme";
+
 const TYPE = TYPES.CATEGORY;
+
+const { orange, gray, cyan, green } = theme.palette;
 
 const StackedBar = (): JSX.Element => {
     const { getDataset } = useData();
@@ -50,7 +54,13 @@ const StackedBar = (): JSX.Element => {
 
     const { draw } = useDrawStackedBar({ data, xData: categories, yData: media });
 
-    return <StyledChart draw={draw} height={height} />;
+    return (
+        <StyledChart
+            draw={draw}
+            height={height}
+            colors={[ orange.carrot, gray.silver, green.jade, green.salad, cyan.azure ]}
+        />
+    );
 };
 
 export default StackedBar;

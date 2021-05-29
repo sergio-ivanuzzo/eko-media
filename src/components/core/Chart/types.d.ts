@@ -5,4 +5,5 @@ declare interface IChartContainerProps {
 
 declare interface IChartProps extends IChartContainerProps, IStylableComponent {
     draw: (props: IChartDrawProps) => void;
+    colors?: string[];
 }

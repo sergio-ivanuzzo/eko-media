@@ -8,7 +8,11 @@ import useDrawBar from "~/hooks/useChart/draw/useDrawBar";
 import { CATEGORIES_MAP, CATEGORY_KEYS, TYPES } from "~/common/constants";
 import { SphereBarContainer, StyledChart } from "./styles";
 
+import theme from "~/common/theme";
+
 const TYPE = TYPES.SPHERE;
+
+const { orange, gray } = theme.palette;
 
 const SphereBar = (): JSX.Element => {
     const { getDataset, selectedCategory } = useData();
@@ -55,7 +59,7 @@ const SphereBar = (): JSX.Element => {
             <FormattedTitle
                 placeholder={formatMessage({ id: "sphere_bar.title" })}
                 params={[ CATEGORIES_MAP[selectedCategory] ]} />
-            <StyledChart draw={draw} />
+            <StyledChart draw={draw} colors={[ gray.silver, orange.carrot ]} />
         </SphereBarContainer>
     );
 };

@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 import * as d3 from "d3";
 
 import useChartColor from "~/hooks/useChart/color/useChartColor";
@@ -7,9 +7,9 @@ export const BAR_HEIGHT = 27;
 
 const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw: (props: IChartDrawProps) => void } => {
 
-    const { getColor, getColorIndexByCategory } = useChartColor();
+    const { getColor } = useChartColor();
 
-    const draw = useCallback(({ chartRef, width, height }: IChartDrawProps): void => {
+    const draw = useCallback(({ chartRef, width, height, colors }: IChartDrawProps): void => {
 
         const series = d3.stack()
             .keys(xData)
@@ -68,10 +68,7 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
             .selectAll("g")
             .data(series)
             .enter().append("g")
-            .attr("fill", (d: any) => {
-                const index = getColorIndexByCategory(d.key);
-                return getColor(index);
-            })
+            .attr("fill", (d: any, index: number) => getColor({ index, colors }))
             .attr("class", (d: any, i: number) => `group-${i}`)
 
 

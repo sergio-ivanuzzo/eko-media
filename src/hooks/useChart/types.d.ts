@@ -2,9 +2,10 @@ declare interface IChartDrawProps {
     chartRef: RefObject<SVGSVGElement>;
     width: number;
     height: number;
+    colors: string[];
 }
 
-declare type IUseChartProps = IChartProps;
+declare type TUseChartProps = IChartProps;
 
 declare interface IUseChartResponse {
     chartRef: RefObject<SVGSVGElement>;

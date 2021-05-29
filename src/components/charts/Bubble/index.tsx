@@ -4,14 +4,20 @@ import useData from "~/hooks/useData";
 import useDrawBubble, { MAX_BUBBLE_RADIUS } from "~/hooks/useChart/draw/useDrawBubble";
 
 import { StyledChart } from "./styles";
-import { TYPES } from "~/common/constants";
+import { CATEGORIES_MAP, TYPES } from "~/common/constants";
+
+import theme from "~/common/theme";
 
 const TYPE = TYPES.WORD_CLOUD;
 
 const MAX_PERCENTAGE = 100;
 
+const { orange, gray, cyan, green } = theme.palette;
+
+const baseColors = [ orange.carrot, gray.silver, green.jade, green.salad, cyan.azure ];
+
 const Bubble = (): JSX.Element => {
-    const { getDataset, selectedCategories, topCategories } = useData();
+    const { getDataset, selectedCategories, selectedCategory, topCategories } = useData();
 
     const dataset = getDataset(TYPE) as Array<IBubbleDatasetItem>;
 
@@ -42,9 +48,14 @@ const Bubble = (): JSX.Element => {
         });
     }, [ dataset ]);
 
+    const colors = selectedCategory === "all"
+        ? baseColors
+        // detect color attached to selected category
+        : [ baseColors[topCategories.findIndex((category) => category === CATEGORIES_MAP[selectedCategory])] ];
+
     const { draw } = useDrawBubble({ data, selectedCategories: selectedCategories });
 
-    return <StyledChart draw={draw} />
+    return <StyledChart draw={draw} colors={colors} />
 };
 
 export default Bubble;

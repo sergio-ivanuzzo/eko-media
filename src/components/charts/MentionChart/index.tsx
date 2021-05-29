@@ -6,7 +6,11 @@ import useDrawStackedBar, { BAR_HEIGHT } from "~/hooks/useChart/draw/useDrawStac
 import { StyledChart } from "./styles";
 import { Mention, NON_MEDIA_KEYS, TYPES } from "~/common/constants";
 
+import theme from "~/common/theme";
+
 const TYPE = TYPES.POLITICIAN;
+
+const { orange, gray, green } = theme.palette;
 
 const MentionChart = ({ politicianName = "" }: IMentionChartProps): JSX.Element => {
 
@@ -49,7 +53,7 @@ const MentionChart = ({ politicianName = "" }: IMentionChartProps): JSX.Element 
 
     const { draw } = useDrawStackedBar({ data, xData: categories, yData: media });
 
-    return <StyledChart draw={draw} height={height} />;
+    return <StyledChart draw={draw} height={height} colors={[ orange.carrot, gray.silver, green.salad ]} />;
 };
 
 export default MentionChart;

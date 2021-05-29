@@ -29,24 +29,40 @@ const useNotifyError = ({ throwManually = false }: IUseNotifyErrorProps = {}): I
         return `${label}${errorText}`;
     }
 
-    // for both sync and async functions (since JS allow this)
+    const processError = (e: AppError, label = ""): void => {
+        const errorText = getErrorText(e);
+        e.label = label;
+        e.message = errorText;
+
+        if (throwManually) {
+            setError((prevErrors) => [ ...prevErrors, e ]);
+            toast.error(errorText);
+        } else {
+            toast.error(errorText);
+            throw e;
+        }
+    }
+
     const catchErrors = async (targetFunction: CallableFunction, label = "") => {
         try {
             return await targetFunction();
         } catch (e) {
-            e.label = label;
+            processError(e, label);
+        }
+    }
 
-            if (throwManually) {
-                setError(e);
-            } else {
-                toast.error(getErrorText(e));
-                throw e;
-            }
+    const catchErrorsSync = (targetFunction: CallableFunction, label = "") => {
+        try {
+            return targetFunction();
+        } catch (e) {
+            processError(e, label);
         }
     }
 
     const throwErrors = () => {
-        errors.forEach((e: AppError) => {
+        const errorsCopy = [ ...errors ];
+        setError([]);
+        errorsCopy.forEach((e: AppError) => {
             toast.error(getErrorText(e));
             throw e;
         })
@@ -54,6 +70,7 @@ const useNotifyError = ({ throwManually = false }: IUseNotifyErrorProps = {}): I
 
     return {
         catchErrors,
+        catchErrorsSync,
         throwErrors,
     }
 };

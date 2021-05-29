@@ -138,7 +138,7 @@ const useDrawNetwork = (
             .attr("y1", (d: any) => d.source.y)
             .attr("x2", (d: any) => d.target.x)
             .attr("y2", (d: any) => d.target.y)
-            .attr("stroke-width", (d: any) => Math.sqrt(parseInt(d.weight))/* * LINE_MULTIPLIER*/)
+            .attr("stroke-width", (d: any) => Math.sqrt(parseInt(d.weight)))
             .attr("stroke-opacity", (d: any) => d.alpha)
 
         const node = svg.selectAll("g.nodes")
