@@ -10,6 +10,7 @@ import theme from "~/common/theme";
 
 const TYPE = TYPES.WORD_CLOUD;
 
+// by default we want to use 100% in our calculations
 const MAX_PERCENTAGE = 100;
 
 const { orange, gray, cyan, green } = theme.palette;

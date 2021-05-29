@@ -68,7 +68,9 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
             .selectAll("g")
             .data(series)
             .enter().append("g")
-            .attr("fill", (d: any, index: number) => getColor({ index, colors }))
+            .attr("fill", (d: any, index: number) => {
+                return getColor({ index, colors });
+            })
             .attr("class", (d: any, i: number) => `group-${i}`)
 
 

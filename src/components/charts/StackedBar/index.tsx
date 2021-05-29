@@ -5,7 +5,7 @@ import useData from "~/hooks/useData";
 import useDrawStackedBar, { BAR_HEIGHT } from "~/hooks/useChart/draw/useDrawStackedBar";
 
 import { StyledChart } from "./styles";
-import { CATEGORY_KEYS, TYPES } from "~/common/constants";
+import { CATEGORIES_MAP, CATEGORY_KEYS, TYPES } from "~/common/constants";
 
 import theme from "~/common/theme";
 
@@ -13,8 +13,10 @@ const TYPE = TYPES.CATEGORY;
 
 const { orange, gray, cyan, green } = theme.palette;
 
+const baseColors = [ orange.carrot, gray.silver, green.jade, green.salad, cyan.azure ];
+
 const StackedBar = (): JSX.Element => {
-    const { getDataset } = useData();
+    const { getDataset, selectedCategory, topCategories } = useData();
 
     const dataset: ICategorizedItem[] = getDataset(TYPE, "all") as Array<ICategorizedItem>;
 
@@ -54,11 +56,16 @@ const StackedBar = (): JSX.Element => {
 
     const { draw } = useDrawStackedBar({ data, xData: categories, yData: media });
 
+    const colors = selectedCategory === "all"
+        ? baseColors
+        // detect color attached to selected category
+        : [ baseColors[topCategories.findIndex((category) => category === CATEGORIES_MAP[selectedCategory])] ];
+
     return (
         <StyledChart
             draw={draw}
             height={height}
-            colors={[ orange.carrot, gray.silver, green.jade, green.salad, cyan.azure ]}
+            colors={colors}
         />
     );
 };

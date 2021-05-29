@@ -161,7 +161,7 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
         node.append("circle")
             .attr("fill", (d: any) => {
                 return catchErrorsSync(() => getColor({
-                    index: getColorIndexByCategory(d.category),
+                    index: categoriesCount === 1 ? 0 : getColorIndexByCategory(d.category),
                     params: { randomShade: true, randomOpacity: true },
                     colors
                 }));
