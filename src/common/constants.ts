@@ -3,6 +3,7 @@ export const ROOT_DIR = "data";
 const IMAGES_DIR = `${ROOT_DIR}/images`;
 
 export const POLITICIANS_PHOTOS_DIR = `${IMAGES_DIR}/politicians_photos`;
+export const EXPERTS_PHOTOS_DIR = `${IMAGES_DIR}/experts_photos`;
 export const MEDIA_LOGOS_DIR = `${IMAGES_DIR}/media_logos`;
 
 export enum TYPES {
@@ -70,7 +71,7 @@ export const FILTER_MASK_MAP = {
 export const CATEGORY_KEYS = [ "category", "Найбільше коментує" ];
 
 // for filtering media columns
-export const NON_MEDIA_KEYS = [ "name", "image_name" ];
+export const NON_MEDIA_KEYS = [ "name", "image_name", "expert_id" ];
 
 // for politician_ type files
 export enum Mention {

@@ -30,6 +30,10 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
 
     const draw = useCallback(({ chartRef, width: currentWidth, height }: IChartDrawProps): void => {
 
+        if (!data.length) {
+            return;
+        }
+
         const width = currentWidth * 1.2;
 
         const pack = () => d3.pack()

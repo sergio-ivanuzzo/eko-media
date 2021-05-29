@@ -27,12 +27,14 @@ module.exports = {
     },
     output: {
         filename: "eko_media.bundle.js",
-        path: path.resolve(__dirname, "dist"),
-        publicPath: "/dist/"
+        path: path.resolve(__dirname, "public/static/js"),
+        publicPath: "/"
     },
     devServer: {
-        open: "http://localhost:8080/public",
+        open: "http://localhost:8080/",
+        contentBase: path.resolve(__dirname, "public"),
         port: 8080,
-        publicPath: "/dist/"
+        publicPath: "/",
+        historyApiFallback: true
     }
 };

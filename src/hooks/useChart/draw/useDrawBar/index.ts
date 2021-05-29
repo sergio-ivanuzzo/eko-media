@@ -5,7 +5,7 @@ import useChartColor from "~/hooks/useChart/color/useChartColor";
 
 const useDrawBar = ({ data, xData, yData }: IDrawBarProps): { draw: (props: IChartDrawProps) => void } => {
 
-    const { getColor, getColorIndexByCategory } = useChartColor();
+    const { getColor } = useChartColor();
 
     const draw = useCallback(({ chartRef, width, height }: IChartDrawProps): void => {
         const svg = d3.select(chartRef.current)
@@ -44,7 +44,7 @@ const useDrawBar = ({ data, xData, yData }: IDrawBarProps): { draw: (props: ICha
             .attr("x", (d: any) => xScale(0))
             .attr("y", (d: any) => yScale(d.key) as any + yScale.bandwidth() / 2)
             .attr("dy", "0.35em")
-            .attr("dx", "8em")
+            .attr("dx", "1em")
             .attr("font-size", "2em")
             .text((d: any) => d.key);
 

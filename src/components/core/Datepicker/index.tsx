@@ -51,6 +51,9 @@ const DatePicker = (props: IDatePickerProps): JSX.Element => {
 
     const handleDateChange = ({ month, year }: IDatePickerHandleChangeProps): void => {
         const newDate = new Date(date);
+        // reset day to 1st to avoid of setting incorrect month on change
+        // for example, if today is 29 and we set February, the March will be set instead
+        newDate.setDate(1);
 
         typeof year === "number" && newDate.setFullYear(year);
         typeof month === "number" && newDate.setMonth(month);

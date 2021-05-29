@@ -1,12 +1,12 @@
 import React from "react";
 
+import StoryRouter from "storybook-react-router";
+import { storiesOf } from "@storybook/react";
+
 import UIApp from "./index";
 
-export default {
-    title: "Components/Main"
-};
-
-
-export const App = (): JSX.Element => {
-    return <UIApp />;
-};
+storiesOf("Components/Main", module)
+    .addDecorator(StoryRouter() as any)
+    .add("App", () => (
+        <UIApp />
+    ));

@@ -1,6 +1,8 @@
-import { useCallback, useContext } from "react";
+import { useIntl } from "react-intl";
+import { useCallback, useContext, useMemo } from "react";
 
 import csvToJson from "~/parsers/csvToJson";
+import formatString from "~/helpers/formatString";
 import useNotifyError from "~/hooks/useNotifyError";
 
 import { DataContext } from "~/providers/DataProvider";
@@ -33,6 +35,7 @@ const useData = (): IUseDataResponse => {
         allMedia,
         setAllMedia,
     } = useContext<IDataProviderContext<IItem>>(DataContext);
+    const { formatMessage } = useIntl();
 
     const { catchErrors } = useNotifyError();
 
@@ -56,7 +59,15 @@ const useData = (): IUseDataResponse => {
 
         if (response.status === 200) {
             if (extension === FILE_EXTENSION.CSV) {
-                return { [name]: await catchErrors(() => csvToJson(responseText)) };
+                return {
+                    [name]: await catchErrors(
+                        () => csvToJson(responseText),
+                        formatString({
+                            initial: formatMessage({ id: "error_label.file_name" }),
+                            params: [ `${name}.${FILE_EXTENSION.CSV}` ]
+                        })
+                    )
+                };
             } else if (extension === FILE_EXTENSION.JSON) {
                 return { [name]: [ JSON.parse(responseText) ] };
             }
@@ -74,15 +85,16 @@ const useData = (): IUseDataResponse => {
         const categoriesData = result[`category_all_${month}_${year}`];
         let categories: string[] = [];
         let allMedia: string[] = [];
+
         if (categoriesData) {
             categories = categoriesData.map((item) => item.category.toString());
             allMedia = Object.keys(categoriesData[0])
                 .filter((key: string) => !CATEGORY_KEYS.includes(key));
-
-            setTopCategories(categories as string[]);
-            setAllMedia(allMedia);
-            setMedia(allMedia);
         }
+
+        setTopCategories(categories as string[]);
+        setAllMedia(allMedia);
+        setMedia(allMedia);
 
         return [ result, categories, allMedia ];
     }, [ load, getMonthAndYear ]);
@@ -191,12 +203,17 @@ const useData = (): IUseDataResponse => {
         return (key in filteredData) ? filteredData[key] : filteredData[fallbackKey] || [];
     }, [ data, getMonthAndYear, selectedCategory, selectedMedia ]);
 
+    const selectedCategories = useMemo(
+        () => selectedCategory === "all" ? topCategories : [ CATEGORIES_MAP[selectedCategory] ],
+        [ selectedCategory, topCategories ]
+    );
+
     return {
         data,
         loadAll,
         getDataset,
         topCategories,
-        selectedCategories: selectedCategory === "all" ? topCategories : [ CATEGORIES_MAP[selectedCategory] ],
+        selectedCategories,
         selectedCategory,
         setCategory,
         selectedMedia,

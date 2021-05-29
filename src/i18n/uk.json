@@ -27,14 +27,17 @@
 
   "select.default_select_all": "Всі",
 
+  "bubble.title": "Ключові слова в кожній категорії",
   "network.title": "Мережевий аналіз ЗМІ/ Як медіа посилаються одне на одного?",
   "network.subtitle": "Кількість посилань між ЗМІ",
   "stacked_bar.title.all": "Частка новин кожної з {0} категорій на обраних медіа",
   "stacked_bar.title.category": "Частка новин категорії {0} серед ТОП-5 категорій на обраних медіа",
+  "sphere_bar.title": "Сфера діяльності експертів у категорії {0}",
   "politician_bar.title": "Згадки політиків в категорії {0} на обраних медіа",
+  "expert_bar.title": "Найбільше категорію {0} на обраних медіа коментували",
 
   "placeholder.empty_select": "Ще нічого не вибрано",
-  "placeholder.empty_data": "Ще нічого не завантажено",
+  "placeholder.empty_data": "Для обраної дати немає даних",
 
   "pluralize.mention.first_case": "згадка",
   "pluralize.mention.second_case": "згадки",
@@ -42,5 +45,8 @@
 
   "pluralize.comment.first_case": "коментар",
   "pluralize.comment.second_case": "коментаря",
-  "pluralize.comment.third_case": "коментарів"
+  "pluralize.comment.third_case": "коментарів",
+
+  "error_label.file_name": "Помилка в файлі \"{0}\" !",
+  "error.csv.empty_column": "Значення в рядку \"{0}\", стовпці \"{1}\" не може бути порожнім."
 }

@@ -1,15 +1,18 @@
+import { useIntl } from "react-intl";
 import React, { useMemo } from "react";
 
+import FormattedTitle from "~/components/core/FormattedTitle";
 import useData from "~/hooks/useData";
 import useDrawBar from "~/hooks/useChart/draw/useDrawBar";
 
-import { StyledChart } from "./styles";
 import { CATEGORIES_MAP, CATEGORY_KEYS, TYPES } from "~/common/constants";
+import { SphereBarContainer, StyledChart } from "./styles";
 
 const TYPE = TYPES.SPHERE;
 
 const SphereBar = (): JSX.Element => {
     const { getDataset, selectedCategory } = useData();
+    const { formatMessage } = useIntl();
 
     const dataset = getDataset(TYPE, "all") as Array<ICategorizedItem>;
 
@@ -47,7 +50,14 @@ const SphereBar = (): JSX.Element => {
 
     const { draw } = useDrawBar({ data, xData: [ CATEGORIES_MAP[selectedCategory] ], yData: spheres });
 
-    return <StyledChart draw={draw} />;
+    return (
+        <SphereBarContainer>
+            <FormattedTitle
+                placeholder={formatMessage({ id: "sphere_bar.title" })}
+                params={[ CATEGORIES_MAP[selectedCategory] ]} />
+            <StyledChart draw={draw} />
+        </SphereBarContainer>
+    );
 };
 
 export default SphereBar;
