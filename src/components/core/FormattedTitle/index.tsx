@@ -2,9 +2,10 @@ import React from "react";
 
 import formatString from "~/helpers/formatString";
 
-import { Title } from "./styles";
+import { Heading } from "./styles";
+import { HeadingLevel } from "~/components/core/FormattedTitle/constants";
 
-const FormattedTitle = ({ placeholder, params = [] }: IFormattedTitleProps): JSX.Element => {
+const FormattedTitle = ({ placeholder, params = [], level = HeadingLevel.H3 }: IFormattedTitleProps): JSX.Element => {
     const htmlString = formatString({
         initial: placeholder,
         replacer: (param) => `<span>${param}</span>`,
@@ -12,7 +13,9 @@ const FormattedTitle = ({ placeholder, params = [] }: IFormattedTitleProps): JSX
     });
 
     return (
-        <Title dangerouslySetInnerHTML={{ __html: htmlString }} />
+        <Heading
+            dangerouslySetInnerHTML={{ __html: htmlString }}
+            as={`h${level}` as any} />
     );
 };
 

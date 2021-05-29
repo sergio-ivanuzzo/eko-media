@@ -1,4 +1,3 @@
-import { useIntl } from "react-intl";
 import React, { useMemo } from "react";
 
 import useData from "~/hooks/useData";
@@ -11,8 +10,7 @@ import { CATEGORY_KEYS, TYPES } from "~/common/constants";
 const TYPE = TYPES.CATEGORY;
 
 const StackedBar = (): JSX.Element => {
-    const { getDataset, selectedCategory } = useData();
-    const { formatMessage } = useIntl();
+    const { getDataset } = useData();
 
     const dataset: ICategorizedItem[] = getDataset(TYPE, "all") as Array<ICategorizedItem>;
 

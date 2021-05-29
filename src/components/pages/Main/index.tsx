@@ -10,6 +10,7 @@ import Network from "~/components/charts/Network";
 import PoliticianBar from "~/components/partials/Content/PoliticianBar";
 import SphereBar from "~/components/charts/SphereBar";
 import StackedBar from "~/components/charts/StackedBar";
+import formatString from "~/helpers/formatString";
 import useData from "~/hooks/useData";
 
 import { CATEGORIES_MAP } from "~/common/constants";
@@ -20,7 +21,7 @@ import {
     StyledLink,
     StyledPlaceholder,
     SubSection
-} from "./styles";
+} from "~/components/pages/styles";
 
 const POLITICIAN_BAR_LIMIT = 3;
 const EXPERT_BAR_LIMIT = 3;
@@ -36,20 +37,29 @@ const MainPage = (): JSX.Element => {
                 <Section>
                     <SubSection>
                         <LeftColumn>
+                            <FormattedTitle
+                                placeholder={formatMessage({ id: "politician_bar.title" })}
+                                params={[ CATEGORIES_MAP[selectedCategory] ]} />
+
                             <PoliticianBar limit={POLITICIAN_BAR_LIMIT} />
+
                             <StyledLink to="/politicians/details" tabIndex={7}>
                                 <span>
                                     <FormattedMessage id="link.details" />
                                 </span>
                                 <ArrowRight width={18} height={14} />
                             </StyledLink>
+
                             <SphereBar />
                         </LeftColumn>
                         <RightColumn>
                             <ConditionalRender condition={selectedCategory === "all"}>
                                 <FormattedTitle
                                     placeholder={formatMessage({ id: "stacked_bar.title.all" })}
-                                    params={[ formatMessage({ id: "top5" }) ]} />
+                                    params={[ formatString({
+                                        initial: formatMessage({ id: "topX" }),
+                                        params: [ "5" ]
+                                    }) ]} />
                                 <FormattedTitle
                                     placeholder={formatMessage({ id: "stacked_bar.title.category" })}
                                     params={[ CATEGORIES_MAP[selectedCategory] ]} />
