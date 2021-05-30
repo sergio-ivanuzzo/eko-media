@@ -69,25 +69,41 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
             .selectAll("g")
             .data(series)
             .enter().append("g")
-            .attr("fill", (d: any, index: number) => {
-                return getColor({ index, colors });
-            })
+            .attr("fill", (d: any, index: number) => getColor({ index, colors }))
             .attr("class", (d: any, i: number) => `group-${i}`);
 
-        let segment = group.selectAll("rect").data((d: any) => d);
-        segment = segment.enter().append("rect").merge(segment);
-        segment.attr("class", "segment")
+        const segment = group.selectAll("rect").data((d: any) => d);
+        segment.join("rect")
+            .attr("class", "segment")
             .attr("x", (d: any) => xScale(d[0]))
             .attr("y", (d: any) => yScale(d.data.key))
             .attr("width", (d: any, i: any) => xScale(d[1]) - xScale(d[0]))
-            .attr("height", yScale.bandwidth())
+            .attr("height", yScale.bandwidth());
 
-        segment.exit().remove();
+        const text = group.selectAll("text.label").data((d: any) => d);
+        text.join("text")
+            .text((d: any, i: any, n: any) => {
+                const parent = d3.select(n[i]).node().parentNode;
+                const parentClass = d3.select(parent).attr("class");
+                const groupIndex = Number(parentClass.replace( /^\D+/g, ""));
+                const value = d.data.values[groupIndex];
+                const total = d.data.total;
+                const percentage = Math.floor(100 * value / total);
+
+                return `${percentage}%`;
+            })
+            .attr("class", (d: any, i: any) => `label label-group-${i}`)
+            .attr("dy", () => "1.1em")
+            .attr("x", (d: any) => xScale(d[0]) + 30)
+            .attr("y", (d: any) => yScale(d.data.key))
+            .attr("width", (d: any, i: any) => xScale(d[1]) - xScale(d[0]))
+            .attr("height", yScale.bandwidth());
 
         const zoom = d3.zoom()
             .scaleExtent([ MIN_ZOOM, MAX_ZOOM ])
             .translateExtent([ [ 0, 0 ], [ width, height ] ])
             .extent([ [ 0, 0 ], [ width, height ] ])
+            // allow zoom only when shift key pressed
             .filter((event: WheelEvent) => event.shiftKey)
             .on("zoom", (event: d3.D3ZoomEvent<any, any>) => {
 

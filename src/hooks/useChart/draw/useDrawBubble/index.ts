@@ -147,16 +147,19 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
 
         node.attr("pointer-events", "all");
 
-        svg.call(d3.zoom().scaleExtent([ MIN_ZOOM, MAX_ZOOM ]).on("zoom", (event: d3.D3ZoomEvent<any, any>) => {
-            const scale = event.transform.k;
-            const textSize = DEFAULT_TEXT_SIZE * scale > MAX_TEXT_SIZE ? MAX_TEXT_SIZE / scale : DEFAULT_TEXT_SIZE;
+        svg.call(d3.zoom()
+            .scaleExtent([ MIN_ZOOM, MAX_ZOOM ])
+            .filter((event: WheelEvent) => event.shiftKey)
+            .on("zoom", (event: d3.D3ZoomEvent<any, any>) => {
+                const scale = event.transform.k;
+                const textSize = DEFAULT_TEXT_SIZE * scale > MAX_TEXT_SIZE ? MAX_TEXT_SIZE / scale : DEFAULT_TEXT_SIZE;
 
-            node.selectAll("circle,text").attr("transform", event.transform.toString());
-            node.selectAll("text").style("font-size", `${textSize}px`);
+                node.selectAll("circle,text").attr("transform", event.transform.toString());
+                node.selectAll("text").style("font-size", `${textSize}px`);
 
-            hideText();
+                hideText();
 
-         }) as any);
+             }) as any);
 
         node.append("circle")
             .attr("fill", (d: any) => {

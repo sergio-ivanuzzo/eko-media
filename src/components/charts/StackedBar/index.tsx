@@ -50,6 +50,7 @@ const StackedBar = (): JSX.Element => {
                     return result;
                 }, {}),
                 total: categories.reduce((sum, category, index) => sum + Number(dataset[index][media]), 0),
+                values: categories.map((category, index) => Number(dataset[index][media])),
             }
         });
     }, [ dataset ]);
