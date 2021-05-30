@@ -46,10 +46,25 @@ const MentionChart = ({ politicianName = "" }: IMentionChartProps): JSX.Element 
                         return key ? sum + Number(item[key]) : sum;
                     }, 0);
                     return result;
-                }, {})
+                }, {}),
+                total: categories.reduce(
+                    (sum, mention) => sum + filteredDataset.reduce((sum, item) => {
+                        const key = Object.keys(item).find((key) => key.includes(mention) && key.includes(media));
+                        return key ? sum + Number(item[key]) : sum;
+                    }, 0),
+                    0
+                ),
+                values: categories.map((mention) => {
+                    return filteredDataset.reduce((sum, item) => {
+                        const key = Object.keys(item).find((key) => key.includes(mention) && key.includes(media));
+                        return key ? sum + Number(item[key]) : sum;
+                    }, 0);
+                }),
             }
         });
     }, [ dataset ]);
+
+    console.log(data);
 
     const { draw } = useDrawStackedBar({ data, xData: categories, yData: media });
 

@@ -15,4 +15,10 @@ export const StyledChart = styled(Chart)`
       display: none;
     }
   }
+  
+  text.label {
+    fill: black;
+    font-family: "NeueHaasUnica", sans-serif;
+    font-weight: bold;
+  }
 `;
