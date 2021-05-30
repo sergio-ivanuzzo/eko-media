@@ -25,10 +25,6 @@ export const LeftColumn = styled.div`
   padding: 5px;
   
   width: 300px;
-  
-  > * {
-    margin-bottom: 50px;
-  }
 `;
 
 export const RightColumn = styled.div`

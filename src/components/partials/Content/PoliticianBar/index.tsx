@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import PaginatedList from "~/components/core/PaginatedList";
 import PoliticianCard from "~/components/partials/Content/PoliticianBar/PoliticianCard";
@@ -8,7 +8,7 @@ import { Mention, NON_MEDIA_KEYS, POLITICIANS_PHOTOS_DIR, TYPES } from "~/common
 
 const TYPE = TYPES.POLITICIAN;
 
-const PoliticianBar = ({ limit }: IPoliticianBarProps): JSX.Element => {
+const PoliticianBar = ({ limit, selectable = true, onSelect = () => null }: IPoliticianBarProps): JSX.Element => {
     const { getDataset, selectedCategory, allMedia } = useData();
     const dataset = getDataset(TYPE, selectedCategory) || [];
 
@@ -48,9 +48,32 @@ const PoliticianBar = ({ limit }: IPoliticianBarProps): JSX.Element => {
         data = data.slice(0, limit);
     }
 
+    const [ selected, setSelected ] = useState<string>(data[0].name);
+    const handleSelect = (politicianName: string) => {
+        if (!selectable) {
+            return;
+        }
+
+        setSelected(politicianName);
+        onSelect(politicianName);
+    };
+
+    const children = data.map((item: IPoliticianBarItem, index: number) => {
+        const { name } = item;
+        return (
+            <PoliticianCard
+                key={index}
+                {...item}
+                onClick={() => handleSelect(name)}
+                selected={selected !== name}
+                selectable={selectable}
+            />
+        );
+    });
+
     return (
         <PaginatedList>
-            {data.map((item: IPoliticianBarItem, index: number) => <PoliticianCard key={index} {...item} />)}
+            {children}
         </PaginatedList>
     );
 };

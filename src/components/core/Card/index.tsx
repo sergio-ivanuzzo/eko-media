@@ -9,9 +9,19 @@ const DefaultText = ({ text }: ICardTextProps): JSX.Element => {
     );
 };
 
-const Card = ({ avatarUrl, name, text, renderText = DefaultText, append = () => <></> }: ICardProps): JSX.Element => {
+const Card = (props: ICardProps): JSX.Element => {
+    const {
+        avatarUrl,
+        name,
+        text,
+        renderText = DefaultText,
+        append = () => <></>,
+        className = "",
+        onClick = () => null
+    } = props;
+
     return (
-        <CardContainer>
+        <CardContainer className={className} onClick={onClick}>
             <Avatar src={avatarUrl} />
             <Name>{name}</Name>
             {renderText({ text })}

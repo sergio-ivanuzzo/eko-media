@@ -1,11 +1,11 @@
 import React from "react";
 import { useIntl } from "react-intl";
 
-import Card from "~/components/core/Card";
 import maybePluralize from "~/helpers/maybePluralize";
 
 import { Mention } from "~/common/constants";
 import MentionBar from "~/components/partials/Content/PoliticianBar/MentionBar";
+import { StyledCard } from "~/components/partials/Content/PoliticianBar/PoliticianCard/styles";
 
 const MESSAGE_CASES: [string, string, string] = [
     "pluralize.mention.first_case",
@@ -13,9 +13,10 @@ const MESSAGE_CASES: [string, string, string] = [
     "pluralize.mention.third_case",
 ];
 
-const PoliticianCard = ({ name, mentions, avatarUrl }: IPoliticianBarItem): JSX.Element => {
+const PoliticianCard = ({ name, mentions, avatarUrl, ...props }: IPoliticianCardProps): JSX.Element => {
     const { formatMessage } = useIntl();
     const text = formatMessage({ id: maybePluralize(mentions[Mention.ALL], MESSAGE_CASES) });
+    const { selectable, selected, onClick } = props;
 
     const renderMentionBar = () => {
         return (
@@ -28,10 +29,15 @@ const PoliticianCard = ({ name, mentions, avatarUrl }: IPoliticianBarItem): JSX.
     };
 
     return (
-        <Card avatarUrl={avatarUrl}
-              name={name}
-              text={`${mentions[Mention.ALL]} ${text}`}
-              append={renderMentionBar} />
+        <StyledCard
+            avatarUrl={avatarUrl}
+            name={name}
+            text={`${mentions[Mention.ALL]} ${text}`}
+            append={renderMentionBar}
+            selectable={selectable}
+            selected={selected}
+            onClick={onClick}
+        />
     );
 };
 

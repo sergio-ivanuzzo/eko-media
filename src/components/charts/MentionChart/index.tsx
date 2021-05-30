@@ -53,7 +53,7 @@ const MentionChart = ({ politicianName = "" }: IMentionChartProps): JSX.Element 
 
     const { draw } = useDrawStackedBar({ data, xData: categories, yData: media });
 
-    return <StyledChart draw={draw} height={height} colors={[ orange.carrot, gray.silver, green.salad ]} />;
+    return <StyledChart draw={draw} height={height} colors={[ green.salad, gray.silver, orange.carrot ]} />;
 };
 
 export default MentionChart;
