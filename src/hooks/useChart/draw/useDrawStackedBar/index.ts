@@ -4,6 +4,7 @@ import * as d3 from "d3";
 import useChartColor from "~/hooks/useChart/color/useChartColor";
 
 export const BAR_HEIGHT = 27;
+export const MARGIN_LEFT = 230;
 
 const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw: (props: IChartDrawProps) => void } => {
 
@@ -16,26 +17,34 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
             // normalization
             .offset(d3.stackOffsetExpand)(data as any);
 
+        // console.log(series);
+
+        // const xMax = d3.max(series, (group) => d3.max(group, (d: any) => group[1] as any));
+        // d3.max(series, function(d) { return d3.max(d, function(d) { return d[1]})});
+        // console.log(d3.max(series, function(d) { return d3.max(d, function(d) { return d[1]})}));
+
         const svg: any = d3.select(chartRef.current)
-            .attr("preserveAspectRatio", "xMidYMin meet")
+            .attr("preserveAspectRatio", "xMaxYMin meet")
             .attr("viewBox", `0 0 ${width} ${height}`)
+            // .attr("transform", "translate(200, 0)")
             .attr("width", width)
             .attr("height", height);
 
         // clear svg before draw new content
         svg.selectAll("svg > *").remove();
 
-        const maxX = d3.max(data, (d: any) => d.total);
+        // const maxX = d3.max(data, (d: any) => d.total);
+        const xMax = d3.max(series, (d) => d3.max(d, (d) => d[1])) as number;
 
         const xScale = d3.scaleLinear()
             // .range([ 0, width ])
-            .rangeRound([ 0, width ])
-            .domain([ 0, 1 ])
+            .rangeRound([ MARGIN_LEFT, width ])
+            .domain([ 0, xMax ])
             // .domain([ 0, 1.4 ]);
 
         const xScale2 = d3.scaleLinear()
-            .range([ 0, width ])
-            .domain([ 0, maxX ])
+            .rangeRound([ MARGIN_LEFT, width ])
+            .domain([ 0, xMax ])
 
         const yScale: d3.ScaleBand<string> = d3.scaleBand()
             .range([ 0, height ])
@@ -44,7 +53,7 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
 
         // draw xAxis
         const xAxis = d3
-            .axisTop(xScale)
+            .axisBottom(xScale)
             .tickSize(0)
             // x-axis will contains no text on scale
             .tickFormat(() => "");
@@ -64,7 +73,9 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
             .attr("class", "axis")
             .call(yAxis);
 
-        const group = svg.append("g")
+        const groupsContainer = svg.append("g").attr("class", "groups-container");
+
+        const group = groupsContainer
             .selectAll("g")
             .data(series)
             .enter().append("g")
@@ -72,49 +83,89 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
                 return getColor({ index, colors });
             })
             .attr("class", (d: any, i: number) => `group-${i}`)
+            // .attr("transform", (d: any) => `translate(${xScale(d[0])}, 0)`);
 
 
-        const segment = group.selectAll("rect")
-            .data((d: any) => d)
-            .join("rect")
-            .attr("class", "segment")
-            .attr("x", (d: any) => xScale(d[0]) + 30)
+        let segment = group.selectAll("rect").data((d: any) => d);
+        segment = segment.enter().append("rect").merge(segment);
+        segment.attr("class", "segment")
+            .attr("x", (d: any) => xScale(d[0]))
             .attr("y", (d: any) => yScale(d.data.key))
             .attr("width", (d: any, i: any) => xScale(d[1]) - xScale(d[0]))
-            .attr("height", yScale.bandwidth());
+            .attr("height", yScale.bandwidth())
 
-        // svg.call(d3.zoom()
-        //     .scaleExtent([ 1, 10 ])
-        //     .on("zoom", (event: d3.D3ZoomEvent<any, any>) => {
-        //         const transform = event.transform;
-        //         xScale.domain(transform.rescaleX(xScale2).domain());
-        //         const currentNode = d3.select(event.sourceEvent.target).node();
-        //         const currentGroup = d3.select(currentNode.parentNode).node();
-        //
-        //         group.selectAll("rect.segment")
-        //             // .attr("transform", event.transform.toString())
-        //             .attr("x", (d: any, i, n) => {
-        //                 if (n[i].parentNode === currentGroup) {
-        //                     return xScale(d[0]) + 30;
-        //                 }
-        //                 return xScale2(d[0]) + 30;
-        //             })
-        //             .attr("width", (d: any, i: any, n: any) => {
-        //                 if (n[i].parentNode === currentGroup) {
-        //                     return xScale(d[1]) - xScale(d[0])
-        //                 }
-        //
-        //                 return xScale2(d[1]) - xScale2(d[0])
-        //             });
-        //
-        //         // svg.selectAll("rect.segment")
-        //         //     .attr("transform", event.transform.toString())
-        //         //     .attr("x", (d: any) => xScale(d[0]) + 30)
-        //         //     .attr("width", (d: any, i: any) => xScale(d[1]) - xScale(d[0]));
-        //
-        //     }) as any);
-        //
-        // svg.on("mousedown.zoom", null)
+        segment.exit().remove();
+
+
+        // segment.join("rect")
+        //     .attr("class", "segment")
+        //     .attr("x", (d: any) => xScale(d[0]) + 30)
+        //     .attr("y", (d: any) => yScale(d.data.key))
+        //     .attr("width", (d: any, i: any) => xScale(d[1]) - xScale(d[0]))
+        //     .attr("height", yScale.bandwidth())
+            // .attr("transform", (d: any) => `translate(${xScale(d[0]) + 30}, 0)`);
+
+        const zoom = d3.zoom()
+            .scaleExtent([ 1, 10 ])
+            .translateExtent([ [ 0, 0 ], [ width, height ] ])
+            // .extent(extent)
+            .on("zoom", (event: d3.D3ZoomEvent<any, any>) => {
+                // console.log(event.sourceEvent.target);
+                // if (event.sourceEvent.target.tagName.toLowerCase() === "text") {
+                //     return;
+                // }
+
+                console.log(event);
+
+                const transform = event.transform;
+
+                xScale.domain(transform.rescaleX(xScale2).domain());
+                // console.log(xScale.range().map((d) => transform.applyX(d)));
+
+                // xScale.range(xScale2.range().map((d) => transform.applyX(d)));
+
+                // const currentNode = d3.select(event.sourceEvent.target).node();
+                // const currentGroup = d3.select(currentNode.parentNode).node();
+
+                // group.selectAll("rect.segment")
+                //     // .attr("transform", event.transform.toString())
+                //     .attr("x", (d: any, i, n) => {
+                //         if (n[i].parentNode === currentGroup) {
+                //             return xScale(d[0]) + 30;
+                //         }
+                //         return xScale2(d[0]) + 30;
+                //     })
+                //     .attr("width", (d: any, i: any, n: any) => {
+                //         if (n[i].parentNode === currentGroup) {
+                //             return xScale(d[1]) - xScale(d[0])
+                //         }
+                //
+                //         return xScale2(d[1]) - xScale2(d[0])
+                //     });
+
+                svg.selectAll("rect.segment")
+                    // .attr("transform", event.transform.toString())
+                    .attr("x", (d: any) => xScale(d[0]))
+                    .attr("width", (d: any, i: any) => xScale(d[1]) - xScale(d[0]))
+                // .attr("transform", (d: any, i: number, n: NodeList[]) => {
+                //     const x = Number(d3.select(n[i] as any).attr("x"));
+                //     return `translate(${200*transform.k + Math.abs(x)}, 0)`
+                // });
+
+                // groupsContainer.selectAll("rect").attr("transform", (d) => `translate(${200 + Math.abs(d[0])}, 0)`);
+
+                // groupsContainer.attr("transform", `translate(${width}, 0)`)
+
+                // svg.append("g")
+                //     .attr("class", "axis")
+                //     .call(xAxis);
+
+            })
+
+        svg.call(zoom);
+
+        // disable drag
+        svg.on("mousedown.zoom", null)
     }, [ data ]);
 
     return {

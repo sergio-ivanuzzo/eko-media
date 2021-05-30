@@ -14,9 +14,16 @@ export const SubSection = styled.div`
   display: flex;
   margin-top: 10px;
   justify-content: space-between;
+  padding: 5px;
 `;
 
 export const LeftColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  
   width: 300px;
   
   > * {
@@ -29,6 +36,7 @@ export const RightColumn = styled.div`
   display: flex;
   flex-direction: column;
   flex: 2;
+  padding: 5px;
 `;
 
 export const StyledPlaceholder = styled(Placeholder)`
