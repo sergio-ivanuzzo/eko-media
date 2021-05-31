@@ -51,6 +51,7 @@ const useNotifyError = ({ throwManually = false }: IUseNotifyErrorProps = {}): I
             return targetFunction();
         } catch (e) {
             processError(e, label);
+            throw e;
         }
     }
 
