@@ -3,7 +3,7 @@ import React, { useState } from "react";
 
 import ConditionalRender from "~/components/core/ConditionalRender";
 import FormattedTitle from "~/components/core/FormattedTitle";
-import MentionChart from "~/components/charts/MentionChart";
+import MentionChart from "~/components/charts/StackedBar/MentionChart";
 import PoliticianBar from "~/components/partials/Content/PoliticianBar";
 import formatString from "~/helpers/formatString";
 import useData from "~/hooks/useData";

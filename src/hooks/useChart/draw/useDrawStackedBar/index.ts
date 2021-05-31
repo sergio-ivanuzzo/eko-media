@@ -5,9 +5,15 @@ import useChartColor from "~/hooks/useChart/color/useChartColor";
 
 export const BAR_HEIGHT = 27;
 export const MARGIN_LEFT = 230;
+export const MARGIN_BOTTOM = 50;
+export const MARGIN_TOP = 20;
 
 const MIN_ZOOM = 1;
 const MAX_ZOOM = 15;
+
+const LEGEND_WIDTH = 20;
+const LEGEND_HEIGHT = 20;
+const LEGEND_MARGIN = 30;
 
 const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw: (props: IChartDrawProps) => void } => {
 
@@ -15,14 +21,18 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
 
     const draw = useCallback(({ chartRef, width, height, colors }: IChartDrawProps): void => {
 
-        const series = d3.stack()
+        let series = d3.stack()
             .keys(xData)
             // normalization
             .offset(d3.stackOffsetExpand)(data as any);
 
+        if (xData.length === 1) {
+            series = d3.stack().keys(xData)(data as any);
+        }
+
         const svg: any = d3.select(chartRef.current)
             .attr("preserveAspectRatio", "xMaxYMin meet")
-            .attr("viewBox", `0 0 ${width} ${height}`)
+            .attr("viewBox", `0 0 ${width} ${height + MARGIN_BOTTOM * 2}`)
             .attr("width", width)
             .attr("height", height);
 
@@ -63,7 +73,8 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
             .attr("class", "axis axis-y")
             .call(yAxis);
 
-        const groupsContainer = svg.append("g").attr("class", "groups-container")//.attr("pointer-events", "all");
+        const groupsContainer = svg.append("g")
+            .attr("class", "groups-container")//.attr("pointer-events", "all");
 
         const group = groupsContainer
             .selectAll("g")
@@ -90,21 +101,57 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
                 const total = d.data.total;
                 const percentage = Math.floor(100 * value / total);
 
-                return `${percentage}%`;
+                return xData.length === 1 ? value : `${percentage}%`;
             })
-            .attr("class", (d: any, i: any) => `label label-group-${i}`)
+            .attr("class", (d: any, i: any, n: any) => {
+                const parent = d3.select(n[i]).node().parentNode;
+                const parentClass = d3.select(parent).attr("class");
+                const groupIndex = Number(parentClass.replace( /^\D+/g, ""));
+
+                return `label label-group-${groupIndex}`;
+            })
             .attr("dy", () => "1.1em")
             .attr("x", (d: any) => xScale(d[0]) + 30)
             .attr("y", (d: any) => yScale(d.data.key))
             .attr("width", (d: any, i: any) => xScale(d[1]) - xScale(d[0]))
             .attr("height", yScale.bandwidth());
 
+        const legends = svg.append("g")
+            .attr("class", "legends")
+            .attr("transform", `translate(${MARGIN_LEFT}, ${MARGIN_TOP})`);
+
+        let offset = LEGEND_MARGIN;
+
+        legends.selectAll("g.legend")
+            .data(xData)
+            .enter()
+            .append("g")
+            .attr("class", "legend")
+            .each((category: string, index: number, n: any) => {
+                const item = d3.select(n[index]).node();
+
+                const text = d3.select(item).append("text")
+                    .attr("dy", "-0.35em")
+                    .attr("transform", `translate(${LEGEND_WIDTH / 2 + LEGEND_MARGIN}, ${LEGEND_HEIGHT / 2})`)
+                    .text(category);
+
+                const textBBox = text.node()?.getBBox();
+
+                d3.select(item).append("circle")
+                    .attr("r", LEGEND_WIDTH / 2)
+                    .attr("fill", getColor({ index, colors }));
+
+                d3.select(item).attr("transform", `translate(${offset}, 0)`);
+
+                offset += (textBBox?.width || 0) + LEGEND_WIDTH + LEGEND_MARGIN * 2;
+            })
+
         const zoom = d3.zoom()
             .scaleExtent([ MIN_ZOOM, MAX_ZOOM ])
             .translateExtent([ [ 0, 0 ], [ width, height ] ])
             .extent([ [ 0, 0 ], [ width, height ] ])
             // allow zoom only when shift key pressed
-            .filter((event: WheelEvent) => event.shiftKey)
+            .filter((event: WheelEvent) => event.shiftKey && xData.length !== 1)
             .on("zoom", (event: d3.D3ZoomEvent<any, any>) => {
 
                 const transform = event.transform;

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 
-import UIBar from "./index";
+import UIBar from "./SphereBar";
 import useData from "~/hooks/useData";
 
 import ConditionalRender from "~/components/core/ConditionalRender";

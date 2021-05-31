@@ -36,35 +36,29 @@ const MentionChart = ({ politicianName = "" }: IMentionChartProps): JSX.Element 
     const categories = [ Mention.POSITIVE, Mention.NEUTRAL, Mention.NEGATIVE ];
 
     const data = useMemo(() => {
+        const filteredDataset = dataset.filter(({ name }) => !politicianName || name === politicianName);
+        const getMentionValue = (mention: Mention, media: string) => filteredDataset.reduce((sum, item) => {
+            const key = Object.keys(item).find((key) => key.includes(mention) && key.includes(media));
+            return key ? sum + Number(item[key]) : sum;
+        }, 0);
+
         return media.map((media: string) => {
-            const filteredDataset = dataset.filter(({ name }) => !politicianName || name === politicianName);
             return {
                 key: media,
                 ...categories.reduce((result: { [key: string]: number }, mention) => {
-                    result[mention] = filteredDataset.reduce((sum, item) => {
-                        const key = Object.keys(item).find((key) => key.includes(mention) && key.includes(media));
-                        return key ? sum + Number(item[key]) : sum;
-                    }, 0);
+                    result[mention] = getMentionValue(mention, media);
                     return result;
                 }, {}),
                 total: categories.reduce(
-                    (sum, mention) => sum + filteredDataset.reduce((sum, item) => {
-                        const key = Object.keys(item).find((key) => key.includes(mention) && key.includes(media));
-                        return key ? sum + Number(item[key]) : sum;
-                    }, 0),
+                    (sum, mention) => sum + getMentionValue(mention, media),
                     0
                 ),
                 values: categories.map((mention) => {
-                    return filteredDataset.reduce((sum, item) => {
-                        const key = Object.keys(item).find((key) => key.includes(mention) && key.includes(media));
-                        return key ? sum + Number(item[key]) : sum;
-                    }, 0);
+                    return getMentionValue(mention, media);
                 }),
             }
         });
     }, [ dataset ]);
-
-    console.log(data);
 
     const { draw } = useDrawStackedBar({ data, xData: categories, yData: media });
 

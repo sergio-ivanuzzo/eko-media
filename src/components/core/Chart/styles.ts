@@ -13,6 +13,10 @@ export const SVG = styled.svg`
   width: 100%;
   height: 100%;
   
+  .legends {
+    width: 100%;
+  }
+  
   text {
     ${NoSelectCSS};
     font-family: "NeueHaasUnica", sans-serif;

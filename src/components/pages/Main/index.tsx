@@ -8,7 +8,7 @@ import ExpertBar from "~/components/partials/Content/ExpertBar";
 import FormattedTitle from "~/components/core/FormattedTitle";
 import Network from "~/components/charts/Network";
 import PoliticianBar from "~/components/partials/Content/PoliticianBar";
-import SphereBar from "~/components/charts/SphereBar";
+import SphereBar from "~/components/charts/Bar/SphereBar";
 import StackedBar from "~/components/charts/StackedBar";
 import formatString from "~/helpers/formatString";
 import useData from "~/hooks/useData";
