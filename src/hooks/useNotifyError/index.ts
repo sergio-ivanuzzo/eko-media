@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 import { useIntl } from "react-intl";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import formatString from "~/helpers/formatString";
 
@@ -17,7 +17,7 @@ export class AppError extends Error {
 }
 
 const useNotifyError = ({ throwManually = false }: IUseNotifyErrorProps = {}): IUseNotifyErrorResponse => {
-    const [ errors, setError ] = useState<AppError[]>([]);
+    const [ error, setError ] = useState<AppError>();
     const { formatMessage } = useIntl();
 
     const getErrorText = ({ message, params, label }: AppError): string => {
@@ -34,13 +34,7 @@ const useNotifyError = ({ throwManually = false }: IUseNotifyErrorProps = {}): I
         e.label = label;
         e.message = errorText;
 
-        if (throwManually) {
-            setError((prevErrors) => [ ...prevErrors, e ]);
-            toast.error(errorText);
-        } else {
-            toast.error(errorText);
-            throw e;
-        }
+        setError(e);
     }
 
     const catchErrors = async (targetFunction: CallableFunction, label = "") => {
@@ -48,6 +42,7 @@ const useNotifyError = ({ throwManually = false }: IUseNotifyErrorProps = {}): I
             return await targetFunction();
         } catch (e) {
             processError(e, label);
+            throw e;
         }
     }
 
@@ -59,19 +54,17 @@ const useNotifyError = ({ throwManually = false }: IUseNotifyErrorProps = {}): I
         }
     }
 
-    const throwErrors = () => {
-        const errorsCopy = [ ...errors ];
-        setError([]);
-        errorsCopy.forEach((e: AppError) => {
-            toast.error(getErrorText(e));
-            throw e;
-        })
-    }
+    useEffect(() => {
+        if (error) {
+            const errorText = getErrorText(error);
+            toast.error(errorText);
+            setError(undefined);
+        }
+    }, [ error ]);
 
     return {
         catchErrors,
         catchErrorsSync,
-        throwErrors,
     }
 };
 

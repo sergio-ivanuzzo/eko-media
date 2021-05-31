@@ -48,7 +48,7 @@ const PoliticianBar = ({ limit, selectable = true, onSelect = () => null }: IPol
         data = data.slice(0, limit);
     }
 
-    const [ selected, setSelected ] = useState<string>(data[0].name);
+    const [ selected, setSelected ] = useState<string>(data[0]?.name);
     const handleSelect = (politicianName: string) => {
         if (!selectable) {
             return;

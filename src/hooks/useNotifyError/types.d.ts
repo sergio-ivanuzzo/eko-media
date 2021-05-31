@@ -5,7 +5,6 @@ declare interface IUseNotifyErrorProps {
 declare interface IUseNotifyErrorResponse {
     catchErrors: CallableFunction;
     catchErrorsSync: CallableFunction;
-    throwErrors: CallableFunction;
 }
 
 declare interface IAppErrorProps {
