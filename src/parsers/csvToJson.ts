@@ -12,7 +12,7 @@ const csvToJson = (rawData: string, separator = ","): Array<IItem> => {
             if (!key) {
                 throw new AppError({
                     message: "error.csv.empty_column",
-                    params: [ `${rowIndex}`, `${itemIndex}` ]
+                    params: [ `${rowIndex + 1}`, `${itemIndex + 1}` ]
                 });
             }
             item[sanitize(key)] = sanitize(values[itemIndex]);
