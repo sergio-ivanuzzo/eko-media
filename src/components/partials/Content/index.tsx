@@ -5,6 +5,7 @@ import MainPage from "~/components/pages/Main";
 import PoliticiansDetailsPage from "~/components/pages/PoliticiansDetails";
 
 import { ContentContainer } from "./styles";
+import TopicPage from "~/components/pages/Topic";
 
 const Content = (): JSX.Element => {
     return (
@@ -15,6 +16,9 @@ const Content = (): JSX.Element => {
                 </Route>
                 <Route exact path="/politicians/details">
                     <PoliticiansDetailsPage />
+                </Route>
+                <Route exact path="/topic">
+                    <TopicPage />
                 </Route>
             </Switch>
         </ContentContainer>

@@ -50,20 +50,33 @@ const MainPage = (): JSX.Element => {
                                 <ArrowRight width={18} height={14} />
                             </StyledLink>
 
+                            <FormattedTitle
+                                placeholder={formatMessage({ id: "sphere_bar.title" })}
+                                params={[ CATEGORIES_MAP[selectedCategory] ]} />
                             <SphereBar />
                         </LeftColumn>
                         <RightColumn>
-                            <ConditionalRender condition={selectedCategory === "all"}>
-                                <FormattedTitle
-                                    placeholder={formatMessage({ id: "stacked_bar.title.all" })}
-                                    params={[ formatString({
-                                        initial: formatMessage({ id: "topX" }),
-                                        params: [ "5" ]
-                                    }) ]} />
-                                <FormattedTitle
-                                    placeholder={formatMessage({ id: "stacked_bar.title.category" })}
-                                    params={[ CATEGORIES_MAP[selectedCategory] ]} />
-                            </ConditionalRender>
+                            <SubSection spaceBetween>
+                                <ConditionalRender condition={selectedCategory === "all"}>
+                                    <FormattedTitle
+                                        placeholder={formatMessage({ id: "stacked_bar.title.all" })}
+                                        params={[ formatString({
+                                            initial: formatMessage({ id: "topX" }),
+                                            params: [ "5" ]
+                                        }) ]} />
+                                    <FormattedTitle
+                                        placeholder={formatMessage({ id: "stacked_bar.title.category" })}
+                                        params={[ CATEGORIES_MAP[selectedCategory] ]} />
+                                </ConditionalRender>
+
+                                <StyledLink to="/topic" tabIndex={7}>
+                                <span>
+                                    <FormattedMessage id="link.details" />
+                                </span>
+                                    <ArrowRight width={18} height={14} />
+                                </StyledLink>
+                            </SubSection>
+
                             <StackedBar />
                         </RightColumn>
                     </SubSection>

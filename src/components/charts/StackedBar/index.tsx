@@ -28,7 +28,8 @@ const StackedBar = (): JSX.Element => {
     // data for y axis
     const media = useMemo(
         () => categories.length
-            // remove "category" field, keep only media fields
+            // media names from category_all file used here
+            // so we should use such media names everywhere in app (and files)
             ? Object.keys(dataset[0]).filter((key: string) => !CATEGORY_KEYS.includes(key))
             : [],
         [ categories ]

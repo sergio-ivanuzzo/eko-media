@@ -3,7 +3,7 @@ import * as d3 from "d3";
 
 import useChartColor from "~/hooks/useChart/color/useChartColor";
 
-export const BAR_HEIGHT = 27;
+export const BAR_HEIGHT = 32;
 export const MARGIN_LEFT = 230;
 export const MARGIN_BOTTOM = 50;
 export const MARGIN_TOP = 20;
@@ -110,7 +110,7 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
 
                 return `label label-group-${groupIndex}`;
             })
-            .attr("dy", () => "1.1em")
+            .attr("dy", () => "1.25em")
             .attr("x", (d: any) => xScale(d[0]) + 30)
             .attr("y", (d: any) => yScale(d.data.key))
             .attr("width", (d: any, i: any) => xScale(d[1]) - xScale(d[0]))

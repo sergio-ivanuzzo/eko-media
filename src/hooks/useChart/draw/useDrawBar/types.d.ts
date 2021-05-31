@@ -1,5 +1,10 @@
+declare interface IOnBarClickProps {
+    key: string;
+    value: number;
+}
+
 declare interface IDrawBarProps {
     data: Array<{ [key: string]: string | number }>;
-    xData: string[];
     yData: string[];
+    onClick?: (props: IOnBarClickProps) => void;
 }

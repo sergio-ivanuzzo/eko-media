@@ -71,7 +71,7 @@ export const FILTER_MASK_MAP = {
 export const CATEGORY_KEYS = [ "category", "Найбільше коментує" ];
 
 // for filtering media columns
-export const NON_MEDIA_KEYS = [ "name", "image_name", "expert_id" ];
+export const NON_MEDIA_KEYS = [ "name", "image_name", "expert_id", "topic" ];
 
 // for politician_ type files
 export enum Mention {

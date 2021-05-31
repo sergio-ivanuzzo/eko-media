@@ -8,7 +8,7 @@ import { Mention, NON_MEDIA_KEYS, POLITICIANS_PHOTOS_DIR, TYPES } from "~/common
 
 const TYPE = TYPES.POLITICIAN;
 
-const PoliticianBar = ({ limit, selectable = true, onSelect = () => null }: IPoliticianBarProps): JSX.Element => {
+const PoliticianBar = ({ limit, selectable = false, onSelect = () => null }: IPoliticianBarProps): JSX.Element => {
     const { getDataset, selectedCategory, allMedia } = useData();
     const dataset = getDataset(TYPE, selectedCategory) || [];
 

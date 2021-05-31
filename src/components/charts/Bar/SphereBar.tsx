@@ -1,13 +1,11 @@
-import { useIntl } from "react-intl";
 import React, { useMemo } from "react";
 
-import FormattedTitle from "~/components/core/FormattedTitle";
 import useData from "~/hooks/useData";
 import useDrawBar from "~/hooks/useChart/draw/useDrawBar";
 
 import { CATEGORIES_MAP, CATEGORY_KEYS, TYPES } from "~/common/constants";
-import { SphereBarContainer, StyledChart } from "./styles";
 
+import { StyledChart } from "./styles";
 import theme from "~/common/theme";
 
 const TYPE = TYPES.SPHERE;
@@ -16,7 +14,6 @@ const { orange, gray } = theme.palette;
 
 const SphereBar = (): JSX.Element => {
     const { getDataset, selectedCategory } = useData();
-    const { formatMessage } = useIntl();
 
     const dataset = getDataset(TYPE, "all") as Array<ICategorizedItem>;
 
@@ -52,16 +49,9 @@ const SphereBar = (): JSX.Element => {
         });
     }, [ dataset ]);
 
-    const { draw } = useDrawBar({ data, xData: [ CATEGORIES_MAP[selectedCategory] ], yData: spheres });
+    const { draw } = useDrawBar({ data, yData: spheres });
 
-    return (
-        <SphereBarContainer>
-            <FormattedTitle
-                placeholder={formatMessage({ id: "sphere_bar.title" })}
-                params={[ CATEGORIES_MAP[selectedCategory] ]} />
-            <StyledChart draw={draw} colors={[ gray.silver, orange.carrot ]} />
-        </SphereBarContainer>
-    );
+    return <StyledChart draw={draw} colors={[ gray.silver, orange.carrot ]} />;
 };
 
 export default SphereBar;

@@ -1,45 +1,21 @@
 import React, { useContext, useEffect } from "react";
 
-import UIArticleBar from "./ArticleBar";
-import UISphereBar from "./SphereBar";
+import UIPage from "./index";
 import useData from "~/hooks/useData";
 
 import ConditionalRender from "~/components/core/ConditionalRender";
 import { DataContext } from "~/providers/DataProvider";
 import { CATEGORIES_MAP, MOCK_DATE } from "~/common/constants";
 
+
 export default {
-    title: "Components/Charts"
+    title: "Components/Pages"
 };
 
-export const SphereBar = (): JSX.Element => {
+export const TopicPage = (): JSX.Element => {
     // for story we use similar flow as we use for datepicker, bc we need to load some data into data provider
-    const { data, loadAll } = useData();
+    const { data, loadAll, selectedCategory, setCategory } = useData();
     const { date, setDate } = useContext<IDataProviderContext<IItem>>(DataContext);
-
-    useEffect(() => {
-        setDate(MOCK_DATE);
-    }, []);
-
-    useEffect(() => {
-        if (date.getTime() === MOCK_DATE.getTime()) {
-            (async (): Promise<void> => {
-                await loadAll();
-            })();
-        }
-    }, [ date ]);
-
-    return (
-        <ConditionalRender condition={!!Object.keys(data).length}>
-            <UISphereBar />
-        </ConditionalRender>
-    );
-};
-
-export const ArticleBar = (): JSX.Element => {
-    // for story we use similar flow as we use for datepicker, bc we need to load some data into data provider
-    const { data, loadAll, selectedCategory } = useData();
-    const { date, setDate, setCategory } = useContext<IDataProviderContext<IItem>>(DataContext);
 
     useEffect(() => {
         setDate(MOCK_DATE);
@@ -63,16 +39,14 @@ export const ArticleBar = (): JSX.Element => {
             const item = data[`category_all_${month}_${year}`][0];
             const category = Object.keys(CATEGORIES_MAP)
                 .find((key) => CATEGORIES_MAP[key].toLowerCase() === `${item.category}`.toLowerCase());
-            
+
             setCategory(category);
         }
     }, [ data, date, selectedCategory ]);
 
-    console.log(selectedCategory)
-
     return (
         <ConditionalRender condition={!!Object.keys(data).length}>
-            <UIArticleBar />
+            <UIPage />
         </ConditionalRender>
     );
 };
