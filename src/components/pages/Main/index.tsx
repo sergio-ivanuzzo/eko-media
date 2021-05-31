@@ -35,7 +35,7 @@ const MainPage = (): JSX.Element => {
         <ConditionalRender condition={!!Object.keys(data).length}>
             <>
                 <Section>
-                    <SubSection>
+                    <SubSection spaceBetween>
                         <LeftColumn>
                             <FormattedTitle
                                 placeholder={formatMessage({ id: "politician_bar.title" })}
@@ -67,8 +67,11 @@ const MainPage = (): JSX.Element => {
                             <StackedBar />
                         </RightColumn>
                     </SubSection>
-                    <SubSection>
+                    <SubSection spaceBetween>
                         <LeftColumn>
+                            <FormattedTitle
+                                placeholder={formatMessage({ id: "expert_bar.title" })}
+                                params={[ CATEGORIES_MAP[selectedCategory] ]} />
                             <ExpertBar limit={EXPERT_BAR_LIMIT} />
                         </LeftColumn>
                         <RightColumn>

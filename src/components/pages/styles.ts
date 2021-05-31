@@ -4,23 +4,26 @@ import styled from "styled-components";
 import Placeholder from "~/components/core/Placeholder";
 
 export const Section = styled.div`
-  padding: 5px;
   border-bottom: 1px solid ${({ theme }) => theme.palette.gray.silver};
   display: flex;
   flex-direction: column;
 `;
 
-export const SubSection = styled.div`
+export const SubSection = styled.div<ISubSectionProps>`
   display: flex;
   margin-top: 10px;
-  justify-content: space-between;
+  ${({ spaceBetween }) => spaceBetween && "justify-content: space-between"};
   padding: 5px;
+  
+  > * {
+    margin: 5px 50px;
+  }
 `;
 
 export const LeftColumn = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   padding: 5px;
   
@@ -31,6 +34,7 @@ export const RightColumn = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   flex: 2;
   padding: 5px;
 `;
@@ -58,5 +62,12 @@ export const StyledLink = styled(Link)`
   
   > svg {
     margin-top: 3px;
+  }
+`;
+
+export const BackLink = styled(StyledLink)`
+  path {
+    fill: ${({ theme }) => theme.palette.black.base};
+    font-size: 50px;
   }
 `;

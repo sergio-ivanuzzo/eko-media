@@ -126,8 +126,8 @@ const useDrawNetwork = (
         }
 
         // disable animation
-        // simulation.stop();
-        // simulation.tick(nodes.length);
+        simulation.stop();
+        simulation.tick(nodes.length);
 
         const link = svg.append("g")
             .attr("class", "links")
