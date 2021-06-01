@@ -10,7 +10,7 @@ export const DropdownContainer = styled.div`
   border-radius: 10px;
   
   &:active, &:focus, &:focus-visible {
-    box-shadow: 0 0 2px 0 ${({ theme }) => theme.palette.cyan.azure};
+    filter: drop-shadow(5px 3px 5px ${({ theme }) => theme.palette.gray.silver});
   }
 `;
 
@@ -27,12 +27,13 @@ export const FrameContainer = styled.div`
 export const Frame = styled.div`
   position: absolute;
   display: flex;
+  top: -8px;
+  padding: 0 1px;
   flex-direction: column;
   white-space: nowrap;
   max-height: 300px;
-  width: 100%;
+  width: calc(100% - 2px);
   overflow-y: auto;
   overflow-x: hidden;
-  box-shadow: 0 0 3px 0 ${({ theme }) => theme.palette.gray.silver};
   ${NoSelectCSS};
 `;

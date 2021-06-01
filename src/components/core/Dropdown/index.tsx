@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { RefObject, useEffect, useMemo, useState } from "react";
 
 import ConditionalRender from "~/components/core/ConditionalRender";
 import useActiveElement from "~/hooks/useActiveElement";
@@ -14,10 +14,18 @@ const DefaultTrigger = ({ toggle, isOpen }: IDropdownTriggerProps): JSX.Element 
     );
 };
 
-const Dropdown = ({ renderTrigger = DefaultTrigger, ...props }: IDropdownProps): JSX.Element => {
-    const { onClose = () => null, className = "", children, tabIndex } = props;
+const Dropdown = React.forwardRef((props: IDropdownProps<HTMLDivElement>, externalRef): JSX.Element => {
+    const {
+        renderTrigger = DefaultTrigger,
+        onOpen = () => null,
+        onClose = () => null,
+        className = "",
+        tabIndex,
+        children,
+    } = props;
+
     const [ isOpen, setOpen ] = useState(false);
-    const [ dropdownRef, isActiveElement ] = useActiveElement<HTMLDivElement>();
+    const [ dropdownRef, isActiveElement ] = useActiveElement<HTMLDivElement>(externalRef as RefObject<HTMLDivElement>);
 
     const toggle = () => setOpen(!isOpen);
     const close = () => setOpen(false);
@@ -31,6 +39,10 @@ const Dropdown = ({ renderTrigger = DefaultTrigger, ...props }: IDropdownProps):
     useEffect(() => {
         !isActiveElement && handleClose();
     }, [ isActiveElement ]);
+
+    useEffect(() => {
+        onOpen(isOpen);
+    }, [ isOpen ]);
 
     const listeners = useMemo(() => ({
         Escape: () => isActiveElement && handleClose(),
@@ -59,6 +71,6 @@ const Dropdown = ({ renderTrigger = DefaultTrigger, ...props }: IDropdownProps):
             </ConditionalRender>
         </DropdownContainer>
     );
-};
+});
 
 export default Dropdown;

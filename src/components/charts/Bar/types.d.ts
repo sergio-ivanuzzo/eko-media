@@ -3,5 +3,5 @@ declare interface ITopicMediaBarProps {
 }
 
 declare interface IArticleBarProps {
-    onClick: (props: IOnBarClickProps) => void;
+    onClick?: (props: IOnBarClickProps) => void;
 }

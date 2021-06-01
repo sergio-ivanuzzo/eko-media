@@ -15,7 +15,7 @@ const { orange, gray } = theme.palette;
 
 const ARTICLE_BAR_HEIGHT = 50;
 
-const ArticleBar = ({ onClick }: IArticleBarProps): JSX.Element => {
+const ArticleBar = ({ onClick = () => null }: IArticleBarProps): JSX.Element => {
     const { selectedCategory, getDataset } = useData();
     const dataset = getDataset(TYPE, selectedCategory) || [];
 

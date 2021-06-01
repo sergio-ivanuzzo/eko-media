@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import Chart from "~/components/core/Chart";
-import { MARGIN_LEFT, MARGIN_TOP } from "~/hooks/useChart/draw/useDrawStackedBar";
+import { MARGIN_LEFT, TRANSITION_Y } from "~/hooks/useChart/draw/useDrawStackedBar";
 
 export const StyledChart = styled(Chart)`
   g.group, rect {
@@ -9,11 +9,11 @@ export const StyledChart = styled(Chart)`
   }
   
   .groups-container, g.axis {
-    transform: translate(0px, ${MARGIN_TOP * 2}px);
+    transform: translate(0px, ${TRANSITION_Y}px);
   }
   
   g.axis {
-    transform: translate(${MARGIN_LEFT}px, ${MARGIN_TOP * 2}px);
+    transform: translate(${MARGIN_LEFT}px, ${TRANSITION_Y}px);
     
     path {
       display: none;

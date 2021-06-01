@@ -6,14 +6,16 @@ import useChartColor from "~/hooks/useChart/color/useChartColor";
 export const BAR_HEIGHT = 32;
 export const MARGIN_LEFT = 230;
 export const MARGIN_BOTTOM = 50;
-export const MARGIN_TOP = 20;
+export const MARGIN_TOP = 50;
 
 const MIN_ZOOM = 1;
 const MAX_ZOOM = 15;
 
 const LEGEND_WIDTH = 20;
-const LEGEND_HEIGHT = 20;
+export const LEGEND_HEIGHT = 20;
 const LEGEND_MARGIN = 30;
+
+export const TRANSITION_Y = MARGIN_TOP + LEGEND_HEIGHT;
 
 const TEXT_MARGIN_LEFT = 30;
 
@@ -34,7 +36,7 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
 
         const svg: any = d3.select(chartRef.current)
             .attr("preserveAspectRatio", "xMaxYMin meet")
-            .attr("viewBox", `0 0 ${width} ${height + MARGIN_BOTTOM * 2}`)
+            .attr("viewBox", `0 0 ${width} ${height}`)
             .attr("width", width)
             .attr("height", height);
 
@@ -49,7 +51,7 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
             .clamp(true);
 
         const yScale: d3.ScaleBand<string> = d3.scaleBand()
-            .range([ 0, height ])
+            .range([ 0, height - TRANSITION_Y ])
             .padding(0.2)
             .domain(yData);
 
@@ -112,7 +114,7 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
 
                 return `label label-group-${groupIndex}`;
             })
-            .attr("dy", () => "1.25em")
+            .attr("dy", () => "1.3em")
             .attr("x", (d: any) => xScale(d[0]) + TEXT_MARGIN_LEFT)
             .attr("y", (d: any) => yScale(d.data.key))
             .attr("width", (d: any, i: any) => xScale(d[1]) - xScale(d[0]))
@@ -152,7 +154,7 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
             .scaleExtent([ MIN_ZOOM, MAX_ZOOM ])
             .translateExtent([ [ 0, 0 ], [ width, height ] ])
             .extent([ [ 0, 0 ], [ width, height ] ])
-            // allow zoom only when shift key pressed
+            // allow zoom if condition true
             .filter((event: WheelEvent) => event.shiftKey && xData.length !== 1)
             .on("zoom", (event: d3.D3ZoomEvent<any, any>) => {
 

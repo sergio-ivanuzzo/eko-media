@@ -10,3 +10,7 @@ declare interface IStylableComponent {
 declare interface IActivableComponent {
     isActive?: boolean;
 }
+
+declare interface IReferencableComponent<T extends HTMLElement | null> {
+    ref?: React.RefObject<T>;
+}

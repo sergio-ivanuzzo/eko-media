@@ -68,8 +68,6 @@ export const ArticleBar = (): JSX.Element => {
         }
     }, [ data, date, selectedCategory ]);
 
-    console.log(selectedCategory)
-
     return (
         <ConditionalRender condition={!!Object.keys(data).length}>
             <UIArticleBar />

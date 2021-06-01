@@ -1,10 +1,12 @@
 import { FormattedMessage, useIntl } from "react-intl";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import Close from "~/components/icons/Close";
 import ConditionalRender from "~/components/core/ConditionalRender";
 import Dropdown from "~/components/core/Dropdown";
 import Placeholder from "~/components/core/Placeholder";
+import useActiveElement from "~/hooks/useActiveElement";
+import useKeyboard from "~/hooks/useKeyboard";
 
 import { MOUSE_BUTTON } from "~/common/constants";
 import { PlaceholderTextAlign } from "~/components/core/Placeholder/constants";
@@ -128,6 +130,7 @@ const Select = ({ renderItem = DefaultItem, renderTrigger = DefaultTrigger, ...p
             ? [ itemAll ]
             : []
     );
+    const [ isOpen, setOpen ] = useState(false);
 
     const handleSelect = useCallback(({ option, close }: IHandleSelectProps): void => {
         if (!multiple) {
@@ -160,11 +163,21 @@ const Select = ({ renderItem = DefaultItem, renderTrigger = DefaultTrigger, ...p
     useEffect(() => {
         onSelect(selected);
     }, [ selected ]);
-    
+
+    const [ dropdownRef, isActiveElement ] = useActiveElement<HTMLDivElement>();
+    const listeners = useMemo(() => ({
+        ArrowDown: () => isActiveElement && isOpen && console.log("arrow 1"),
+        ArrowUp: () => isActiveElement && isOpen && console.log("arrow 2"),
+    }), [ isActiveElement, isOpen ]);
+
+    useKeyboard(listeners, [ isActiveElement ]);
+
     return (
         <Dropdown
             className={className}
             tabIndex={tabIndex}
+            ref={dropdownRef}
+            onOpen={setOpen}
             renderTrigger={
                 (props: IDropdownTriggerProps) => renderTrigger({
                     selected,

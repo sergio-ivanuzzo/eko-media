@@ -1,8 +1,8 @@
 import { RefObject, useEffect, useRef, useState } from "react";
 
-const useActiveElement = <T extends HTMLElement | null>(): [RefObject<T>, boolean] => {
+const useActiveElement = <T extends HTMLElement | null>(externalRef?: RefObject<T>): [RefObject<T>, boolean] => {
     const [ isActiveElement, setIsActiveElement ] = useState(false);
-    const ref = useRef<T>(null);
+    const ref = externalRef || useRef<T>(null);
 
     useEffect(() => {
         const element: HTMLElement | null = ref.current;
