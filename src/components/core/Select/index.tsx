@@ -3,14 +3,13 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import Close from "~/components/icons/Close";
 import ConditionalRender from "~/components/core/ConditionalRender";
-import Dropdown from "~/components/core/Dropdown";
 import Placeholder from "~/components/core/Placeholder";
 import useActiveElement from "~/hooks/useActiveElement";
 import useKeyboard from "~/hooks/useKeyboard";
 
 import { MOUSE_BUTTON } from "~/common/constants";
 import { PlaceholderTextAlign } from "~/components/core/Placeholder/constants";
-import { CloseButton, MenuItem, TriggerContainer, TriggerItem } from "./styles";
+import { CloseButton, MenuItem, StyledDropdown, TriggerContainer, TriggerItem } from "./styles";
 
 const DefaultItem = ({ option, isActive = false, ...props }: ISelectItemProps): JSX.Element => {
     const {
@@ -173,7 +172,7 @@ const Select = ({ renderItem = DefaultItem, renderTrigger = DefaultTrigger, ...p
     useKeyboard(listeners, [ isActiveElement ]);
 
     return (
-        <Dropdown
+        <StyledDropdown
             className={className}
             tabIndex={tabIndex}
             ref={dropdownRef}
@@ -201,7 +200,7 @@ const Select = ({ renderItem = DefaultItem, renderTrigger = DefaultTrigger, ...p
                         { ...props} />
                 );
             }}
-        </Dropdown>
+        </StyledDropdown>
     );
 };
 

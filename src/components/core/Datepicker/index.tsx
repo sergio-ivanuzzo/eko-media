@@ -27,9 +27,9 @@ const DefaultTrigger = ({ selectedDate, toggle }: IDatePickerTriggerProps): JSX.
     );
 };
 
-const DefaultItem = ({ onClick, value }: IDatePickerItemProps): JSX.Element => {
+const DefaultItem = ({ onClick, value, isActive }: IDatePickerItemProps): JSX.Element => {
     return (
-        <DatePickerItem onClick={onClick}>{value}</DatePickerItem>
+        <DatePickerItem isActive={isActive} onClick={onClick}>{value}</DatePickerItem>
     )
 };
 
@@ -87,6 +87,7 @@ const DatePicker = (props: IDatePickerProps): JSX.Element => {
                             <div>
                                 {yearRange.map((year: number) => renderItem({
                                     value: year.toString(),
+                                    isActive: year === date.getFullYear(),
                                     onClick: () => {
                                         handleDateChange({ year });
                                         setMode(DatePickerMode.SELECTING_MONTH);
@@ -102,6 +103,7 @@ const DatePicker = (props: IDatePickerProps): JSX.Element => {
                                 })}
                                 {monthsList.map((month: string, index: number) => renderItem({
                                     value: month,
+                                    isActive: date.toLocaleString(locale, { month: "long" }) === month,
                                     onClick: () => {
                                         handleDateChange({ month: index });
                                         close();

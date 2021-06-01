@@ -8,7 +8,7 @@ declare interface IDatePickerTriggerProps extends IDropdownTriggerProps {
     selectedDate: Date;
 }
 
-declare interface IDatePickerItemProps {
+declare interface IDatePickerItemProps extends IActivableComponent {
     onClick: () => void;
     value: string;
 }

@@ -27,7 +27,6 @@ export const FrameContainer = styled.div`
 export const Frame = styled.div`
   position: absolute;
   display: flex;
-  top: -8px;
   padding: 0 1px;
   flex-direction: column;
   white-space: nowrap;
@@ -35,5 +34,6 @@ export const Frame = styled.div`
   width: calc(100% - 2px);
   overflow-y: auto;
   overflow-x: hidden;
+  border-radius: 0 0 10px 10px;
   ${NoSelectCSS};
 `;

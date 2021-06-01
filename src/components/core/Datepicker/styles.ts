@@ -5,11 +5,21 @@ export const DatePickerContainer = styled.div`
   flex-direction: column;
 `;
 
-export const DatePickerItem = styled.div`
+export const DatePickerItem = styled.div<IActivableComponent>`
   text-align: center;
-  padding: 5px;
+  padding: 14px 20px;
   border-bottom: 1px solid ${({ theme }) => theme.palette.gray.silver};
   background: ${({ theme }) => theme.palette.white.base};
+  
+  ${({ isActive, theme }) => isActive && `
+    background: ${theme.palette.cyan.azure};
+    color: ${theme.palette.white.base};
+  `}
+  
+  &:hover {
+    background: ${({ theme }) => theme.palette.cyan.azure};
+    color: ${({ theme }) => theme.palette.white.base};
+  }
 `;
 
 export const TriggerItem = styled.div`

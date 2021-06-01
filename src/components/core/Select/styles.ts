@@ -1,5 +1,7 @@
 import styled, { css } from "styled-components";
 
+import Dropdown from "~/components/core/Dropdown";
+import { Frame } from "~/components/core/Dropdown/styles";
 import { NoActiveOutlineCSS } from "~/components/global.styles";
 
 const MenuItemCss = css`
@@ -57,5 +59,11 @@ export const CloseButton = styled.button`
   
   svg {
     width: 11px;
+  }
+`;
+
+export const StyledDropdown = styled(Dropdown)`
+  ${Frame} {
+    top: -8px;
   }
 `;
