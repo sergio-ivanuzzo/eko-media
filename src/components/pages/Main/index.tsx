@@ -6,6 +6,7 @@ import Bubble from "~/components/charts/Bubble";
 import ConditionalRender from "~/components/core/ConditionalRender";
 import ExpertBar from "~/components/partials/Content/ExpertBar";
 import FormattedTitle from "~/components/core/FormattedTitle";
+import Hint from "~/components/core/Hint";
 import Network from "~/components/charts/Network";
 import PoliticianBar from "~/components/partials/Content/PoliticianBar";
 import SphereBar from "~/components/charts/Bar/SphereBar";
@@ -37,9 +38,14 @@ const MainPage = (): JSX.Element => {
                 <Section>
                     <SubSection spaceBetween>
                         <LeftColumn>
-                            <FormattedTitle
-                                placeholder={formatMessage({ id: "politician_bar.title" })}
-                                params={[ CATEGORIES_MAP[selectedCategory] ]} />
+                            <div>
+                                <FormattedTitle
+                                    placeholder={formatMessage({ id: "politician_bar.title" })}
+                                    params={[ CATEGORIES_MAP[selectedCategory] ]}
+                                    inline
+                                />
+                                <Hint />
+                            </div>
 
                             <PoliticianBar limit={POLITICIAN_BAR_LIMIT} />
 
@@ -50,29 +56,41 @@ const MainPage = (): JSX.Element => {
                                 <ArrowRight width={18} height={14} />
                             </StyledLink>
 
-                            <FormattedTitle
-                                placeholder={formatMessage({ id: "sphere_bar.title" })}
-                                params={[ CATEGORIES_MAP[selectedCategory] ]} />
+                            <div>
+                                <FormattedTitle
+                                    placeholder={formatMessage({ id: "sphere_bar.title" })}
+                                    params={[ CATEGORIES_MAP[selectedCategory] ]}
+                                    inline
+                                />
+                                <Hint />
+                            </div>
                             <SphereBar />
                         </LeftColumn>
                         <RightColumn>
                             <SubSection spaceBetween>
-                                <ConditionalRender condition={selectedCategory === "all"}>
-                                    <FormattedTitle
-                                        placeholder={formatMessage({ id: "stacked_bar.title.all" })}
-                                        params={[ formatString({
-                                            initial: formatMessage({ id: "topX" }),
-                                            params: [ "5" ]
-                                        }) ]} />
-                                    <FormattedTitle
-                                        placeholder={formatMessage({ id: "stacked_bar.title.category" })}
-                                        params={[ CATEGORIES_MAP[selectedCategory] ]} />
-                                </ConditionalRender>
+                                <div>
+                                    <ConditionalRender condition={selectedCategory === "all"}>
+                                        <FormattedTitle
+                                            placeholder={formatMessage({ id: "stacked_bar.title.all" })}
+                                            params={[ formatString({
+                                                initial: formatMessage({ id: "topX" }),
+                                                params: [ "5" ]
+                                            }) ]}
+                                            inline
+                                        />
+                                        <FormattedTitle
+                                            placeholder={formatMessage({ id: "stacked_bar.title.category" })}
+                                            params={[ CATEGORIES_MAP[selectedCategory] ]}
+                                            inline
+                                        />
+                                    </ConditionalRender>
+                                    <Hint />
+                                </div>
 
                                 <StyledLink to="/topic" tabIndex={7}>
-                                <span>
-                                    <FormattedMessage id="link.details" />
-                                </span>
+                                    <span>
+                                        <FormattedMessage id="link.details" />
+                                    </span>
                                     <ArrowRight width={18} height={14} />
                                 </StyledLink>
                             </SubSection>

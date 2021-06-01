@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import Placeholder from "~/components/core/Placeholder";
 
@@ -7,42 +7,40 @@ export const Section = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.palette.gray.silver};
   display: flex;
   flex-direction: column;
+  margin-top: 10px;
 `;
 
 export const SubSection = styled.div<ISubSectionProps>`
   display: flex;
-  margin-top: 10px;
   ${({ spaceBetween }) => spaceBetween && "justify-content: space-between"};
-  padding: 5px;
+  padding: 0 10px;
   
   > * {
-    margin: 5px 50px;
+    margin: 0 50px;
   }
 `;
 
-export const LeftColumn = styled.div`
+const ColumnCSS = css`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   padding: 5px;
-  
+`;
+
+export const LeftColumn = styled.div`
+  ${ColumnCSS};
   width: 300px;
 `;
 
 export const RightColumn = styled.div`
+  ${ColumnCSS};
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  flex: 2;
-  padding: 5px;
 `;
 
 export const StyledPlaceholder = styled(Placeholder)`
   width: 100%;
   height: 70vh;
-  
   font-size: 30px;
 `;
 

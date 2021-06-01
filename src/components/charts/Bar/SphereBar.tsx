@@ -12,6 +12,8 @@ const TYPE = TYPES.SPHERE;
 
 const { orange, gray } = theme.palette;
 
+const SPHERE_BAR_HEIGHT = 50;
+
 const SphereBar = (): JSX.Element => {
     const { getDataset, selectedCategory } = useData();
 
@@ -29,6 +31,13 @@ const SphereBar = (): JSX.Element => {
             ? Object.keys(dataset[0]).filter((key: string) => !CATEGORY_KEYS.includes(key))
             : [],
         [ categories ]
+    );
+
+    const height = useMemo(
+        () => spheres.length
+            ? SPHERE_BAR_HEIGHT * spheres.length
+            : 0,
+        [ spheres ]
     );
 
     const data = useMemo(() => {
@@ -51,7 +60,7 @@ const SphereBar = (): JSX.Element => {
 
     const { draw } = useDrawBar({ data, yData: spheres });
 
-    return <StyledChart draw={draw} colors={[ gray.silver, orange.carrot ]} />;
+    return <StyledChart draw={draw} height={height} colors={[ gray.silver, orange.carrot ]} />;
 };
 
 export default SphereBar;

@@ -2,11 +2,10 @@ import styled from "styled-components";
 
 import { NoSelectCSS } from "~/components/global.styles";
 
-export const Heading = styled.h1`
+export const Heading = styled.h1<IFormattedTitleProps>`
   ${NoSelectCSS};
-  //font-family: var(--heading-font-family);
-  font-style: normal;
-  //color: var(--color-black);
+  
+  ${({ inline }) => inline && "display: inline"};
   
   > span {
     color: ${({ theme }) => theme.palette.orange.carrot};

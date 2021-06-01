@@ -15,6 +15,8 @@ const LEGEND_WIDTH = 20;
 const LEGEND_HEIGHT = 20;
 const LEGEND_MARGIN = 30;
 
+const TEXT_MARGIN_LEFT = 30;
+
 const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw: (props: IChartDrawProps) => void } => {
 
     const { getColor } = useChartColor();
@@ -111,7 +113,7 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
                 return `label label-group-${groupIndex}`;
             })
             .attr("dy", () => "1.25em")
-            .attr("x", (d: any) => xScale(d[0]) + 30)
+            .attr("x", (d: any) => xScale(d[0]) + TEXT_MARGIN_LEFT)
             .attr("y", (d: any) => yScale(d.data.key))
             .attr("width", (d: any, i: any) => xScale(d[1]) - xScale(d[0]))
             .attr("height", yScale.bandwidth());
@@ -161,10 +163,26 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
                 xAxis.scale(newScaleX)
                 svg.select("g.axis-x").call(xAxis);
 
+                const target = event.sourceEvent.target;
+                const currentGroup = d3.select(target.parentNode).attr("class");
+
                 svg.selectAll("rect.segment")
-                    .transition().duration(300)
                     .attr("x", (d: any) => newScaleX(d[0]))
-                    .attr("width", (d: any) => newScaleX(d[1]) - newScaleX(d[0]));
+                    .attr("width", (d: any) => newScaleX(d[1]) - newScaleX(d[0]))
+                    .each((d: any, index: number, n: any) => {
+                        const parent = d3.select(n[index].parentNode);
+                        const group = parent.attr("class");
+
+                        if (currentGroup !== group) {
+                            parent.selectAll("text.label")
+                                .each((d: any, i: number, n: any) => {
+                                    const textNode = d3.select(n[i]).node();
+                                    d3.select(textNode)
+                                        .attr("x", (d: any) => newScaleX(d[0]))
+                                        .attr("transform", `translate(${TEXT_MARGIN_LEFT}, 0)`)
+                                });
+                        }
+                    });
             })
 
         svg.call(zoom);

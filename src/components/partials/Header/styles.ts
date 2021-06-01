@@ -12,6 +12,7 @@ export const HeaderContainer = styled.div<IHeaderProps>`
         top: 0;
         width: 100%;
         z-index: 5;
+        background: white;
     `};
     border-bottom: 1px solid ${({ theme }) => `${theme.palette.gray.silver}`};
 `;
