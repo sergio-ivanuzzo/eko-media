@@ -1,11 +1,13 @@
 import styled from "styled-components";
 
+import { DropdownItem } from "~/components/core/Dropdown/styles";
+
 export const DatePickerContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-export const DatePickerItem = styled.div<IActivableComponent>`
+export const DatePickerItem = styled(DropdownItem)<IActivableComponent>`
   text-align: center;
   padding: 14px 20px;
   border-bottom: 1px solid ${({ theme }) => theme.palette.gray.silver};

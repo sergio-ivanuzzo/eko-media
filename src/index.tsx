@@ -1,9 +1,9 @@
+import { IntlProvider } from "react-intl";
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
-
-import { IntlProvider } from "react-intl";
 import { ThemeProvider } from "styled-components";
+import smoothScroll from "smoothscroll-polyfill";
 
 import App from "~/components";
 import DataProvider from "~/providers/DataProvider";
@@ -14,6 +14,8 @@ import translations from "~/i18n";
 
 // in future we can add translations for multiple languages
 const defaultLocale = "uk-UA";
+
+smoothScroll.polyfill();
 
 ReactDOM.render(
     <IntlProvider locale={defaultLocale} messages={translations[defaultLocale]}>

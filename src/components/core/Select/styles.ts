@@ -1,7 +1,8 @@
 import styled, { css } from "styled-components";
 
 import Dropdown from "~/components/core/Dropdown";
-import { Frame } from "~/components/core/Dropdown/styles";
+import { DropdownItem, Frame } from "~/components/core/Dropdown/styles";
+
 import { NoActiveOutlineCSS } from "~/components/global.styles";
 
 const MenuItemCss = css`
@@ -10,15 +11,14 @@ const MenuItemCss = css`
   background: ${({ theme }) => theme.palette.white.base};
 `;
 
-export const MenuItem = styled.div<IActivableComponent>`
+export const MenuItem = styled(DropdownItem)<IActivableComponent>`
   ${MenuItemCss};
   padding: 14px 20px;
   border-bottom: 1px solid ${({ theme }) => theme.palette.gray.border};
   box-shadow: 0 0 1px 0 ${({ theme }) => theme.palette.gray.silver};
   
   ${({ isActive, theme }) => isActive && `
-    background: ${theme.palette.cyan.azure};
-    color: ${theme.palette.white.base};
+    color: ${theme.palette.orange.carrot};
   `}
   
   &:hover {

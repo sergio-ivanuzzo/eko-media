@@ -1,5 +1,6 @@
 import styled from "styled-components";
 
+import { SCROLL_CLASS } from "~/hooks/useScrollTo";
 import { NoActiveOutlineCSS, NoSelectCSS } from "~/components/global.styles";
 
 export const DropdownContainer = styled.div`
@@ -36,4 +37,11 @@ export const Frame = styled.div`
   overflow-x: hidden;
   border-radius: 0 0 10px 10px;
   ${NoSelectCSS};
+`;
+
+export const DropdownItem = styled.div`
+  &.${SCROLL_CLASS} {
+    background: ${({ theme }) => theme.palette.cyan.azure};
+    color: ${({ theme }) => theme.palette.white.base};
+  }
 `;

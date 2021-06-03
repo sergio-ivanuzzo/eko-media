@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 
 import useData from "~/hooks/useData";
-import useDrawStackedBar, { BAR_HEIGHT } from "~/hooks/useChart/draw/useDrawStackedBar";
+import useDrawStackedBar, { BAR_HEIGHT, TRANSITION_Y } from "~/hooks/useChart/draw/useDrawStackedBar";
 
 import { StyledChart } from "./styles";
 import { Mention, NON_MEDIA_KEYS, TYPES } from "~/common/constants";
@@ -28,7 +28,7 @@ const MentionChart = ({ politicianName = "" }: IMentionChartProps): JSX.Element 
 
     const height = useMemo(
         () => media.length
-            ? BAR_HEIGHT * media.length
+            ? BAR_HEIGHT * media.length + TRANSITION_Y
             : 0,
         [ media ]
     );

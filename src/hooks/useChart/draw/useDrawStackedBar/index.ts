@@ -17,7 +17,7 @@ const LEGEND_MARGIN = 30;
 
 export const TRANSITION_Y = MARGIN_TOP + LEGEND_HEIGHT;
 
-const TEXT_MARGIN_LEFT = 30;
+const TEXT_MARGIN_LEFT = 10;
 
 const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw: (props: IChartDrawProps) => void } => {
 
