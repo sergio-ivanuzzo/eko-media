@@ -172,7 +172,7 @@ const Select = ({ renderItem = DefaultItem, renderTrigger = DefaultTrigger, ...p
         }
     };
 
-    const handlePick = (index: number, close: () => void) => {
+    const handlePick = (index: number) => {
         const option = actualOptions[index];
         if (option) {
             if (option.key === "all") {
@@ -246,10 +246,6 @@ const Select = ({ renderItem = DefaultItem, renderTrigger = DefaultTrigger, ...p
             className={className}
             tabIndex={tabIndex}
             blockOpening={!actualOptions.length}
-            // by default allow only for single select
-            allowCircularNavigation={!multiple}
-            navigateMinIndex={0}
-            navigateFrom={0}
             navigationOffset={navigationOffset}
             navigateMaxIndex={actualOptions.length - 1}
             navigable

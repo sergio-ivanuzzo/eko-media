@@ -1,5 +1,5 @@
 import { FormattedMessage, useIntl } from "react-intl";
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 
 import {
     BackLink,

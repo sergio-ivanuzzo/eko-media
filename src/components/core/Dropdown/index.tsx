@@ -27,7 +27,7 @@ const Dropdown = React.forwardRef((props: IDropdownProps<HTMLDivElement>, extern
         // we need this to detect from outside if dropdown cannot be opened
         // for example when no dropdown children to show (see Select component)
         blockOpening = false,
-        // navigation
+        // keyboard navigation
         navigable = false,
         navigateMinIndex = NAVIGATE_START_POSITION,
         navigateFrom = NAVIGATE_START_POSITION,
@@ -125,6 +125,8 @@ const Dropdown = React.forwardRef((props: IDropdownProps<HTMLDivElement>, extern
         }
     }, [ navigationOffset ]);
 
+    // to make it work <Frame> should contain children not wrapped in container
+    // bc useScrollToChild hook attempting to receive children of most "frameRef"
     const [ frameRef ] = useScrollToChild<HTMLDivElement>({ childIndex: navigationIndex });
 
     return (

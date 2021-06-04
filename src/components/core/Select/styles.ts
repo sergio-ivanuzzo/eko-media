@@ -3,8 +3,6 @@ import styled, { css } from "styled-components";
 import Dropdown from "~/components/core/Dropdown";
 import { DropdownItem, Frame } from "~/components/core/Dropdown/styles";
 
-import { NoActiveOutlineCSS } from "~/components/global.styles";
-
 const MenuItemCss = css`
   font-size: 14px;
   color: ${({ theme }) => theme.palette.black.base};
@@ -30,7 +28,6 @@ export const MenuItem = styled(DropdownItem)<IActivableComponent>`
 
 export const TriggerContainer = styled.div`
   ${MenuItemCss};
-  ${NoActiveOutlineCSS};
   padding: 10px;
   display: flex;
   flex-wrap: wrap;

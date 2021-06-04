@@ -1,10 +1,19 @@
 import styled from "styled-components";
 
-import { DropdownItem } from "~/components/core/Dropdown/styles";
+import Dropdown from "~/components/core/Dropdown";
+import { DropdownItem, Frame } from "~/components/core/Dropdown/styles";
 
-export const DatePickerContainer = styled.div`
+export const TriggerContainer = styled.div`
+  font-size: 18px;
+  color: ${({ theme }) => theme.palette.black.base};
+  background: ${({ theme }) => theme.palette.white.base};
+  padding: 10px;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  border-radius: 10px;
+  //border: 1px solid ${({ theme }) => theme.palette.gray.border};
+  height: 36px;
+  overflow: hidden;
 `;
 
 export const DatePickerItem = styled(DropdownItem)<IActivableComponent>`
@@ -28,4 +37,11 @@ export const TriggerItem = styled.div`
   display: flex;
   align-items: center;
   text-transform: capitalize;
+`;
+
+export const StyledDropdown = styled(Dropdown)`
+  ${Frame} {
+    top: -8px;
+    max-height: 800px;
+  }
 `;
