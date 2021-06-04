@@ -1,9 +1,10 @@
 import { FormattedMessage, useIntl } from "react-intl";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import Close from "~/components/icons/Close";
 import ConditionalRender from "~/components/core/ConditionalRender";
 import Placeholder from "~/components/core/Placeholder";
+import useDetectArrayResize from "~/hooks/useDetectArrayResize";
 
 import { MOUSE_BUTTON } from "~/common/constants";
 import { PlaceholderTextAlign } from "~/components/core/Placeholder/constants";
@@ -27,11 +28,15 @@ const DefaultItem = ({ option, isActive = false, ...props }: ISelectItemProps): 
 };
 
 const DefaultTrigger = ({ selected: originSelected, ...props }: ISelectTriggerProps): JSX.Element => {
-    const { toggle, multiple = false, handleUnselect, allSelected = false } = props;
+    const { toggle, multiple = false, handleUnselect, allMultipleSelected = false } = props;
 
     // show only itemAll (in case if all selected) only for multiple mode
     // for single mode always show itemAll and rest of items
-    const selected = allSelected && multiple ? originSelected.slice(0, 1) : originSelected;
+    let selected = allMultipleSelected ? originSelected.slice(0, 1) : originSelected;
+    if (multiple && selected.length > 1) {
+        // remove itemAll from output
+        selected = selected.slice(1);
+    }
 
     return (
         <TriggerContainer {...props} onClick={() => toggle()}>
@@ -101,24 +106,26 @@ const Select = ({ renderItem = DefaultItem, renderTrigger = DefaultTrigger, ...p
         allOptions = [ itemAll ].concat(originOptions);
     }
 
-    const [ selected, setSelected ] = useState<ISelectOption[]>(
-        value.length ? value
-            : allowSelectAll
-                ? allOptions
-                : []
-    );
+    const [ selected, setSelected ] = useState<ISelectOption[]>(value);
 
-    const isSelected = (option: ISelectOption) => selected.map((item) => item.key).includes(option.key);
+    const isSelected = useCallback(
+        (option: ISelectOption) => selected.map((item) => item.key).includes(option.key),
+        [ selected ]
+    );
     // to check if all items are selected with handleSelectAll
-    const allSelected = allowSelectAll && (
+    const allMultipleSelected = useMemo(() => multiple && allowSelectAll && (
         // on initial step this will false, bc selected will contain only itemAll
         selected.length >= allOptions.length ||
         // so this will be true on initial step
         (selected.length === 1 && selected[0]?.key === "all")
-    );
+    ), [ multiple, allowSelectAll, allOptions, selected ]);
 
     // bc of different behavior of options list for single and multi mode
-    const actualOptions = multiple && allSelected ? originOptions : allOptions;
+    // (we hide itemAll when all items selected in multimode)
+    const actualOptions = useMemo(
+        () => allMultipleSelected ? originOptions : allOptions,
+        [ allMultipleSelected, originOptions, allOptions ]
+    );
 
     const handleSelect = useCallback(({ option, close = () => null }: IHandleSelectProps): void => {
         if (!multiple) {
@@ -129,15 +136,15 @@ const Select = ({ renderItem = DefaultItem, renderTrigger = DefaultTrigger, ...p
                 setSelected((prevSelected) => [ ...prevSelected, option ]);
             }
         }
-    }, [ selected ]);
+    }, [ selected, multiple, isSelected ]);
 
-    const handleSelectAll = useCallback(({ close = () => null }: IHandleSelectAllProps): void => {
-        close();
+    const handleSelectAll = useCallback(({ close = () => null }: IHandleSelectAllProps = {}): void => {
         if (multiple) {
             setSelected(allOptions.map((item: ISelectOption) => item));
         } else {
-            setSelected([ itemAll ])
+            setSelected([ itemAll ]);
         }
+        close();
     }, [ allOptions ]);
 
     const handleUnselect = ({ option }: IHandleUnselectProps): void => {
@@ -148,7 +155,7 @@ const Select = ({ renderItem = DefaultItem, renderTrigger = DefaultTrigger, ...p
         if (option.key === "all") {
             setSelected([]);
         } else {
-            if (allSelected) {
+            if (allMultipleSelected) {
                 // bc we not show pseudo- itemAll item when all selected we should search in origin options
                 const index = originOptions.findIndex((item) => item.key === option.key);
                 if (index >= 0) {
@@ -165,18 +172,23 @@ const Select = ({ renderItem = DefaultItem, renderTrigger = DefaultTrigger, ...p
         }
     };
 
-    const handlePick = (index: number) => {
+    const handlePick = (index: number, close: () => void) => {
         const option = actualOptions[index];
         if (option) {
-            if (!isSelected(option)) {
-                handleSelect({ option });
-            } else {
+            if (option.key === "all") {
+                handleSelectAll();
+            } else if (allMultipleSelected || isSelected(option)) {
                 handleUnselect({ option });
+            } else {
+                handleSelect({ option });
             }
         }
     };
 
     const renderChildren = ({ close }: IRenderDropdownChildrenProps) => {
+        if (!originOptions.length) {
+            return [];
+        }
         // if allowSelectAll first option equals to "itemAll"
         const [ firstOption, ...rest ] = allOptions;
 
@@ -188,14 +200,14 @@ const Select = ({ renderItem = DefaultItem, renderTrigger = DefaultTrigger, ...p
                 handleSelectAll,
                 handleUnselect,
                 isActive: allowSelectAll && multiple
-                    ? allSelected || isSelected(option)
+                    ? allMultipleSelected || isSelected(option)
                     : isSelected(option)
             })
         );
 
         if (allowSelectAll) {
             // always show itemAll only for single mode (or if all not selected)
-            if (!multiple || !allSelected) {
+            if (!multiple || !allMultipleSelected) {
                 children = [ renderSelectAll({
                     handleSelectAll,
                     close,
@@ -221,6 +233,14 @@ const Select = ({ renderItem = DefaultItem, renderTrigger = DefaultTrigger, ...p
         onSelect(selected);
     }, [ selected ]);
 
+    const [ navigationOffset ] = useDetectArrayResize(actualOptions);
+
+    useEffect(() => {
+        if (originOptions.length) {
+            setSelected([ itemAll ]);
+        }
+    }, [ originOptions ]);
+
     return (
         <StyledDropdown
             className={className}
@@ -230,7 +250,8 @@ const Select = ({ renderItem = DefaultItem, renderTrigger = DefaultTrigger, ...p
             allowCircularNavigation={!multiple}
             navigateMinIndex={0}
             navigateFrom={0}
-            navigateMaxIndex={allOptions.length - 1}
+            navigationOffset={navigationOffset}
+            navigateMaxIndex={actualOptions.length - 1}
             navigable
             onPick={handlePick}
             renderTrigger={
@@ -238,7 +259,7 @@ const Select = ({ renderItem = DefaultItem, renderTrigger = DefaultTrigger, ...p
                     selected,
                     multiple,
                     handleUnselect,
-                    allSelected,
+                    allMultipleSelected: allMultipleSelected,
                     ...props
                 })
             }

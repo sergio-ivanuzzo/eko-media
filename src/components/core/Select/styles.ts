@@ -18,7 +18,8 @@ export const MenuItem = styled(DropdownItem)<IActivableComponent>`
   box-shadow: 0 0 1px 0 ${({ theme }) => theme.palette.gray.silver};
   
   ${({ isActive, theme }) => isActive && `
-    color: ${theme.palette.orange.carrot};
+    background: ${theme.palette.cyan.azure};
+    color: ${theme.palette.white.base};
   `}
   
   &:hover {

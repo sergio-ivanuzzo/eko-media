@@ -17,8 +17,9 @@ declare interface IDropdownProps<T extends HTMLElement>
         onClose?: () => void;
         navigable?: boolean;
         onNavigate?: (index: number) => void;
-        onPick?: (index: number) => void;
+        onPick?: (index: number, close: () => void) => void;
         navigateFrom?: number;
+        navigationOffset?: number;
         navigateMinIndex?: number;
         navigateMaxIndex?: number;
         allowCircularNavigation?: boolean;

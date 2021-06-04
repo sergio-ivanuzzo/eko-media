@@ -2,7 +2,7 @@ import { RefObject, useEffect, useRef } from "react";
 
 export const SCROLL_CLASS = "navigated";
 
-const useScrollTo = <T extends HTMLElement | null>({ childIndex }: IUseScrollToProps): [RefObject<T>] => {
+const useScrollToChild = <T extends HTMLElement | null>({ childIndex }: IUseScrollToProps): [RefObject<T>] => {
     const parentRef = useRef(null);
 
     useEffect(() => {
@@ -26,4 +26,4 @@ const useScrollTo = <T extends HTMLElement | null>({ childIndex }: IUseScrollToP
     return [ parentRef ];
 };
 
-export default useScrollTo;
+export default useScrollToChild;

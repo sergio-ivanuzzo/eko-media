@@ -33,7 +33,7 @@ declare interface ISelectTriggerProps extends IDropdownTriggerProps {
     selected: ISelectOption[];
     multiple?: boolean;
     handleUnselect: (props: IHandleUnselectProps) => void;
-    allSelected?: boolean;
+    allMultipleSelected?: boolean;
 }
 
 declare interface ISelectChildrenProps extends IRenderDropdownChildrenProps, ISelectAllProps {

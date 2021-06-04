@@ -3,7 +3,7 @@ import React, { RefObject, useCallback, useEffect, useMemo, useState } from "rea
 import ConditionalRender from "~/components/core/ConditionalRender";
 import useActiveElement from "~/hooks/useActiveElement";
 import useKeyboard from "~/hooks/useKeyboard";
-import useScrollTo from "~/hooks/useScrollTo";
+import useScrollToChild from "~/hooks/useScrollToChild";
 
 import { DropdownContainer, Frame, FrameContainer, TriggerContainer } from "./styles";
 
@@ -28,14 +28,14 @@ const Dropdown = React.forwardRef((props: IDropdownProps<HTMLDivElement>, extern
         // for example when no dropdown children to show (see Select component)
         blockOpening = false,
         // navigation
-        onNavigate = () => null,
-        // select navigated
-        onPick = () => null,
+        navigable = false,
         navigateMinIndex = NAVIGATE_START_POSITION,
         navigateFrom = NAVIGATE_START_POSITION,
-        navigable = false,
+        navigationOffset = 0,
         navigateMaxIndex = 0,
         allowCircularNavigation = false,
+        onNavigate = () => null,
+        onPick = () => null,
         // misc
         className = "",
         tabIndex,
@@ -77,8 +77,8 @@ const Dropdown = React.forwardRef((props: IDropdownProps<HTMLDivElement>, extern
     }, [ allowCircularNavigation, navigateMinIndex, navigateMaxIndex ]);
 
     const handlePick = useCallback((): void => {
-        onPick(navigationIndex);
-    }, [ navigationIndex ]);
+        onPick(navigationIndex, close);
+    }, [ navigationIndex, close ]);
 
     const [ dropdownRef, isActiveElement ] = useActiveElement<HTMLDivElement>(externalRef as RefObject<HTMLDivElement>);
 
@@ -119,7 +119,13 @@ const Dropdown = React.forwardRef((props: IDropdownProps<HTMLDivElement>, extern
         }
     }, [ isOpen, blockOpening ]);
 
-    const [ frameRef ] = useScrollTo<HTMLDivElement>({ childIndex: navigationIndex });
+    useEffect(() => {
+        if (navigationIndex > Math.abs(navigationOffset)) {
+            setNavigationIndex(navigationOffset < 0 ? navigationIndex - 1 : navigationIndex + 1);
+        }
+    }, [ navigationOffset ]);
+
+    const [ frameRef ] = useScrollToChild<HTMLDivElement>({ childIndex: navigationIndex });
 
     return (
         <DropdownContainer ref={dropdownRef} className={className} tabIndex={tabIndex}>

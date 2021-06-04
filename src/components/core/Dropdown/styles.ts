@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { SCROLL_CLASS } from "~/hooks/useScrollTo";
+import { SCROLL_CLASS } from "~/hooks/useScrollToChild";
 import { NoActiveOutlineCSS, NoSelectCSS } from "~/components/global.styles";
 
 export const DropdownContainer = styled.div`
@@ -41,7 +41,7 @@ export const Frame = styled.div`
 
 export const DropdownItem = styled.div`
   &.${SCROLL_CLASS} {
-    background: ${({ theme }) => theme.palette.cyan.azure};
+    background: ${({ theme }) => theme.palette.orange.carrot};
     color: ${({ theme }) => theme.palette.white.base};
   }
 `;
