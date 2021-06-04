@@ -168,9 +168,9 @@ const useData = (): IUseDataResponse => {
                 const nonMediaKeys = allKeys.filter(
                     (key) => !allMedia.some((mediaName) => key.includes(mediaName))
                 );
-                const selectedMediaKeys = allKeys.filter(
-                    (key) => selectedMedia.some((mediaName) => key.includes(mediaName))
-                );
+                const selectedMediaKeys = selectedMedia.includes("all")
+                    ? allKeys
+                    : allKeys.filter((key) => selectedMedia.some((mediaName) => key.includes(mediaName)));
 
                 filteredData[key] = items.map((item) => {
                     return nonMediaKeys.concat(selectedMediaKeys).reduce((acc, key) => ({
