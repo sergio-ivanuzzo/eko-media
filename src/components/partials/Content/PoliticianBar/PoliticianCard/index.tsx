@@ -16,7 +16,7 @@ const MESSAGE_CASES: [string, string, string] = [
 const PoliticianCard = ({ name, mentions, avatarUrl, ...props }: IPoliticianCardProps): JSX.Element => {
     const { formatMessage } = useIntl();
     const text = formatMessage({ id: maybePluralize(mentions[Mention.ALL], MESSAGE_CASES) });
-    const { selectable, selected, onClick } = props;
+    const { selectable, selected, onClick = () => null } = props;
 
     const renderMentionBar = () => {
         return (

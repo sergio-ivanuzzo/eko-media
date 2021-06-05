@@ -11,7 +11,7 @@ declare interface IPoliticianBarItem {
 }
 
 declare interface IPoliticianCardProps extends IPoliticianBarItem, IStylableComponent {
-    onClick: () => void;
+    onClick?: () => void;
     selectable?: boolean;
     selected?: boolean;
 }

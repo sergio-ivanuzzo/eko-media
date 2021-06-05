@@ -1,5 +1,5 @@
 declare interface IChartDrawProps {
-    chartRef: RefObject<SVGSVGElement>;
+    chartRef: React.RefObject<SVGSVGElement>;
     width: number;
     height: number;
     colors: string[];
@@ -8,8 +8,8 @@ declare interface IChartDrawProps {
 declare type TUseChartProps = IChartProps;
 
 declare interface IUseChartResponse {
-    chartRef: RefObject<SVGSVGElement>;
-    containerRef: RefObject<HTMLDivElement>;
+    chartRef: React.RefObject<SVGSVGElement>;
+    containerRef: React.RefObject<HTMLDivElement>;
     width: number;
     height: number;
 }

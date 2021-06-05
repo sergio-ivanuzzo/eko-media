@@ -6,7 +6,11 @@ const useChart = (props: TUseChartProps): IUseChartResponse => {
     const { draw, width: staticWidth = 0, height: staticHeight = 0, colors = [] } = props;
 
     const chartRef = useRef<SVGSVGElement>(null);
-    const [ containerRef, dynamicWidth, dynamicHeight ] = useElementSize<HTMLDivElement>();
+    const {
+        ref: containerRef,
+        width: dynamicWidth,
+        height: dynamicHeight
+    } = useElementSize<HTMLDivElement>();
 
     const width = staticWidth || dynamicWidth;
     const height = staticHeight || dynamicHeight;

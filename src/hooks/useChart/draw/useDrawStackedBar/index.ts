@@ -92,7 +92,7 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
             .attr("class", "segment")
             .attr("x", (d: any) => xScale(d[0]))
             .attr("y", (d: any) => yScale(d.data.key))
-            .attr("width", (d: any, i: any) => xScale(d[1]) - xScale(d[0]))
+            .attr("width", (d: any) => xScale(d[1]) - xScale(d[0]))
             .attr("height", yScale.bandwidth());
 
         const text = group.selectAll("text.label").data((d: any) => d);
@@ -117,7 +117,7 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
             .attr("dy", () => "1.3em")
             .attr("x", (d: any) => xScale(d[0]) + TEXT_MARGIN_LEFT)
             .attr("y", (d: any) => yScale(d.data.key))
-            .attr("width", (d: any, i: any) => xScale(d[1]) - xScale(d[0]))
+            .attr("width", (d: any) => xScale(d[1]) - xScale(d[0]))
             .attr("height", yScale.bandwidth());
 
         const legends = svg.append("g")
@@ -165,25 +165,19 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
                 xAxis.scale(newScaleX)
                 svg.select("g.axis-x").call(xAxis);
 
-                const target = event.sourceEvent.target;
-                const currentGroup = d3.select(target.parentNode).attr("class");
-
                 svg.selectAll("rect.segment")
                     .attr("x", (d: any) => newScaleX(d[0]))
                     .attr("width", (d: any) => newScaleX(d[1]) - newScaleX(d[0]))
                     .each((d: any, index: number, n: any) => {
                         const parent = d3.select(n[index].parentNode);
-                        const group = parent.attr("class");
 
-                        if (currentGroup !== group) {
-                            parent.selectAll("text.label")
-                                .each((d: any, i: number, n: any) => {
-                                    const textNode = d3.select(n[i]).node();
-                                    d3.select(textNode)
-                                        .attr("x", (d: any) => newScaleX(d[0]))
-                                        .attr("transform", `translate(${TEXT_MARGIN_LEFT}, 0)`)
-                                });
-                        }
+                        parent.selectAll("text.label")
+                            .each((d: any, i: number, n: any) => {
+                                const textNode = d3.select(n[i]).node();
+                                d3.select(textNode)
+                                    .attr("x", (d: any) => newScaleX(d[0]))
+                                    .attr("transform", `translate(${TEXT_MARGIN_LEFT}, 0)`)
+                            });
                     });
             })
 

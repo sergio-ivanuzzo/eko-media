@@ -16,7 +16,7 @@ export class AppError extends Error {
     }
 }
 
-const useNotifyError = ({ throwManually = false }: IUseNotifyErrorProps = {}): IUseNotifyErrorResponse => {
+const useNotifyError = (): IUseNotifyErrorResponse => {
     const [ error, setError ] = useState<AppError>();
     const { formatMessage } = useIntl();
 
