@@ -77,8 +77,7 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
             .attr("class", "axis axis-y")
             .call(yAxis);
 
-        const groupsContainer = svg.append("g")
-            .attr("class", "groups-container")//.attr("pointer-events", "all");
+        const groupsContainer = svg.append("g").attr("class", "groups-container");
 
         const group = groupsContainer
             .selectAll("g")
@@ -89,10 +88,15 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
 
         const segment = group.selectAll("rect").data((d: any) => d);
         segment.join("rect")
+            .attr("fill", (d: any) => {
+                if (!d.data.values.some((value: number) => !!value)) {
+                    return "gray";
+                }
+            })
             .attr("class", "segment")
             .attr("x", (d: any) => xScale(d[0]))
             .attr("y", (d: any) => yScale(d.data.key))
-            .attr("width", (d: any) => xScale(d[1]) - xScale(d[0]))
+            .attr("width", (d: any) => xScale(d[1]) - xScale(d[0]) || "100%")
             .attr("height", yScale.bandwidth());
 
         const text = group.selectAll("text.label").data((d: any) => d);
@@ -103,7 +107,7 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
                 const groupIndex = Number(parentClass.replace( /^\D+/g, ""));
                 const value = d.data.values[groupIndex];
                 const total = d.data.total;
-                const percentage = (100 * value / total).toFixed(1);
+                const percentage = (100 * value / total || 0).toFixed(1);
 
                 return xData.length === 1 ? value : `${percentage}%`;
             })
@@ -113,6 +117,11 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
                 const groupIndex = Number(parentClass.replace( /^\D+/g, ""));
 
                 return `label label-group-${groupIndex}`;
+            })
+            .attr("stroke", (d: any) => {
+                if (!d.data.values.some((value: number) => !!value)) {
+                    return "white";
+                }
             })
             .attr("dy", () => "1.3em")
             .attr("x", (d: any) => xScale(d[0]) + TEXT_MARGIN_LEFT)
@@ -166,6 +175,8 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
                 svg.select("g.axis-x").call(xAxis);
 
                 svg.selectAll("rect.segment")
+                    // not zoom bars with zero width
+                    .filter((d: any) => d[0] || d[1])
                     .attr("x", (d: any) => newScaleX(d[0]))
                     .attr("width", (d: any) => newScaleX(d[1]) - newScaleX(d[0]))
                     .each((d: any, index: number, n: any) => {

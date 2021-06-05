@@ -45,7 +45,6 @@ const Tooltip = (props: ITooltipProps): JSX.Element => {
     }
 
     useEffect(() => {
-        console.log(entry);
         if (!entry.isIntersecting) {
             // handling vertical re-position
             if ((entry.boundingClientRect?.top || 0) - height < 0) {
