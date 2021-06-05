@@ -7,8 +7,12 @@ export const StyledChart = styled(Chart)`
   .bubble {
     text {
       ${NoSelectCSS};
-      font-size: 30px;
+      font-size: 20px;
       font-weight: 400;
+    }
+    
+    &:hover {
+      cursor: pointer;
     }
   }
 `;

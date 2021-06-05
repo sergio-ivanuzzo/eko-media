@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { MouseEventHandler, useCallback } from "react";
 import * as d3 from "d3";
 
 import useChartColor from "~/hooks/useChart/color/useChartColor";
@@ -103,7 +103,7 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
                 const groupIndex = Number(parentClass.replace( /^\D+/g, ""));
                 const value = d.data.values[groupIndex];
                 const total = d.data.total;
-                const percentage = Math.floor(100 * value / total);
+                const percentage = (100 * value / total).toFixed(1);
 
                 return xData.length === 1 ? value : `${percentage}%`;
             })
@@ -186,6 +186,31 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
         // disable drag
         svg.on("mousedown.zoom", null);
         svg.on("dblclick.zoom", null);
+
+        // tooltips
+        const tooltip = svg.append("g")
+            .attr("class", "tooltip")
+            .style("display", "none");
+
+        tooltip.append("rect").attr("rx", 2);
+
+        tooltip.append("text").attr("text-anchor", "middle");
+
+        group.selectAll("rect,text")
+            .on("mouseover", () => tooltip.style("display", null))
+            .on("mouseout", () => tooltip.style("display", "none"))
+            .on("mousemove", (event: MouseEvent, d: any) => {
+                const currentNode = d3.select(event.currentTarget as any).node();
+                const parentClass = d3.select(currentNode.parentNode).attr("class");
+                const groupIndex = Number(parentClass.replace( /^\D+/g, ""));
+
+                const [ x, y ] = d3.pointer(event);
+                const text = d.data.values[groupIndex];
+
+                tooltip.attr("transform", `translate(${x - 50}, ${y + 30})`);
+                tooltip.select("rect").attr("width", `${text}`.length * 12 + 15);
+                tooltip.select("text").attr("transform", "translate(20, 20)").text(text);
+            });
 
     }, [ data ]);
 

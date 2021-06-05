@@ -3,13 +3,10 @@
   "version": "0.1.0",
   "author": {
     "name": "Sergio Ivanuzzo",
-    "email": "sergio.ivanuzzo(at)gmail.com"
+    "email": "sergio.ivanuzzo(at)gmail(dot)com"
   },
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.12.0",
-    "@testing-library/react": "^11.2.6",
-    "@testing-library/user-event": "^12.8.3",
     "d3": "^6.7.0",
     "d3-force": "^2.1.1",
     "react": "^17.0.2",

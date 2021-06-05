@@ -4,9 +4,11 @@ import Chart from "~/components/core/Chart";
 import { MARGIN_LEFT, TRANSITION_Y } from "~/hooks/useChart/draw/useDrawStackedBar";
 
 export const StyledChart = styled(Chart)`
-  g.group, rect {
-    //transform: translate(200px, 0px);
-  }
+  rect {
+    &:hover {
+      cursor: pointer;
+    }
+  }  
   
   .groups-container, g.axis {
     transform: translate(0px, ${TRANSITION_Y}px);

@@ -7,11 +7,14 @@ import useNotifyError from "~/hooks/useNotifyError";
 
 export const MAX_BUBBLE_RADIUS = 150;
 
-const DEFAULT_TEXT_SIZE = 40;
+const DEFAULT_TEXT_SIZE = 20;
 const MAX_TEXT_SIZE = 80;
 
 const MIN_ZOOM = 1;
-const MAX_ZOOM = 10;
+const MAX_ZOOM = 20;
+
+const RADIUS_MULTIPLIER = 1.5;
+const INDENT_BETWEEN_BUBBLES = 8;
 
 const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (props: IChartDrawProps) => void } => {
 
@@ -22,10 +25,14 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
     const children = ({
         children: Array.from(
             d3.group(
-                Array.from({ length: data.length }, (_, i) => ({
-                    group: Math.random() * selectedCategories.length | 0,
-                    value: -Math.log(Math.random())
-                })),
+                Array.from({ length: data.length }, (_, i) => {
+                    const item = data[i];
+                    return {
+                        group: item.category,
+                        value: -Math.log(Math.random()),
+                        radius: item.radius
+                    };
+                }),
                 (d) => d.group
             ),
             ([ , children ]) => ({ children })
@@ -46,7 +53,7 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
 
         const pack = () => d3.pack()
             .size([ width, height ])
-            .padding(1)(d3.hierarchy(children).sum((d: any) => d.value));
+            .padding(1)(d3.hierarchy(children).sum((d: any) => d.radius));
 
         const categoriesCount = selectedCategories.length;
         const clusters = new Array(categoriesCount);
@@ -56,19 +63,21 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
         const centerX = width / 2;
         const centerY = height / 2;
 
-        const paddingX = centerX / 2;
+        const paddingX = centerX / 1.8;
         const paddingY = centerY / 2;
+
+        const offsetX = 150;
 
         // according to current requirements we can build 5 or 1 bubble chart
         if (categoriesCount === 1) {
             centers = [ [ width / 2, height / 2 ] ];
         } else {
             centers = [
-                [ paddingX, paddingY ],
-                [ width - paddingX, paddingY ],
-                [ centerX, centerY ],
-                [ paddingX, height - paddingY ],
-                [ width - paddingX, height - paddingY ]
+                [ offsetX + paddingX, paddingY ],
+                [ offsetX + width - paddingX, paddingY ],
+                [ offsetX + centerX, centerY ],
+                [ offsetX + paddingX, height - paddingY ],
+                [ offsetX + width - paddingX, height - paddingY ]
             ];
         }
 
@@ -103,7 +112,7 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
 
         const svg = d3.select(chartRef.current)
             .attr("viewBox", `0 0 ${width} ${height}`)
-            .attr("preserveAspectRatio", "xMidYMid meet")
+            .attr("preserveAspectRatio", "xMaxYMid meet")
             .attr("height", height)
             .attr("width", width);
 
@@ -111,11 +120,11 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
         svg.selectAll("svg > *").remove();
 
         const simulation = d3.forceSimulation(nodes)
-            .force("center", d3.forceCenter(width / 2, height / 2))
+            // .force("center", d3.forceCenter(width / 2, height / 2))
             .force("x", d3.forceX().x((d: any) => centers[d.cluster][0]).strength(0.05))
             .force("y", d3.forceY().y((d: any) => centers[d.cluster][1]).strength(0.05))
             .force("charge", d3.forceManyBody().strength(-10))
-            .force("collision", d3.forceCollide().radius((d: any) => d.r + d.r / 2));
+            .force("collision", d3.forceCollide().radius((d: any) => d.r * RADIUS_MULTIPLIER + INDENT_BETWEEN_BUBBLES));
 
         // disable animation
         simulation.stop();
@@ -138,7 +147,7 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
                     const textBBox = textNode.getBBox();
                     const circleBBox = circleNode.getBBox();
 
-                    if (textBBox.width > circleBBox.width - offset) {
+                    if (textBBox.width - offset > circleBBox.width) {
                         d3.select(group).select("text").style("font-size", "0px");
                     }
                 })
@@ -171,9 +180,7 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
             })
             .attr("cx", (d: any) => d.x)
             .attr("cy", (d: any) => d.y)
-            .attr("r", (d: any) => d.r);
-
-        node.append("title").text((d) => `${d.category}: ${d.word}`);
+            .attr("r", (d: any) => d.r * RADIUS_MULTIPLIER);
 
         node.append("text")
             .text((d) => d.word)
@@ -184,6 +191,27 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
             .attr("y", (d: any) => d.y);
 
         hideText();
+
+        // tooltips
+        const tooltip = svg.append("g")
+            .attr("class", "tooltip")
+            .style("display", "none");
+
+        tooltip.append("rect").attr("rx", 2);
+
+        tooltip.append("text").attr("text-anchor", "middle");
+
+        node.selectAll("circle,text")
+            .on("mouseover", () => tooltip.style("display", null))
+            .on("mouseout", () => tooltip.style("display", "none"))
+            .on("mousemove", (event: MouseEvent, d: any) => {
+                const [ x, y ] = d3.pointer(event);
+                const text = d.wordCount;
+
+                tooltip.attr("transform", `translate(${x - 30}, ${y + 30})`);
+                tooltip.select("rect").attr("width", `${text}`.length * 12 + 15);
+                tooltip.select("text").attr("transform", "translate(30, 20)").text(text);
+            });
 
     }, [ data ]);
 
