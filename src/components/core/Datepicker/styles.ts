@@ -42,6 +42,5 @@ export const TriggerItem = styled.div`
 export const StyledDropdown = styled(Dropdown)`
   ${Frame} {
     top: -8px;
-    max-height: 800px;
   }
 `;

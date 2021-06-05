@@ -46,9 +46,6 @@ const DefaultTrigger = ({ selected: originSelected, ...props }: ISelectTriggerPr
                         <TriggerItem key={item.key}
                                      multiple={multiple}
                                      onMouseDown={(e: React.MouseEvent) => {
-                                         e.preventDefault();
-                                         e.stopPropagation();
-
                                          if (e.button === MOUSE_BUTTON.MIDDLE) {
                                              handleUnselect({ option: item });
                                          }

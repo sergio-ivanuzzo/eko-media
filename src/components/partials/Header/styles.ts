@@ -6,6 +6,7 @@ export const HeaderContainer = styled.div<IHeaderProps>`
     width: 100%;
     background: ${({ theme }) => theme.palette.white.base};
     font-family: "NeueHaasUnica", sans-serif;
+    padding: 10px;
     
     ${({ sticky }: IHeaderProps) => sticky && `
         position: sticky;

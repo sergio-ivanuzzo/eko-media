@@ -223,7 +223,7 @@ const useDrawNetwork = (
             doHighlight(d, green.jade, cyan.azure, cyan.azure, RADIUS * RADIUS_MULTIPLIER);
         });
 
-        // unselect node when click outside of it (somewhere on svg)
+        // unselect nodes when click outside of it (somewhere on svg)
         svg.on("click", (event: MouseEvent) => {
             const element = event.target as HTMLElement;
             if (![ "circle", "text" ].includes(element.tagName.toLowerCase())) {

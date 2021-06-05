@@ -8,12 +8,17 @@ const useActiveElement = <T extends HTMLElement | null>(externalRef?: RefObject<
         const element: HTMLElement | null = ref.current;
         if (element) {
             const handleEvent = (e: Event) => {
-                setIsActiveElement(
-                    element.contains(e.target as Node) || document.activeElement === element || e.target === element,
-                );
+                const isActive = element.contains(e.target as Node)
+                    || document.activeElement === element
+                    || e.target === element;
+
+                if (isActive && document.activeElement !== element) {
+                    (document.activeElement as HTMLElement).blur();
+                }
+                setIsActiveElement(isActive);
             };
 
-            // event SHOULD be mouseUP or keyUP, for DOWN events it works from second call
+            // !!! event SHOULD be mouseUP or keyUP, for DOWN events it works on second call
             document.addEventListener("mouseup", handleEvent);
             document.addEventListener("keyup", handleEvent);
 
