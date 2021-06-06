@@ -19,7 +19,7 @@ import useData from "~/hooks/useData";
 
 import { CATEGORIES_MAP } from "~/common/constants";
 import { HeadingLevel } from "~/components/core/FormattedTitle/constants";
-import { JustifyContent } from "~/components/global.constants";
+import { AlignItems, JustifyContent } from "~/components/global.constants";
 
 const TopicPage = (): JSX.Element => {
     const { data, selectedCategory } = useData();
@@ -49,8 +49,8 @@ const TopicPage = (): JSX.Element => {
                             </ConditionalRender>
                         </RightColumn>
                     </SubSection>
-                    <SubSection>
-                        <LeftColumn>
+                    <SubSection primaryAlign={JustifyContent.SPACE_BETWEEN} secondaryAlign={AlignItems.INHERIT}>
+                        <LeftColumn primaryAlign={JustifyContent.SPACE_BETWEEN} secondaryAlign={AlignItems.START}>
                             <ArticleBar onClick={({ key }) => setTopic(key)} />
                         </LeftColumn>
                         <RightColumn>

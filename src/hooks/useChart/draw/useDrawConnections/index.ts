@@ -41,7 +41,6 @@ const useDrawConnections = ({ nodes, edges }: IUseConnectionsProps): { draw: (pr
         if (simulation !== undefined) {
             simulation.force("link").links(edges);
         }
-        console.log(nodes, edges);
         //
         // simulation.stop();
         // simulation.tick(nodes.length);

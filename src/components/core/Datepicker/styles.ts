@@ -7,12 +7,12 @@ export const TriggerContainer = styled.div`
   font-size: 18px;
   color: ${({ theme }) => theme.palette.black.base};
   background: ${({ theme }) => theme.palette.white.base};
-  padding: 10px;
+  padding: 8px;
   display: flex;
   flex-wrap: wrap;
   border-radius: 10px;
   //border: 1px solid ${({ theme }) => theme.palette.gray.border};
-  height: 36px;
+  height: 38px;
   overflow: hidden;
 `;
 

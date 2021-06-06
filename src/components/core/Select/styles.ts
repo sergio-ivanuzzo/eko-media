@@ -28,12 +28,12 @@ export const MenuItem = styled(DropdownItem)<IActivableComponent>`
 
 export const TriggerContainer = styled.div`
   ${MenuItemCss};
-  padding: 10px;
+  padding: 8px;
   display: flex;
   flex-wrap: wrap;
   border-radius: 10px;
   border: 1px solid ${({ theme }) => theme.palette.gray.border};
-  height: 36px;
+  height: 38px;
   overflow: hidden;
 `;
 
