@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import PaginatedList from "~/components/core/PaginatedList";
 import PoliticianCard from "~/components/partials/Content/PoliticianBar/PoliticianCard";
@@ -70,6 +70,11 @@ const PoliticianBar = ({ limit, selectable = false, onSelect = () => null }: IPo
             />
         );
     });
+
+    // set politician name on data loading to show info for parent component
+    useEffect(() => {
+        onSelect(data[0]?.name);
+    }, [ ]);
 
     return (
         <PaginatedList>

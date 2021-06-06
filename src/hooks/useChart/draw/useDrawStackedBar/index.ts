@@ -1,21 +1,19 @@
-import { MouseEventHandler, useCallback } from "react";
+import { useCallback } from "react";
 import * as d3 from "d3";
 
 import useChartColor from "~/hooks/useChart/color/useChartColor";
 
 export const BAR_HEIGHT = 32;
 export const MARGIN_LEFT = 230;
-export const MARGIN_BOTTOM = 50;
 export const MARGIN_TOP = 50;
+export const LEGEND_HEIGHT = 20;
+export const TRANSITION_Y = MARGIN_TOP + LEGEND_HEIGHT;
 
 const MIN_ZOOM = 1;
 const MAX_ZOOM = 15;
 
 const LEGEND_WIDTH = 20;
-export const LEGEND_HEIGHT = 20;
 const LEGEND_MARGIN = 30;
-
-export const TRANSITION_Y = MARGIN_TOP + LEGEND_HEIGHT;
 
 const TEXT_MARGIN_LEFT = 10;
 
@@ -88,17 +86,27 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
 
         const segment = group.selectAll("rect").data((d: any) => d);
         segment.join("rect")
+            // check for zero-width segments
             .attr("fill", (d: any) => {
                 if (!d.data.values.some((value: number) => !!value)) {
                     return "gray";
                 }
             })
             .attr("class", "segment")
-            .attr("x", (d: any) => xScale(d[0]))
+            // check for zero-width segments
+            .attr("x", (d: any) => {
+                if (!d.data.values.some((value: number) => !!value)) {
+                    return MARGIN_LEFT;
+                }
+
+                return xScale(d[0]);
+            })
             .attr("y", (d: any) => yScale(d.data.key))
+            // check for zero-width segments
             .attr("width", (d: any) => xScale(d[1]) - xScale(d[0]) || "100%")
             .attr("height", yScale.bandwidth());
 
+        // add text on segments
         const text = group.selectAll("text.label").data((d: any) => d);
         text.join("text")
             .text((d: any, i: any, n: any) => {
@@ -118,6 +126,7 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
 
                 return `label label-group-${groupIndex}`;
             })
+            // check for zero-width segments
             .attr("stroke", (d: any) => {
                 if (!d.data.values.some((value: number) => !!value)) {
                     return "white";
@@ -129,6 +138,7 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
             .attr("width", (d: any) => xScale(d[1]) - xScale(d[0]))
             .attr("height", yScale.bandwidth());
 
+        // draw legends
         const legends = svg.append("g")
             .attr("class", "legends")
             .attr("transform", `translate(${MARGIN_LEFT}, ${MARGIN_TOP})`);
@@ -159,6 +169,32 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
                 offset += (textBBox?.width || 0) + LEGEND_WIDTH + LEGEND_MARGIN * 2;
             })
 
+        // draw tooltips
+        const tooltip = svg.append("g")
+            .attr("class", "tooltip")
+            .style("display", "none");
+
+        tooltip.append("rect").attr("rx", 2);
+
+        tooltip.append("text").attr("text-anchor", "middle");
+
+        group.selectAll("rect,text")
+            .on("mouseover", () => tooltip.style("display", null))
+            .on("mouseout", () => tooltip.style("display", "none"))
+            .on("mousemove", (event: MouseEvent, d: any) => {
+                const currentNode = d3.select(event.currentTarget as any).node();
+                const parentClass = d3.select(currentNode.parentNode).attr("class");
+                const groupIndex = Number(parentClass.replace( /^\D+/g, ""));
+
+                const [ x, y ] = d3.pointer(event);
+                const text = d.data.values[groupIndex];
+
+                tooltip.attr("transform", `translate(${x - 50}, ${y + 30})`);
+                tooltip.select("rect").attr("width", `${text}`.length * 12 + 15);
+                tooltip.select("text").attr("transform", "translate(20, 20)").text(text);
+            });
+
+        // add zoom for chart (horizontal scale)
         const zoom = d3.zoom()
             .scaleExtent([ MIN_ZOOM, MAX_ZOOM ])
             .translateExtent([ [ 0, 0 ], [ width, height ] ])
@@ -194,34 +230,9 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
 
         svg.call(zoom);
 
-        // disable drag
+        // disable drag for zoomed
         svg.on("mousedown.zoom", null);
         svg.on("dblclick.zoom", null);
-
-        // tooltips
-        const tooltip = svg.append("g")
-            .attr("class", "tooltip")
-            .style("display", "none");
-
-        tooltip.append("rect").attr("rx", 2);
-
-        tooltip.append("text").attr("text-anchor", "middle");
-
-        group.selectAll("rect,text")
-            .on("mouseover", () => tooltip.style("display", null))
-            .on("mouseout", () => tooltip.style("display", "none"))
-            .on("mousemove", (event: MouseEvent, d: any) => {
-                const currentNode = d3.select(event.currentTarget as any).node();
-                const parentClass = d3.select(currentNode.parentNode).attr("class");
-                const groupIndex = Number(parentClass.replace( /^\D+/g, ""));
-
-                const [ x, y ] = d3.pointer(event);
-                const text = d.data.values[groupIndex];
-
-                tooltip.attr("transform", `translate(${x - 50}, ${y + 30})`);
-                tooltip.select("rect").attr("width", `${text}`.length * 12 + 15);
-                tooltip.select("text").attr("transform", "translate(20, 20)").text(text);
-            });
 
     }, [ data ]);
 

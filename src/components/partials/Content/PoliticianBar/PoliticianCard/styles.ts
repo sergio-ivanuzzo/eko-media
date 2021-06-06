@@ -12,8 +12,9 @@ const NotSelectedItemCSS = css`
 
 export const StyledCard = styled(Card)<Partial<IPoliticianCardProps>>`
   ${({ selectable, selected }) => selectable && selected ? NotSelectedItemCSS : SelectedItemCSS};
-  
-  &:hover {
-    cursor: pointer;
-  }
+  ${({ selectable }) => selectable && `
+    &:hover {
+      cursor: pointer;
+    }
+  `};
 `;

@@ -16,8 +16,7 @@ export const HeaderContainer = styled.div<IHeaderProps>`
         z-index: 5;
         background: white;
     `};
-    // border-bottom: 2px solid ${({ theme }) => `${theme.palette.gray.silver}`};
-    box-shadow: 0 0 3px 0 ${({ theme }) => `${theme.palette.gray.silver}`};
+     border-bottom: 2px solid ${({ theme }) => `${theme.palette.gray.silver}`};
 `;
 
 export const HeaderRow = styled.div`
