@@ -2,6 +2,13 @@ import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
 
 import Placeholder from "~/components/core/Placeholder";
+import { getPrimaryAlign, getSecondaryAlign } from "~/components/global.styles";
+
+const ColumnCSS = css`
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+`;
 
 export const Section = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.palette.gray.silver};
@@ -10,9 +17,16 @@ export const Section = styled.div`
   margin-top: 10px;
 `;
 
-export const SubSection = styled.div<ISubSectionProps>`
+export const HeadingSection = styled.div`
   display: flex;
-  ${({ spaceBetween }) => spaceBetween && "justify-content: space-between"};
+  padding: 0 10px;
+  margin-bottom: 50px;
+`;
+
+export const SubSection = styled.div<IRowProps>`
+  display: flex;
+  ${({ primaryAlign }) => getPrimaryAlign(primaryAlign)};
+  ${({ secondaryAlign }) => getSecondaryAlign(secondaryAlign)};
   padding: 0 10px;
   
   > * {
@@ -20,21 +34,21 @@ export const SubSection = styled.div<ISubSectionProps>`
   }
 `;
 
-const ColumnCSS = css`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  padding: 5px;
-`;
-
-export const LeftColumn = styled.div`
+export const LeftColumn = styled.div<IColumnProps>`
   ${ColumnCSS};
+  ${({ primaryAlign }) => getPrimaryAlign(primaryAlign)};
+  ${({ secondaryAlign }) => getSecondaryAlign(secondaryAlign)};
   width: 300px;
+  
+  > *:not(:last-child) {
+    margin-bottom: 20px;
+  }
 `;
 
-export const RightColumn = styled.div`
+export const RightColumn = styled.div<IColumnProps>`
   ${ColumnCSS};
+  ${({ primaryAlign }) => getPrimaryAlign(primaryAlign)};
+  ${({ secondaryAlign }) => getSecondaryAlign(secondaryAlign)};
   width: 100%;
 `;
 

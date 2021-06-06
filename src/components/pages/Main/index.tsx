@@ -15,6 +15,7 @@ import formatString from "~/helpers/formatString";
 import useData from "~/hooks/useData";
 
 import { CATEGORIES_MAP } from "~/common/constants";
+import { AlignItems, JustifyContent } from "~/components/global.constants";
 import {
     LeftColumn,
     RightColumn,
@@ -36,38 +37,43 @@ const MainPage = (): JSX.Element => {
         <ConditionalRender condition={!!Object.keys(data).length}>
             <>
                 <Section>
-                    <SubSection spaceBetween>
-                        <LeftColumn>
+                    <SubSection primaryAlign={JustifyContent.SPACE_BETWEEN} secondaryAlign={AlignItems.INHERIT}>
+                        <LeftColumn primaryAlign={JustifyContent.SPACE_BETWEEN} secondaryAlign={AlignItems.START}>
                             <div>
-                                <FormattedTitle
-                                    placeholder={formatMessage({ id: "politician_bar.title" })}
-                                    params={[ CATEGORIES_MAP[selectedCategory] ]}
-                                    inline
-                                />
-                                <Hint />
+                                <div>
+                                    <FormattedTitle
+                                        placeholder={formatMessage({ id: "politician_bar.title" })}
+                                        params={[ CATEGORIES_MAP[selectedCategory] ]}
+                                        inline
+                                    />
+                                    <Hint />
+                                </div>
+
+                                <PoliticianBar limit={POLITICIAN_BAR_LIMIT} />
+                                <div>
+                                    <StyledLink to="/politicians/details" tabIndex={7}>
+                                        <span>
+                                            <FormattedMessage id="link.details" />
+                                        </span>
+                                        <ArrowRight width={18} height={14} />
+                                    </StyledLink>
+                                </div>
                             </div>
 
-                            <PoliticianBar limit={POLITICIAN_BAR_LIMIT} />
-
-                            <StyledLink to="/politicians/details" tabIndex={7}>
-                                <span>
-                                    <FormattedMessage id="link.details" />
-                                </span>
-                                <ArrowRight width={18} height={14} />
-                            </StyledLink>
-
                             <div>
-                                <FormattedTitle
-                                    placeholder={formatMessage({ id: "sphere_bar.title" })}
-                                    params={[ CATEGORIES_MAP[selectedCategory] ]}
-                                    inline
-                                />
-                                <Hint />
+                                <div>
+                                    <FormattedTitle
+                                        placeholder={formatMessage({ id: "sphere_bar.title" })}
+                                        params={[ CATEGORIES_MAP[selectedCategory] ]}
+                                        inline
+                                    />
+                                    <Hint />
+                                </div>
+                                <SphereBar />
                             </div>
-                            <SphereBar />
                         </LeftColumn>
                         <RightColumn>
-                            <SubSection spaceBetween>
+                            <SubSection primaryAlign={JustifyContent.SPACE_BETWEEN} secondaryAlign={AlignItems.START}>
                                 <div>
                                     <ConditionalRender condition={selectedCategory === "all"}>
                                         <FormattedTitle
@@ -98,12 +104,14 @@ const MainPage = (): JSX.Element => {
                             <StackedBar />
                         </RightColumn>
                     </SubSection>
-                    <SubSection spaceBetween>
+                    <SubSection primaryAlign={JustifyContent.SPACE_BETWEEN} secondaryAlign={AlignItems.START}>
                         <LeftColumn>
-                            <FormattedTitle
-                                placeholder={formatMessage({ id: "expert_bar.title" })}
-                                params={[ CATEGORIES_MAP[selectedCategory] ]} />
-                            <ExpertBar limit={EXPERT_BAR_LIMIT} />
+                            <div>
+                                <FormattedTitle
+                                    placeholder={formatMessage({ id: "expert_bar.title" })}
+                                    params={[ CATEGORIES_MAP[selectedCategory] ]} />
+                                <ExpertBar limit={EXPERT_BAR_LIMIT} />
+                            </div>
                         </LeftColumn>
                         <RightColumn>
                             <h3>
@@ -123,7 +131,7 @@ const MainPage = (): JSX.Element => {
                     <Network />
                 </Section>
             </>
-            <StyledPlaceholder>
+            <StyledPlaceholder primaryAlign={JustifyContent.CENTER}>
                 <FormattedMessage id="placeholder.empty_data" />
             </StyledPlaceholder>
         </ConditionalRender>

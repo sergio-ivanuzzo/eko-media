@@ -227,6 +227,7 @@ const useDrawNetwork = (
         svg.on("click", (event: MouseEvent) => {
             const element = event.target as HTMLElement;
             if (![ "circle", "text" ].includes(element.tagName.toLowerCase())) {
+                setSelected(true);
                 setSelected(false);
             }
         });

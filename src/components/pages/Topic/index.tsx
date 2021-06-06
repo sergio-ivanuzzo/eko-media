@@ -2,7 +2,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import React, { useState } from "react";
 
 import {
-    BackLink,
+    BackLink, HeadingSection,
     LeftColumn,
     RightColumn,
     Section,
@@ -19,6 +19,7 @@ import useData from "~/hooks/useData";
 
 import { CATEGORIES_MAP } from "~/common/constants";
 import { HeadingLevel } from "~/components/core/FormattedTitle/constants";
+import { JustifyContent } from "~/components/global.constants";
 
 const TopicPage = (): JSX.Element => {
     const { data, selectedCategory } = useData();
@@ -30,24 +31,29 @@ const TopicPage = (): JSX.Element => {
         <ConditionalRender condition={!!Object.keys(data).length}>
             <>
                 <Section>
-                    <SubSection>
+                    <HeadingSection>
                         <BackLink to="/" tabIndex={7}>
                             <ArrowLeft width={100} height={25} />
                         </BackLink>
                         <FormattedTitle
                             placeholder={formatMessage({ id: "politician_bar.title" })}
                             params={[ CATEGORIES_MAP[selectedCategory] ]} level={HeadingLevel.H2} />
+                    </HeadingSection>
+                    <SubSection>
+                        <LeftColumn />
+                        <RightColumn primaryAlign={JustifyContent.START}>
+                            <ConditionalRender condition={!!topic}>
+                                <FormattedTitle
+                                    placeholder={formatMessage({ id: "topic_media_bar.title" })}
+                                    params={[ topic ]} level={HeadingLevel.H3} />
+                            </ConditionalRender>
+                        </RightColumn>
                     </SubSection>
                     <SubSection>
                         <LeftColumn>
                             <ArticleBar onClick={({ key }) => setTopic(key)} />
                         </LeftColumn>
                         <RightColumn>
-                            <ConditionalRender condition={!!topic}>
-                                <FormattedTitle
-                                    placeholder={formatMessage({ id: "topic_media_bar.title" })}
-                                    params={[ topic ]} level={HeadingLevel.H3} />
-                            </ConditionalRender>
                             <TopicMediaBar selectedTopic={topic} />
                         </RightColumn>
                     </SubSection>

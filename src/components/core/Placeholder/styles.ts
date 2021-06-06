@@ -1,39 +1,6 @@
-import styled, { FlattenSimpleInterpolation, css } from "styled-components";
+import styled from "styled-components";
 
-import { NoSelectCSS } from "~/components/global.styles";
-import { PlaceholderTextAlign } from "~/components/core/Placeholder/constants";
-
-const AlignLeftCSS = css`
-  align-items: center;
-  justify-content: flex-start;
-`;
-
-const AlignCenterCSS = css`
-  align-items: center;
-  justify-content: center;
-`;
-
-const AlignRightCSS = css`
-  align-items: center;
-  justify-content: flex-end;
-`;
-
-const getCssForAlign = (align: PlaceholderTextAlign): FlattenSimpleInterpolation => {
-    switch (align) {
-        case PlaceholderTextAlign.LEFT: {
-            return AlignLeftCSS;
-        }
-        case PlaceholderTextAlign.CENTER: {
-            return AlignCenterCSS;
-        }
-        case PlaceholderTextAlign.RIGHT: {
-            return AlignRightCSS;
-        }
-        default: {
-            return AlignCenterCSS;
-        }
-    }
-}
+import { NoSelectCSS, getPrimaryAlign, getSecondaryAlign } from "~/components/global.styles";
 
 export const PlaceholderContainer = styled.div<IPlaceholderProps>`
   width: 100%;
@@ -41,7 +8,8 @@ export const PlaceholderContainer = styled.div<IPlaceholderProps>`
   display: flex;
   font-family: "NeueHaasUnica", sans-serif;
   
-  ${({ align }) => getCssForAlign(align)};
+  ${({ primaryAlign }) => getPrimaryAlign(primaryAlign)};
+  ${({ secondaryAlign }) => getSecondaryAlign(secondaryAlign)};
   color: ${({ theme }) => theme.palette.gray.silver};
   ${NoSelectCSS};
 `;

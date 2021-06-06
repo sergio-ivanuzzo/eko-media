@@ -6,8 +6,8 @@ import ConditionalRender from "~/components/core/ConditionalRender";
 import Placeholder from "~/components/core/Placeholder";
 import useDetectArrayResize from "~/hooks/useDetectArrayResize";
 
+import { JustifyContent } from "~/components/global.constants";
 import { MOUSE_BUTTON } from "~/common/constants";
-import { PlaceholderTextAlign } from "~/components/core/Placeholder/constants";
 import { CloseButton, MenuItem, StyledDropdown, TriggerContainer, TriggerItem } from "./styles";
 
 const DefaultItem = ({ option, isActive = false, ...props }: ISelectItemProps): JSX.Element => {
@@ -32,11 +32,7 @@ const DefaultTrigger = ({ selected: originSelected, ...props }: ISelectTriggerPr
 
     // show only itemAll (in case if all selected) only for multiple mode
     // for single mode always show itemAll and rest of items
-    let selected = allMultipleSelected ? originSelected.slice(0, 1) : originSelected;
-    if (multiple && selected.length > 1) {
-        // remove itemAll from output
-        selected = selected.slice(1);
-    }
+    const selected = allMultipleSelected ? originSelected.slice(0, 1) : originSelected;
 
     return (
         <TriggerContainer {...props} onClick={() => toggle()}>
@@ -65,7 +61,7 @@ const DefaultTrigger = ({ selected: originSelected, ...props }: ISelectTriggerPr
                         </TriggerItem>
                     ))}
                 </>
-                <Placeholder align={PlaceholderTextAlign.LEFT}>
+                <Placeholder primaryAlign={JustifyContent.START}>
                     <FormattedMessage id="placeholder.empty_select" />
                 </Placeholder>
             </ConditionalRender>

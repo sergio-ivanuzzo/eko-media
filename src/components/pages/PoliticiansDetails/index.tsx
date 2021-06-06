@@ -11,6 +11,7 @@ import useData from "~/hooks/useData";
 
 import { CATEGORIES_MAP } from "~/common/constants";
 import { HeadingLevel } from "~/components/core/FormattedTitle/constants";
+import { AlignItems, JustifyContent } from "~/components/global.constants";
 import { BackLink, LeftColumn, RightColumn, Section, SubSection } from "~/components/pages/styles";
 
 const PoliticiansDetailsPage = (): JSX.Element => {
@@ -31,7 +32,7 @@ const PoliticiansDetailsPage = (): JSX.Element => {
                             params={[ CATEGORIES_MAP[selectedCategory] ]} level={HeadingLevel.H2} />
                     </SubSection>
 
-                    <SubSection spaceBetween>
+                    <SubSection primaryAlign={JustifyContent.SPACE_BETWEEN} secondaryAlign={AlignItems.START}>
                         <LeftColumn>
                             <FormattedTitle
                                 placeholder={formatMessage({ id: "orange_label" })}
