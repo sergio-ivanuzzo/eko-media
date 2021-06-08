@@ -27,6 +27,14 @@ export const SubSection = styled.div<IRowProps>`
   display: flex;
   ${({ primaryAlign }) => getPrimaryAlign(primaryAlign)};
   ${({ secondaryAlign }) => getSecondaryAlign(secondaryAlign)};
+  ${({ wrap }) => wrap && `
+    flex-wrap: wrap;
+    
+    > * {
+      flex: 1 0 21%;
+    }
+  `};
+  
   padding: 0 10px;
   
   > * {

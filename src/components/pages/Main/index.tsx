@@ -30,11 +30,11 @@ const EXPERT_BAR_LIMIT = 3;
 
 const MainPage = (): JSX.Element => {
 
-    const { data, selectedCategory } = useData();
+    const { selectedCategory, isDataLoaded } = useData();
     const { formatMessage } = useIntl();
 
     return (
-        <ConditionalRender condition={!!Object.keys(data).length}>
+        <ConditionalRender condition={isDataLoaded}>
             <>
                 <Section>
                     <SubSection primaryAlign={JustifyContent.SPACE_BETWEEN} secondaryAlign={AlignItems.INHERIT}>
@@ -111,6 +111,14 @@ const MainPage = (): JSX.Element => {
                                     placeholder={formatMessage({ id: "expert_bar.title" })}
                                     params={[ CATEGORIES_MAP[selectedCategory] ]} />
                                 <ExpertBar limit={EXPERT_BAR_LIMIT} />
+                                <div>
+                                    <StyledLink to="/experts/details" tabIndex={7}>
+                                        <span>
+                                            <FormattedMessage id="link.details" />
+                                        </span>
+                                        <ArrowRight width={18} height={14} />
+                                    </StyledLink>
+                                </div>
                             </div>
                         </LeftColumn>
                         <RightColumn>

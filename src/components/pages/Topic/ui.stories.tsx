@@ -14,7 +14,7 @@ export default {
 
 export const TopicPage = (): JSX.Element => {
     // for story we use similar flow as we use for datepicker, bc we need to load some data into data provider
-    const { data, loadAll, selectedCategory, setCategory } = useData();
+    const { data, loadAll, selectedCategory, setCategory, isDataLoaded } = useData();
     const { date, setDate } = useContext<IDataProviderContext<IItem>>(DataContext);
 
     useEffect(() => {
@@ -32,7 +32,7 @@ export const TopicPage = (): JSX.Element => {
     // if topic_all file exists we can remove this part
     // here I just try to get first category loaded from category_all
     useEffect(() => {
-        if (Object.keys(data).length && selectedCategory === "all") {
+        if (isDataLoaded && selectedCategory === "all") {
             const month = date.toLocaleString("en-US", { month: "2-digit" });
             const year = date.getFullYear().toString();
 
@@ -45,7 +45,7 @@ export const TopicPage = (): JSX.Element => {
     }, [ data, date, selectedCategory ]);
 
     return (
-        <ConditionalRender condition={!!Object.keys(data).length}>
+        <ConditionalRender condition={isDataLoaded}>
             <UIPage />
         </ConditionalRender>
     );

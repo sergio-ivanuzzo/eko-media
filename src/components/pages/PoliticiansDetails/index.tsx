@@ -15,12 +15,12 @@ import { AlignItems, JustifyContent } from "~/components/global.constants";
 import { BackLink, HeadingSection, LeftColumn, RightColumn, Section, SubSection } from "~/components/pages/styles";
 
 const PoliticiansDetailsPage = (): JSX.Element => {
-    const { data, selectedCategory } = useData();
+    const { selectedCategory, isDataLoaded } = useData();
     const { formatMessage } = useIntl();
     const [ politicianName, setPoliticianName ] = useState<string>("");
 
     return (
-        <ConditionalRender condition={!!Object.keys(data).length}>
+        <ConditionalRender condition={isDataLoaded}>
             <>
                 <Section>
                     <HeadingSection>

@@ -22,13 +22,13 @@ import { HeadingLevel } from "~/components/core/FormattedTitle/constants";
 import { AlignItems, JustifyContent } from "~/components/global.constants";
 
 const TopicPage = (): JSX.Element => {
-    const { data, selectedCategory } = useData();
+    const { isDataLoaded, selectedCategory } = useData();
     const { formatMessage } = useIntl();
 
     const [ topic, setTopic ] = useState<string>("");
 
     return (
-        <ConditionalRender condition={!!Object.keys(data).length}>
+        <ConditionalRender condition={isDataLoaded}>
             <>
                 <Section>
                     <HeadingSection>

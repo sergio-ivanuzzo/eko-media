@@ -6,6 +6,8 @@ export const POLITICIANS_PHOTOS_DIR = `${IMAGES_DIR}/politicians_photos`;
 export const EXPERTS_PHOTOS_DIR = `${IMAGES_DIR}/experts_photos`;
 export const MEDIA_LOGOS_DIR = `${IMAGES_DIR}/media_logos`;
 
+export const SHOULD_LOAD_ONLY_ONCE = [ "experts_profiles" ];
+
 export enum TYPES {
     TOPIC = "topics",
     EXPERT = "experts",
@@ -58,7 +60,7 @@ export enum FILTER_FLAGS {
 export const FILTER_MASK_MAP = {
     [TYPES.TOPIC]: FILTER_FLAGS.BY_MEDIA,
     [TYPES.EXPERT]: FILTER_FLAGS.BY_MEDIA,
-    [`${TYPES.EXPERT}_profiles`]: FILTER_FLAGS.BY_CATEGORY,
+    [`${TYPES.EXPERT}_profiles`]: FILTER_FLAGS.NOT_FILTERABLE,
     [TYPES.CATEGORY]: FILTER_FLAGS.ALL,
     [TYPES.WORD_CLOUD]: FILTER_FLAGS.BY_CATEGORY,
     [TYPES.SPHERE]: FILTER_FLAGS.BY_CATEGORY,

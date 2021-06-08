@@ -13,7 +13,7 @@ export default {
 
 
 export const PoliticianBar = (): JSX.Element => {
-    const { data, loadAll } = useData();
+    const { isDataLoaded, loadAll } = useData();
     const { date, setDate } = useContext<IDataProviderContext<IItem>>(DataContext);
 
     useEffect(() => {
@@ -29,7 +29,7 @@ export const PoliticianBar = (): JSX.Element => {
     }, [ date ]);
 
     return (
-        <ConditionalRender condition={!!Object.keys(data).length}>
+        <ConditionalRender condition={isDataLoaded}>
             <UIPoliticianBar />
         </ConditionalRender>
     );
