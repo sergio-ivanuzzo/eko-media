@@ -42,10 +42,10 @@ const ReferenceBar = ({ items: originItems }: IReferenceBarProps): JSX.Element =
     const [ targetSortedASC, setTargetSortedASC ] = useState(true);
     const [ countSortedASC, setCountSortedASC ] = useState(true);
 
-    const isSorted = useMemo(() => {
-        // console.log(items, originItems)
-        return isEqual(items, originItems);
-    }, [ items, targetSortedASC, countSortedASC ]);
+    const isSorted = useMemo(
+        () => !isEqual(items, originItems),
+        [ items, targetSortedASC, countSortedASC ]
+    );
 
     const resetSort = () => setItems([ ...originItems ]);
     const sortByTarget = () => {
@@ -77,7 +77,7 @@ const ReferenceBar = ({ items: originItems }: IReferenceBarProps): JSX.Element =
         <ReferenceList>
             <ReferenceHeader>
                 <MediaName>
-                    <SortButton onClick={resetSort} disabled={isSorted}>
+                    <SortButton onClick={resetSort} disabled={!isSorted}>
                         <Undo />
                     </SortButton>
                 </MediaName>
