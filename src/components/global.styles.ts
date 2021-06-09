@@ -30,6 +30,20 @@ export const NoActiveOutlineCSS = css`
   }
 `;
 
+export const DisabledCSS = css`
+  &:disabled {
+    color: ${({ theme }) => theme.palette.gray.silver};
+    
+    * {
+      color: ${({ theme }) => theme.palette.gray.silver};
+    }
+    
+    &:hover {
+      cursor: default;
+    }
+  }
+`;
+
 export const CustomFontCSS = css`
   font-family: "NeueHaasUnica", sans-serif;
 `;

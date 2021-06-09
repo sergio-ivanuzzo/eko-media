@@ -2,7 +2,8 @@ import styled from "styled-components";
 
 import ArrowLeft from "~/components/icons/ArrowLeft";
 import ArrowRight from "~/components/icons/ArrowRight";
-import { NoSelectCSS, OverflowCSS } from "~/components/global.styles";
+
+import { DisabledCSS, NoActiveOutlineCSS, NoSelectCSS, OverflowCSS } from "~/components/global.styles";
 
 export const ReferenceList = styled.div`
   overflow-y: auto;
@@ -23,6 +24,23 @@ export const ReferenceHeader = styled.div`
   white-space: nowrap;
   margin: 0 5px;
   font-size: 14px;
+`;
+
+export const SortButton = styled.button`
+  background: transparent;
+  border: none;
+  
+  > svg {
+    font-size: 20px;
+    color: ${({ theme }) => theme.palette.orange.carrot};
+  }
+  
+  ${DisabledCSS};
+  
+  &:hover {
+    ${NoActiveOutlineCSS};
+    cursor: pointer;
+  }
 `;
 
 export const ReferenceItemContainer = styled.div`
