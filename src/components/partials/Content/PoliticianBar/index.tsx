@@ -65,7 +65,7 @@ const PoliticianBar = ({ limit, selectable = false, onSelect = () => null }: IPo
                 key={index}
                 {...item}
                 onClick={() => handleSelect(name)}
-                selected={selected !== name}
+                selected={selected === name}
                 selectable={selectable}
             />
         );

@@ -5,6 +5,8 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import smoothScroll from "smoothscroll-polyfill";
 
+import "normalize.css";
+
 import App from "~/components";
 import DataProvider from "~/providers/DataProvider";
 import { GlobalStyle } from "~/components/global.styles";

@@ -1,8 +1,9 @@
 import styled from "styled-components";
 
-import { NoSelectCSS } from "~/components/global.styles";
+import { CustomFontCSS, NoSelectCSS } from "~/components/global.styles";
 
 export const CardContainer = styled.div`
+  ${CustomFontCSS};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -15,9 +16,9 @@ export const CardContainer = styled.div`
 `;
 
 export const Name = styled.div`
-  font-family: "NeueHaasUnica", sans-serif;
+  ${CustomFontCSS};
+  ${NoSelectCSS};
   text-transform: capitalize;
   font-size: 18px;
   text-align: center;
-  ${NoSelectCSS};
 `;

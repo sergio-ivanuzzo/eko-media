@@ -36,6 +36,7 @@ const useData = (): IUseDataResponse => {
         allMedia,
         setAllMedia,
     } = useContext<IDataProviderContext<IItem>>(DataContext);
+
     const { formatMessage } = useIntl();
 
     const { catchErrors } = useNotifyError();
@@ -66,7 +67,7 @@ const useData = (): IUseDataResponse => {
                         formatString({
                             initial: formatMessage({ id: "error_label.file_name" }),
                             params: [ `${name}.${FILE_EXTENSION.CSV}` ]
-                        })
+                        }),
                     )
                 };
             } else if (extension === FILE_EXTENSION.JSON) {

@@ -2,15 +2,17 @@ import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
 
 import Placeholder from "~/components/core/Placeholder";
-import { getPrimaryAlign, getSecondaryAlign } from "~/components/global.styles";
+import { CustomFontCSS, getPrimaryAlign, getSecondaryAlign } from "~/components/global.styles";
 
 const ColumnCSS = css`
+  ${CustomFontCSS};
   display: flex;
   flex-direction: column;
   padding: 5px;
 `;
 
 export const Section = styled.div`
+  ${CustomFontCSS};
   border-bottom: 1px solid ${({ theme }) => theme.palette.gray.silver};
   display: flex;
   flex-direction: column;
@@ -18,12 +20,14 @@ export const Section = styled.div`
 `;
 
 export const HeadingSection = styled.div`
+  ${CustomFontCSS};
   display: flex;
   padding: 0 10px;
   margin-bottom: 50px;
 `;
 
 export const SubSection = styled.div<IRowProps>`
+  ${CustomFontCSS};
   display: flex;
   ${({ primaryAlign }) => getPrimaryAlign(primaryAlign)};
   ${({ secondaryAlign }) => getSecondaryAlign(secondaryAlign)};
@@ -67,11 +71,11 @@ export const StyledPlaceholder = styled(Placeholder)`
 `;
 
 export const StyledLink = styled(Link)`
+  ${CustomFontCSS};
   text-decoration: none;
   display: flex;
   align-items: center;
   color: ${({ theme }) => theme.palette.orange.carrot};
-  font-family: "NeueHaasUnica", sans-serif;
   font-weight: 500;
   font-size: 18px;
   justify-content: center;

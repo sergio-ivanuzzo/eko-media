@@ -30,6 +30,10 @@ export const NoActiveOutlineCSS = css`
   }
 `;
 
+export const CustomFontCSS = css`
+  font-family: "NeueHaasUnica", sans-serif;
+`;
+
 const PrimaryStartCSS = css`
   justify-content: flex-start;
 `;

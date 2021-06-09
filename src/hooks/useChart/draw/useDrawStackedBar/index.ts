@@ -3,6 +3,9 @@ import * as d3 from "d3";
 
 import useChartColor from "~/hooks/useChart/color/useChartColor";
 
+import { ChartTooltipCSS } from "~/components/core/Chart/styles";
+import brighten from "~/helpers/color/brighten";
+
 export const BAR_HEIGHT = 32;
 export const MARGIN_LEFT = 230;
 export const MARGIN_TOP = 50;
@@ -60,7 +63,8 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
             // x-axis will contains no text on scale
             .tickFormat(() => "");
 
-        const gX = svg.append("g")
+        // gX
+        svg.append("g")
             .attr("class", "axis axis-x")
             .call(xAxis);
 
@@ -71,7 +75,8 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
             .tickSize(0)
             .tickPadding(20);
 
-        const gY = svg.append("g")
+        // gY
+        svg.append("g")
             .attr("class", "axis axis-y")
             .call(yAxis);
 
@@ -170,28 +175,26 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
             })
 
         // draw tooltips
-        const tooltip = svg.append("g")
-            .attr("class", "tooltip")
-            .style("display", "none");
-
-        tooltip.append("rect").attr("rx", 2);
-
-        tooltip.append("text").attr("text-anchor", "middle");
+        const tooltip = d3.select("#root").append("div").attr("class", "tooltip");
 
         group.selectAll("rect,text")
             .on("mouseover", () => tooltip.style("display", null))
-            .on("mouseout", () => tooltip.style("display", "none"))
+            .on("mouseout", () => tooltip.style("display", "none").html(""))
             .on("mousemove", (event: MouseEvent, d: any) => {
                 const currentNode = d3.select(event.currentTarget as any).node();
                 const parentClass = d3.select(currentNode.parentNode).attr("class");
                 const groupIndex = Number(parentClass.replace( /^\D+/g, ""));
 
-                const [ x, y ] = d3.pointer(event);
                 const text = d.data.values[groupIndex];
 
-                tooltip.attr("transform", `translate(${x - 50}, ${y + 30})`);
-                tooltip.select("rect").attr("width", `${text}`.length * 12 + 15);
-                tooltip.select("text").attr("transform", "translate(20, 20)").text(text);
+                // apply main tooltip css
+                (tooltip.node() as HTMLElement).style.cssText = ChartTooltipCSS.toString();
+
+                tooltip.html(`${xData[groupIndex]} ${text}`)
+                    .style("background", brighten(d3.select(currentNode.parentNode).attr("fill"), 25))
+                    .style("left", `${event.pageX}px`)
+                    .style("top", `${event.pageY + 10}px`).append("span");
+
             });
 
         // add zoom for chart (horizontal scale)

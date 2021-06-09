@@ -18,13 +18,12 @@ const ExpertsDetailsPage = (): JSX.Element => {
     const { formatMessage } = useIntl();
 
     const dataset = getDataset(TYPE, selectedCategory) || [];
-    const profiles = getDataset(TYPE, "profiles", false) || [];
 
     const validMediaKeys = Object.keys(dataset[0] || {})
         .filter((key) => {
             return !NON_MEDIA_KEYS.includes(key) && allMedia.some(
                 (mediaName) => key.includes(mediaName)
-            )
+            );
         });
 
     const data: IExpertBarItem[] = dataset.map(({ expert_id, name, image_name, ...rest }) => {
@@ -32,7 +31,7 @@ const ExpertsDetailsPage = (): JSX.Element => {
             expertId: expert_id,
             name: name as string,
             commentsAmount: validMediaKeys.reduce((sum, key) => sum + Number(rest[key]) || 0, 0),
-            avatarUrl: `${EXPERTS_PHOTOS_DIR}/${image_name}.png`
+            avatarUrl: `${EXPERTS_PHOTOS_DIR}/${image_name}.png`,
         }
     }).sort((current, next) => next.commentsAmount - current.commentsAmount);
 

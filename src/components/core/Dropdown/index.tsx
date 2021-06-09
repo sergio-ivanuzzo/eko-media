@@ -44,6 +44,7 @@ const Dropdown = React.forwardRef((props: IDropdownProps<HTMLDivElement>, extern
 
     const [ isOpen, setOpen ] = useState(false);
     const toggle = () => !blockOpening && setOpen(!isOpen);
+    const open = () => !blockOpening && setOpen(true);
     const close = () => !blockOpening && setOpen(false);
     const handleClose = (): void => {
         close();
@@ -133,6 +134,8 @@ const Dropdown = React.forwardRef((props: IDropdownProps<HTMLDivElement>, extern
         <DropdownContainer ref={dropdownRef} className={className} tabIndex={tabIndex}>
             <TriggerContainer>
                 {renderTrigger({
+                    open,
+                    close,
                     toggle,
                     isOpen,
                 })}

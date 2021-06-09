@@ -9,15 +9,19 @@ import PoliticianBar from "~/components/partials/Content/PoliticianBar";
 import formatString from "~/helpers/formatString";
 import useData from "~/hooks/useData";
 
-import { CATEGORIES_MAP } from "~/common/constants";
 import { HeadingLevel } from "~/components/core/FormattedTitle/constants";
 import { AlignItems, JustifyContent } from "~/components/global.constants";
 import { BackLink, HeadingSection, LeftColumn, RightColumn, Section, SubSection } from "~/components/pages/styles";
+import { CATEGORIES_MAP, TYPES } from "~/common/constants";
+
+const TYPE = TYPES.POLITICIAN;
 
 const PoliticiansDetailsPage = (): JSX.Element => {
-    const { selectedCategory, isDataLoaded } = useData();
+    const { selectedCategory, isDataLoaded, getDataset  } = useData();
     const { formatMessage } = useIntl();
     const [ politicianName, setPoliticianName ] = useState<string>("");
+
+    const dataset = getDataset(TYPE, selectedCategory) || [];
 
     return (
         <ConditionalRender condition={isDataLoaded}>
@@ -39,7 +43,7 @@ const PoliticiansDetailsPage = (): JSX.Element => {
                                     placeholder={formatMessage({ id: "orange_label" })}
                                     params={[ formatString({
                                         initial: formatMessage({ id: "topX" }),
-                                        params: [ "40" ]
+                                        params: [ `${dataset.length}` ]
                                     }) ]} />
                             </div>
                             <PoliticianBar onSelect={setPoliticianName} selectable />

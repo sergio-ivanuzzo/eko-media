@@ -17,9 +17,11 @@ export const Tooltip = (props: ITooltipProps): JSX.Element => {
 Tooltip.argTypes = {
     text: { control: { type: "text" } },
     color: { control: { type: "color" } },
+    backgroundColor: { control: { type: "color" } },
 }
 
 Tooltip.args = {
     text: "Tooltip message here!",
-    color: "#ccc"
+    color: "#ccc",
+    backgroundColor: "white",
 }

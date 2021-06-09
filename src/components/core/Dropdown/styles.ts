@@ -1,10 +1,11 @@
 import styled from "styled-components";
 
 import { SCROLL_CLASS } from "~/hooks/useScrollToChild";
-import { NoActiveOutlineCSS, NoSelectCSS } from "~/components/global.styles";
+import { CustomFontCSS, NoActiveOutlineCSS, NoSelectCSS } from "~/components/global.styles";
 
 export const DropdownContainer = styled.div`
   ${NoActiveOutlineCSS};
+  ${CustomFontCSS};
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -18,6 +19,7 @@ export const DropdownContainer = styled.div`
 export const TriggerContainer = styled.div`
   ${NoSelectCSS};
   ${NoActiveOutlineCSS};
+  ${CustomFontCSS};
 `;
 
 export const FrameContainer = styled.div`
@@ -26,6 +28,8 @@ export const FrameContainer = styled.div`
 `;
 
 export const Frame = styled.div`
+  ${CustomFontCSS};
+  ${NoSelectCSS};
   position: absolute;
   display: flex;
   padding: 0 1px;
@@ -36,7 +40,6 @@ export const Frame = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
   border-radius: 0 0 10px 10px;
-  ${NoSelectCSS};
 `;
 
 export const DropdownItem = styled.div`

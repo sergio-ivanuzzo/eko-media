@@ -13,11 +13,16 @@ export const ReferenceList = styled.div`
   ${NoSelectCSS};
 `;
 
+export const ReferenceHeader = styled.div`
+  display: flex;
+  border: 1px solid ${({ theme }) => theme.palette.gray.silver};
+`;
+
 export const ReferenceItemContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0px 2em;
+  padding: 0 2em;
   height: 80px;
   border-bottom: 1px solid ${({ theme }) => theme.palette.gray.silver};
   white-space: nowrap;

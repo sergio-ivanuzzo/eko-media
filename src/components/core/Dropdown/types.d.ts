@@ -1,4 +1,6 @@
 declare interface IDropdownTriggerProps {
+    open: () => void;
+    close: () => void;
     toggle: () => void;
     isOpen: boolean;
 }

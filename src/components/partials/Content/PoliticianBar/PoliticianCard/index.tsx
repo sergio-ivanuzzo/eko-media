@@ -24,6 +24,7 @@ const PoliticianCard = ({ name, mentions, avatarUrl, ...props }: IPoliticianCard
                 positive={mentions[Mention.POSITIVE]}
                 neutral={mentions[Mention.NEUTRAL]}
                 negative={mentions[Mention.NEGATIVE]}
+                hoverable={!selectable || selected}
             />
         );
     };

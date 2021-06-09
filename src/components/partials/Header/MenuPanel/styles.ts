@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { NoActiveOutlineCSS, NoSelectCSS } from "~/components/global.styles";
+import { CustomFontCSS, NoActiveOutlineCSS, NoSelectCSS } from "~/components/global.styles";
 
 export const MenuContainer = styled.div`
     display: flex;
@@ -11,7 +11,7 @@ export const MenuContainer = styled.div`
     
     > a {
       ${NoActiveOutlineCSS};
-      font-family: "NeueHaasUnica", sans-serif;
+      ${CustomFontCSS};
       margin: 0 10px;
       text-decoration: none;
       font-size: 14px;
