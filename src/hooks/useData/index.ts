@@ -89,6 +89,7 @@ const useData = (): IUseDataResponse => {
         let allMedia: string[] = [];
 
         if (categoriesData) {
+            console.log(categoriesData);
             categories = categoriesData.map((item) => item.category.toString());
             allMedia = Object.keys(categoriesData[0])
                 .filter((key: string) => !CATEGORY_KEYS.includes(key));

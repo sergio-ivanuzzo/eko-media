@@ -15,7 +15,14 @@ export const ReferenceList = styled.div`
 
 export const ReferenceHeader = styled.div`
   display: flex;
-  border: 1px solid ${({ theme }) => theme.palette.gray.silver};
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2em;
+  height: 80px;
+  border-bottom: 1px solid ${({ theme }) => theme.palette.gray.silver};
+  white-space: nowrap;
+  margin: 0 5px;
+  font-size: 14px;
 `;
 
 export const ReferenceItemContainer = styled.div`

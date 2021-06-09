@@ -1,9 +1,12 @@
 import { useCallback } from "react";
 import * as d3 from "d3";
 
+import brighten from "~/helpers/color/brighten";
 import useChartColor from "~/hooks/useChart/color/useChartColor";
 import useData from "~/hooks/useData";
 import useNotifyError from "~/hooks/useNotifyError";
+
+import { ChartTooltipCSS } from "~/components/core/Chart/styles";
 
 export const MAX_BUBBLE_RADIUS = 150;
 
@@ -192,25 +195,29 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
 
         hideText();
 
-        // tooltips
-        const tooltip = svg.append("g")
-            .attr("class", "tooltip")
-            .style("display", "none");
-
-        tooltip.append("rect").attr("rx", 2);
-
-        tooltip.append("text").attr("text-anchor", "middle");
+        // draw tooltip
+        const tooltip = d3.select("#root").append("div").attr("class", "tooltip");
 
         node.selectAll("circle,text")
             .on("mouseover", () => tooltip.style("display", null))
-            .on("mouseout", () => tooltip.style("display", "none"))
+            .on("mouseout", () => tooltip.style("display", "none").html(""))
             .on("mousemove", (event: MouseEvent, d: any) => {
-                const [ x, y ] = d3.pointer(event);
+                const currentNode = d3.select(event.currentTarget as any).node();
+                // const [ x, y ] = d3.pointer(event);
                 const text = d.wordCount;
 
-                tooltip.attr("transform", `translate(${x - 30}, ${y + 30})`);
-                tooltip.select("rect").attr("width", `${text}`.length * 12 + 15);
-                tooltip.select("text").attr("transform", "translate(30, 20)").text(text);
+                const color = getColor({
+                    index: categoriesCount === 1 ? 0 : getColorIndexByCategory(d.category),
+                    colors
+                });
+
+                // apply main tooltip css
+                (tooltip.node() as HTMLElement).style.cssText = ChartTooltipCSS.toString();
+
+                tooltip.html(`${text}`)
+                    .style("background", brighten(color, 25))
+                    .style("left", `${event.pageX}px`)
+                    .style("top", `${event.pageY + 10}px`).append("span");
             });
 
     }, [ data ]);
