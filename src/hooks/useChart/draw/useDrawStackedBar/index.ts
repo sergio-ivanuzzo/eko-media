@@ -175,7 +175,10 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
             })
 
         // draw tooltips
-        const tooltip = d3.select("#root").append("div").attr("class", "tooltip");
+        const tooltipSelector = "#root > .chart-tooltip";
+        const tooltip:  d3.Selection<HTMLDivElement, unknown, HTMLElement, any> = d3.select(tooltipSelector).node()
+            ? d3.select(tooltipSelector)
+            : d3.select("#root").append("div").attr("class", "chart-tooltip");
 
         group.selectAll("rect,text")
             .on("mouseover", () => tooltip.style("display", null))
@@ -203,7 +206,7 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
             .translateExtent([ [ 0, 0 ], [ width, height ] ])
             .extent([ [ 0, 0 ], [ width, height ] ])
             // allow zoom if condition true
-            .filter((event: WheelEvent) => event.shiftKey && xData.length !== 1)
+            .filter((event: WheelEvent) => event.shiftKey && xData.length !== 1 && event.offsetX > MARGIN_LEFT)
             .on("zoom", (event: d3.D3ZoomEvent<any, any>) => {
 
                 const transform = event.transform;

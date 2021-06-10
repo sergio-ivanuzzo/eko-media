@@ -130,8 +130,8 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
             .force("collision", d3.forceCollide().radius((d: any) => d.r * RADIUS_MULTIPLIER + INDENT_BETWEEN_BUBBLES));
 
         // disable animation
-        simulation.stop();
-        simulation.tick(nodes.length * 2);
+        // simulation.stop();
+        simulation.tick(nodes.length);
 
         const node = svg.selectAll("g.bubble")
             .data(nodes)
@@ -193,17 +193,29 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
             .attr("x", (d: any) => d.x)
             .attr("y", (d: any) => d.y);
 
+        simulation.on("tick", () => {
+            node.selectAll("circle")
+                .attr("cx", (d: any) => d.x)
+                .attr("cy", (d: any) => d.y)
+                .attr("r", (d: any) => d.r * RADIUS_MULTIPLIER);
+
+            node.selectAll("text")
+                .attr("x", (d: any) => d.x)
+                .attr("y", (d: any) => d.y);
+        });
+
         hideText();
 
-        // draw tooltip
-        const tooltip = d3.select("#root").append("div").attr("class", "tooltip");
+        // draw tooltips
+        const tooltipSelector = "#root > .chart-tooltip";
+        const tooltip:  d3.Selection<HTMLDivElement, unknown, HTMLElement, any> = d3.select(tooltipSelector).node()
+            ? d3.select(tooltipSelector)
+            : d3.select("#root").append("div").attr("class", "chart-tooltip");
 
         node.selectAll("circle,text")
             .on("mouseover", () => tooltip.style("display", null))
             .on("mouseout", () => tooltip.style("display", "none").html(""))
             .on("mousemove", (event: MouseEvent, d: any) => {
-                const currentNode = d3.select(event.currentTarget as any).node();
-                // const [ x, y ] = d3.pointer(event);
                 const text = d.wordCount;
 
                 const color = getColor({
