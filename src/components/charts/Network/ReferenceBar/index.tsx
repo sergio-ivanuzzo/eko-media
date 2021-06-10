@@ -19,6 +19,9 @@ import {
     StyledArrowRight,
 } from "./styles";
 
+const DEFAULT_TARGET_SORTED_ASC = true;
+const DEFAULT_COUNT_SORTED_ASC = true;
+
 const ReferenceItem = ({ from, to, direction, referenceCount }: IReferenceItemProps): JSX.Element => {
 
     return (
@@ -39,15 +42,20 @@ const ReferenceItem = ({ from, to, direction, referenceCount }: IReferenceItemPr
 const ReferenceBar = ({ items: originItems }: IReferenceBarProps): JSX.Element => {
 
     const [ items, setItems ] = useState(originItems);
-    const [ targetSortedASC, setTargetSortedASC ] = useState(true);
-    const [ countSortedASC, setCountSortedASC ] = useState(true);
+    const [ targetSortedASC, setTargetSortedASC ] = useState(DEFAULT_TARGET_SORTED_ASC);
+    const [ countSortedASC, setCountSortedASC ] = useState(DEFAULT_COUNT_SORTED_ASC);
 
     const isSorted = useMemo(
         () => !isEqual(items, originItems),
         [ items, targetSortedASC, countSortedASC ]
     );
 
-    const resetSort = () => setItems([ ...originItems ]);
+    const resetSort = () => {
+        setItems([ ...originItems ]);
+        // return another sort controls into default state
+        setTargetSortedASC(DEFAULT_TARGET_SORTED_ASC);
+        setCountSortedASC(DEFAULT_COUNT_SORTED_ASC);
+    };
     const sortByTarget = () => {
         setTargetSortedASC(!targetSortedASC);
         setItems([ ...items ].sort((a, b) => {
@@ -81,7 +89,7 @@ const ReferenceBar = ({ items: originItems }: IReferenceBarProps): JSX.Element =
                         <Undo />
                     </SortButton>
                 </MediaName>
-                <ArrowContainer></ArrowContainer>
+                <ArrowContainer />
                 <MediaName>
                     <SortButton onClick={sortByTarget}>
                         <ConditionalRender condition={!targetSortedASC}>

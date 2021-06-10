@@ -3,8 +3,10 @@ import styled, { css } from "styled-components";
 import Dropdown from "~/components/core/Dropdown";
 import { DropdownItem, Frame } from "~/components/core/Dropdown/styles";
 
+const BASE_FONT_SIZE = 14;
+
 const MenuItemCss = css`
-  font-size: 14px;
+  font-size: ${BASE_FONT_SIZE}px;
   color: ${({ theme }) => theme.palette.black.base};
   background: ${({ theme }) => theme.palette.white.base};
 `;
@@ -30,11 +32,36 @@ export const TriggerContainer = styled.div`
   ${MenuItemCss};
   padding: 8px;
   display: flex;
-  flex-wrap: wrap;
   border-radius: 10px;
   border: 1px solid ${({ theme }) => theme.palette.gray.border};
   height: 38px;
-  overflow: hidden;
+  justify-content: space-between;
+  
+  > div:first-child {
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+    // to detect offsetTop (see Select component)
+    position: relative;
+  }
+  
+  > div:last-child {
+    display: flex;
+    align-items: center;
+    width: auto;
+  }
+`;
+
+export const Badge = styled.div`
+  border-radius: 50%;
+  background: ${({ theme }) => theme.palette.cyan.azure};
+  color: ${({ theme }) => theme.palette.white.base};
+  padding: 8px;
+  width: ${BASE_FONT_SIZE}px;
+  height: ${BASE_FONT_SIZE}px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const TriggerItem = styled.div<ITriggerItemProps>`

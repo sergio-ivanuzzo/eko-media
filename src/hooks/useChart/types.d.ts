@@ -3,6 +3,7 @@ declare interface IChartDrawProps {
     width: number;
     height: number;
     colors: string[];
+    tooltip: import("d3").Selection;
 }
 
 declare type TUseChartProps = IChartProps;

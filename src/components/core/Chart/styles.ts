@@ -14,6 +14,7 @@ export const ChartTooltipCSS = css`
   white-space: pre-line;
   text-align: center;
   filter: drop-shadow( 5px 5px 5px rgba(0, 0, 0, .7));
+  z-index: 10;
 `;
 
 export const ChartContainer = styled.div<IChartContainerProps>`

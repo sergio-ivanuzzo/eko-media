@@ -24,7 +24,7 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
 
     const { getColor } = useChartColor();
 
-    const draw = useCallback(({ chartRef, width, height, colors }: IChartDrawProps): void => {
+    const draw = useCallback(({ chartRef, width, height, colors, tooltip }: IChartDrawProps): void => {
 
         let series = d3.stack()
             .keys(xData)
@@ -174,15 +174,10 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
                 offset += (textBBox?.width || 0) + LEGEND_WIDTH + LEGEND_MARGIN * 2;
             })
 
-        // draw tooltips
-        const tooltipSelector = "#root > .chart-tooltip";
-        const tooltip:  d3.Selection<HTMLDivElement, unknown, HTMLElement, any> = d3.select(tooltipSelector).node()
-            ? d3.select(tooltipSelector)
-            : d3.select("#root").append("div").attr("class", "chart-tooltip");
-
+        // draw tooltip
         group.selectAll("rect,text")
             .on("mouseover", () => tooltip.style("display", null))
-            .on("mouseout", () => tooltip.style("display", "none").html(""))
+            .on("mouseout", () => tooltip.style("display", "none"))
             .on("mousemove", (event: MouseEvent, d: any) => {
                 const currentNode = d3.select(event.currentTarget as any).node();
                 const parentClass = d3.select(currentNode.parentNode).attr("class");

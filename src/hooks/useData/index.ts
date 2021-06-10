@@ -105,6 +105,9 @@ const useData = (): IUseDataResponse => {
         const { month, year } = getMonthAndYear();
         const dirPath = `${ROOT_DIR}/${year}/${month}`;
 
+        // reset
+        setData({});
+
         const [ categoryItem, parsedCategories ] = await loadCategoriesAndMedia();
 
         // for now there only 2 json files (with only "all" category)

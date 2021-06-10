@@ -46,7 +46,7 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
         (topCategory) => topCategory.toLowerCase() === category.toLowerCase()
     );
 
-    const draw = useCallback(({ chartRef, width: currentWidth, height, colors }: IChartDrawProps): void => {
+    const draw = useCallback(({ chartRef, width: currentWidth, height, colors, tooltip }: IChartDrawProps): void => {
 
         if (!data.length) {
             return;
@@ -206,15 +206,20 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
 
         hideText();
 
-        // draw tooltips
-        const tooltipSelector = "#root > .chart-tooltip";
-        const tooltip:  d3.Selection<HTMLDivElement, unknown, HTMLElement, any> = d3.select(tooltipSelector).node()
-            ? d3.select(tooltipSelector)
-            : d3.select("#root").append("div").attr("class", "chart-tooltip");
+        node.selectAll("circle,text")
+            .on("mouseover.hover", (event: MouseEvent, d: any) => {
+                const bubbleContainer = (event.target as HTMLElement).parentElement;
+                d3.select(bubbleContainer).select("circle").classed("animate", true);
+            })
+            .on("animationend.hover", (event: MouseEvent, d: any) => {
+                const bubbleContainer = (event.target as HTMLElement).parentElement;
+                d3.select(bubbleContainer).select("circle").classed("animate", false);
+            })
 
+        // draw tooltip
         node.selectAll("circle,text")
             .on("mouseover", () => tooltip.style("display", null))
-            .on("mouseout", () => tooltip.style("display", "none").html(""))
+            .on("mouseout", () => tooltip.style("display", "none"))
             .on("mousemove", (event: MouseEvent, d: any) => {
                 const text = d.wordCount;
 

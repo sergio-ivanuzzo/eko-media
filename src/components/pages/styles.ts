@@ -17,6 +17,27 @@ export const Section = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 10px;
+  opacity: 0;
+  
+  @keyframes fadeOut {
+      10% {
+        opacity: 0;
+      }
+        
+      30% {
+        opacity: 0.3;
+      }
+      
+      50% {
+        opacity: 0.5;
+      }
+      
+      100% {
+        opacity: 1;
+      }
+    }
+    
+    animation: fadeOut 1s cubic-bezier(.36,.07,.19,.97) both;
 `;
 
 export const HeadingSection = styled.div`

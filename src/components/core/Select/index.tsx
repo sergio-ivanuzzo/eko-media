@@ -5,10 +5,11 @@ import Close from "~/components/icons/Close";
 import ConditionalRender from "~/components/core/ConditionalRender";
 import Placeholder from "~/components/core/Placeholder";
 import useDetectArrayResize from "~/hooks/useDetectArrayResize";
+import useElementSize from "~/hooks/useElementSize";
 
 import { JustifyContent } from "~/components/global.constants";
 import { MOUSE_BUTTON } from "~/common/constants";
-import { CloseButton, MenuItem, StyledDropdown, TriggerContainer, TriggerItem } from "./styles";
+import { Badge, CloseButton, MenuItem, StyledDropdown, TriggerContainer, TriggerItem } from "./styles";
 
 const DefaultItem = ({ option, isActive = false, ...props }: ISelectItemProps): JSX.Element => {
     const {
@@ -33,33 +34,64 @@ const DefaultTrigger = ({ selected: originSelected, ...props }: ISelectTriggerPr
     // show only itemAll (in case if all selected) only for multiple mode
     // for single mode always show itemAll and rest of items
     const selected = allMultipleSelected ? originSelected.slice(0, 1) : originSelected;
+    const { ref: containerRef, width } = useElementSize();
+
+    // calculate badge value (wrapped items)
+    const [ wrappedAmount, setWrappedAmount ] = useState(0);
+    useEffect(() => {
+        if (!selected.length || allMultipleSelected) {
+            setWrappedAmount(0);
+        }
+        const element: HTMLElement = containerRef.current;
+        if (element) {
+            const children = Array.from(element.children);
+            const firstItemTopOffset = (children[0] as HTMLElement).getBoundingClientRect().top;
+            const firstWrapped = children.findIndex(
+                (child) => {
+                    return (child as HTMLElement).getBoundingClientRect().top > firstItemTopOffset;
+                }
+            );
+            if (firstWrapped >= 0) {
+                setWrappedAmount(children.length - firstWrapped);
+            } else {
+                setWrappedAmount(0);
+            }
+        }
+    }, [ containerRef, selected, allMultipleSelected, width ]);
 
     return (
         <TriggerContainer {...props} onClick={() => toggle()}>
             <ConditionalRender condition={!!selected.length}>
                 <>
-                    {selected.map((item: ISelectOption) => (
-                        <TriggerItem key={item.key}
-                                     multiple={multiple}
-                                     onMouseDown={(e: React.MouseEvent) => {
-                                         if (e.button === MOUSE_BUTTON.MIDDLE) {
-                                             handleUnselect({ option: item });
-                                         }
-                                     }}
-                        >
-                            {`${item.value}`}
-                            <ConditionalRender condition={multiple}>
-                                <CloseButton tabIndex={-1} onClick={
-                                    (e) => {
-                                        e.stopPropagation();
-                                        handleUnselect({ option: item });
-                                    }}
-                                >
-                                    <Close />
-                                </CloseButton>
-                            </ConditionalRender>
-                        </TriggerItem>
-                    ))}
+                    <div ref={containerRef}>
+                        {selected.map((item: ISelectOption) => (
+                            <TriggerItem key={item.key}
+                                         multiple={multiple}
+                                         onMouseDown={(e: React.MouseEvent) => {
+                                             if (e.button === MOUSE_BUTTON.MIDDLE) {
+                                                 handleUnselect({ option: item });
+                                             }
+                                         }}
+                            >
+                                {`${item.value}`}
+                                <ConditionalRender condition={multiple}>
+                                    <CloseButton tabIndex={-1} onClick={
+                                        (e) => {
+                                            e.stopPropagation();
+                                            handleUnselect({ option: item });
+                                        }}
+                                    >
+                                        <Close />
+                                    </CloseButton>
+                                </ConditionalRender>
+                            </TriggerItem>
+                        ))}
+                    </div>
+                    <div>
+                        <ConditionalRender condition={!!wrappedAmount && multiple}>
+                            <Badge>{wrappedAmount}</Badge>
+                        </ConditionalRender>
+                    </div>
                 </>
                 <Placeholder primaryAlign={JustifyContent.START}>
                     <FormattedMessage id="placeholder.empty_select" />
@@ -230,9 +262,11 @@ const Select = ({ renderItem = DefaultItem, renderTrigger = DefaultTrigger, ...p
 
     useEffect(() => {
         if (originOptions.length) {
-            setSelected([ itemAll ]);
+            allowSelectAll && setSelected([ itemAll ]);
+        } else {
+            setSelected([]);
         }
-    }, [ originOptions ]);
+    }, [ originOptions, allowSelectAll ]);
 
     return (
         <StyledDropdown
