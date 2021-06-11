@@ -1,9 +1,9 @@
+import { Selection, select } from "d3";
 import { useEffect, useRef } from "react";
 
 import useData from "~/hooks/useData";
 import useElementSize from "~/hooks/useElementSize";
 
-import { Selection, select } from "d3";
 
 const useChart = (props: TUseChartProps): IUseChartResponse => {
     const { draw, width: staticWidth = 0, height: staticHeight = 0, colors = [] } = props;
@@ -14,7 +14,7 @@ const useChart = (props: TUseChartProps): IUseChartResponse => {
     const tooltip:  Selection<HTMLDivElement, unknown, HTMLElement, any> = select(tooltipSelector).node()
         ? select(tooltipSelector)
         : select("#root").append("div").attr("class", "chart-tooltip");
-    
+
     useEffect(() => {
         tooltip.html("").style("display", "none");
     }, [ selectedCategory ]);

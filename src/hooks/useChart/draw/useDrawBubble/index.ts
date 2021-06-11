@@ -17,6 +17,7 @@ const MIN_ZOOM = 1;
 const MAX_ZOOM = 20;
 
 const RADIUS_MULTIPLIER = 1.5;
+const HOVER_MULTIPLIER = 1.2;
 const INDENT_BETWEEN_BUBBLES = 8;
 
 const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (props: IChartDrawProps) => void } => {
@@ -209,12 +210,22 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
         node.selectAll("circle,text")
             .on("mouseover.hover", (event: MouseEvent, d: any) => {
                 const bubbleContainer = (event.target as HTMLElement).parentElement;
-                d3.select(bubbleContainer).select("circle").classed("animate", true);
+                const currentBubble = d3.select(bubbleContainer).select("circle");
+                currentBubble
+                    .classed("animate", true)
+                    .attr("r", (d: any) => d.r * RADIUS_MULTIPLIER * HOVER_MULTIPLIER);
             })
-            .on("animationend.hover", (event: MouseEvent, d: any) => {
+            .on("mouseout.hover", (event: MouseEvent, d: any) => {
                 const bubbleContainer = (event.target as HTMLElement).parentElement;
-                d3.select(bubbleContainer).select("circle").classed("animate", false);
+                const currentBubble = d3.select(bubbleContainer).select("circle");
+                currentBubble
+                    .classed("animate", false)
+                    .attr("r", (d: any) => d.r * RADIUS_MULTIPLIER);
             })
+            // .on("animationend.hover", (event: MouseEvent, d: any) => {
+            //     const bubbleContainer = (event.target as HTMLElement).parentElement;
+            //     d3.select(bubbleContainer).select("circle").classed("animate", false);
+            // })
 
         // draw tooltip
         node.selectAll("circle,text")
