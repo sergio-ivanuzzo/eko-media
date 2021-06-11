@@ -131,8 +131,8 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
             .force("collision", d3.forceCollide().radius((d: any) => d.r * RADIUS_MULTIPLIER + INDENT_BETWEEN_BUBBLES));
 
         // disable animation
-        // simulation.stop();
-        simulation.tick(nodes.length);
+        simulation.stop();
+        simulation.tick(nodes.length * 2);
 
         const node = svg.selectAll("g.bubble")
             .data(nodes)
@@ -208,24 +208,24 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
         hideText();
 
         node.selectAll("circle,text")
-            .on("mouseover.hover", (event: MouseEvent, d: any) => {
+            .on("mouseover.hover", (event: MouseEvent) => {
                 const bubbleContainer = (event.target as HTMLElement).parentElement;
                 const currentBubble = d3.select(bubbleContainer).select("circle");
                 currentBubble
                     .classed("animate", true)
+                    .transition().duration(100)
                     .attr("r", (d: any) => d.r * RADIUS_MULTIPLIER * HOVER_MULTIPLIER);
             })
-            .on("mouseout.hover", (event: MouseEvent, d: any) => {
-                const bubbleContainer = (event.target as HTMLElement).parentElement;
-                const currentBubble = d3.select(bubbleContainer).select("circle");
-                currentBubble
-                    .classed("animate", false)
-                    .attr("r", (d: any) => d.r * RADIUS_MULTIPLIER);
+            .on("mouseout.hover", (event: MouseEvent) => {
+                setTimeout(() => {
+                    const bubbleContainer = (event.target as HTMLElement).parentElement;
+                    const currentBubble = d3.select(bubbleContainer).select("circle");
+                    currentBubble
+                        .classed("animate", false)
+                        .transition().duration(500)
+                        .attr("r", (d: any) => d.r * RADIUS_MULTIPLIER);
+                }, 250);
             })
-            // .on("animationend.hover", (event: MouseEvent, d: any) => {
-            //     const bubbleContainer = (event.target as HTMLElement).parentElement;
-            //     d3.select(bubbleContainer).select("circle").classed("animate", false);
-            // })
 
         // draw tooltip
         node.selectAll("circle,text")

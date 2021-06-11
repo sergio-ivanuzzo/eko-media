@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 
+import { FadeOutCSS } from "~/components/global.animations";
 import { CustomFontCSS, NoSelectCSS } from "~/components/global.styles";
 
 const DEFAULT_CHART_HEIGHT = 800;
@@ -18,8 +19,10 @@ export const ChartTooltipCSS = css`
 `;
 
 export const ChartContainer = styled.div<IChartContainerProps>`
+  ${FadeOutCSS};
   width: 100%;
   height: ${({ height }) => height ? `${height}px;` : `${DEFAULT_CHART_HEIGHT}px`};
+  animation: fadeOut 1.5s ease-out both;
 `;
 
 export const SVG = styled.svg`

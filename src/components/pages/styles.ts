@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
 
 import Placeholder from "~/components/core/Placeholder";
+
+import { FadeOutCSS } from "~/components/global.animations";
 import { CustomFontCSS, getPrimaryAlign, getSecondaryAlign } from "~/components/global.styles";
 
 const ColumnCSS = css`
@@ -13,31 +15,14 @@ const ColumnCSS = css`
 
 export const Section = styled.div`
   ${CustomFontCSS};
+  ${FadeOutCSS};
   border-bottom: 1px solid ${({ theme }) => theme.palette.gray.silver};
   display: flex;
   flex-direction: column;
   margin-top: 10px;
   opacity: 0;
   
-  @keyframes fadeOut {
-      10% {
-        opacity: 0;
-      }
-        
-      30% {
-        opacity: 0.3;
-      }
-      
-      50% {
-        opacity: 0.5;
-      }
-      
-      100% {
-        opacity: 1;
-      }
-    }
-    
-    animation: fadeOut 1s cubic-bezier(.36,.07,.19,.97) both;
+  animation: fadeOut 1.5s ease-out both;
 `;
 
 export const HeadingSection = styled.div`
