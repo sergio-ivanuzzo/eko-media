@@ -17,7 +17,7 @@ const MIN_ZOOM = 1;
 const MAX_ZOOM = 20;
 
 const RADIUS_MULTIPLIER = 1.5;
-const HOVER_MULTIPLIER = 1.2;
+const HOVER_MULTIPLIER = 1.15;
 const INDENT_BETWEEN_BUBBLES = 8;
 
 const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (props: IChartDrawProps) => void } => {
@@ -207,25 +207,43 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
 
         hideText();
 
-        node.selectAll("circle,text")
-            .on("mouseover.hover", (event: MouseEvent) => {
-                const bubbleContainer = (event.target as HTMLElement).parentElement;
-                const currentBubble = d3.select(bubbleContainer).select("circle");
-                currentBubble
-                    .classed("animate", true)
-                    .transition().duration(100)
+        const startAnimationDuration = 250;
+        const endAnimationDuration = 500;
+
+        let selectedBubble: SVGSVGElement | null = null;
+
+        svg.on("mousemove", (event: MouseEvent) => {
+            const { target } = event;
+            const tagName = (target as SVGSVGElement).tagName;
+
+            if (tagName.toLowerCase() === "circle") {
+                selectedBubble = target as SVGSVGElement;
+            } else if (tagName.toLowerCase() === "text") {
+                selectedBubble = d3
+                    .select((target as SVGSVGElement).parentElement)
+                    .select("circle").node() as SVGSVGElement;
+            } else {
+                // we select all .transition to guarantee transition will be removed
+                // when fast switch from circle to circle
+                d3.selectAll(".transition").classed("animate", true);
+                selectedBubble = null;
+            }
+
+            if (selectedBubble) {
+                d3.select(selectedBubble)
+                    .classed("transition", true)
+                    .transition().duration(startAnimationDuration)
                     .attr("r", (d: any) => d.r * RADIUS_MULTIPLIER * HOVER_MULTIPLIER);
-            })
-            .on("mouseout.hover", (event: MouseEvent) => {
-                setTimeout(() => {
-                    const bubbleContainer = (event.target as HTMLElement).parentElement;
-                    const currentBubble = d3.select(bubbleContainer).select("circle");
-                    currentBubble
-                        .classed("animate", false)
-                        .transition().duration(500)
-                        .attr("r", (d: any) => d.r * RADIUS_MULTIPLIER);
-                }, 250);
-            })
+            }
+        });
+
+        node.on("animationend.hover", () => {
+            d3.selectAll(".animate")
+                .classed("animate", false)
+                .classed("transition", false)
+                .transition().duration(endAnimationDuration)
+                .attr("r", (d: any) => d.r * RADIUS_MULTIPLIER);
+        })
 
         // draw tooltip
         node.selectAll("circle,text")

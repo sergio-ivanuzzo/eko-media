@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 
 import Placeholder from "~/components/core/Placeholder";
 
-import { FadeOutCSS } from "~/components/global.animations";
+import { FadeOutAnimation } from "~/components/global.animations";
 import { CustomFontCSS, getPrimaryAlign, getSecondaryAlign } from "~/components/global.styles";
 
 const ColumnCSS = css`
@@ -15,14 +15,13 @@ const ColumnCSS = css`
 
 export const Section = styled.div`
   ${CustomFontCSS};
-  ${FadeOutCSS};
   border-bottom: 1px solid ${({ theme }) => theme.palette.gray.silver};
   display: flex;
   flex-direction: column;
   margin-top: 10px;
   opacity: 0;
   
-  animation: fadeOut 1.5s ease-out both;
+  animation: ${FadeOutAnimation} 1.5s ease-out both;
 `;
 
 export const HeadingSection = styled.div`
