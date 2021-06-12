@@ -124,7 +124,6 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
         svg.selectAll("svg > *").remove();
 
         const simulation = d3.forceSimulation(nodes)
-            // .force("center", d3.forceCenter(width / 2, height / 2))
             .force("x", d3.forceX().x((d: any) => centers[d.cluster][0]).strength(0.05))
             .force("y", d3.forceY().y((d: any) => centers[d.cluster][1]).strength(0.05))
             .force("charge", d3.forceManyBody().strength(-10))
