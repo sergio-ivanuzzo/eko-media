@@ -46,11 +46,7 @@ export const FadeOutAnimation = keyframes`
 
 // to trick animationend event
 export const NoopAnimation = keyframes`
-  0% {
-    //
-  }
-  
-  100% {
-    //
-  }
+  //0% {}
+  //
+  //100% {}
 `;

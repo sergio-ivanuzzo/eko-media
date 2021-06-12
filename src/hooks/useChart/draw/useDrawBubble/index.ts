@@ -138,7 +138,8 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
             .data(nodes)
             .enter()
             .append("g")
-            .attr("class", "bubble");
+            .attr("class", "bubble")
+            .attr("pointer-events", "all");
 
         const hideText = () => {
             const offset = 1;
@@ -158,7 +159,7 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
             });
         }
 
-        node.attr("pointer-events", "all");
+        // node.attr("pointer-events", "all");
 
         svg.call(d3.zoom()
             .scaleExtent([ MIN_ZOOM, MAX_ZOOM ])
@@ -191,6 +192,7 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
             .attr("dy", () => "0.3em")
             .attr("font-size", DEFAULT_TEXT_SIZE)
             .attr("text-anchor", "middle")
+            .attr("pointer-events", "none")
             .attr("x", (d: any) => d.x)
             .attr("y", (d: any) => d.y);
 
@@ -207,43 +209,28 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
 
         hideText();
 
-        const startAnimationDuration = 250;
-        const endAnimationDuration = 500;
-
-        let selectedBubble: SVGSVGElement | null = null;
-
-        svg.on("mousemove", (event: MouseEvent) => {
+        // animate bubble hover
+        node.on("mouseover.hover", (event: MouseEvent) => {
             const { target } = event;
-            const tagName = (target as SVGSVGElement).tagName;
+            const selectedBubble = d3.select((target as SVGSVGElement).parentElement).select("circle");
 
-            if (tagName.toLowerCase() === "circle") {
-                selectedBubble = target as SVGSVGElement;
-            } else if (tagName.toLowerCase() === "text") {
-                selectedBubble = d3
-                    .select((target as SVGSVGElement).parentElement)
-                    .select("circle").node() as SVGSVGElement;
-            } else {
-                // we select all .transition to guarantee transition will be removed
-                // when fast switch from circle to circle
-                d3.selectAll(".transition").classed("animate", true);
-                selectedBubble = null;
-            }
-
-            if (selectedBubble) {
-                d3.select(selectedBubble)
-                    .classed("transition", true)
-                    .transition().duration(startAnimationDuration)
-                    .attr("r", (d: any) => d.r * RADIUS_MULTIPLIER * HOVER_MULTIPLIER);
-            }
+            selectedBubble
+                .classed("transition", true)
+                .classed("no-transition", false)
+                .transition().duration(250)
+                .attr("r", (d: any) => d.r * RADIUS_MULTIPLIER * HOVER_MULTIPLIER);
         });
 
-        node.on("animationend.hover", () => {
-            d3.selectAll(".animate")
-                .classed("animate", false)
+        node.on("mouseout.hover", (event: MouseEvent) => {
+            const { target } = event;
+            const selectedBubble = d3.select((target as SVGSVGElement).parentElement).select("circle");
+
+            selectedBubble
                 .classed("transition", false)
-                .transition().duration(endAnimationDuration)
+                .classed("no-transition", true)
+                .transition().duration(500)
                 .attr("r", (d: any) => d.r * RADIUS_MULTIPLIER);
-        })
+        });
 
         // draw tooltip
         node.selectAll("circle,text")
