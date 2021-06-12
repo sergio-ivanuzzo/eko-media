@@ -35,6 +35,8 @@ const DefaultTrigger = ({ selected: originSelected, ...props }: ISelectTriggerPr
     // for single mode always show itemAll and rest of items
     const selected = allMultipleSelected ? originSelected.slice(0, 1) : originSelected;
     const { ref: containerRef, width } = useElementSize();
+    const { formatMessage } = useIntl();
+    const badgeLabel = formatMessage({ id: "badge.text" });
 
     // calculate badge value (wrapped items)
     const [ wrappedAmount, setWrappedAmount ] = useState(0);
@@ -89,7 +91,10 @@ const DefaultTrigger = ({ selected: originSelected, ...props }: ISelectTriggerPr
                     </div>
                     <div>
                         <ConditionalRender condition={!!wrappedAmount && multiple}>
-                            <Badge>{wrappedAmount}</Badge>
+                            <>
+                                <span>{badgeLabel}</span>
+                                <Badge>{wrappedAmount}</Badge>
+                            </>
                         </ConditionalRender>
                     </div>
                 </>

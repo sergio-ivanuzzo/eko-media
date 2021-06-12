@@ -49,6 +49,13 @@ export const TriggerContainer = styled.div`
     display: flex;
     align-items: center;
     width: auto;
+    white-space: nowrap;
+    justify-content: space-between;
+    > span {
+      margin-right: 10px;
+      font-size: 14px;
+      font-weight: bold;
+    }
   }
 `;
 

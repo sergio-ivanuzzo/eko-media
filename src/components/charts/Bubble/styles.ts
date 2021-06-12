@@ -12,7 +12,7 @@ export const StyledChart = styled(Chart)`
       font-weight: 400;
     }
     
-    .transition {
+    .with-transition {
       filter: 
         contrast(var(--value, 2)) 
         invert(var(--value, 100%)) 
@@ -20,11 +20,11 @@ export const StyledChart = styled(Chart)`
         drop-shadow(5px 3px 5px ${({ theme }) => theme.palette.gray.silver}) 
         saturate(var(--value, 5));
         
-      transition: all 0.25s linear;
+      transition: filter 0.25s linear;
     }
     
     .no-transition {
-      transition: all 0.75s linear;
+      transition: filter 1.25s linear;
     }
     
     &:hover {

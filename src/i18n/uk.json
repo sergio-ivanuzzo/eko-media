@@ -43,6 +43,8 @@
   "placeholder.empty_select": "Ще нічого не вибрано",
   "placeholder.empty_data": "Для обраної дати немає даних",
 
+  "badge.text": "Решта: ",
+
   "pluralize.mention.first_case": "згадка",
   "pluralize.mention.second_case": "згадки",
   "pluralize.mention.third_case": "згадок",

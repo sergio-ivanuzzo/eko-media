@@ -159,8 +159,6 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
             });
         }
 
-        // node.attr("pointer-events", "all");
-
         svg.call(d3.zoom()
             .scaleExtent([ MIN_ZOOM, MAX_ZOOM ])
             .filter((event: WheelEvent) => event.shiftKey)
@@ -215,7 +213,7 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
             const selectedBubble = d3.select((target as SVGSVGElement).parentElement).select("circle");
 
             selectedBubble
-                .classed("transition", true)
+                .classed("with-transition", true)
                 .classed("no-transition", false)
                 .transition().duration(250)
                 .attr("r", (d: any) => d.r * RADIUS_MULTIPLIER * HOVER_MULTIPLIER);
@@ -226,16 +224,16 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
             const selectedBubble = d3.select((target as SVGSVGElement).parentElement).select("circle");
 
             selectedBubble
-                .classed("transition", false)
+                .classed("with-transition", false)
                 .classed("no-transition", true)
                 .transition().duration(500)
                 .attr("r", (d: any) => d.r * RADIUS_MULTIPLIER);
         });
 
         // draw tooltip
-        node.selectAll("circle,text")
-            .on("mouseover", () => tooltip.style("display", null))
-            .on("mouseout", () => tooltip.style("display", "none"))
+        node
+            .on("mouseover", () => tooltip.style("opacity", 1))
+            .on("mouseout", () => tooltip.style("opacity", 0))
             .on("mousemove", (event: MouseEvent, d: any) => {
                 const text = d.wordCount;
 
@@ -249,8 +247,8 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
 
                 tooltip.html(`${text}`)
                     .style("background", brighten(color, 25))
-                    .style("left", `${event.pageX}px`)
-                    .style("top", `${event.pageY + 10}px`).append("span");
+                    .style("left", `${event.pageX - 85}px`)
+                    .style("top", `${event.pageY - 20}px`);
             });
 
     }, [ data ]);
