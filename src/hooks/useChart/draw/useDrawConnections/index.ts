@@ -160,7 +160,7 @@ const useDrawConnections = (
             .attr("y", (d: any, i) => i % 2 === 0 ? TEXT_MARGIN : height - TEXT_MARGIN);
 
         const percentageText = node.append("text")
-            .text((d: any, i) => `${d.referencePercent}%`)
+            .text((d: any) => `${d.referencePercent}%`)
             .attr("dy", (d: any, i: number) => offsetY)
             .attr("text-anchor", "middle")
             .attr("pointer-events", "none");

@@ -16,6 +16,7 @@ import formatString from "~/helpers/formatString";
 import useData from "~/hooks/useData";
 
 import { CATEGORIES_MAP } from "~/common/constants";
+import { HeadingLevel } from "~/components/core/FormattedTitle/constants";
 import { AlignItems, JustifyContent } from "~/components/global.constants";
 import {
     LeftColumn,
@@ -47,7 +48,7 @@ const MainPage = (): JSX.Element => {
                                         params={[ CATEGORIES_MAP[selectedCategory] ]}
                                         inline
                                     />
-                                    <Hint />
+                                    <Hint text={formatMessage({ id: "politician_bar.hint" })} />
                                 </div>
 
                                 <PoliticianBar limit={POLITICIAN_BAR_LIMIT} />
@@ -68,7 +69,7 @@ const MainPage = (): JSX.Element => {
                                         params={[ CATEGORIES_MAP[selectedCategory] ]}
                                         inline
                                     />
-                                    <Hint />
+                                    <Hint text={formatMessage({ id: "sphere_bar.hint" })} />
                                 </div>
                                 <SphereBar />
                             </div>
@@ -91,7 +92,7 @@ const MainPage = (): JSX.Element => {
                                             inline
                                         />
                                     </ConditionalRender>
-                                    <Hint />
+                                    <Hint text={formatMessage({ id: "stacked_bar.hint" })} />
                                 </div>
 
                                 <StyledLink to="/topic" tabIndex={7}>
@@ -123,21 +124,40 @@ const MainPage = (): JSX.Element => {
                             </div>
                         </LeftColumn>
                         <RightColumn>
-                            <h3>
-                                <FormattedMessage id="bubble.title" />
-                            </h3>
+                            <div>
+                                <FormattedTitle
+                                    placeholder={formatMessage({ id: "bubble.title" })}
+                                    level={HeadingLevel.H3}
+                                    inline
+                                />
+                                <Hint text={formatMessage({ id: "bubble.hint" })} />
+                            </div>
                             <Bubble />
                         </RightColumn>
                     </SubSection>
                 </Section>
                 <Section>
-                    <h2>
-                        <FormattedMessage id="network.title" />
-                    </h2>
-                    <h3>
-                        <FormattedMessage id="network.subtitle" />
-                    </h3>
+                    <FormattedTitle
+                        placeholder={formatMessage({ id: "network.title" })}
+                        level={HeadingLevel.H2}
+                    />
+                    <div>
+                        <FormattedTitle
+                            placeholder={formatMessage({ id: "network.subtitle" })}
+                            level={HeadingLevel.H3}
+                            inline
+                        />
+                        <Hint text={formatMessage({ id: "network.hint" })} />
+                    </div>
                     <Network />
+                    <div>
+                        <FormattedTitle
+                            placeholder={formatMessage({ id: "arrow_chart.title" })}
+                            level={HeadingLevel.H3}
+                            inline
+                        />
+                        <Hint text={formatMessage({ id: "arrow_chart.hint" })} />
+                    </div>
                     <ArrowChart />
                 </Section>
             </>

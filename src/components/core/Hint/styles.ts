@@ -29,7 +29,11 @@ export const StyledDropdown = styled(Dropdown)`
   display: inline-flex;
   
   ${Frame} {
-    width: auto;
+    width: 300px;
+    white-space: normal;
+    overflow-y: auto;
     border-radius: ${BORDER_RADIUS}px;
+    box-shadow: 0 0 3px 0 ${({ theme }) => theme.palette.gray.silver};
+    background: ${({ theme }) => theme.palette.orange.carrot};
   }
 `;

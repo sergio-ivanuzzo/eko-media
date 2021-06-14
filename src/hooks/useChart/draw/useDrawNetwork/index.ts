@@ -3,7 +3,10 @@ import * as d3 from "d3";
 
 import limitNumber from "~/helpers/limitNumber";
 
+import { ChartTooltipCSS } from "~/components/core/Chart/styles";
 import theme from "~/common/theme";
+
+import { MEDIA_LOGOS_DIR } from "~/common/constants";
 
 // edges size
 const MAX_DISTANCE = 2000;
@@ -89,7 +92,8 @@ const useDrawNetwork = (
         );
     }, [ nodes, edges, isSelected ]);
 
-    const draw = useCallback(({ chartRef, width: currentWidth, height: currentHeight }: IChartDrawProps): void => {
+    const draw = useCallback(({ width: currentWidth, height: currentHeight, ...props }: IChartDrawProps): void => {
+        const { chartRef, tooltip } = props;
         // prevent re-draw if node is selected
         if (isSelected) {
             return;
@@ -231,6 +235,29 @@ const useDrawNetwork = (
                 setSelected(false);
             }
         });
+
+        // draw tooltip
+        node
+            .on("mouseover", () => tooltip.style("display", ""))
+            .on("mouseout", () => tooltip.style("display", "none"))
+            .on("mousemove", (event: MouseEvent, d: any) => {
+                // const currentNode = d3.select(event.currentTarget as any).node();
+                // const parentClass = d3.select(currentNode.parentNode).attr("class");
+                // const groupIndex = Number(parentClass.replace( /^\D+/g, ""));
+                //
+                // const text = d.data.values[groupIndex];
+
+                const imageSrc = `${MEDIA_LOGOS_DIR}/${d.name}.png`;
+
+                // apply main tooltip css
+                (tooltip.node() as HTMLElement).style.cssText = ChartTooltipCSS.toString();
+
+                tooltip.html(`<img src="${imageSrc}" width="100px" alt="">`)
+                    .style("background", "transparent")
+                    .style("left", `${event.pageX - 30}px`)
+                    .style("top", `${event.pageY - 130}px`);
+
+            });
 
     }, [ nodes, edges, isSelected ]);
 

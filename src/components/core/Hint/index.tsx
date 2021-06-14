@@ -12,23 +12,23 @@ const DefaultTrigger = ({ toggle }: IDropdownTriggerProps): JSX.Element => {
     );
 }
 
-const DefaultItem = (): JSX.Element => {
+const DefaultItem = ({ text }: IHintItemProps): JSX.Element => {
     return (
         <HintText>
-            Some text here !
+            {text}
         </HintText>
     );
 };
 
 const Hint = ({ renderTrigger = DefaultTrigger, renderItem = DefaultItem, ...props }: IHintProps): JSX.Element => {
-    const { className, tabIndex } = props;
+    const { className, tabIndex, text } = props;
 
     return (
         <StyledDropdown className={className}
                   tabIndex={tabIndex}
                   renderTrigger={(props: IDropdownTriggerProps) => renderTrigger(props)}
         >
-            {renderItem}
+            {() => renderItem({ text })}
         </StyledDropdown>
     );
 };
