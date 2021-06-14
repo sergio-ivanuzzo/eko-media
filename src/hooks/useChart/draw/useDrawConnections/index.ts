@@ -15,7 +15,7 @@ const TEXT_MARGIN = 50;
 const { orange } = theme.palette;
 
 const useDrawConnections = (
-    { nodes: originNodes, edges }: IUseConnectionsProps
+    { nodes: originNodes, edges: originEdges }: IUseConnectionsProps
 ): { draw: (props: IChartDrawProps) => void } => {
 
     const polarToCartesian = (centerX: number, centerY: number, rx: number, ry: number, angleInDegrees: number) => {
@@ -46,9 +46,14 @@ const useDrawConnections = (
         ].join(" ");
     }
 
-    const pairAmount = edges.length / 2;
-
     const draw = useCallback(({ chartRef, width, height }: IChartDrawProps): void => {
+        // we need copies to prevent override origin data on simulation.links
+        // on each re-draw we will have copy of origin data and will possible to resize chart correctly
+        const nodesCopy = JSON.parse(JSON.stringify(originNodes)) as IGraphNodeItem[];
+        const edgesCopy = JSON.parse(JSON.stringify(originEdges)) as IGraphEdgeItem[];
+
+        const pairAmount = edgesCopy.length / 2;
+
         const svg = d3.select(chartRef.current)
             .attr("viewBox", `0 0 ${width} ${height}`)
             .attr("preserveAspectRatio", "xMidYMid meet")
@@ -88,7 +93,7 @@ const useDrawConnections = (
             }
         });
 
-        const nodes = originNodes.map((node, i) => {
+        const nodes = nodesCopy.map((node, i) => {
             const index = Math.floor(i / 2);
             // since top and bottom x are the same
             const x = centers[index].top[0];
@@ -103,20 +108,18 @@ const useDrawConnections = (
 
         const simulation: any = d3.forceSimulation().nodes(nodes as any)
             .force("link", d3.forceLink().id((d: any) => d.id).distance(MIN_DISTANCE))
-            .force("center", d3.forceCenter(width / 2, height / 2));
+            .force("center", d3.forceCenter(width / 2, height / 2)).alpha(0.1).restart();
 
-        if (simulation !== undefined) {
-            simulation.force("link").links(edges);
-        }
+        simulation.force("link").links(edgesCopy);
+        simulation.tick(nodes.length * 2);
 
         // disable animation
         // simulation.stop();
-        simulation.tick(nodes.length);
 
         const link = svg.append("g")
             .attr("class", "links")
             .selectAll("path")
-            .data(edges as any)
+            .data(edgesCopy as any)
             .enter()
             .append("path")
             .attr("d", (d: any, i: number) => {
@@ -137,11 +140,15 @@ const useDrawConnections = (
             .attr("stroke", orange.carrot)
             .attr("stroke-width", (d: any) => d.weight);
 
+        link.exit().remove();
+
         const node = svg.selectAll("g.nodes")
             .data(nodes as any)
             .enter()
             .append("g")
             .attr("class", "nodes");
+
+        node.exit().remove();
 
         const text = node.append("text")
             .text((d: any) => d.name)
@@ -170,7 +177,7 @@ const useDrawConnections = (
                 .attr("y", (d: any, i) => i % 2 === 0 ? TEXT_MARGIN : height - TEXT_MARGIN);
         });
 
-    }, [ originNodes, edges ]);
+    }, [ originNodes, originEdges ]);
 
     return {
         draw,
