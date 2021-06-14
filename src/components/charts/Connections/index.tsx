@@ -15,7 +15,7 @@ const ConnectionChart = (): JSX.Element => {
     const { nodes = [], edges = [] } = (dataset[0] || []) as IGraphDataset;
 
     const { draw } = useDrawConnections({ nodes, edges });
-    return <StyledChart draw={draw} />;
+    return <StyledChart draw={draw} height={400} />;
 };
 
 export default ConnectionChart;

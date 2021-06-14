@@ -22,6 +22,7 @@ export const ChartContainer = styled.div<IChartContainerProps>`
   width: 100%;
   height: ${({ height }) => height ? `${height}px;` : `${DEFAULT_CHART_HEIGHT}px`};
   animation: ${FadeOutAnimation} 1.5s ease-out both;
+  //padding-bottom: 100%; // aspect ratio
 `;
 
 export const SVG = styled.svg`
