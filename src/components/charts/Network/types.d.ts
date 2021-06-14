@@ -3,7 +3,10 @@ declare interface IGraphEdgeItem extends IItem {
     target: number;
     weight: string;
     alpha: number;
-    reference_count: number;
+    // network file contains this field
+    reference_count?: number;
+    // connections file contains this field
+    reference_percent?: number;
 }
 
 declare interface IGraphNodeItem extends IItem {

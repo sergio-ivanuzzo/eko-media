@@ -103,6 +103,7 @@ const useDrawConnections = (
                 ...node,
                 x,
                 y,
+                referencePercent: edgesCopy[i].reference_percent
             }
         });
 
@@ -150,13 +151,19 @@ const useDrawConnections = (
 
         node.exit().remove();
 
-        const text = node.append("text")
+        const mediaText = node.append("text")
             .text((d: any) => d.name)
             .attr("dy", (d: any, i: number) => i % 2 === 0 ? "-0.5em" : "-4em")
             .attr("text-anchor", "middle")
             .attr("pointer-events", "none")
             .attr("x", (d: any) => d.x)
             .attr("y", (d: any, i) => i % 2 === 0 ? TEXT_MARGIN : height - TEXT_MARGIN);
+
+        const percentageText = node.append("text")
+            .text((d: any, i) => `${d.referencePercent}%`)
+            .attr("dy", (d: any, i: number) => offsetY)
+            .attr("text-anchor", "middle")
+            .attr("pointer-events", "none");
 
         simulation.on("tick", () => {
             link.attr("d", (d: any, i: number) => {
@@ -173,8 +180,13 @@ const useDrawConnections = (
                 );
             });
 
-            text.attr("x", (d: any) => d.x)
+            mediaText
+                .attr("x", (d: any) => d.x)
                 .attr("y", (d: any, i) => i % 2 === 0 ? TEXT_MARGIN : height - TEXT_MARGIN);
+
+            percentageText
+                .attr("x", (d: any, i: number) => i % 2 === 0 ? d.x - offsetX/2 : d.x + offsetX/2)
+                .attr("y", (d: any, i: number) => offsetY / 2);
         });
 
     }, [ originNodes, originEdges ]);
