@@ -4,6 +4,7 @@ import { CustomFontCSS, NoSelectCSS } from "~/components/global.styles";
 
 export const CardContainer = styled.div`
   ${CustomFontCSS};
+  ${NoSelectCSS};
   display: flex;
   flex-direction: column;
   align-items: center;

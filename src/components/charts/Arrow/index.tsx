@@ -8,7 +8,7 @@ import { TYPES } from "~/common/constants";
 
 const TYPE = TYPES.CONNECTION;
 
-const ConnectionChart = (): JSX.Element => {
+const ArrowChart = (): JSX.Element => {
     const { getDataset } = useData();
 
     const dataset = getDataset(TYPE, "all");
@@ -18,4 +18,4 @@ const ConnectionChart = (): JSX.Element => {
     return <StyledChart draw={draw} height={400} />;
 };
 
-export default ConnectionChart;
+export default ArrowChart;

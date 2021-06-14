@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 
-import UIConnectionChart from "./index";
+import UIArrowChart from "./index";
 import useData from "~/hooks/useData";
 
 import { DataContext } from "~/providers/DataProvider";
@@ -10,7 +10,7 @@ export default {
     title: "Components/Charts"
 };
 
-export const ConnectionChart = (): JSX.Element => {
+export const ArrowChart = (): JSX.Element => {
     // for story we use similar flow as we use for datepicker, bc we need to load some data into data provider
     const { loadAll } = useData();
     const { date, setDate } = useContext<IDataProviderContext<IItem>>(DataContext);
@@ -27,5 +27,5 @@ export const ConnectionChart = (): JSX.Element => {
         }
     }, [ date ]);
 
-    return <UIConnectionChart />;
+    return <UIArrowChart />;
 };

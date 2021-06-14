@@ -4,7 +4,7 @@ import styled, { css } from "styled-components";
 import Placeholder from "~/components/core/Placeholder";
 
 import { FadeOutAnimation } from "~/components/global.animations";
-import { CustomFontCSS, getPrimaryAlign, getSecondaryAlign } from "~/components/global.styles";
+import { CustomFontCSS, NoSelectCSS, getPrimaryAlign, getSecondaryAlign } from "~/components/global.styles";
 
 const ColumnCSS = css`
   ${CustomFontCSS};
@@ -15,6 +15,7 @@ const ColumnCSS = css`
 
 export const Section = styled.div`
   ${CustomFontCSS};
+  ${NoSelectCSS};
   border-bottom: 1px solid ${({ theme }) => theme.palette.gray.silver};
   display: flex;
   flex-direction: column;
@@ -33,6 +34,7 @@ export const HeadingSection = styled.div`
 
 export const SubSection = styled.div<IRowProps>`
   ${CustomFontCSS};
+  ${NoSelectCSS};
   display: flex;
   ${({ primaryAlign }) => getPrimaryAlign(primaryAlign)};
   ${({ secondaryAlign }) => getSecondaryAlign(secondaryAlign)};
@@ -77,6 +79,7 @@ export const StyledPlaceholder = styled(Placeholder)`
 
 export const StyledLink = styled(Link)`
   ${CustomFontCSS};
+  ${NoSelectCSS};
   text-decoration: none;
   display: flex;
   align-items: center;

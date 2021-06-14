@@ -1,10 +1,10 @@
 import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
+import ArrowChart from "~/components/charts/Arrow";
 import ArrowRight from "~/components/icons/ArrowRight";
 import Bubble from "~/components/charts/Bubble";
 import ConditionalRender from "~/components/core/ConditionalRender";
-import ConnectionChart from "~/components/charts/Connections";
 import ExpertBar from "~/components/partials/Content/ExpertBar";
 import FormattedTitle from "~/components/core/FormattedTitle";
 import Hint from "~/components/core/Hint";
@@ -138,7 +138,7 @@ const MainPage = (): JSX.Element => {
                         <FormattedMessage id="network.subtitle" />
                     </h3>
                     <Network />
-                    <ConnectionChart />
+                    <ArrowChart />
                 </Section>
             </>
             <StyledPlaceholder primaryAlign={JustifyContent.CENTER}>
