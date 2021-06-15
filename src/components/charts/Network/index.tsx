@@ -1,3 +1,4 @@
+import { FormattedMessage } from "react-intl";
 import React, { useCallback, useState } from "react";
 
 import ConditionalRender from "~/components/core/ConditionalRender";
@@ -8,6 +9,7 @@ import useDrawNetwork from "~/hooks/useChart/draw/useDrawNetwork";
 import { ReferenceDirection } from "~/components/charts/Network/constants";
 import { TYPES } from "~/common/constants";
 
+import { ChartHint } from "~/components/core/Chart/styles";
 import { NetworkChartContainer, StyledChart } from "./styles";
 
 const TYPE = TYPES.NETWORK;
@@ -91,12 +93,19 @@ const Network = (): JSX.Element => {
     });
 
     return (
-        <NetworkChartContainer>
-            <ConditionalRender condition={isSelected}>
-                <ReferenceBar items={references} />
+        <>
+            <NetworkChartContainer>
+                <ConditionalRender condition={isSelected}>
+                    <ReferenceBar items={references} />
+                </ConditionalRender>
+                <StyledChart draw={draw} />
+            </NetworkChartContainer>
+            <ConditionalRender condition={!!(nodesCopy.length && edgesCopy.length)}>
+                <ChartHint>
+                    <FormattedMessage id="draggable_chart.hint" />
+                </ChartHint>
             </ConditionalRender>
-            <StyledChart draw={draw} />
-        </NetworkChartContainer>
+        </>
     )
 };
 

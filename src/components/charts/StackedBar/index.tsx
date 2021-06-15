@@ -1,16 +1,16 @@
+import { FormattedMessage } from "react-intl";
 import React, { useMemo } from "react";
 
+import ConditionalRender from "~/components/core/ConditionalRender";
 import useData from "~/hooks/useData";
 
-import useDrawStackedBar, {
-    BAR_HEIGHT,
-    TRANSITION_Y
-} from "~/hooks/useChart/draw/useDrawStackedBar";
+import useDrawStackedBar, { BAR_HEIGHT, MARGIN_LEFT } from "~/hooks/useChart/draw/useDrawStackedBar";
 
 import { StyledChart } from "./styles";
 import { CATEGORIES_MAP, CATEGORY_KEYS, TYPES } from "~/common/constants";
 
 import theme from "~/common/theme";
+import { ChartHint, LegendsContainer } from "~/components/core/Chart/styles";
 
 const TYPE = TYPES.CATEGORY;
 
@@ -40,7 +40,7 @@ const StackedBar = (): JSX.Element => {
 
     const height = useMemo(
         () => media.length
-            ? BAR_HEIGHT * media.length + TRANSITION_Y
+            ? BAR_HEIGHT * media.length
             : 0,
         [ media ]
     );
@@ -67,11 +67,19 @@ const StackedBar = (): JSX.Element => {
         : [ baseColors[topCategories.findIndex((category) => category === CATEGORIES_MAP[selectedCategory])] ];
 
     return (
-        <StyledChart
-            draw={draw}
-            height={height}
-            colors={colors}
-        />
+        <>
+            <LegendsContainer className="legends" offset={MARGIN_LEFT} />
+            <StyledChart
+                draw={draw}
+                height={height}
+                colors={colors}
+            />
+            <ConditionalRender condition={!!(categories.length && media.length && data.length)}>
+                <ChartHint>
+                    <FormattedMessage id="zoomable_chart.hint" />
+                </ChartHint>
+            </ConditionalRender>
+        </>
     );
 };
 

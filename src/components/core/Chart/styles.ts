@@ -40,3 +40,47 @@ export const SVG = styled.svg`
     font-size: 14px;
   } 
 `;
+
+export const ChartHint = styled.div`
+  ${CustomFontCSS};
+  font-size: 14px;
+  text-align: center;
+  color: ${({ theme }) => theme.palette.gray.silver};
+  
+  &:hover {
+    cursor: help;
+    color: ${({ theme }) => theme.palette.black.base};
+  }
+`;
+
+export const LegendsContainer = styled.div<ILegendsContainerProps>`
+  display: flex;
+  width: 100%;
+  align-items: center;
+  flex-wrap: wrap;
+  
+      
+  ${({ offset }) => offset && `
+    width: calc(100% - ${offset}px);
+    margin-left: ${offset}px;
+  `};
+  
+  > * {
+    margin: 10px;
+  }
+  
+  .legend {
+    display: flex;
+    align-items: center;
+    
+    > * {
+      margin: 0 10px;
+    }
+  }
+  
+  .marker {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+  }
+`;

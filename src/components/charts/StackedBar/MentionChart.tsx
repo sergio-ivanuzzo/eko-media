@@ -1,11 +1,12 @@
 import React, { useMemo } from "react";
 
 import useData from "~/hooks/useData";
-import useDrawStackedBar, { BAR_HEIGHT, TRANSITION_Y } from "~/hooks/useChart/draw/useDrawStackedBar";
+import useDrawStackedBar, { BAR_HEIGHT, MARGIN_LEFT } from "~/hooks/useChart/draw/useDrawStackedBar";
 
 import { StyledChart } from "./styles";
 import { Mention, NON_MEDIA_KEYS, TYPES } from "~/common/constants";
 
+import { LegendsContainer } from "~/components/core/Chart/styles";
 import theme from "~/common/theme";
 
 const TYPE = TYPES.POLITICIAN;
@@ -28,7 +29,7 @@ const MentionChart = ({ politicianName = "" }: IMentionChartProps): JSX.Element 
 
     const height = useMemo(
         () => media.length
-            ? BAR_HEIGHT * media.length + TRANSITION_Y
+            ? BAR_HEIGHT * media.length
             : 0,
         [ media ]
     );
@@ -62,7 +63,12 @@ const MentionChart = ({ politicianName = "" }: IMentionChartProps): JSX.Element 
 
     const { draw } = useDrawStackedBar({ data, xData: categories, yData: media });
 
-    return <StyledChart draw={draw} height={height} colors={[ green.salad, gray.silver, orange.carrot ]} />;
+    return (
+        <>
+            <LegendsContainer className="legends" offset={MARGIN_LEFT} />
+            <StyledChart draw={draw} height={height} colors={[ green.salad, gray.silver, orange.carrot ]} />
+        </>
+    );
 };
 
 export default MentionChart;

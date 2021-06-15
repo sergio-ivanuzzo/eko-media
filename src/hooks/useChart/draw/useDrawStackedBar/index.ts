@@ -15,8 +15,8 @@ export const TRANSITION_Y = MARGIN_TOP + LEGEND_HEIGHT;
 const MIN_ZOOM = 1;
 const MAX_ZOOM = 15;
 
-const LEGEND_WIDTH = 20;
-const LEGEND_MARGIN = 30;
+// const LEGEND_WIDTH = 20;
+// const LEGEND_MARGIN = 30;
 
 const TEXT_MARGIN_LEFT = 10;
 
@@ -36,7 +36,7 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
         }
 
         const svg: any = d3.select(chartRef.current)
-            .attr("preserveAspectRatio", "xMaxYMin meet")
+            .attr("preserveAspectRatio", "xMinYMin meet")
             .attr("viewBox", `0 0 ${width} ${height}`)
             .attr("width", width)
             .attr("height", height);
@@ -52,7 +52,7 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
             .clamp(true);
 
         const yScale: d3.ScaleBand<string> = d3.scaleBand()
-            .range([ 0, height - TRANSITION_Y ])
+            .range([ 0, height ])
             .padding(0.2)
             .domain(yData);
 
@@ -144,35 +144,27 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
             .attr("height", yScale.bandwidth());
 
         // draw legends
-        const legends = svg.append("g")
-            .attr("class", "legends")
-            .attr("transform", `translate(${MARGIN_LEFT}, ${MARGIN_TOP})`);
+        const svgElement = chartRef.current;
+        const svgParent = svgElement?.parentElement;
 
-        let offset = LEGEND_MARGIN;
+        if (svgParent) {
+            const legends = d3.select(svgParent.parentElement).select(".legends");
 
-        legends.selectAll("g.legend")
-            .data(xData)
-            .enter()
-            .append("g")
-            .attr("class", "legend")
-            .each((category: string, index: number, n: any) => {
-                const item = d3.select(n[index]).node();
+            legends.selectAll(".legend")
+                .data(xData)
+                .enter()
+                .append("div")
+                .attr("class", "legend")
+                .each((category: string, index: number, n: any) => {
+                    const item = d3.select(n[index]);
+                    item
+                        .append("div")
+                        .attr("class", "marker")
+                        .style("background", getColor({ index, colors }));
 
-                const text = d3.select(item).append("text")
-                    .attr("dy", "-0.35em")
-                    .attr("transform", `translate(${LEGEND_WIDTH / 2 + LEGEND_MARGIN}, ${LEGEND_HEIGHT / 2})`)
-                    .text(category);
-
-                const textBBox = text.node()?.getBBox();
-
-                d3.select(item).append("circle")
-                    .attr("r", LEGEND_WIDTH / 2)
-                    .attr("fill", getColor({ index, colors }));
-
-                d3.select(item).attr("transform", `translate(${offset}, 0)`);
-
-                offset += (textBBox?.width || 0) + LEGEND_WIDTH + LEGEND_MARGIN * 2;
-            })
+                    item.append("div").html(category);
+                });
+        }
 
         // draw tooltip
         group.selectAll("rect,text")

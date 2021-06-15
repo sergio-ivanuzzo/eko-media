@@ -12,10 +12,6 @@ export const StyledChart = styled(Chart)`
     }
   }  
   
-  .groups-container, g.axis {
-    transform: translate(0px, ${TRANSITION_Y}px);
-  }
-  
   g.axis {
     transform: translate(${MARGIN_LEFT}px, ${TRANSITION_Y}px);
     

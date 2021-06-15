@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import { useIntl } from "react-intl";
 import * as d3 from "d3";
 
 import brighten from "~/helpers/color/brighten";
@@ -46,6 +47,18 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
     const getColorIndexByCategory = (category: string) => topCategories.findIndex(
         (topCategory) => topCategory.toLowerCase() === category.toLowerCase()
     );
+
+    const { formatMessage } = useIntl();
+    const legendsText = formatMessage({ id: "bubble.legends_text" });
+
+    const groupedData = d3.group(data, (d) => d.category);
+
+    const totals = selectedCategories.reduce((acc: { [key: string]: number}, category) => {
+        acc[category] = (groupedData.get(category) || []).reduce((sum, item) => sum + item.wordCount, 0);
+        return acc;
+    }, {});
+
+    console.log(totals);
 
     const draw = useCallback(({ chartRef, width: currentWidth, height, colors, tooltip }: IChartDrawProps): void => {
 
@@ -249,6 +262,30 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
                     .style("left", `${event.pageX - 85}px`)
                     .style("top", `${event.pageY - 20}px`);
             });
+
+        // draw legends
+        const svgElement = chartRef.current;
+        const svgParent = svgElement?.parentElement;
+
+        if (svgParent) {
+            const legends = d3.select(svgParent.parentElement).select(".legends");
+
+            legends.selectAll(".legend")
+                .data(selectedCategories)
+                .enter()
+                .append("div")
+                .attr("class", "legend")
+                .each((category: string, index: number, n: any) => {
+                    const item = d3.select(n[index]);
+                    item
+                        .append("div")
+                        .attr("class", "marker")
+                        .style("background", getColor({ index, colors }));
+
+                    item.append("div").attr("class", "text").html(category);
+                    item.select(".text").append("div").html(`${legendsText} ${totals[category]}`);
+                });
+        }
 
     }, [ data ]);
 

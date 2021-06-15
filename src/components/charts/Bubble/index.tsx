@@ -1,10 +1,15 @@
+import { FormattedMessage } from "react-intl";
 import React, { useMemo } from "react";
 
+import ConditionalRender from "~/components/core/ConditionalRender";
 import useData from "~/hooks/useData";
 import useDrawBubble, { MAX_BUBBLE_RADIUS } from "~/hooks/useChart/draw/useDrawBubble";
 
-import { StyledChart } from "./styles";
 import { CATEGORIES_MAP, TYPES } from "~/common/constants";
+
+import { MARGIN_LEFT } from "~/hooks/useChart/draw/useDrawStackedBar";
+import { StyledChart } from "./styles";
+import { ChartHint, LegendsContainer } from "~/components/core/Chart/styles";
 
 import theme from "~/common/theme";
 
@@ -56,7 +61,22 @@ const Bubble = (): JSX.Element => {
 
     const { draw } = useDrawBubble({ data, selectedCategories: selectedCategories });
 
-    return <StyledChart draw={draw} colors={colors} />
+    return (
+        <>
+            <StyledChart draw={draw} colors={colors} />
+            <LegendsContainer className="legends" offset={MARGIN_LEFT} />
+            <ConditionalRender condition={!!(data?.length && selectedCategories.length)}>
+                <>
+                    <ChartHint>
+                        <FormattedMessage id="zoomable_chart.hint" />
+                    </ChartHint>
+                    <ChartHint>
+                        <FormattedMessage id="draggable_chart.hint" />
+                    </ChartHint>
+                </>
+            </ConditionalRender>
+        </>
+    );
 };
 
 export default Bubble;

@@ -47,6 +47,7 @@ export const SubSection = styled.div<IRowProps>`
   `};
   
   padding: 0 10px;
+  margin-bottom: 20px;
   
   > * {
     margin: 0 50px;
