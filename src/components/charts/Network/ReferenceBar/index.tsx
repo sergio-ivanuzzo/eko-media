@@ -22,24 +22,26 @@ import {
 const DEFAULT_TARGET_SORTED_ASC = true;
 const DEFAULT_COUNT_SORTED_ASC = true;
 
-const ReferenceItem = ({ from, to, direction, referenceCount }: IReferenceItemProps): JSX.Element => {
+const ReferenceItem = ({ from, to, direction, referenceCount, ...props }: IReferenceItemProps): JSX.Element => {
+
+    const { setSelectedNodeName } = props;
 
     return (
         <ReferenceItemContainer>
-            <MediaName title={from}>{from}</MediaName>
+            <MediaName title={from} onClick={() => setSelectedNodeName(from)}>{from}</MediaName>
             <ArrowContainer>
                 <ConditionalRender condition={direction === ReferenceDirection.FORWARD}>
                     <StyledArrowRight />
                     <StyledArrowLeft />
                 </ConditionalRender>
             </ArrowContainer>
-            <MediaName title={to}>{to}</MediaName>
+            <MediaName title={to} onClick={() => setSelectedNodeName(to)}>{to}</MediaName>
             <ReferenceCount>{referenceCount}</ReferenceCount>
         </ReferenceItemContainer>
     );
 };
 
-const ReferenceBar = ({ items: originItems }: IReferenceBarProps): JSX.Element => {
+const ReferenceBar = ({ items: originItems, setSelectedNodeName }: IReferenceBarProps): JSX.Element => {
 
     const [ items, setItems ] = useState(originItems);
     const [ targetSortedASC, setTargetSortedASC ] = useState(DEFAULT_TARGET_SORTED_ASC);
@@ -108,7 +110,7 @@ const ReferenceBar = ({ items: originItems }: IReferenceBarProps): JSX.Element =
                 </ReferenceCount>
             </ReferenceHeader>
             {items.map((item: IReferenceItem, index: number) => (
-                <ReferenceItem key={index} {...item} />
+                <ReferenceItem key={index} {...item} setSelectedNodeName={setSelectedNodeName} />
             ))}
         </ReferenceList>
     );

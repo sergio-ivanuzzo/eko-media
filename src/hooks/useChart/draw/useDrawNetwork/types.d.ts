@@ -4,6 +4,8 @@ declare interface IUseNetworkProps {
     handleNodeClick: (selectedNodeId: number) => void;
     isSelected: boolean;
     setSelected: Dispatch<SetStateAction<boolean>>;
+    selectedNodeName?: string;
+    setSelectedNodeName: (name: string) => void;
 }
 
 declare interface IHighlightProps {

@@ -84,19 +84,23 @@ const Network = (): JSX.Element => {
         }
     }, [ nodes, edges ]);
 
+    const [ selectedNodeName, setSelectedNodeName ] = useState<string | undefined>();
+
     const { draw } = useDrawNetwork({
         nodes: nodesCopy,
         edges: edgesCopy,
         handleNodeClick,
         isSelected,
-        setSelected
+        setSelected,
+        selectedNodeName,
+        setSelectedNodeName,
     });
 
     return (
         <>
             <NetworkChartContainer>
                 <ConditionalRender condition={isSelected}>
-                    <ReferenceBar items={references} />
+                    <ReferenceBar items={references} setSelectedNodeName={setSelectedNodeName} />
                 </ConditionalRender>
                 <StyledChart draw={draw} />
             </NetworkChartContainer>

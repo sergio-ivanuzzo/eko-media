@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import * as d3 from "d3";
 
 import limitNumber from "~/helpers/limitNumber";
@@ -7,6 +7,7 @@ import { ChartTooltipCSS } from "~/components/core/Chart/styles";
 import theme from "~/common/theme";
 
 import { MEDIA_LOGOS_DIR } from "~/common/constants";
+import usePreviousState from "~/hooks/usePreviousState";
 
 // edges size
 const MAX_DISTANCE = 2000;
@@ -27,9 +28,15 @@ const MAX_FADE = 1;
 
 const { orange, green, cyan, black } = theme.palette;
 
+const CUSTOM_EVENT_NODE_SELECTED = "custom.selected_node";
+
 const useDrawNetwork = (
-    { nodes, edges, handleNodeClick, isSelected, setSelected }: IUseNetworkProps
+    { nodes, edges, handleNodeClick, isSelected, setSelected, selectedNodeName, ...props }: IUseNetworkProps
 ): { draw: (props: IChartDrawProps) => void } => {
+
+    const [ prevNodeName ] = usePreviousState(selectedNodeName);
+
+    const { setSelectedNodeName } = props;
 
     const highlight = useCallback((
         node: d3.Selection<SVGGElement, unknown, SVGSVGElement | null, unknown>
@@ -92,9 +99,53 @@ const useDrawNetwork = (
         );
     }, [ nodes, edges, isSelected ]);
 
+    const ref = useRef({
+        doFade: [],
+        doHighlight: [],
+    });
+
+    const handler = useCallback((event: Event) => {
+        const { selectedNodeName, prevNodeName, isSelected } = (event as CustomEvent).detail || {};
+        const {
+            doFade = () => null,
+            doHighlight = () => null
+        } = ref.current;
+
+        if (isSelected) {
+            if (prevNodeName !== selectedNodeName) {
+                console.log("handler!");
+
+                if (selectedNodeName) {
+                    const selectedNode = nodes.find((node: any) => node.name === selectedNodeName) || { id: -1 };
+
+                    handleNodeClick(selectedNode.id);
+                    (doFade as CallableFunction)(selectedNode, MIN_FADE, MAX_FADE);
+                    (doHighlight as CallableFunction)(
+                        selectedNode, green.jade, cyan.azure, cyan.azure, RADIUS * RADIUS_MULTIPLIER
+                    );
+                }
+            }
+        } else {
+            document.removeEventListener(CUSTOM_EVENT_NODE_SELECTED, handler);
+        }
+    }, [ ref, selectedNodeName, nodes, edges ]);
+
     const draw = useCallback(({ width: currentWidth, height: currentHeight, ...props }: IChartDrawProps): void => {
         const { chartRef, tooltip } = props;
-        // prevent re-draw if node is selected
+
+        document.dispatchEvent(
+            new CustomEvent(
+                CUSTOM_EVENT_NODE_SELECTED, {
+                    detail: {
+                        selectedNodeName,
+                        prevNodeName,
+                        isSelected,
+                    },
+                },
+            )
+        );
+
+        // prevent re-draw
         if (isSelected) {
             return;
         }
@@ -162,6 +213,7 @@ const useDrawNetwork = (
             .on("drag", (e: DragEvent, d: any) => {
                 d.fx = limitDraggableX(e.x);
                 d.fy = limitDraggableY(e.y);
+                tooltip.style("display", "none");
             })
             .on("end", (e: DragEvent & { active: number }) => {
                 if (!e.active) {
@@ -231,6 +283,7 @@ const useDrawNetwork = (
         svg.on("click", (event: MouseEvent) => {
             const element = event.target as HTMLElement;
             if (![ "circle", "text" ].includes(element.tagName.toLowerCase())) {
+                setSelectedNodeName("");
                 setSelected(true);
                 setSelected(false);
             }
@@ -241,25 +294,27 @@ const useDrawNetwork = (
             .on("mouseover", () => tooltip.style("display", ""))
             .on("mouseout", () => tooltip.style("display", "none"))
             .on("mousemove", (event: MouseEvent, d: any) => {
-                // const currentNode = d3.select(event.currentTarget as any).node();
-                // const parentClass = d3.select(currentNode.parentNode).attr("class");
-                // const groupIndex = Number(parentClass.replace( /^\D+/g, ""));
-                //
-                // const text = d.data.values[groupIndex];
 
                 const imageSrc = `${MEDIA_LOGOS_DIR}/${d.name}.png`;
 
                 // apply main tooltip css
                 (tooltip.node() as HTMLElement).style.cssText = ChartTooltipCSS.toString();
 
-                tooltip.html(`<img src="${imageSrc}" width="100px" alt="">`)
+                tooltip.html(`<img src="${imageSrc}" width="60px" alt="">`)
                     .style("background", "transparent")
                     .style("left", `${event.pageX - 30}px`)
-                    .style("top", `${event.pageY - 130}px`);
+                    .style("top", `${event.pageY - 110}px`);
 
             });
 
-    }, [ nodes, edges, isSelected ]);
+        ref.current = {
+            doFade: doFade as any,
+            doHighlight: doHighlight as any,
+        };
+
+        document.addEventListener(CUSTOM_EVENT_NODE_SELECTED, handler);
+
+    }, [ nodes, edges, isSelected, selectedNodeName, prevNodeName ]);
 
     return {
         draw

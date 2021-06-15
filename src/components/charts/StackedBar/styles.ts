@@ -13,7 +13,7 @@ export const StyledChart = styled(Chart)`
   }  
   
   g.axis {
-    transform: translate(${MARGIN_LEFT}px, ${TRANSITION_Y}px);
+    transform: translate(${MARGIN_LEFT}px, 0px);
     
     path {
       display: none;

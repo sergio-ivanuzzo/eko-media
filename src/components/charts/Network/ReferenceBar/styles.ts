@@ -70,4 +70,8 @@ export const MediaName = styled.div`
   margin: 0 10px;
   width: 80px;
   ${OverflowCSS};
+  
+  &:hover {
+    cursor: pointer;
+  }
 `;
