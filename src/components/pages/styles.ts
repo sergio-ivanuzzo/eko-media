@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 
 import Placeholder from "~/components/core/Placeholder";
 
-import { FadeOutAnimation } from "~/components/global.animations";
+import { FadeInAnimation } from "~/components/global.animations";
 import { CustomFontCSS, NoSelectCSS, getPrimaryAlign, getSecondaryAlign } from "~/components/global.styles";
 
 const ColumnCSS = css`
@@ -22,7 +22,7 @@ export const Section = styled.div`
   margin-top: 10px;
   opacity: 0;
   
-  animation: ${FadeOutAnimation} 1.5s ease-out both;
+  animation: ${FadeInAnimation} 1.5s ease-out both;
 `;
 
 export const HeadingSection = styled.div`

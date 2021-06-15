@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const AvatarContainer = styled.div<IAvatarProps>`
   display: inline-block;
-  position: relative;
+  //position: relative;
   width: 100px;
   height: 100px;
   overflow: hidden;

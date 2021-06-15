@@ -1,9 +1,10 @@
-declare interface IHintProps extends ISelectableComponent, IStylableComponent {
+declare interface IHintProps extends ISelectableComponent, IStylableComponent, IHintItemProps {
     renderTrigger?: (props: IDropdownTriggerProps) => JSX.Element;
     renderItem?: (props: IHintItemProps) => JSX.Element;
-    text: string;
 }
 
 declare interface IHintItemProps {
     text: string;
+    linkUrl?: string;
+    linkText?: string;
 }

@@ -48,7 +48,11 @@ const MainPage = (): JSX.Element => {
                                         params={[ CATEGORIES_MAP[selectedCategory] ]}
                                         inline
                                     />
-                                    <Hint text={formatMessage({ id: "politician_bar.hint" })} />
+                                    <Hint
+                                        text={formatMessage({ id: "politician_bar.hint" })}
+                                        linkUrl={"/about#politicians"}
+                                        linkText={formatMessage({ id: "politician_bar.hint.urlText" })}
+                                    />
                                 </div>
 
                                 <PoliticianBar limit={POLITICIAN_BAR_LIMIT} />
@@ -69,7 +73,11 @@ const MainPage = (): JSX.Element => {
                                         params={[ CATEGORIES_MAP[selectedCategory] ]}
                                         inline
                                     />
-                                    <Hint text={formatMessage({ id: "sphere_bar.hint" })} />
+                                    <Hint
+                                        text={formatMessage({ id: "sphere_bar.hint" })}
+                                        linkUrl={"/about#experts"}
+                                        linkText={formatMessage({ id: "sphere_bar.hint.urlText" })}
+                                    />
                                 </div>
                                 <SphereBar />
                             </div>
@@ -92,7 +100,11 @@ const MainPage = (): JSX.Element => {
                                             inline
                                         />
                                     </ConditionalRender>
-                                    <Hint text={formatMessage({ id: "stacked_bar.hint" })} />
+                                    <Hint
+                                        text={formatMessage({ id: "stacked_bar.hint" })}
+                                        linkUrl={"/about#categories"}
+                                        linkText={formatMessage({ id: "stacked_bar.hint.urlText" })}
+                                    />
                                 </div>
 
                                 <StyledLink to="/topic" tabIndex={7}>
@@ -130,7 +142,11 @@ const MainPage = (): JSX.Element => {
                                     level={HeadingLevel.H3}
                                     inline
                                 />
-                                <Hint text={formatMessage({ id: "bubble.hint" })} />
+                                <Hint
+                                    text={formatMessage({ id: "bubble.hint" })}
+                                    linkUrl={"/about#word-cloud"}
+                                    linkText={formatMessage({ id: "bubble.hint.urlText" })}
+                                />
                             </div>
                             <Bubble />
                         </RightColumn>
@@ -147,7 +163,11 @@ const MainPage = (): JSX.Element => {
                             level={HeadingLevel.H3}
                             inline
                         />
-                        <Hint text={formatMessage({ id: "network.hint" })} />
+                        <Hint
+                            text={formatMessage({ id: "network.hint" })}
+                            linkUrl={"/about#network"}
+                            linkText={formatMessage({ id: "network.hint.urlText" })}
+                        />
                     </div>
                     <Network />
                     <div>
@@ -156,7 +176,11 @@ const MainPage = (): JSX.Element => {
                             level={HeadingLevel.H3}
                             inline
                         />
-                        <Hint text={formatMessage({ id: "arrow_chart.hint" })} />
+                        <Hint
+                            text={formatMessage({ id: "arrow_chart.hint" })}
+                            linkUrl={"/about#connections"}
+                            linkText={formatMessage({ id: "arrow_chart.hint.urlText" })}
+                        />
                     </div>
                     <ArrowChart />
                 </Section>

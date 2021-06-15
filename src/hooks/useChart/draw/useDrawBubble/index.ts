@@ -50,6 +50,7 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
 
     const { formatMessage } = useIntl();
     const legendsText = formatMessage({ id: "bubble.legends_text" });
+    const tooltipText = formatMessage({ id: "bubble.tooltip_text.total" })
 
     const groupedData = d3.group(data, (d) => d.category);
 
@@ -57,8 +58,6 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
         acc[category] = (groupedData.get(category) || []).reduce((sum, item) => sum + item.wordCount, 0);
         return acc;
     }, {});
-
-    console.log(totals);
 
     const draw = useCallback(({ chartRef, width: currentWidth, height, colors, tooltip }: IChartDrawProps): void => {
 
@@ -202,7 +201,7 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
             .attr("dy", () => "0.3em")
             .attr("font-size", DEFAULT_TEXT_SIZE)
             .attr("text-anchor", "middle")
-            .attr("pointer-events", "none")
+            // .attr("pointer-events", "none")
             .attr("x", (d: any) => d.x)
             .attr("y", (d: any) => d.y);
 
@@ -247,7 +246,7 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
             .on("mouseover", () => tooltip.style("opacity", 1))
             .on("mouseout", () => tooltip.style("opacity", 0))
             .on("mousemove", (event: MouseEvent, d: any) => {
-                const text = d.wordCount;
+                const text = `${tooltipText} ${d.wordCount}`;
 
                 const color = getColor({
                     index: categoriesCount === 1 ? 0 : getColorIndexByCategory(d.category),
@@ -258,9 +257,10 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
                 (tooltip.node() as HTMLElement).style.cssText = ChartTooltipCSS.toString();
 
                 tooltip.html(`${text}`)
+                    .style("text-transform", "none")
                     .style("background", brighten(color, 25))
                     .style("left", `${event.pageX - 85}px`)
-                    .style("top", `${event.pageY - 20}px`);
+                    .style("top", `${event.pageY - 100}px`);
             });
 
         // draw legends

@@ -18,27 +18,10 @@ export const ShakeAnimation = keyframes`
   }
 `;
 
-export const FadeOutAnimation = keyframes`
+export const FadeInAnimation = keyframes`
   0% {
     opacity: 0;
   }
-  
-  10% {
-    opacity: 0.2;
-  }
-        
-  30% {
-    opacity: 0.4;
-  }
-      
-  50% {
-    opacity: 0.6;
-  }
-    
-  70% {
-    opacity: 0.8;
-  }
-      
   100% {
     opacity: 1;
   }

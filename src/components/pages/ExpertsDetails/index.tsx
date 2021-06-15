@@ -14,7 +14,7 @@ import { CATEGORIES_MAP, EXPERTS_PHOTOS_DIR, NON_MEDIA_KEYS, TYPES } from "~/com
 const TYPE = TYPES.EXPERT;
 
 const ExpertsDetailsPage = (): JSX.Element => {
-    const { isDataLoaded, selectedCategory, getDataset, allMedia } = useData();
+    const { isDataLoaded, selectedCategory, getDataset, allMedia, data: allData } = useData();
     const { formatMessage } = useIntl();
 
     const dataset = getDataset(TYPE, selectedCategory) || [];
@@ -34,6 +34,10 @@ const ExpertsDetailsPage = (): JSX.Element => {
             avatarUrl: `${EXPERTS_PHOTOS_DIR}/${image_name}.png`,
         }
     }).sort((current, next) => next.commentsAmount - current.commentsAmount);
+
+    const profiles = allData.experts_profiles || [];
+
+    console.log("prof:", profiles)
 
     return (
         <ConditionalRender condition={isDataLoaded}>

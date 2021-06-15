@@ -46,11 +46,24 @@ const useDrawConnections = (
         ].join(" ");
     }
 
+    // since we need pairs of nodes and nodes amount can be different
+    // we need to build pseudo-nodes list from edges dataset,
+    // and replace origin edges ids with pseudo-ids to be sure each pair of links has unique node
+    const pseudoNodes = originEdges.map((edgeItem, index) => ({
+        id: index,
+        name: originNodes.find((nodeItem) => nodeItem.id === edgeItem.source)?.name ?? ""
+    }));
+    const pseudoEdges = originEdges.map((edgeItem, index) => ({
+        ...edgeItem,
+        source: index,
+        target: index % 2 === 0 ? index + 1 : index - 1,
+    }));
+
     const draw = useCallback(({ chartRef, width, height }: IChartDrawProps): void => {
         // we need copies to prevent override origin data on simulation.links
         // on each re-draw we will have copy of origin data and will possible to resize chart correctly
-        const nodesCopy = JSON.parse(JSON.stringify(originNodes)) as IGraphNodeItem[];
-        const edgesCopy = JSON.parse(JSON.stringify(originEdges)) as IGraphEdgeItem[];
+        const nodesCopy = JSON.parse(JSON.stringify(pseudoNodes)) as IGraphNodeItem[];
+        const edgesCopy = JSON.parse(JSON.stringify(pseudoEdges)) as IGraphEdgeItem[];
 
         const pairAmount = edgesCopy.length / 2;
 

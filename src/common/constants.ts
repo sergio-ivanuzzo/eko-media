@@ -83,4 +83,4 @@ export enum Mention {
     ALL = "загалом",
 }
 
-export const MOCK_DATE = new Date("2021-03");
+export const MOCK_DATE = new Date("__2021-03");

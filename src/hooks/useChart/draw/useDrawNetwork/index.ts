@@ -136,25 +136,22 @@ const useDrawNetwork = (
     }, [ tempFunctionsRef, selectedNodeName, nodes, edges ]);
 
     const hoverNodeNameHandler = useCallback((event: Event) => {
-        const { hoveredNodeName, selectedNodeName, prevNodeName, isSelected } = (event as CustomEvent).detail || {};
+        const { hoveredNodeName, selectedNodeName, isSelected } = (event as CustomEvent).detail || {};
         const {
             doFade = () => null,
             doHighlight = () => null
         } = tempFunctionsRef.current;
 
         if (isSelected) {
-            if (prevNodeName !== prevHoveredNodeName) {
+            const nodeName = hoveredNodeName || selectedNodeName;
 
-                const nodeName = hoveredNodeName || selectedNodeName;
+            if (nodeName) {
+                const selectedNode = nodes.find((node: any) => node.name === nodeName) || { id: -1 };
 
-                if (nodeName) {
-                    const selectedNode = nodes.find((node: any) => node.name === nodeName) || { id: -1 };
-
-                    (doFade as CallableFunction)(selectedNode, MIN_FADE, MAX_FADE);
-                    (doHighlight as CallableFunction)(
-                        selectedNode, green.jade, cyan.azure, cyan.azure, RADIUS * RADIUS_MULTIPLIER
-                    );
-                }
+                (doFade as CallableFunction)(selectedNode, MIN_FADE, MAX_FADE);
+                (doHighlight as CallableFunction)(
+                    selectedNode, green.jade, cyan.azure, cyan.azure, RADIUS * RADIUS_MULTIPLIER
+                );
             }
         } else {
             document.removeEventListener(CUSTOM_EVENT_HOVER_NODE_NAME, hoverNodeNameHandler);

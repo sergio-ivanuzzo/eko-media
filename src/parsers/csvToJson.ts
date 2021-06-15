@@ -2,7 +2,7 @@ import sanitize from "~/helpers/sanitize";
 
 import { AppError } from "~/hooks/useNotifyError";
 
-const csvToJson = (rawData: string, separator = ","): Array<IItem> => {
+const csvToJson = (rawData: string, separator = ";"): Array<IItem> => {
     const [ headerRow, ...valueRows ] = rawData.split("\n");
     const itemKeys = headerRow.split(separator);
 
