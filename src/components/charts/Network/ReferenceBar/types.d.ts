@@ -1,6 +1,7 @@
 declare interface IReferenceBarProps {
     items: IReferenceItem[];
     setSelectedNodeName: (name: string) => void;
+    setHoveredNodeName: (name: string) => void;
 }
 
 declare interface IReferenceItem {
@@ -12,4 +13,5 @@ declare interface IReferenceItem {
 
 declare interface IReferenceItemProps extends IReferenceItem {
     setSelectedNodeName: (name: string) => void;
+    setHoveredNodeName: (name: string) => void;
 }

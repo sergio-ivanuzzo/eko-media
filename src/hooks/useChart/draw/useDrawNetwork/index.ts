@@ -28,15 +28,22 @@ const MAX_FADE = 1;
 
 const { orange, green, cyan, black } = theme.palette;
 
-const CUSTOM_EVENT_NODE_SELECTED = "custom.selected_node";
+const CUSTOM_EVENT_CLICK_NODE_NAME = "custom.click_node_name";
+const CUSTOM_EVENT_HOVER_NODE_NAME = "custom.hover_node_name";
 
 const useDrawNetwork = (
-    { nodes, edges, handleNodeClick, isSelected, setSelected, selectedNodeName, ...props }: IUseNetworkProps
+    { nodes, edges, handleNodeClick, isSelected, setSelected, ...props }: IUseNetworkProps
 ): { draw: (props: IChartDrawProps) => void } => {
 
-    const [ prevNodeName ] = usePreviousState(selectedNodeName);
+    const {
+        selectedNodeName,
+        setSelectedNodeName,
+        hoveredNodeName,
+        setHoveredNodeName
+    } = props;
 
-    const { setSelectedNodeName } = props;
+    const [ prevClickedNodeName ] = usePreviousState(selectedNodeName);
+    const [ prevHoveredNodeName ] = usePreviousState(hoveredNodeName);
 
     const highlight = useCallback((
         node: d3.Selection<SVGGElement, unknown, SVGSVGElement | null, unknown>
@@ -99,22 +106,20 @@ const useDrawNetwork = (
         );
     }, [ nodes, edges, isSelected ]);
 
-    const ref = useRef({
+    const tempFunctionsRef = useRef({
         doFade: [],
         doHighlight: [],
     });
 
-    const handler = useCallback((event: Event) => {
+    const clickNodeNameHandler = useCallback((event: Event) => {
         const { selectedNodeName, prevNodeName, isSelected } = (event as CustomEvent).detail || {};
         const {
             doFade = () => null,
             doHighlight = () => null
-        } = ref.current;
+        } = tempFunctionsRef.current;
 
         if (isSelected) {
             if (prevNodeName !== selectedNodeName) {
-                console.log("handler!");
-
                 if (selectedNodeName) {
                     const selectedNode = nodes.find((node: any) => node.name === selectedNodeName) || { id: -1 };
 
@@ -126,19 +131,58 @@ const useDrawNetwork = (
                 }
             }
         } else {
-            document.removeEventListener(CUSTOM_EVENT_NODE_SELECTED, handler);
+            document.removeEventListener(CUSTOM_EVENT_CLICK_NODE_NAME, clickNodeNameHandler);
         }
-    }, [ ref, selectedNodeName, nodes, edges ]);
+    }, [ tempFunctionsRef, selectedNodeName, nodes, edges ]);
+
+    const hoverNodeNameHandler = useCallback((event: Event) => {
+        const { hoveredNodeName, selectedNodeName, prevNodeName, isSelected } = (event as CustomEvent).detail || {};
+        const {
+            doFade = () => null,
+            doHighlight = () => null
+        } = tempFunctionsRef.current;
+
+        if (isSelected) {
+            if (prevNodeName !== prevHoveredNodeName) {
+
+                const nodeName = hoveredNodeName || selectedNodeName;
+
+                if (nodeName) {
+                    const selectedNode = nodes.find((node: any) => node.name === nodeName) || { id: -1 };
+
+                    (doFade as CallableFunction)(selectedNode, MIN_FADE, MAX_FADE);
+                    (doHighlight as CallableFunction)(
+                        selectedNode, green.jade, cyan.azure, cyan.azure, RADIUS * RADIUS_MULTIPLIER
+                    );
+                }
+            }
+        } else {
+            document.removeEventListener(CUSTOM_EVENT_HOVER_NODE_NAME, hoverNodeNameHandler);
+        }
+    }, [ tempFunctionsRef, prevHoveredNodeName, nodes, edges ]);
 
     const draw = useCallback(({ width: currentWidth, height: currentHeight, ...props }: IChartDrawProps): void => {
         const { chartRef, tooltip } = props;
 
         document.dispatchEvent(
             new CustomEvent(
-                CUSTOM_EVENT_NODE_SELECTED, {
+                CUSTOM_EVENT_CLICK_NODE_NAME, {
                     detail: {
                         selectedNodeName,
-                        prevNodeName,
+                        prevNodeName: prevClickedNodeName,
+                        isSelected,
+                    },
+                },
+            )
+        );
+
+        document.dispatchEvent(
+            new CustomEvent(
+                CUSTOM_EVENT_HOVER_NODE_NAME, {
+                    detail: {
+                        selectedNodeName,
+                        hoveredNodeName,
+                        prevNodeName: prevHoveredNodeName,
                         isSelected,
                     },
                 },
@@ -274,6 +318,8 @@ const useDrawNetwork = (
             node.on("mouseover.fade", null).on("mouseout.fade", null);
 
             setSelected(true);
+            setSelectedNodeName(d.name);
+
             handleNodeClick(d.id);
             doFade(d, MIN_FADE, MAX_FADE);
             doHighlight(d, green.jade, cyan.azure, cyan.azure, RADIUS * RADIUS_MULTIPLIER);
@@ -284,6 +330,7 @@ const useDrawNetwork = (
             const element = event.target as HTMLElement;
             if (![ "circle", "text" ].includes(element.tagName.toLowerCase())) {
                 setSelectedNodeName("");
+                setHoveredNodeName("");
                 setSelected(true);
                 setSelected(false);
             }
@@ -307,14 +354,15 @@ const useDrawNetwork = (
 
             });
 
-        ref.current = {
+        tempFunctionsRef.current = {
             doFade: doFade as any,
             doHighlight: doHighlight as any,
         };
 
-        document.addEventListener(CUSTOM_EVENT_NODE_SELECTED, handler);
+        document.addEventListener(CUSTOM_EVENT_CLICK_NODE_NAME, clickNodeNameHandler);
+        document.addEventListener(CUSTOM_EVENT_HOVER_NODE_NAME, hoverNodeNameHandler);
 
-    }, [ nodes, edges, isSelected, selectedNodeName, prevNodeName ]);
+    }, [ nodes, edges, isSelected, selectedNodeName, prevClickedNodeName, hoveredNodeName ]);
 
     return {
         draw

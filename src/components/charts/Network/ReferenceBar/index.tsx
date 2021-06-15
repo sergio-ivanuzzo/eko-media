@@ -24,24 +24,40 @@ const DEFAULT_COUNT_SORTED_ASC = true;
 
 const ReferenceItem = ({ from, to, direction, referenceCount, ...props }: IReferenceItemProps): JSX.Element => {
 
-    const { setSelectedNodeName } = props;
+    const { setSelectedNodeName, setHoveredNodeName } = props;
 
     return (
         <ReferenceItemContainer>
-            <MediaName title={from} onClick={() => setSelectedNodeName(from)}>{from}</MediaName>
+            <MediaName
+                title={from}
+                onClick={() => setSelectedNodeName(from)}
+                onMouseEnter={() => setHoveredNodeName(from)}
+                onMouseLeave={() => setHoveredNodeName("")}
+            >
+                {from}
+            </MediaName>
             <ArrowContainer>
                 <ConditionalRender condition={direction === ReferenceDirection.FORWARD}>
                     <StyledArrowRight />
                     <StyledArrowLeft />
                 </ConditionalRender>
             </ArrowContainer>
-            <MediaName title={to} onClick={() => setSelectedNodeName(to)}>{to}</MediaName>
+            <MediaName
+                title={to}
+                onClick={() => setSelectedNodeName(to)}
+                onMouseEnter={() => setHoveredNodeName(to)}
+                onMouseLeave={() => setHoveredNodeName("")}
+            >
+                {to}
+            </MediaName>
             <ReferenceCount>{referenceCount}</ReferenceCount>
         </ReferenceItemContainer>
     );
 };
 
-const ReferenceBar = ({ items: originItems, setSelectedNodeName }: IReferenceBarProps): JSX.Element => {
+const ReferenceBar = ({ items: originItems, ...props }: IReferenceBarProps): JSX.Element => {
+
+    const { setSelectedNodeName, setHoveredNodeName } = props;
 
     const [ items, setItems ] = useState(originItems);
     const [ targetSortedASC, setTargetSortedASC ] = useState(DEFAULT_TARGET_SORTED_ASC);
@@ -110,7 +126,12 @@ const ReferenceBar = ({ items: originItems, setSelectedNodeName }: IReferenceBar
                 </ReferenceCount>
             </ReferenceHeader>
             {items.map((item: IReferenceItem, index: number) => (
-                <ReferenceItem key={index} {...item} setSelectedNodeName={setSelectedNodeName} />
+                <ReferenceItem
+                    key={index}
+                    {...item}
+                    setSelectedNodeName={setSelectedNodeName}
+                    setHoveredNodeName={setHoveredNodeName}
+                />
             ))}
         </ReferenceList>
     );

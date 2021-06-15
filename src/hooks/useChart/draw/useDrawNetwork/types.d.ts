@@ -6,6 +6,8 @@ declare interface IUseNetworkProps {
     setSelected: Dispatch<SetStateAction<boolean>>;
     selectedNodeName?: string;
     setSelectedNodeName: (name: string) => void;
+    hoveredNodeName?: string;
+    setHoveredNodeName: (name: string) => void;
 }
 
 declare interface IHighlightProps {
