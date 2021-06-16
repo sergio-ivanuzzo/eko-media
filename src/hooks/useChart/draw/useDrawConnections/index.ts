@@ -3,6 +3,10 @@ import * as d3 from "d3";
 
 import theme from "~/common/theme";
 
+const MAX_STROKE_WIDTH = 21;
+const START_ARROW_ANGLE = 30;
+const END_ARROW_ANGLE = 150;
+
 const MIN_DISTANCE = 300;
 
 const MARGIN_LEFT = 30;
@@ -88,10 +92,6 @@ const useDrawConnections = (
             .attr("orient", "auto-start-reverse")
             .attr("markerUnits", "strokeWidth")
             .append("path")
-            // .attr("d", "M 0,-5 L 10 ,0 L 0,5")
-            // .attr("d", "M 5,-5 L 10 ,0 L 5,5")
-            // .attr("d", "M 3,-5 L 10 ,0 L 1,5")
-            // .attr("d", "M 2,-5 L 9,1 L 1,4")
             .attr("d", "M 1,-5 L 9,0 L 0,4")
             .attr("fill", orange.carrot);
 
@@ -153,7 +153,10 @@ const useDrawConnections = (
             .attr("fill", "none")
             .attr("marker-end", "url(#arrowhead)")
             .attr("stroke", orange.carrot)
-            .attr("stroke-width", (d: any) => d.weight);
+            .attr("stroke-width", (d: any) => {
+                const weight = parseInt(d.weight);
+                return `${weight > MAX_STROKE_WIDTH ? MAX_STROKE_WIDTH : weight}px`;
+            });
 
         link.exit().remove();
 
@@ -175,14 +178,14 @@ const useDrawConnections = (
 
         const percentageText = node.append("text")
             .text((d: any) => `${d.referencePercent}%`)
-            .attr("dy", (d: any, i: number) => offsetY)
+            .attr("dy", () => offsetY)
             .attr("text-anchor", "middle")
             .attr("pointer-events", "none");
 
         simulation.on("tick", () => {
             link.attr("d", (d: any, i: number) => {
-                const startAngle = 30;
-                const endAngle = 150;
+                const startAngle = START_ARROW_ANGLE;
+                const endAngle = END_ARROW_ANGLE;
 
                 return describeArc(
                     ((i % 2 === 0) ? d.source.x - ITEM_MARGIN * 2 : d.source.x),

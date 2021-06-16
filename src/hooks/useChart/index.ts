@@ -19,6 +19,15 @@ const useChart = (props: TUseChartProps): IUseChartResponse => {
         tooltip.html("").style("display", "none");
     }, [ selectedCategory ]);
 
+    // to remove tooltip on scroll page
+    useEffect(() => {
+        if (tooltip) {
+            const handler = () => tooltip.style("display", "none").style("left", "-9999px");
+            document.addEventListener("scroll", handler);
+            return () => document.removeEventListener("scroll", handler);
+        }
+    }, [ tooltip ]);
+
     const chartRef = useRef<SVGSVGElement>(null);
     const {
         ref: containerRef,
