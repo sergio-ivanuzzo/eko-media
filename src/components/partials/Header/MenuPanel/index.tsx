@@ -11,7 +11,7 @@ const MenuPanel = (): JSX.Element => {
             <Link to="/" tabIndex={1}>
                 <FormattedMessage id="link.main" />
             </Link>
-            <Link to="/feedback" tabIndex={2}>
+            <Link to={{ pathname: "https://forms.gle/cFnnQG6NzMtZoftW8" }} target="_blank" tabIndex={2}>
                 <FormattedMessage id="link.feedback" />
             </Link>
             <Link to="/about" tabIndex={3}>

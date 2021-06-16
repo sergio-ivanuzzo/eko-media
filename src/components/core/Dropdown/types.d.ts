@@ -3,6 +3,7 @@ declare interface IDropdownTriggerProps {
     close: () => void;
     toggle: () => void;
     isOpen: boolean;
+    color?: string;
 }
 
 declare interface IRenderDropdownChildrenProps {

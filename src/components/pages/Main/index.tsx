@@ -27,8 +27,12 @@ import {
     SubSection
 } from "~/components/pages/styles";
 
+import theme from "~/common/theme";
+
 const POLITICIAN_BAR_LIMIT = 3;
 const EXPERT_BAR_LIMIT = 3;
+
+const { gray, green, white, cyan } = theme.palette;
 
 const MainPage = (): JSX.Element => {
 
@@ -113,6 +117,13 @@ const MainPage = (): JSX.Element => {
                                     </span>
                                     <ArrowRight width={18} height={14} />
                                 </StyledLink>
+
+                                <Hint
+                                    text={formatMessage({ id: "zoomable_chart.hint" })}
+                                    background={cyan.azure}
+                                    color={cyan.azure}
+                                    toRight
+                                />
                             </SubSection>
 
                             <StackedBar />

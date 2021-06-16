@@ -40,7 +40,8 @@ export const CATEGORIES_MAP: { [key: string]: string } = {
 
 export enum FILE_EXTENSION {
     CSV = "csv",
-    JSON = "json"
+    JSON = "json",
+    TXT = "txt"
 }
 
 export enum MOUSE_BUTTON {

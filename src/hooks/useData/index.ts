@@ -1,5 +1,5 @@
 import { useIntl } from "react-intl";
-import { useCallback, useContext, useMemo } from "react";
+import { useCallback, useContext, useEffect, useMemo } from "react";
 
 import csvToJson from "~/parsers/csvToJson";
 import formatString from "~/helpers/formatString";
@@ -25,6 +25,7 @@ const useData = (): IUseDataResponse => {
         data,
         setData,
         date: selectedDate, // filter value
+        setDate,
         category: selectedCategory, // filter value
         setCategory,
         media: selectedMedia, // filter value
@@ -35,6 +36,8 @@ const useData = (): IUseDataResponse => {
         // all media for current month
         allMedia,
         setAllMedia,
+        dateUpdated,
+        setDateUpdated,
     } = useContext<IDataProviderContext<IItem>>(DataContext);
 
     const { formatMessage } = useIntl();
@@ -72,12 +75,25 @@ const useData = (): IUseDataResponse => {
                 };
             } else if (extension === FILE_EXTENSION.JSON) {
                 return { [name]: [ JSON.parse(responseText) ] };
+            } else if (extension === FILE_EXTENSION.TXT) {
+                return { data: responseText as any };
             }
         }
 
         return {};
 
     }, []);
+
+    useEffect(() => {
+        if (!dateUpdated) {
+            // initial loading of last_updated.txt to set proper date
+            (async () => {
+                const { data: date } = await load(ROOT_DIR, "last_updated.txt");
+                setDate(new Date(date as any));
+                setDateUpdated(true);
+            })();
+        }
+    }, [ dateUpdated ]);
 
     const loadCategoriesAndMedia = useCallback(async (): Promise<[IData<IItem>, string[], string[]]> => {
         const { month, year } = getMonthAndYear();

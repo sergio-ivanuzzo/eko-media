@@ -3,7 +3,6 @@ import { Route, Switch } from "react-router-dom";
 
 import AboutPage from "~/components/pages/About";
 import ExpertsDetailsPage from "~/components/pages/ExpertsDetails";
-import FeedbackPage from "~/components/pages/Feedback";
 import MainPage from "~/components/pages/Main";
 import PoliticiansDetailsPage from "~/components/pages/PoliticiansDetails";
 import TopicPage from "~/components/pages/Topic";
@@ -28,9 +27,6 @@ const Content = (): JSX.Element => {
                 </Route>
                 <Route exact path="/about">
                     <AboutPage />
-                </Route>
-                <Route exact path="/feedback">
-                    <FeedbackPage />
                 </Route>
             </Switch>
         </ContentContainer>

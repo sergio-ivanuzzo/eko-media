@@ -42,7 +42,7 @@ const useDrawBar = ({ onClick = () => null, ...props }: IDrawBarProps): { draw: 
             }))
             .attr("x", (d: any) => xScale(d[0]))
             .attr("y", (d: any) => yScale(d.key) as any)
-            .attr("width", (d: any) => xScale(d.value))
+            .attr("width", (d: any) => xScale(d.value) ?? "2px")
             .attr("height", yScale.bandwidth());
 
         rect.on("mouseover", function () {

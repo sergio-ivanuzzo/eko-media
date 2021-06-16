@@ -1,9 +1,9 @@
 import React from "react";
 
-const QuestionCircle = ({ width = "100%", height = "100%" }: IIconProps): JSX.Element => {
+const QuestionCircle = ({ width = "100%", height = "100%", color="#FF8557" }: IIconProps): JSX.Element => {
     return (
         <svg width={width} height={height} viewBox="0 0 13 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <ellipse cx="6.5" cy="11" rx="6.5" ry="7" fill="#FF8557"/>
+            <ellipse cx="6.5" cy="11" rx="6.5" ry="7" fill={color} />
             <path d="M7.35436 13.53V15H5.59436V13.53H7.35436ZM6.58436 7.73C7.35769 7.73 7.96436 7.89667
             8.40436 8.23C8.84436 8.56333 9.06436 9.02667 9.06436 9.62C9.06436 9.96 8.99436 10.25 8.85436 10.49C8.72102
             10.73 8.46102 11.01 8.07436 11.33C7.71436 11.6367 7.47436 11.9 7.35436 12.12C7.24102 12.3333 7.18436

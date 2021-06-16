@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
 
+import Hint from "~/components/core/Hint";
 import Placeholder from "~/components/core/Placeholder";
 
 import { FadeInAnimation } from "~/components/global.animations";
@@ -58,7 +59,7 @@ export const LeftColumn = styled.div<IColumnProps>`
   ${ColumnCSS};
   ${({ primaryAlign }) => getPrimaryAlign(primaryAlign)};
   ${({ secondaryAlign }) => getSecondaryAlign(secondaryAlign)};
-  width: 300px;
+  width: 340px;
   
   > *:not(:last-child) {
     margin-bottom: 20px;
@@ -104,3 +105,5 @@ export const BackLink = styled(StyledLink)`
     font-size: 50px;
   }
 `;
+
+export const HelperHint = styled(Hint)``;

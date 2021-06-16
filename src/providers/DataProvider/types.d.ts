@@ -26,4 +26,7 @@ declare interface IDataProviderContext<T extends IItem> {
     setTopCategories: Dispatch<SetStateAction<string[]>>;
     allMedia: string[];
     setAllMedia: Dispatch<SetStateAction<string[]>>;
+    // used with last_updated.txt
+    dateUpdated: boolean;
+    setDateUpdated: Dispatch<SetStateAction<boolean>>;
 }

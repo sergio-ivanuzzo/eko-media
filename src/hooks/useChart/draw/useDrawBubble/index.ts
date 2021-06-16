@@ -243,8 +243,8 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
 
         // draw tooltip
         node
-            .on("mouseover", () => tooltip.style("opacity", 1))
-            .on("mouseout", () => tooltip.style("opacity", 0))
+            .on("mouseover", () => tooltip.style("display", ""))
+            .on("mouseout", () => tooltip.style("display", "none").style("left", "-9999px"))
             .on("mousemove", (event: MouseEvent, d: any) => {
                 const text = `${tooltipText} ${d.wordCount}`;
 
