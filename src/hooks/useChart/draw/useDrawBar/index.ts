@@ -60,12 +60,14 @@ const useDrawBar = ({ onClick = () => null, ...props }: IDrawBarProps): { draw: 
             .attr("class", (d: any, i: number) => `group-${i}`)
             // .attr("fill", "white")
             .attr("text-anchor", "start")
-            .attr("x", (d: any) => xScale(0))
+            .attr("x", () => xScale(0))
             .attr("y", (d: any) => yScale(d.key) as number + yScale.bandwidth() / 2)
             .attr("dy", "0.4em")
             .attr("dx", "1em")
             .attr("font-size", "2em")
             .text((d: any) => d.title || d.key);
+
+        text.append("title").text((d: any) => d.title || d.key);
 
         rect.on("click", (e: MouseEvent, d: any) => onClick({ key: d.key, value: d.value }));
         text.on("click", (e: MouseEvent, d: any) => onClick({ key: d.key, value: d.value }));

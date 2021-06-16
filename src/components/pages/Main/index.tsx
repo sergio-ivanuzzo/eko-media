@@ -138,7 +138,7 @@ const MainPage = (): JSX.Element => {
                             </SubSection>
 
                             <StackedBar />
-                            <div style={{ marginLeft: `${MARGIN_LEFT}px` }}>
+                            <div style={{ marginLeft: `${MARGIN_LEFT}px`, marginTop: "100px" }}>
                                 <FormattedTitle
                                     placeholder={formatMessage({ id: "bubble.title" })}
                                     level={HeadingLevel.H3}

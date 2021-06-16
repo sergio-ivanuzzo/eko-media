@@ -1,28 +1,27 @@
 import { useCallback } from "react";
+import { useIntl } from "react-intl";
 import * as d3 from "d3";
 
 import useChartColor from "~/hooks/useChart/color/useChartColor";
 
 import { ChartTooltipCSS } from "~/components/core/Chart/styles";
 import brighten from "~/helpers/color/brighten";
+import theme from "~/common/theme";
 
 export const BAR_HEIGHT = 32;
 export const MARGIN_LEFT = 230;
-export const MARGIN_TOP = 50;
-export const LEGEND_HEIGHT = 20;
-export const TRANSITION_Y = MARGIN_TOP + LEGEND_HEIGHT;
 
 const MIN_ZOOM = 1;
 const MAX_ZOOM = 15;
 
-// const LEGEND_WIDTH = 20;
-// const LEGEND_MARGIN = 30;
-
 const TEXT_MARGIN_LEFT = 10;
+
+const { white, black } = theme.palette;
 
 const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw: (props: IChartDrawProps) => void } => {
 
     const { getColor } = useChartColor();
+    const { formatMessage } = useIntl();
 
     const draw = useCallback(({ chartRef, width, height, colors, tooltip }: IChartDrawProps): void => {
 
@@ -109,7 +108,8 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
             .attr("y", (d: any) => yScale(d.data.key))
             // check for zero-width segments
             .attr("width", (d: any) => xScale(d[1]) - xScale(d[0]) || "100%")
-            .attr("height", yScale.bandwidth());
+            .attr("height", yScale.bandwidth())
+            .classed("no-data", (d: any) => !d.data.values.some((value: number) => !!value));
 
         // add text on segments
         const text = group.selectAll("text.label").data((d: any) => d);
@@ -149,6 +149,7 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
 
         if (svgParent) {
             const legends = d3.select(svgParent.parentElement).select(".legends");
+            legends.html("");
 
             legends.selectAll(".legend")
                 .data(xData)
@@ -171,19 +172,30 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
             .on("mouseover", () => tooltip.style("display", null))
             .on("mouseout", () => tooltip.style("display", "none"))
             .on("mousemove", (event: MouseEvent, d: any) => {
+                const hasNoData = d3.select(event.currentTarget as any).classed("no-data");
                 const currentNode = d3.select(event.currentTarget as any).node();
                 const parentClass = d3.select(currentNode.parentNode).attr("class");
                 const groupIndex = Number(parentClass.replace( /^\D+/g, ""));
 
-                const text = d.data.values[groupIndex];
+                const text = hasNoData
+                    ? formatMessage({ id: "stacked_bar.no_data.tooltip.text" })
+                    : `${xData[groupIndex]} ${d.data.values[groupIndex]}`;
 
                 // apply main tooltip css
                 (tooltip.node() as HTMLElement).style.cssText = ChartTooltipCSS.toString();
 
-                tooltip.html(`${xData[groupIndex]} ${text}`)
-                    .style("background", brighten(d3.select(currentNode.parentNode).attr("fill"), 25))
+                tooltip.html(text)
+                    .style("background", hasNoData
+                        ? "gray"
+                        : brighten(d3.select(currentNode.parentNode).attr("fill"), 25)
+                    )
+                    .style("color", hasNoData ? white.base : black.base)
                     .style("left", `${event.pageX}px`)
                     .style("top", `${event.pageY + 10}px`).append("span");
+
+                if (hasNoData) {
+                    tooltip.style("white-space", "nowrap").style("text-transform", "none");
+                }
 
             });
 

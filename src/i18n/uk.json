@@ -44,6 +44,7 @@
   "stacked_bar.hint.urlText": "Докладніше",
   "stacked_bar.title.category": "Частка новин категорії {0} серед ТОП-5 категорій на обраних медіа",
   "stacked_bar.politician.title": "Як медія згадують про {0}: (% серед усіх згадок)",
+  "stacked_bar.no_data.tooltip.text": "Немає даних",
   "topic_media_bar.title": "Які медіа найбільше цікавляться темою \"{0}\": (% серед усіх новин)",
   "sphere_bar.title": "Сфера діяльності експертів у категорії {0}",
   "sphere_bar.hint": "Це кількості новин з коментарями кожного експерта за обраний період.",
@@ -66,7 +67,7 @@
   "zoomable_chart.hint": "Shift + Wheel щоб призумити",
   "draggable_chart.hint": "Shift + ЛКМ (Drag) щоб перетягнути",
   "draggable_chart.no_shift.hint": "ЛКМ (Drag) щоб перетягнути",
-  "clickable_chart.nodes.hint": "Натисніть на ноду, щоб показати таблицю",
+  "clickable_chart.nodes.hint": "Натисніть на ноду (ЛКМ), щоб показати таблицю",
 
   "badge.text": "Решта: ",
   "download_link.text": "Завантажити масив",
