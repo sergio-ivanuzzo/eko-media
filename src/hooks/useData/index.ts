@@ -239,6 +239,7 @@ const useData = (): IUseDataResponse => {
         setMedia,
         allMedia,
         isDataLoaded,
+        getMonthAndYear,
     }
 };
 

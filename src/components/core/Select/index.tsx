@@ -36,6 +36,7 @@ const DefaultTrigger = ({ selected: originSelected, ...props }: ISelectTriggerPr
     const selected = allMultipleSelected ? originSelected.slice(0, 1) : originSelected;
     const { ref: containerRef, width } = useElementSize();
     const { formatMessage } = useIntl();
+
     const badgeLabel = formatMessage({ id: "badge.text" });
 
     // calculate badge value (wrapped items)

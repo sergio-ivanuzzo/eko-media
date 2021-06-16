@@ -13,19 +13,26 @@ import {
 import ArrowLeft from "~/components/icons/ArrowLeft";
 import ArticleBar from "~/components/charts/Bar/ArticleBar";
 import ConditionalRender from "~/components/core/ConditionalRender";
+import DownloadLink from "~/components/core/DownloadLink";
 import FormattedTitle from "~/components/core/FormattedTitle";
 import TopicMediaBar from "~/components/charts/Bar/TopicMediaBar";
 import useData from "~/hooks/useData";
 
-import { CATEGORIES_MAP } from "~/common/constants";
 import { HeadingLevel } from "~/components/core/FormattedTitle/constants";
 import { AlignItems, JustifyContent } from "~/components/global.constants";
+import { CATEGORIES_MAP, ROOT_DIR, TYPES } from "~/common/constants";
+
+const TYPE = TYPES.TOPIC;
 
 const TopicPage = (): JSX.Element => {
-    const { isDataLoaded, selectedCategory } = useData();
+    const { isDataLoaded, selectedCategory, getMonthAndYear } = useData();
     const { formatMessage } = useIntl();
 
     const [ topic, setTopic ] = useState<string>("");
+
+    const { month, year } = getMonthAndYear();
+    const fileName = `${TYPE}_${selectedCategory}_${month}_${year}.csv`;
+    const dirPath = `${ROOT_DIR}/${year}/${month}/${fileName}`;
 
     return (
         <ConditionalRender condition={isDataLoaded}>
@@ -56,6 +63,9 @@ const TopicPage = (): JSX.Element => {
                         <RightColumn>
                             <TopicMediaBar selectedTopic={topic} />
                         </RightColumn>
+                    </SubSection>
+                    <SubSection primaryAlign={JustifyContent.CENTER} secondaryAlign={AlignItems.CENTER}>
+                        <DownloadLink filePath={dirPath} fileName={fileName} />
                     </SubSection>
                 </Section>
             </>

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 
 import ArrowLeft from "~/components/icons/ArrowLeft";
 import ConditionalRender from "~/components/core/ConditionalRender";
+import DownloadLink from "~/components/core/DownloadLink";
 import FormattedTitle from "~/components/core/FormattedTitle";
 import MentionChart from "~/components/charts/StackedBar/MentionChart";
 import PoliticianBar from "~/components/partials/Content/PoliticianBar";
@@ -12,16 +13,20 @@ import useData from "~/hooks/useData";
 import { HeadingLevel } from "~/components/core/FormattedTitle/constants";
 import { AlignItems, JustifyContent } from "~/components/global.constants";
 import { BackLink, HeadingSection, LeftColumn, RightColumn, Section, SubSection } from "~/components/pages/styles";
-import { CATEGORIES_MAP, TYPES } from "~/common/constants";
+import { CATEGORIES_MAP, ROOT_DIR, TYPES } from "~/common/constants";
 
 const TYPE = TYPES.POLITICIAN;
 
 const PoliticiansDetailsPage = (): JSX.Element => {
-    const { selectedCategory, isDataLoaded, getDataset  } = useData();
+    const { selectedCategory, isDataLoaded, getDataset, getMonthAndYear  } = useData();
     const { formatMessage } = useIntl();
     const [ politicianName, setPoliticianName ] = useState<string>("");
 
     const dataset = getDataset(TYPE, selectedCategory) || [];
+
+    const { month, year } = getMonthAndYear();
+    const fileName = `${TYPE}_${selectedCategory}_${month}_${year}.csv`;
+    const dirPath = `${ROOT_DIR}/${year}/${month}/${fileName}`;
 
     return (
         <ConditionalRender condition={isDataLoaded}>
@@ -57,6 +62,9 @@ const PoliticiansDetailsPage = (): JSX.Element => {
 
                             <MentionChart politicianName={politicianName} />
                         </RightColumn>
+                    </SubSection>
+                    <SubSection primaryAlign={JustifyContent.CENTER} secondaryAlign={AlignItems.CENTER}>
+                        <DownloadLink filePath={dirPath} fileName={fileName} />
                     </SubSection>
                 </Section>
             </>
