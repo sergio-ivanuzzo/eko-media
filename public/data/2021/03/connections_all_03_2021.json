@@ -1,64 +1,70 @@
 {
     "nodes": [{
-        "id": 21,
-        "name": "Obozrevatel"
+        "id": 1,
+        "name": "УНІАН"
+    },{
+        "id": 2,
+        "name": "ТСН"
+    },{
+        "id": 3,
+        "name": "Обозрєватель"
+    },{
+        "id": 4,
+        "name": "Гордон"
+    },{
+        "id": 5,
+        "name": "Українські новини"
     },{
         "id": 6,
-        "name": "Сьогодні"
+        "name": "Страна"
     },{
-        "id": 14,
-        "name": "НВ"
+        "id": 7,
+        "name": "Політека"
     },{
-        "id": 15,
-        "name": "Суспільне"
-    },{
-        "id": 13,
-        "name": "Інтерфакс-Україна"
-    },{
-        "id": 22,
-        "name": "Гордон"
+        "id": 8,
+        "name": "Знай"
     }],
 
     "edges": [{
-        "source": 21,
-        "target": 6,
-        "reference_percent": 16,
-        "weight": "16px"
+        "source": 1,
+        "target": 2,
+        "reference_percent": 35,
+        "weight": "21px"
     },{
-        "source": 6,
-        "target": 21,
-        "reference_percent": 16,
-        "weight": "16px"
-    },{
-        "source": 14,
-        "target": 15,
-        "reference_percent": 17,
-        "weight": "17px"
-    },{
-        "source": 15,
-        "target": 14,
-        "reference_percent": 27,
-        "weight": "27px"
-    },{
-        "source": 13,
-        "target": 14,
+        "source": 2,
+        "target": 1,
         "reference_percent": 19,
-        "weight": "19px"
+        "weight": "11.4px"
     },{
-        "source": 14,
-        "target": 13,
-        "reference_percent": 13,
-        "weight": "13px"
+        "source": 3,
+        "target": 4,
+        "reference_percent": 11,
+        "weight": "6.6px"
     },{
-        "source": 22,
+        "source": 4,
+        "target": 3,
+        "reference_percent": 14,
+        "weight": "8.4px"
+    },{
+        "source": 5,
         "target": 6,
-        "reference_percent": 12,
+        "reference_percent": 20,
         "weight": "12px"
     },{
         "source": 6,
-        "target": 22,
-        "reference_percent": 7,
-        "weight": "7px"
+        "target": 5,
+        "reference_percent": 20,
+        "weight": "12px"
+    },{
+        "source": 7,
+        "target": 8,
+        "reference_percent": 16,
+        "weight": "9.6px"
+    },{
+        "source": 8,
+        "target": 7,
+        "reference_percent": 8,
+        "weight": "4.8px"
     }
     ]
 }

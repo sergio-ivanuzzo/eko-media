@@ -64,7 +64,7 @@ const Bubble = (): JSX.Element => {
     return (
         <>
             <StyledChart draw={draw} colors={colors} />
-            <LegendsContainer className="legends" offset={MARGIN_LEFT} />
+            <LegendsContainer id="bubble-legends" offset={MARGIN_LEFT} />
             <ConditionalRender condition={!!(data?.length && selectedCategories.length)}>
                 <>
                     <ChartHint>

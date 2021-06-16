@@ -46,6 +46,7 @@ export const ChartHint = styled.div`
   font-size: 14px;
   text-align: center;
   color: ${({ theme }) => theme.palette.gray.silver};
+  width: 100%;
   
   &:hover {
     cursor: help;
@@ -57,8 +58,7 @@ export const LegendsContainer = styled.div<ILegendsContainerProps>`
   display: flex;
   width: 100%;
   align-items: center;
-  flex-wrap: wrap;
-  
+  flex-wrap: wrap;  
       
   ${({ offset }) => offset && `
     width: calc(100% - ${offset}px);
@@ -66,7 +66,7 @@ export const LegendsContainer = styled.div<ILegendsContainerProps>`
   `};
   
   > * {
-    margin: 10px;
+    margin: 10px 10px 10px 0;
   }
   
   .legend {
@@ -74,7 +74,7 @@ export const LegendsContainer = styled.div<ILegendsContainerProps>`
     align-items: center;
     
     > * {
-      margin: 0 10px;
+      margin-right: 10px;
     }
   }
   

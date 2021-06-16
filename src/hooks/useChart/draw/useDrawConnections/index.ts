@@ -76,22 +76,23 @@ const useDrawConnections = (
         // clear svg before draw new content
         svg.selectAll("svg > *").remove();
 
-        const marker = svg.append("defs").append("marker");
+        const defs = svg.append("defs");
+        const marker = defs.append("marker").attr("id", "arrowhead");
+
         marker
-            .attr("id", "arrowhead")
             .attr("viewBox", "0 -5 10 10")
-            .attr("refX", 6)
+            .attr("refX", 5)
             .attr("refY", 0)
             .attr("markerWidth", 3)
             .attr("markerHeight", 3)
             .attr("orient", "auto-start-reverse")
             .attr("markerUnits", "strokeWidth")
             .append("path")
-            .attr("d", "M0,-5L10,0L0,5")
-
-        marker
-            .append("path")
-            .attr("d", "M 0,-5 L 10 ,0 L 0,5")
+            // .attr("d", "M 0,-5 L 10 ,0 L 0,5")
+            // .attr("d", "M 5,-5 L 10 ,0 L 5,5")
+            // .attr("d", "M 3,-5 L 10 ,0 L 1,5")
+            // .attr("d", "M 2,-5 L 9,1 L 1,4")
+            .attr("d", "M 1,-5 L 9,0 L 0,4")
             .attr("fill", orange.carrot);
 
         const itemWidth = (width - (MARGIN_LEFT + MARGIN_RIGHT + ITEM_MARGIN * 2)) / pairAmount;
@@ -150,7 +151,7 @@ const useDrawConnections = (
                 );
             })
             .attr("fill", "none")
-            .attr("marker-end","url(#arrowhead)")
+            .attr("marker-end", "url(#arrowhead)")
             .attr("stroke", orange.carrot)
             .attr("stroke-width", (d: any) => d.weight);
 

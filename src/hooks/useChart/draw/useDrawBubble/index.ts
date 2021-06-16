@@ -268,7 +268,7 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
         const svgParent = svgElement?.parentElement;
 
         if (svgParent) {
-            const legends = d3.select(svgParent.parentElement).select(".legends");
+            const legends = d3.select(svgParent.parentElement).select("#bubble-legends");
 
             legends.selectAll(".legend")
                 .data(selectedCategories)

@@ -113,9 +113,14 @@ const Network = (): JSX.Element => {
                 <StyledChart draw={draw} />
             </NetworkChartContainer>
             <ConditionalRender condition={!!(nodesCopy.length && edgesCopy.length)}>
-                <ChartHint>
-                    <FormattedMessage id="draggable_chart.hint" />
-                </ChartHint>
+                <>
+                    <ChartHint>
+                        <FormattedMessage id="draggable_chart.no_shift.hint" />
+                    </ChartHint>
+                    <ChartHint>
+                        <FormattedMessage id="clickable_chart.nodes.hint" />
+                    </ChartHint>
+                </>
             </ConditionalRender>
         </>
     )

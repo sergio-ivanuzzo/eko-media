@@ -48,11 +48,10 @@ export const SubSection = styled.div<IRowProps>`
     }
   `};
   
-  padding: 0 10px;
   margin-bottom: 20px;
   
   > * {
-    //margin: 0 50px;
+    margin: 0 20px;
   }
 `;
 
@@ -60,7 +59,7 @@ export const LeftColumn = styled.div<IColumnProps>`
   ${ColumnCSS};
   ${({ primaryAlign }) => getPrimaryAlign(primaryAlign)};
   ${({ secondaryAlign }) => getSecondaryAlign(secondaryAlign)};
-  width: 340px;
+  width: 400px;
   
   > *:not(:last-child) {
     margin-bottom: 20px;

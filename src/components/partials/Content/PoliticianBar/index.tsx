@@ -6,6 +6,8 @@ import useData from "~/hooks/useData";
 
 import { Mention, NON_MEDIA_KEYS, POLITICIANS_PHOTOS_DIR, TYPES } from "~/common/constants";
 
+import { PoliticianBarContainer } from "./styles";
+
 const TYPE = TYPES.POLITICIAN;
 
 const PoliticianBar = ({ limit, selectable = false, onSelect = () => null }: IPoliticianBarProps): JSX.Element => {
@@ -77,9 +79,11 @@ const PoliticianBar = ({ limit, selectable = false, onSelect = () => null }: IPo
     }, [ ]);
 
     return (
-        <PaginatedList>
-            {children}
-        </PaginatedList>
+        <PoliticianBarContainer>
+            <PaginatedList>
+                {children}
+            </PaginatedList>
+        </PoliticianBarContainer>
     );
 };
 

@@ -11,6 +11,7 @@ import formatString from "~/helpers/formatString";
 import useData from "~/hooks/useData";
 
 import { HeadingLevel } from "~/components/core/FormattedTitle/constants";
+import { MARGIN_LEFT } from "~/hooks/useChart/draw/useDrawStackedBar";
 import { AlignItems, JustifyContent } from "~/components/global.constants";
 import { BackLink, HeadingSection, LeftColumn, RightColumn, Section, SubSection } from "~/components/pages/styles";
 import { CATEGORIES_MAP, ROOT_DIR, TYPES } from "~/common/constants";
@@ -53,8 +54,8 @@ const PoliticiansDetailsPage = (): JSX.Element => {
                             </div>
                             <PoliticianBar onSelect={setPoliticianName} selectable />
                         </LeftColumn>
-                        <RightColumn primaryAlign={JustifyContent.END}>
-                            <div>
+                        <RightColumn primaryAlign={JustifyContent.START} secondaryAlign={AlignItems.START}>
+                            <div style={{ marginLeft: `${MARGIN_LEFT}px` }}>
                                 <FormattedTitle
                                     placeholder={formatMessage({ id: "stacked_bar.politician.title" })}
                                     params={[ politicianName ]} level={HeadingLevel.H3} />

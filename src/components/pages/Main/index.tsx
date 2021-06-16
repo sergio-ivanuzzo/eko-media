@@ -17,6 +17,7 @@ import useData from "~/hooks/useData";
 
 import { CATEGORIES_MAP } from "~/common/constants";
 import { HeadingLevel } from "~/components/core/FormattedTitle/constants";
+import { MARGIN_LEFT } from "~/hooks/useChart/draw/useDrawStackedBar";
 import { AlignItems, JustifyContent } from "~/components/global.constants";
 import {
     LeftColumn,
@@ -80,10 +81,32 @@ const MainPage = (): JSX.Element => {
                                 </div>
                                 <SphereBar />
                             </div>
+                            <div>
+                                <div>
+                                    <FormattedTitle
+                                        placeholder={formatMessage({ id: "expert_bar.title" })}
+                                        params={[ CATEGORIES_MAP[selectedCategory] ]} inline
+                                    />
+                                    <Hint
+                                        text={formatMessage({ id: "sphere_bar.hint" })}
+                                        linkUrl={"/about#experts"}
+                                        linkText={formatMessage({ id: "sphere_bar.hint.urlText" })}
+                                    />
+                                </div>
+                                <ExpertBar limit={EXPERT_BAR_LIMIT} />
+                                <div>
+                                    <StyledLink to="/experts/details" tabIndex={7}>
+                                        <span>
+                                            <FormattedMessage id="link.details" />
+                                        </span>
+                                        <ArrowRight width={18} height={14} />
+                                    </StyledLink>
+                                </div>
+                            </div>
                         </LeftColumn>
-                        <RightColumn secondaryAlign={AlignItems.END}>
+                        <RightColumn secondaryAlign={AlignItems.START}>
                             <SubSection primaryAlign={JustifyContent.START} secondaryAlign={AlignItems.CENTER}>
-                                <div style={{ marginLeft: "230px" }}>
+                                <div style={{ marginLeft: `${MARGIN_LEFT}px` }}>
                                     <ConditionalRender condition={selectedCategory === "all"}>
                                         <FormattedTitle
                                             placeholder={formatMessage({ id: "stacked_bar.title.all" })}
@@ -115,35 +138,7 @@ const MainPage = (): JSX.Element => {
                             </SubSection>
 
                             <StackedBar />
-                        </RightColumn>
-                    </SubSection>
-                    <SubSection primaryAlign={JustifyContent.SPACE_BETWEEN} secondaryAlign={AlignItems.START}>
-                        <LeftColumn>
-                            <div>
-                                <div>
-                                    <FormattedTitle
-                                        placeholder={formatMessage({ id: "expert_bar.title" })}
-                                        params={[ CATEGORIES_MAP[selectedCategory] ]} inline
-                                    />
-                                    <Hint
-                                        text={formatMessage({ id: "sphere_bar.hint" })}
-                                        linkUrl={"/about#experts"}
-                                        linkText={formatMessage({ id: "sphere_bar.hint.urlText" })}
-                                    />
-                                </div>
-                                <ExpertBar limit={EXPERT_BAR_LIMIT} />
-                                <div>
-                                    <StyledLink to="/experts/details" tabIndex={7}>
-                                        <span>
-                                            <FormattedMessage id="link.details" />
-                                        </span>
-                                        <ArrowRight width={18} height={14} />
-                                    </StyledLink>
-                                </div>
-                            </div>
-                        </LeftColumn>
-                        <RightColumn>
-                            <div>
+                            <div style={{ marginLeft: `${MARGIN_LEFT}px` }}>
                                 <FormattedTitle
                                     placeholder={formatMessage({ id: "bubble.title" })}
                                     level={HeadingLevel.H3}
@@ -177,19 +172,21 @@ const MainPage = (): JSX.Element => {
                         />
                     </div>
                     <Network />
-                    <div>
-                        <FormattedTitle
-                            placeholder={formatMessage({ id: "arrow_chart.title" })}
-                            level={HeadingLevel.H3}
-                            inline
-                        />
-                        <Hint
-                            text={formatMessage({ id: "arrow_chart.hint" })}
-                            linkUrl={"/about#connections"}
-                            linkText={formatMessage({ id: "arrow_chart.hint.urlText" })}
-                        />
+                    <div style={{ marginTop: "100px" }}>
+                        <div>
+                            <FormattedTitle
+                                placeholder={formatMessage({ id: "arrow_chart.title" })}
+                                level={HeadingLevel.H3}
+                                inline
+                            />
+                            <Hint
+                                text={formatMessage({ id: "arrow_chart.hint" })}
+                                linkUrl={"/about#connections"}
+                                linkText={formatMessage({ id: "arrow_chart.hint.urlText" })}
+                            />
+                        </div>
+                        <ArrowChart />
                     </div>
-                    <ArrowChart />
                 </Section>
             </>
             <StyledPlaceholder primaryAlign={JustifyContent.CENTER}>
