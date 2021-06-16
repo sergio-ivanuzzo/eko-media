@@ -8,6 +8,7 @@ import useData from "~/hooks/useData";
 import useNotifyError from "~/hooks/useNotifyError";
 
 import { ChartTooltipCSS } from "~/components/core/Chart/styles";
+import { TYPES } from "~/common/constants";
 
 export const MAX_BUBBLE_RADIUS = 150;
 
@@ -25,7 +26,8 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
 
     const { catchErrorsSync } = useNotifyError();
     const { getColor } = useChartColor();
-    const { topCategories } = useData();
+    const { topCategories, getDataset } = useData();
+    const categoriesAllData = getDataset(TYPES.CATEGORY) ?? [];
 
     const children = ({
         children: Array.from(
@@ -52,10 +54,12 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
     const legendsText = formatMessage({ id: "bubble.legends_text" });
     const tooltipText = formatMessage({ id: "bubble.tooltip_text.total" })
 
-    const groupedData = d3.group(data, (d) => d.category);
+    const totals = categoriesAllData.reduce((acc, item) => {
+        acc[item.category as string] = Object.values(item)
+            .map(Number)
+            .filter(Boolean)
+            .reduce((sum, value) => sum + value, 0);
 
-    const totals = selectedCategories.reduce((acc: { [key: string]: number}, category) => {
-        acc[category] = (groupedData.get(category) || []).reduce((sum, item) => sum + item.wordCount, 0);
         return acc;
     }, {});
 
