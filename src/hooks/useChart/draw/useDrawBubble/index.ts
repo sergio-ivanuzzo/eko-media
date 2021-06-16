@@ -69,14 +69,15 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
             return;
         }
 
-        const width = currentWidth * 1.2;
+        const categoriesCount = selectedCategories.length;
+        const clusters = new Array(categoriesCount);
+        const defaultTextSize = categoriesCount === 1 ? DEFAULT_TEXT_SIZE * 2 : DEFAULT_TEXT_SIZE;
+
+        const width = categoriesCount > 1 ? currentWidth * 1.2 : currentWidth * 2;
 
         const pack = () => d3.pack()
             .size([ width, height ])
             .padding(1)(d3.hierarchy(children).sum((d: any) => d.radius));
-
-        const categoriesCount = selectedCategories.length;
-        const clusters = new Array(categoriesCount);
 
         let centers: Array<[number, number]> = [];
 
@@ -90,7 +91,7 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
 
         // according to current requirements we can build 5 or 1 bubble chart
         if (categoriesCount === 1) {
-            centers = [ [ width / 2, height / 2 ] ];
+            centers = [ [ width / 2, height / 2 + 200 ] ];
         } else {
             centers = [
                 [ offsetX + paddingX, paddingY ],
@@ -143,7 +144,12 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
             .force("x", d3.forceX().x((d: any) => centers[d.cluster][0]).strength(0.05))
             .force("y", d3.forceY().y((d: any) => centers[d.cluster][1]).strength(0.05))
             .force("charge", d3.forceManyBody().strength(-10))
-            .force("collision", d3.forceCollide().radius((d: any) => d.r * RADIUS_MULTIPLIER + INDENT_BETWEEN_BUBBLES));
+            .force("collision", d3.forceCollide().radius(
+                (d: any) =>
+                    d.r * RADIUS_MULTIPLIER +
+                    (categoriesCount === 1 ? INDENT_BETWEEN_BUBBLES * 4 : INDENT_BETWEEN_BUBBLES)
+                )
+            );
 
         // disable animation
         simulation.stop();
@@ -179,7 +185,7 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
             .filter((event: WheelEvent) => event.shiftKey)
             .on("zoom", (event: d3.D3ZoomEvent<any, any>) => {
                 const scale = event.transform.k;
-                const textSize = DEFAULT_TEXT_SIZE * scale > MAX_TEXT_SIZE ? MAX_TEXT_SIZE / scale : DEFAULT_TEXT_SIZE;
+                const textSize = defaultTextSize * scale > MAX_TEXT_SIZE ? MAX_TEXT_SIZE / scale : defaultTextSize;
 
                 node.selectAll("circle,text").attr("transform", event.transform.toString());
                 node.selectAll("text").style("font-size", `${textSize}px`);
@@ -203,11 +209,12 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
         node.append("text")
             .text((d) => d.word)
             .attr("dy", () => "0.3em")
-            .attr("font-size", DEFAULT_TEXT_SIZE)
+            .attr("font-size", defaultTextSize)
             .attr("text-anchor", "middle")
             // .attr("pointer-events", "none")
             .attr("x", (d: any) => d.x)
-            .attr("y", (d: any) => d.y);
+            .attr("y", (d: any) => d.y)
+            .classed("single-cluster", categoriesCount === 1);
 
         simulation.on("tick", () => {
             node.selectAll("circle")
@@ -273,6 +280,7 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
 
         if (svgParent) {
             const legends = d3.select(svgParent.parentElement).select("#bubble-legends");
+            legends.html("");
 
             legends.selectAll(".legend")
                 .data(selectedCategories)

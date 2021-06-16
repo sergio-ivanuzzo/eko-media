@@ -10,6 +10,10 @@ export const StyledChart = styled(Chart)`
       ${NoSelectCSS};
       font-size: 20px;
       font-weight: 400;
+      
+      &.single-cluster {
+        font-size: 40px;
+      }
     }
     
     .with-transition {
