@@ -1,5 +1,5 @@
 import { FormattedMessage, useIntl } from "react-intl";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
     BackLink, HeadingSection,
@@ -34,6 +34,11 @@ const TopicPage = (): JSX.Element => {
     const fileName = `${TYPE}_${selectedCategory}_${month}_${year}.csv`;
     const dirPath = `${ROOT_DIR}/${year}/${month}/${fileName}`;
 
+    // reset topic on change category
+    useEffect(() => {
+        setTopic("");
+    }, [ selectedCategory ]);
+
     return (
         <ConditionalRender condition={isDataLoaded}>
             <>
@@ -48,11 +53,13 @@ const TopicPage = (): JSX.Element => {
                     </HeadingSection>
                     <SubSection>
                         <LeftColumn />
-                        <RightColumn primaryAlign={JustifyContent.START}>
+                        <RightColumn primaryAlign={JustifyContent.START} secondaryAlign={AlignItems.START}>
                             <ConditionalRender condition={!!topic}>
                                 <FormattedTitle
                                     placeholder={formatMessage({ id: "topic_media_bar.title" })}
-                                    params={[ topic ]} level={HeadingLevel.H3} />
+                                    params={[ topic ]}
+                                    level={HeadingLevel.H3}
+                                />
                             </ConditionalRender>
                         </RightColumn>
                     </SubSection>
