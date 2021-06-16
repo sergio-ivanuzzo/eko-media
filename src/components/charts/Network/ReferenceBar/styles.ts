@@ -53,6 +53,10 @@ export const ReferenceItemContainer = styled.div`
   white-space: nowrap;
   margin: 0 5px;
   font-size: 14px;
+  
+  &:hover {
+    background: ${({ theme }) => theme.palette.gray.silver};
+  }
 `;
 
 export const ArrowContainer = styled.div`

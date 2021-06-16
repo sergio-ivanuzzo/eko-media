@@ -32,7 +32,7 @@ import theme from "~/common/theme";
 const POLITICIAN_BAR_LIMIT = 3;
 const EXPERT_BAR_LIMIT = 3;
 
-const { gray, green, white, cyan } = theme.palette;
+const { cyan } = theme.palette;
 
 const MainPage = (): JSX.Element => {
 
@@ -77,18 +77,13 @@ const MainPage = (): JSX.Element => {
                                         params={[ CATEGORIES_MAP[selectedCategory] ]}
                                         inline
                                     />
-                                    <Hint
-                                        text={formatMessage({ id: "sphere_bar.hint" })}
-                                        linkUrl={"/about#experts"}
-                                        linkText={formatMessage({ id: "sphere_bar.hint.urlText" })}
-                                    />
                                 </div>
                                 <SphereBar />
                             </div>
                         </LeftColumn>
-                        <RightColumn>
-                            <SubSection primaryAlign={JustifyContent.SPACE_BETWEEN} secondaryAlign={AlignItems.START}>
-                                <div>
+                        <RightColumn secondaryAlign={AlignItems.END}>
+                            <SubSection primaryAlign={JustifyContent.START} secondaryAlign={AlignItems.CENTER}>
+                                <div style={{ marginLeft: "230px" }}>
                                     <ConditionalRender condition={selectedCategory === "all"}>
                                         <FormattedTitle
                                             placeholder={formatMessage({ id: "stacked_bar.title.all" })}
@@ -117,13 +112,6 @@ const MainPage = (): JSX.Element => {
                                     </span>
                                     <ArrowRight width={18} height={14} />
                                 </StyledLink>
-
-                                <Hint
-                                    text={formatMessage({ id: "zoomable_chart.hint" })}
-                                    background={cyan.azure}
-                                    color={cyan.azure}
-                                    toRight
-                                />
                             </SubSection>
 
                             <StackedBar />
@@ -132,9 +120,17 @@ const MainPage = (): JSX.Element => {
                     <SubSection primaryAlign={JustifyContent.SPACE_BETWEEN} secondaryAlign={AlignItems.START}>
                         <LeftColumn>
                             <div>
-                                <FormattedTitle
-                                    placeholder={formatMessage({ id: "expert_bar.title" })}
-                                    params={[ CATEGORIES_MAP[selectedCategory] ]} />
+                                <div>
+                                    <FormattedTitle
+                                        placeholder={formatMessage({ id: "expert_bar.title" })}
+                                        params={[ CATEGORIES_MAP[selectedCategory] ]} inline
+                                    />
+                                    <Hint
+                                        text={formatMessage({ id: "sphere_bar.hint" })}
+                                        linkUrl={"/about#experts"}
+                                        linkText={formatMessage({ id: "sphere_bar.hint.urlText" })}
+                                    />
+                                </div>
                                 <ExpertBar limit={EXPERT_BAR_LIMIT} />
                                 <div>
                                     <StyledLink to="/experts/details" tabIndex={7}>

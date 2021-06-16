@@ -344,10 +344,10 @@ const useDrawNetwork = (
                 // apply main tooltip css
                 (tooltip.node() as HTMLElement).style.cssText = ChartTooltipCSS.toString();
 
-                tooltip.html(`<img src="${imageSrc}" width="60px" alt="">`)
+                tooltip.html(`<img src="${imageSrc}" width="100px" alt="">`)
                     .style("background", "transparent")
                     .style("left", `${event.pageX - 30}px`)
-                    .style("top", `${event.pageY - 110}px`);
+                    .style("top", `${event.pageY - 150}px`);
 
             });
 

@@ -36,6 +36,7 @@ export const HeadingSection = styled.div`
 export const SubSection = styled.div<IRowProps>`
   ${CustomFontCSS};
   ${NoSelectCSS};
+  width: 100%;
   display: flex;
   ${({ primaryAlign }) => getPrimaryAlign(primaryAlign)};
   ${({ secondaryAlign }) => getSecondaryAlign(secondaryAlign)};
@@ -51,7 +52,7 @@ export const SubSection = styled.div<IRowProps>`
   margin-bottom: 20px;
   
   > * {
-    margin: 0 50px;
+    //margin: 0 50px;
   }
 `;
 

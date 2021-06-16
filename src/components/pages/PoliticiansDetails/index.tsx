@@ -47,7 +47,7 @@ const PoliticiansDetailsPage = (): JSX.Element => {
                                 <FormattedTitle
                                     placeholder={formatMessage({ id: "orange_label" })}
                                     params={[ formatString({
-                                        initial: formatMessage({ id: "topX" }),
+                                        initial: formatMessage({ id: "topXPoliticians" }),
                                         params: [ `${dataset.length}` ]
                                     }) ]} />
                             </div>
