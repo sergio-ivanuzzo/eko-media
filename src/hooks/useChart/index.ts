@@ -17,6 +17,11 @@ const useChart = (props: TUseChartProps): IUseChartResponse => {
 
     useEffect(() => {
         tooltip.html("").style("display", "none");
+
+        // clean up
+        return () => {
+            tooltip.html("").style("display", "none");
+        };
     }, [ selectedCategory ]);
 
     // to remove tooltip on scroll page

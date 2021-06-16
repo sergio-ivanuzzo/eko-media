@@ -1,9 +1,11 @@
 import { useIntl } from "react-intl";
 import React, { useContext, useEffect, useState } from "react";
 
+import ConditionalRender from "~/components/core/ConditionalRender";
 import DateRange from "~/components/icons/DateRange";
 import getMonthsList from "~/helpers/getMonthsList";
 import getRange from "~/helpers/getRange";
+import useData from "~/hooks/useData";
 
 import { DataContext } from "~/providers/DataProvider";
 import { DatePickerMode } from "~/components/core/Datepicker/constants";
@@ -12,14 +14,19 @@ import { DatePickerItem, StyledDropdown, TriggerContainer, TriggerItem } from ".
 const MIN_YEAR = 2019;
 const MAX_YEAR = 2050;
 
-const DefaultTrigger = ({ selectedDate, toggle }: IDatePickerTriggerProps): JSX.Element => {
+const DefaultTrigger = ({ selectedDate, toggle, dateUpdated }: IDatePickerTriggerProps): JSX.Element => {
     const { locale } = useIntl();
     const month = selectedDate.toLocaleString(locale, { month: "long" });
 
     return (
         <TriggerContainer>
             <TriggerItem onClick={() => toggle()}>
-                {month} {selectedDate.getFullYear()} <DateRange width={24} />
+                <ConditionalRender condition={dateUpdated}>
+                    <>
+                        {month} {selectedDate.getFullYear()}
+                    </>
+                </ConditionalRender>
+                <DateRange width={24} />
             </TriggerItem>
         </TriggerContainer>
     );
@@ -43,6 +50,8 @@ const DatePicker = (props: IDatePickerProps): JSX.Element => {
     const { locale } = useIntl();
     const monthsList = getMonthsList(locale);
     const yearRange = getRange(MIN_YEAR, MAX_YEAR);
+
+    const { dateUpdated } = useData();
 
     const { date, setDate } = useContext<IDataProviderContext<IItem>>(DataContext);
     const [ mode, setMode ] = useState<DatePickerMode>(DatePickerMode.SELECTING_MONTH);
@@ -106,8 +115,11 @@ const DatePicker = (props: IDatePickerProps): JSX.Element => {
 
     // fixing race condition, bc onDataChange should be fired after date was changed
     useEffect(() => {
-        onDateChange();
-    }, [ date ]);
+        // allow loading only after sync with last_updated
+        if (dateUpdated) {
+            onDateChange();
+        }
+    }, [ date, dateUpdated ]);
 
     return (
         <StyledDropdown
@@ -119,6 +131,7 @@ const DatePicker = (props: IDatePickerProps): JSX.Element => {
             renderTrigger={
                 (props: IDropdownTriggerProps) => renderTrigger({
                     selectedDate: date,
+                    dateUpdated,
                     ...props
                 })
             }

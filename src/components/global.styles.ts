@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.min.css";
 export const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: "NeueHaasUnica";
-    src: url(../../public/static/fonts/NeueHaasUnica-Regular.ttf);
+    src: url(../../static/fonts/NeueHaasUnica-Regular.ttf);
   }
 `;
 
