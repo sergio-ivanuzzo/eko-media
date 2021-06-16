@@ -6,4 +6,7 @@ declare interface IExpertBarItem {
     name: string;
     commentsAmount?: number;
     avatarUrl?: string;
+    workAt?: string;
+    education?: string;
+    categories?: string;
 }

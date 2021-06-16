@@ -75,6 +75,12 @@ export const CATEGORY_KEYS = [ "category", "Найбільше коментує"
 // for filtering media columns
 export const NON_MEDIA_KEYS = [ "name", "image_name", "expert_id", "topic" ];
 
+export const EXPERT_INFO_FIELDS = {
+    work_at: "місце роботи",
+    categories: "найбільше коментує",
+    education: "освіта",
+}
+
 // for politician_ type files
 export enum Mention {
     POSITIVE = "позитивні",

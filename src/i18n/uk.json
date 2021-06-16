@@ -54,6 +54,10 @@
   "politician_bar.hint": "Це кількості новин зі згадками кожного політика за обраний період. Кожна новина має емоційне забарвлення: позитивне, нейтральне, негативне.",
   "politician_bar.hint.urlText": "Докладніше",
   "expert_bar.title": "Найбільше категорію {0} на обраних медіа коментували",
+  "expert_info.work_at": "Працює",
+  "expert_info.education": "Освіта",
+  "expert_info.categories": "Які теми коментує",
+  "expert_info.no_data": "Немає даних",
 
   "placeholder.empty_select": "Ще нічого не вибрано",
   "placeholder.empty_data": "Для обраної дати немає даних",
