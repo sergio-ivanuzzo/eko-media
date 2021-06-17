@@ -20,7 +20,7 @@ import {
     TYPES
 } from "~/common/constants";
 
-import { ExpertInfoContainer } from "~/components/pages/ExpertsDetails/styles";
+import { ExpertInfo, ExpertInfoContainer } from "~/components/pages/ExpertsDetails/styles";
 
 const TYPE = TYPES.EXPERT;
 
@@ -77,7 +77,7 @@ const ExpertsDetailsPage = (): JSX.Element => {
                                     avatarUrl={item.avatarUrl}
                                     commentsAmount={item.commentsAmount}
                                 />
-                                <div>
+                                <ExpertInfo>
                                     <div>
                                         <FormattedMessage id="expert_info.work_at" />
                                     </div>
@@ -96,7 +96,7 @@ const ExpertsDetailsPage = (): JSX.Element => {
                                     <div title={item.categories ?? formatMessage({ id: "expert_info.no_data" })}>
                                         {item.categories ?? formatMessage({ id: "expert_info.no_data" })}
                                     </div>
-                                </div>
+                                </ExpertInfo>
                             </ExpertInfoContainer>
                         ))}
                     </SubSection>

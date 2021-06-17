@@ -21,3 +21,9 @@ export const ExpertInfoContainer = styled.div`
     }
   }
 `;
+
+export const ExpertInfo = styled.div`
+  > div {
+    overflow-y: hidden;
+  }
+`;

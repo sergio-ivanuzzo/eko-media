@@ -20,12 +20,14 @@ const PoliticianCard = ({ name, mentions, avatarUrl, ...props }: IPoliticianCard
 
     const renderMentionBar = () => {
         return (
-            <MentionBar
-                positive={mentions[Mention.POSITIVE]}
-                neutral={mentions[Mention.NEUTRAL]}
-                negative={mentions[Mention.NEGATIVE]}
-                hoverable={!selectable || selected}
-            />
+            <div>
+                <MentionBar
+                    positive={mentions[Mention.POSITIVE]}
+                    neutral={mentions[Mention.NEUTRAL]}
+                    negative={mentions[Mention.NEGATIVE]}
+                    hoverable={!selectable || selected}
+                />
+            </div>
         );
     };
 
