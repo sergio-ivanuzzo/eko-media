@@ -3,6 +3,8 @@ import styled from "styled-components";
 import ArrowLeft from "~/components/icons/ArrowLeft";
 import ArrowRight from "~/components/icons/ArrowRight";
 
+import brighten from "~/helpers/color/brighten";
+
 import { DisabledCSS, NoActiveOutlineCSS, NoSelectCSS, OverflowCSS } from "~/components/global.styles";
 
 export const ReferenceList = styled.div`
@@ -12,6 +14,7 @@ export const ReferenceList = styled.div`
   padding: 2px;
   border-radius: 5px;
   ${NoSelectCSS};
+  margin-top: 50px;
 `;
 
 export const ReferenceHeader = styled.div`
@@ -55,7 +58,8 @@ export const ReferenceItemContainer = styled.div`
   font-size: 14px;
   
   &:hover {
-    background: ${({ theme }) => theme.palette.gray.silver};
+    background: ${({ theme }) => brighten(theme.palette.gray.silver, 50)};
+    cursor: pointer;
   }
 `;
 

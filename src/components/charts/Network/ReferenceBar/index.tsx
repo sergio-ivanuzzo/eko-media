@@ -26,14 +26,20 @@ const ReferenceItem = ({ from, to, direction, referenceCount, ...props }: IRefer
 
     const { setSelectedNodeName, setHoveredNodeName } = props;
 
+    const handleClickNodeName = () => {
+        setSelectedNodeName(direction === ReferenceDirection.FORWARD ? from : to);
+    }
+    const handleHoverNodeName = () => {
+        setHoveredNodeName(direction === ReferenceDirection.FORWARD ? from : to);
+    }
+
     return (
-        <ReferenceItemContainer>
-            <MediaName
-                title={from}
-                onClick={() => setSelectedNodeName(from)}
-                onMouseEnter={() => setHoveredNodeName(from)}
-                onMouseLeave={() => setHoveredNodeName("")}
-            >
+        <ReferenceItemContainer
+            onMouseEnter={handleHoverNodeName}
+            onClick={handleClickNodeName}
+            onMouseLeave={() => setHoveredNodeName("")}
+        >
+            <MediaName title={from}>
                 {from}
             </MediaName>
             <ArrowContainer>
@@ -42,12 +48,7 @@ const ReferenceItem = ({ from, to, direction, referenceCount, ...props }: IRefer
                     <StyledArrowLeft />
                 </ConditionalRender>
             </ArrowContainer>
-            <MediaName
-                title={to}
-                onClick={() => setSelectedNodeName(to)}
-                onMouseEnter={() => setHoveredNodeName(to)}
-                onMouseLeave={() => setHoveredNodeName("")}
-            >
+            <MediaName title={to}>
                 {to}
             </MediaName>
             <ReferenceCount>{referenceCount}</ReferenceCount>
