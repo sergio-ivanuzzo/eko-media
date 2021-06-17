@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import React from "react";
 
 import FacebookIcon from "~/components/icons/FacebookIcon";
@@ -10,10 +11,14 @@ const Footer = (): JSX.Element => {
         <FooterContainer>
             <SocialContainer>
                 <SocialButton>
-                    <FacebookIcon width={48} />
+                    <Link to={{ pathname: "https://www.facebook.com/VoxUkraine.Ukranian" }} target="_blank">
+                        <FacebookIcon width={48} />
+                    </Link>
                 </SocialButton>
                 <SocialButton>
-                    <TwitterIcon width={48} />
+                    <Link to={{ pathname: "https://twitter.com/Vox_UA?s=09" }} target="_blank">
+                        <TwitterIcon width={48} />
+                    </Link>
                 </SocialButton>
             </SocialContainer>
             <Copyright>

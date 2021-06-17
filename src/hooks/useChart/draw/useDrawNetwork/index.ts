@@ -39,7 +39,9 @@ const useDrawNetwork = (
         selectedNodeName,
         setSelectedNodeName,
         hoveredNodeName,
-        setHoveredNodeName
+        setHoveredNodeName,
+        connection = [],
+        setConnection,
     } = props;
 
     const [ prevClickedNodeName ] = usePreviousState(selectedNodeName);
@@ -53,6 +55,7 @@ const useDrawNetwork = (
         selectedNodeColor: string,
         selectedNodeTextColor: string,
         selectedNodeRadius: number,
+        endNode?: any,
     ) => {
         // all items current node is target for
         const sources = edges
@@ -66,6 +69,14 @@ const useDrawNetwork = (
 
         node.selectAll("circle")
             .style("fill", (node: any) => {
+                if (endNode) {
+                    if (node.index === selectedNode.index || node.index === endNode.index) {
+                        return selectedNodeColor;
+                    } else {
+                        return linkedNodeColor;
+                    }
+                }
+
                 if (sources.concat(targets).includes(node.index)) {
                     return linkedNodeColor;
                 } else if (node.index === selectedNode.index) {
@@ -83,10 +94,18 @@ const useDrawNetwork = (
             });
 
         node.selectAll("text").transition().duration(500).style("fill", (node: any) => {
-            if (node.index === selectedNode.index) {
-                return selectedNodeTextColor;
+            if (endNode) {
+                if (node.index === selectedNode.index || node.index === endNode.index) {
+                    return selectedNodeTextColor;
+                } else {
+                    return black.base;
+                }
             } else {
-                return black.base;
+                if (node.index === selectedNode.index) {
+                    return selectedNodeTextColor;
+                } else {
+                    return black.base;
+                }
             }
         })
     }, [ nodes, edges, isSelected ]);
@@ -97,13 +116,25 @@ const useDrawNetwork = (
         selectedNode: any,
         notSelectedOpacity?: number,
         selectedOpacity?: number,
+        endNode?: any,
     ) => {
-        link.transition().duration(500).style("stroke-opacity", (o: any) => (
-                (o.source === selectedNode || o.target === selectedNode)
-                    ? selectedOpacity || o.alpha
-                    : notSelectedOpacity || o.alpha
-            )
-        );
+        link.transition().duration(500).style("stroke-opacity", (o: any) => {
+            if (endNode) {
+                return (
+                    (o.source === selectedNode && o.target === endNode)
+                        ? selectedOpacity || o.alpha
+                        : notSelectedOpacity || o.alpha
+                );
+            } else {
+                return (
+                    (o.source === selectedNode || o.target === selectedNode)
+                        ? selectedOpacity || o.alpha
+                        : notSelectedOpacity || o.alpha
+                );
+            }
+        });
+
+        link.classed("highlighted", (o: any) => endNode && o.source === selectedNode && o.target === endNode);
     }, [ nodes, edges, isSelected ]);
 
     const tempFunctionsRef = useRef({
@@ -136,16 +167,25 @@ const useDrawNetwork = (
     }, [ tempFunctionsRef, selectedNodeName, nodes, edges ]);
 
     const hoverNodeNameHandler = useCallback((event: Event) => {
-        const { hoveredNodeName, selectedNodeName, isSelected } = (event as CustomEvent).detail || {};
+        const { selectedNodeName, connection, isSelected } = (event as CustomEvent).detail || {};
         const {
             doFade = () => null,
             doHighlight = () => null
         } = tempFunctionsRef.current;
 
         if (isSelected) {
-            const nodeName = hoveredNodeName || selectedNodeName;
+            const nodeName = selectedNodeName;
+            const [ source, target ] = connection;
 
-            if (nodeName) {
+            if (source && target) {
+                const sourceNode = nodes.find((node: any) => node.name === source) || { id: -1 };
+                const targetNode = nodes.find((node: any) => node.name === target) || { id: -1 };
+
+                (doFade as CallableFunction)(sourceNode, MIN_FADE, MAX_FADE, targetNode);
+                (doHighlight as CallableFunction)(
+                    sourceNode, green.jade, cyan.azure, cyan.azure, RADIUS * RADIUS_MULTIPLIER, targetNode
+                );
+            } else if (nodeName) {
                 const selectedNode = nodes.find((node: any) => node.name === nodeName) || { id: -1 };
 
                 (doFade as CallableFunction)(selectedNode, MIN_FADE, MAX_FADE);
@@ -156,9 +196,9 @@ const useDrawNetwork = (
         } else {
             document.removeEventListener(CUSTOM_EVENT_HOVER_NODE_NAME, hoverNodeNameHandler);
         }
-    }, [ tempFunctionsRef, prevHoveredNodeName, nodes, edges ]);
+    }, [ tempFunctionsRef, prevHoveredNodeName, connection, nodes, edges ]);
 
-    const draw = useCallback(({ width: currentWidth, height: currentHeight, ...props }: IChartDrawProps): void => {
+     const draw = useCallback(({ width: currentWidth, height: currentHeight, ...props }: IChartDrawProps): void => {
         const { chartRef, tooltip } = props;
 
         document.dispatchEvent(
@@ -179,6 +219,7 @@ const useDrawNetwork = (
                     detail: {
                         selectedNodeName,
                         hoveredNodeName,
+                        connection,
                         prevNodeName: prevHoveredNodeName,
                         isSelected,
                     },

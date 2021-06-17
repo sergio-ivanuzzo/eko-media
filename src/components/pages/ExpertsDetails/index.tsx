@@ -10,7 +10,7 @@ import useData from "~/hooks/useData";
 
 import { HeadingLevel } from "~/components/core/FormattedTitle/constants";
 import { AlignItems, JustifyContent } from "~/components/global.constants";
-import { BackLink, HeadingSection, Section, SubSection } from "~/components/pages/styles";
+import { BackLink, HeadingSection, Section, StyledPlaceholder, SubSection } from "~/components/pages/styles";
 import {
     CATEGORIES_MAP,
     EXPERTS_PHOTOS_DIR,
@@ -57,7 +57,7 @@ const ExpertsDetailsPage = (): JSX.Element => {
     const dirPath = `${ROOT_DIR}/${year}/${month}/${fileName}`;
 
     return (
-        <ConditionalRender condition={isDataLoaded}>
+        <ConditionalRender condition={!!(isDataLoaded && data.length)}>
             <>
                 <Section>
                     <HeadingSection>
@@ -105,6 +105,9 @@ const ExpertsDetailsPage = (): JSX.Element => {
                     </SubSection>
                 </Section>
             </>
+            <StyledPlaceholder primaryAlign={JustifyContent.CENTER}>
+                <FormattedMessage id="placeholder.category.empty_data" />
+            </StyledPlaceholder>
         </ConditionalRender>
     );
 };

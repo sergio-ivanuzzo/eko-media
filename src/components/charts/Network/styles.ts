@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 import Chart from "~/components/core/Chart";
+import brighten from "~/helpers/color/brighten";
 
 export const NetworkChartContainer = styled.div`
   display: flex;
@@ -14,6 +15,11 @@ export const NetworkChartContainer = styled.div`
 export const StyledChart = styled(Chart)`
   .links line {
     stroke: ${({ theme }) => `${theme.palette.gray.silver}`};
+    &.highlighted {
+      //stroke: ${({ theme }) => brighten(theme.palette.orange.carrot, 50)};
+      stroke: ${({ theme }) => theme.palette.orange.carrot};
+      stroke-width: 2.5px;
+    }
   }
 
   // network chart

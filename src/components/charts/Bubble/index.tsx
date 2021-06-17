@@ -68,10 +68,14 @@ const Bubble = (): JSX.Element => {
             <ConditionalRender condition={!!(data?.length && selectedCategories.length)}>
                 <>
                     <ChartHint>
-                        <FormattedMessage id="zoomable_chart.hint" />
+                        <span>
+                            <FormattedMessage id="zoomable_chart.hint" />
+                        </span>
                     </ChartHint>
                     <ChartHint>
-                        <FormattedMessage id="draggable_chart.hint" />
+                        <span>
+                            <FormattedMessage id="draggable_chart.hint" />
+                        </span>
                     </ChartHint>
                 </>
             </ConditionalRender>

@@ -81,5 +81,7 @@ export const MediaName = styled.div`
   
   &:hover {
     cursor: pointer;
+    font-weight: bold;
+    color: ${({ theme }) => theme.palette.cyan.azure};
   }
 `;

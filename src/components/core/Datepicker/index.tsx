@@ -1,3 +1,4 @@
+import { useHistory } from "react-router-dom";
 import { useIntl } from "react-intl";
 import React, { useContext, useEffect, useState } from "react";
 
@@ -46,6 +47,8 @@ const DatePicker = (props: IDatePickerProps): JSX.Element => {
         className = "",
         tabIndex,
     } = props;
+
+    const history = useHistory();
 
     const { locale } = useIntl();
     const monthsList = getMonthsList(locale);
@@ -118,6 +121,7 @@ const DatePicker = (props: IDatePickerProps): JSX.Element => {
         // allow loading only after sync with last_updated
         if (dateUpdated) {
             onDateChange();
+            history.push("/");
         }
     }, [ date, dateUpdated ]);
 

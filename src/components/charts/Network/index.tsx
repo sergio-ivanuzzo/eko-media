@@ -87,6 +87,7 @@ const Network = (): JSX.Element => {
     // this states handled from Reference Bar
     const [ selectedNodeName, setSelectedNodeName ] = useState<string | undefined>();
     const [ hoveredNodeName, setHoveredNodeName ] = useState<string | undefined>();
+    const [ connection, setConnection ] = useState<[string, string]>();
 
     const { draw } = useDrawNetwork({
         nodes: nodesCopy,
@@ -97,7 +98,9 @@ const Network = (): JSX.Element => {
         selectedNodeName,
         setSelectedNodeName,
         hoveredNodeName,
-        setHoveredNodeName
+        setHoveredNodeName,
+        connection,
+        setConnection,
     });
 
     return (
@@ -108,6 +111,7 @@ const Network = (): JSX.Element => {
                         items={references}
                         setSelectedNodeName={setSelectedNodeName}
                         setHoveredNodeName={setHoveredNodeName}
+                        setConnection={(from, to) => setConnection([ from, to ])}
                     />
                 </ConditionalRender>
                 <StyledChart draw={draw} />
@@ -115,10 +119,14 @@ const Network = (): JSX.Element => {
             <ConditionalRender condition={!!(nodesCopy.length && edgesCopy.length)}>
                 <>
                     <ChartHint>
-                        <FormattedMessage id="draggable_chart.no_shift.hint" />
+                        <span>
+                            <FormattedMessage id="draggable_chart.no_shift.hint" />
+                        </span>
                     </ChartHint>
                     <ChartHint>
-                        <FormattedMessage id="clickable_chart.nodes.hint" />
+                        <span>
+                            <FormattedMessage id="clickable_chart.nodes.hint" />
+                        </span>
                     </ChartHint>
                 </>
             </ConditionalRender>

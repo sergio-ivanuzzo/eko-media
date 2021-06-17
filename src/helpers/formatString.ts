@@ -6,7 +6,7 @@ interface IFormatStringProps {
 
 const formatString = ({ initial, replacer = (param: string) => param, params = [] }: IFormatStringProps): string => {
     return params?.length ? params.reduce(
-        (result, param: string, index: number) => result.replace(`{${index}}`, replacer(param)),
+        (result, param: string, index: number) => result.replaceAll(`{${index}}`, replacer(param)),
         initial
     ) : initial;
 };

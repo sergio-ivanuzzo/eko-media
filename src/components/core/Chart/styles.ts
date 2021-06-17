@@ -48,9 +48,11 @@ export const ChartHint = styled.div`
   color: ${({ theme }) => theme.palette.gray.silver};
   width: 100%;
   
-  &:hover {
-    cursor: help;
-    color: ${({ theme }) => theme.palette.black.base};
+  span {
+      &:hover {
+        cursor: help;
+        color: ${({ theme }) => theme.palette.black.base};
+      }
   }
 `;
 

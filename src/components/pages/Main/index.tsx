@@ -28,12 +28,8 @@ import {
     SubSection
 } from "~/components/pages/styles";
 
-import theme from "~/common/theme";
-
-const POLITICIAN_BAR_LIMIT = 3;
+const POLITICIAN_BAR_LIMIT = 5;
 const EXPERT_BAR_LIMIT = 3;
-
-const { cyan } = theme.palette;
 
 const MainPage = (): JSX.Element => {
 

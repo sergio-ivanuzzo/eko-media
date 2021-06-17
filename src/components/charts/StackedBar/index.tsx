@@ -76,7 +76,9 @@ const StackedBar = (): JSX.Element => {
             />
             <ConditionalRender condition={!!(categories.length && media.length && data.length)}>
                 <ChartHint>
-                    <FormattedMessage id="zoomable_chart.hint" />
+                    <span>
+                        <FormattedMessage id="zoomable_chart.hint" />
+                    </span>
                 </ChartHint>
             </ConditionalRender>
         </>

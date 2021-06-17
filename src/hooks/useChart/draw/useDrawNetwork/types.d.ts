@@ -8,6 +8,8 @@ declare interface IUseNetworkProps {
     setSelectedNodeName: (name: string) => void;
     hoveredNodeName?: string;
     setHoveredNodeName: (name: string) => void;
+    connection?: [string, string];
+    setConnection: (connection: [string, string]) => void;
 }
 
 declare interface IHighlightProps {

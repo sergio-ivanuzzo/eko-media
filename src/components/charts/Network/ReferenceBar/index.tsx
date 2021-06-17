@@ -1,3 +1,4 @@
+import { useIntl } from "react-intl";
 import React, { useEffect, useMemo, useState } from "react";
 
 import ConditionalRender from "~/components/core/ConditionalRender";
@@ -5,6 +6,7 @@ import SortDown from "~/components/icons/SortDown";
 import SortUp from "~/components/icons/SortUp";
 import Undo from "~/components/icons/Undo";
 
+import formatString from "~/helpers/formatString";
 import isEqual from "~/helpers/isEqual";
 
 import { ReferenceDirection } from "~/components/charts/Network/constants";
@@ -24,31 +26,43 @@ const DEFAULT_COUNT_SORTED_ASC = true;
 
 const ReferenceItem = ({ from, to, direction, referenceCount, ...props }: IReferenceItemProps): JSX.Element => {
 
-    const { setSelectedNodeName, setHoveredNodeName } = props;
+    const { setSelectedNodeName, setHoveredNodeName, setConnection } = props;
 
-    const handleClickNodeName = () => {
-        setSelectedNodeName(direction === ReferenceDirection.FORWARD ? from : to);
-    }
     const handleHoverNodeName = () => {
         setHoveredNodeName(direction === ReferenceDirection.FORWARD ? from : to);
+
+        if (direction === ReferenceDirection.FORWARD) {
+            setConnection(from, to);
+        } else {
+            setConnection(to, from);
+        }
     }
+    const handleReset = () => {
+        setConnection("", "");
+        setHoveredNodeName("");
+    }
+
+    const { formatMessage } = useIntl();
+    const titleText = formatString({
+        initial: formatMessage({ id: "network.reference_bar.titleText" }),
+        params: direction === ReferenceDirection.FORWARD ? [ from, to ] : [ to, from ]
+    });
 
     return (
         <ReferenceItemContainer
             onMouseEnter={handleHoverNodeName}
-            onClick={handleClickNodeName}
-            onMouseLeave={() => setHoveredNodeName("")}
+            onMouseLeave={handleReset}
         >
-            <MediaName title={from}>
+            <MediaName onClick={() => setSelectedNodeName(from)}>
                 {from}
             </MediaName>
-            <ArrowContainer>
+            <ArrowContainer title={titleText}>
                 <ConditionalRender condition={direction === ReferenceDirection.FORWARD}>
                     <StyledArrowRight />
                     <StyledArrowLeft />
                 </ConditionalRender>
             </ArrowContainer>
-            <MediaName title={to}>
+            <MediaName onClick={() => setSelectedNodeName(to)}>
                 {to}
             </MediaName>
             <ReferenceCount>{referenceCount}</ReferenceCount>
@@ -58,7 +72,7 @@ const ReferenceItem = ({ from, to, direction, referenceCount, ...props }: IRefer
 
 const ReferenceBar = ({ items: originItems, ...props }: IReferenceBarProps): JSX.Element => {
 
-    const { setSelectedNodeName, setHoveredNodeName } = props;
+    const { setSelectedNodeName, setHoveredNodeName, setConnection } = props;
 
     const [ items, setItems ] = useState(originItems);
     const [ targetSortedASC, setTargetSortedASC ] = useState(DEFAULT_TARGET_SORTED_ASC);
@@ -132,6 +146,7 @@ const ReferenceBar = ({ items: originItems, ...props }: IReferenceBarProps): JSX
                     {...item}
                     setSelectedNodeName={setSelectedNodeName}
                     setHoveredNodeName={setHoveredNodeName}
+                    setConnection={setConnection}
                 />
             ))}
         </ReferenceList>
