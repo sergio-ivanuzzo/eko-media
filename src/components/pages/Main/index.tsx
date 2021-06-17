@@ -102,7 +102,7 @@ const MainPage = (): JSX.Element => {
                             </div>
                         </LeftColumn>
                         <RightColumn secondaryAlign={AlignItems.START}>
-                            <SubSection primaryAlign={JustifyContent.START} secondaryAlign={AlignItems.CENTER}>
+                            <SubSection primaryAlign={JustifyContent.START} secondaryAlign={AlignItems.END}>
                                 <div style={{ marginLeft: `${MARGIN_LEFT}px` }}>
                                     <ConditionalRender condition={selectedCategory === "all"}>
                                         <FormattedTitle

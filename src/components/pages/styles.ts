@@ -114,8 +114,6 @@ export const StyledLink = styled(Link)`
 
 export const BackLink = styled(StyledLink)`
   > svg {
-    position: relative;
-    top: 1.5em;
     path {
       fill: ${({ theme }) => theme.palette.black.base};
       font-size: 50px;
