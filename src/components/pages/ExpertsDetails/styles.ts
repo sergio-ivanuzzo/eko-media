@@ -5,6 +5,7 @@ import { OverflowCSS } from "~/components/global.styles";
 export const ExpertInfoContainer = styled.div`
   display: flex;
   padding: 5px;
+  height: 200px;
   
   > :first-child {
     flex: 2;
@@ -16,14 +17,13 @@ export const ExpertInfoContainer = styled.div`
   
   > :last-child {
     > * {
-      width: 250px;
+      width: 300px;
       ${OverflowCSS};
     }
   }
 `;
 
 export const ExpertInfo = styled.div`
-  margin-left: 10px;
   > div {
     overflow-y: hidden;
   }

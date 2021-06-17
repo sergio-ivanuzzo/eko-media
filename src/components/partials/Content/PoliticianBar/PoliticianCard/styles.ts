@@ -11,6 +11,7 @@ const NotSelectedItemCSS = css`
 `;
 
 export const StyledCard = styled(Card)<Partial<IPoliticianCardProps>>`
+  width: 300px;
   ${({ selectable, selected }) => !selectable || (selectable && selected) ? SelectedItemCSS : NotSelectedItemCSS};
   ${({ selectable }) => selectable && `
     &:hover {

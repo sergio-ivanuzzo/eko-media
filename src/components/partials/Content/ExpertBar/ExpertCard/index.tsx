@@ -10,7 +10,7 @@ const MESSAGE_CASES: [string, string, string] = [
     "pluralize.comment.third_case",
 ];
 
-const ExpertCard = ({ name, commentsAmount = 0, avatarUrl }: IExpertCardProps): JSX.Element => {
+const ExpertCard = ({ name, commentsAmount = 0, avatarUrl, width }: IExpertCardProps): JSX.Element => {
     const { formatMessage } = useIntl();
 
     const text = formatMessage({ id: maybePluralize(commentsAmount, MESSAGE_CASES) });
@@ -18,7 +18,9 @@ const ExpertCard = ({ name, commentsAmount = 0, avatarUrl }: IExpertCardProps): 
     return (
         <Card avatarUrl={avatarUrl}
               name={name}
-              text={`${commentsAmount} ${text}`} />
+              text={`${commentsAmount} ${text}`}
+              width={width}
+        />
     );
 };
 
