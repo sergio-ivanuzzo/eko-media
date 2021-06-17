@@ -5,7 +5,8 @@ import maybePluralize from "~/helpers/maybePluralize";
 
 import { Mention } from "~/common/constants";
 import MentionBar from "~/components/partials/Content/PoliticianBar/MentionBar";
-import { StyledCard } from "~/components/partials/Content/PoliticianBar/PoliticianCard/styles";
+
+import { MentionBarContainer, StyledCard } from "./styles";
 
 const MESSAGE_CASES: [string, string, string] = [
     "pluralize.mention.first_case",
@@ -20,14 +21,14 @@ const PoliticianCard = ({ name, mentions, avatarUrl, ...props }: IPoliticianCard
 
     const renderMentionBar = () => {
         return (
-            <div>
+            <MentionBarContainer>
                 <MentionBar
                     positive={mentions[Mention.POSITIVE]}
                     neutral={mentions[Mention.NEUTRAL]}
                     negative={mentions[Mention.NEGATIVE]}
                     hoverable={!selectable || selected}
                 />
-            </div>
+            </MentionBarContainer>
         );
     };
 

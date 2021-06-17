@@ -18,3 +18,7 @@ export const StyledCard = styled(Card)<Partial<IPoliticianCardProps>>`
     }
   `};
 `;
+
+export const MentionBarContainer = styled.div`
+  width: 250px;
+`;
