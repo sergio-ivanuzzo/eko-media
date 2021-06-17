@@ -113,7 +113,11 @@ export const StyledLink = styled(Link)`
 `;
 
 export const BackLink = styled(StyledLink)`
+  display: flex;
+  align-items: center;
+  
   > svg {
+    top: 0.121em;
     path {
       fill: ${({ theme }) => theme.palette.black.base};
       font-size: 50px;
