@@ -20,6 +20,7 @@ import { HeadingLevel } from "~/components/core/FormattedTitle/constants";
 import { MARGIN_LEFT } from "~/hooks/useChart/draw/useDrawStackedBar";
 import { AlignItems, JustifyContent } from "~/components/global.constants";
 import {
+    HeadingSection,
     LeftColumn,
     RightColumn,
     Section,
@@ -68,7 +69,7 @@ const MainPage = (): JSX.Element => {
                             </div>
 
                             <div>
-                                <div>
+                                <div style={{ textAlign: "left", marginBottom: "20px" }}>
                                     <FormattedTitle
                                         placeholder={formatMessage({ id: "sphere_bar.title" })}
                                         params={[ CATEGORIES_MAP[selectedCategory] ]}
@@ -151,22 +152,26 @@ const MainPage = (): JSX.Element => {
                     </SubSection>
                 </Section>
                 <Section>
-                    <FormattedTitle
-                        placeholder={formatMessage({ id: "network.title" })}
-                        level={HeadingLevel.H2}
-                    />
-                    <div>
+                    <HeadingSection noMargin>
                         <FormattedTitle
-                            placeholder={formatMessage({ id: "network.subtitle" })}
-                            level={HeadingLevel.H3}
-                            inline
+                            placeholder={formatMessage({ id: "network.title" })}
+                            level={HeadingLevel.H2}
                         />
-                        <Hint
-                            text={formatMessage({ id: "network.hint" })}
-                            linkUrl={"/about#network"}
-                            linkText={formatMessage({ id: "network.hint.urlText" })}
-                        />
-                    </div>
+                    </HeadingSection>
+                    <HeadingSection>
+                        <div>
+                            <FormattedTitle
+                                placeholder={formatMessage({ id: "network.subtitle" })}
+                                level={HeadingLevel.H3}
+                                inline
+                            />
+                            <Hint
+                                text={formatMessage({ id: "network.hint" })}
+                                linkUrl={"/about#network"}
+                                linkText={formatMessage({ id: "network.hint.urlText" })}
+                            />
+                        </div>
+                    </HeadingSection>
                     <Network />
                     <div style={{ marginTop: "100px" }}>
                         <div>

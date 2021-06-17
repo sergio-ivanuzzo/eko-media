@@ -15,6 +15,10 @@ export const ReferenceList = styled.div`
   border-radius: 5px;
   ${NoSelectCSS};
   margin-top: 50px;
+  
+  > * {
+    overflow-y: hidden;
+  }
 `;
 
 export const ReferenceHeader = styled.div`

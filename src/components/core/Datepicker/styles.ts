@@ -11,7 +11,6 @@ export const TriggerContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   border-radius: 10px;
-  //border: 1px solid ${({ theme }) => theme.palette.gray.border};
   height: 38px;
   overflow: hidden;
 `;

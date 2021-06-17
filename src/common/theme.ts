@@ -1,3 +1,5 @@
+import brighten from "~/helpers/color/brighten";
+
 const theme = {
     palette: {
         orange: {
@@ -13,6 +15,7 @@ const theme = {
         },
         cyan: {
             azure: "#1DA1F2",
+            link: brighten("#1DA1F2", 20),
         },
         black: {
             base: "#000000",

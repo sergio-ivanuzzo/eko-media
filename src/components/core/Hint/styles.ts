@@ -12,6 +12,11 @@ export const HintButton = styled.button`
   display: inline-flex;
   justify-content: flex-end;
   
+  > svg {
+    position: relative;
+    top: 0.221em;
+  }
+  
   &:hover {
     cursor: pointer;
   }

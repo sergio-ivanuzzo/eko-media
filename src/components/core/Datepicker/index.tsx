@@ -20,8 +20,8 @@ const DefaultTrigger = ({ selectedDate, toggle, dateUpdated }: IDatePickerTrigge
     const month = selectedDate.toLocaleString(locale, { month: "long" });
 
     return (
-        <TriggerContainer>
-            <TriggerItem onClick={() => toggle()}>
+        <TriggerContainer onClick={() => toggle()}>
+            <TriggerItem>
                 <ConditionalRender condition={dateUpdated}>
                     <>
                         {month} {selectedDate.getFullYear()}

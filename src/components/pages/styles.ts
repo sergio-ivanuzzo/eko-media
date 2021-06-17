@@ -26,11 +26,11 @@ export const Section = styled.div`
   animation: ${FadeInAnimation} 1.5s ease-out both;
 `;
 
-export const HeadingSection = styled.div`
+export const HeadingSection = styled.div<IHeadingSectionProps>`
   ${CustomFontCSS};
   display: flex;
   padding: 0 10px;
-  margin-bottom: 50px;
+  ${({ noMargin }) => !noMargin && "margin-bottom: 50px"};
 `;
 
 export const SubSection = styled.div<IRowProps>`
@@ -60,6 +60,7 @@ export const LeftColumn = styled.div<IColumnProps>`
   ${({ primaryAlign }) => getPrimaryAlign(primaryAlign)};
   ${({ secondaryAlign }) => getSecondaryAlign(secondaryAlign)};
   width: 400px;
+  text-align: center;
   
   > *:not(:last-child) {
     margin-bottom: 20px;
@@ -83,19 +84,31 @@ export const StyledLink = styled(Link)`
   ${CustomFontCSS};
   ${NoSelectCSS};
   text-decoration: none;
-  display: flex;
-  align-items: center;
-  color: ${({ theme }) => theme.palette.orange.carrot};
-  font-weight: 500;
+  color: ${({ theme }) => theme.palette.cyan.link};
+  font-weight: bold;
   font-size: 18px;
-  justify-content: center;
-  
+  white-space: nowrap;
+  transition: all 0.25s ease-in-out;
+    
   > *:first-child {
     margin-right: 10px;
   }
   
   > svg {
-    margin-top: 3px;
+    position: relative;
+    top: 0.221em;
+    
+    path {
+      fill: ${({ theme }) => theme.palette.cyan.link};
+    }
+  }
+  
+  &:hover {
+    color: ${({ theme }) => theme.palette.orange.carrot};
+    
+    svg > path {
+      fill: ${({ theme }) => theme.palette.orange.carrot};
+    }
   }
 `;
 

@@ -30,6 +30,8 @@ export const SocialButton = styled.button`
   
   &:hover {
     cursor: pointer;
+    filter: contrast(var(--value, 2)) saturate(var(--value, 10));
+    transition: filter 0.5s linear;
   }
 `;
 

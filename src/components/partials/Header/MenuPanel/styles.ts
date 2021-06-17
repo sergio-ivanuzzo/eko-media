@@ -14,9 +14,10 @@ export const MenuContainer = styled.div`
       ${CustomFontCSS};
       margin: 0 10px;
       text-decoration: none;
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 500;
       color: ${({ theme }) => theme.palette.black.base};
+      transition: all 0.25s ease-in-out;
       
       &:hover {
         color: ${({ theme }) => theme.palette.orange.carrot};

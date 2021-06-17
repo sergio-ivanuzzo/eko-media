@@ -10,3 +10,7 @@ declare interface IColumnProps {
     primaryAlign?: import("~/components/global.constants").JustifyContent;
     secondaryAlign?: import("~/components/global.constants").AlignItems;
 }
+
+declare interface IHeadingSectionProps {
+    noMargin?: boolean;
+}

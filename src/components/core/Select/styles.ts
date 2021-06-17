@@ -90,6 +90,16 @@ export const CloseButton = styled.button`
   background: transparent;
   border: none;
   
+  &:hover {
+    svg {
+      cursor: pointer;
+    }
+    svg > path {
+      stroke: ${({ theme }) => theme.palette.orange.carrot};
+      fill: ${({ theme }) => theme.palette.orange.carrot};
+    }
+  }
+  
   svg {
     width: 11px;
   }

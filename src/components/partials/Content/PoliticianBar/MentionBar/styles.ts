@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const MentionBarContainer = styled.div`
   position: relative;
-  width: 100%;
+  width: 80%;
   display: flex;
   
   > div {
