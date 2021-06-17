@@ -15,7 +15,11 @@ export const FilterContainer = styled.div`
       align-items: center;
     }
     
-    margin: 20px 0;
+    margin: 10px 0;
+    
+    > *:not(:last-child) {
+      margin-right: 20px;
+    }
 `;
 
 export const FilterItemContainer = styled.div`
@@ -28,7 +32,7 @@ export const FilterItemContainer = styled.div`
   
   label {
     white-space: nowrap;
-    margin-right: 0.35em;
+    margin-right: 1em;
     font-size: 18px;
     ${NoSelectCSS};
   }
@@ -37,7 +41,7 @@ export const FilterItemContainer = styled.div`
 export const StyledSelect = styled(Select).attrs(({ tabIndex }) => ({
     tabIndex: tabIndex || 0
 }))`
-  margin-right: 20px;
+  //margin-right: 20px;
 `;
 export const StyledDatepicker = styled(Datepicker).attrs(({ tabIndex }) => ({
     tabIndex: tabIndex || 0

@@ -43,7 +43,7 @@ const TopicPage = (): JSX.Element => {
         <ConditionalRender condition={isDataLoaded}>
             <>
                 <Section>
-                    <HeadingSection>
+                    <HeadingSection style={{ padding: 0 }}>
                         <BackLink to="/" tabIndex={7}>
                             <ArrowLeft width={100} height={25} />
                         </BackLink>

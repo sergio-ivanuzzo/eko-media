@@ -23,6 +23,7 @@ export const ExpertInfoContainer = styled.div`
 `;
 
 export const ExpertInfo = styled.div`
+  margin-left: 10px;
   > div {
     overflow-y: hidden;
   }

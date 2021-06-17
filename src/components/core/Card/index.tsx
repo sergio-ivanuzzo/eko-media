@@ -1,11 +1,11 @@
 import React from "react";
 
 import Avatar from "~/components/core/Avatar";
-import { CardContainer, Name } from "./styles";
+import { CardContainer, CardText, Name } from "./styles";
 
 const DefaultText = ({ text }: ICardTextProps): JSX.Element => {
     return (
-        <div>{text}</div>
+        <CardText>{text}</CardText>
     );
 };
 

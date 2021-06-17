@@ -23,3 +23,7 @@ export const Name = styled.div`
   font-size: 18px;
   text-align: center;
 `;
+
+export const CardText = styled.div`
+  white-space: nowrap;
+`;

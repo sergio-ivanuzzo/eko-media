@@ -60,7 +60,7 @@ const ExpertsDetailsPage = (): JSX.Element => {
         <ConditionalRender condition={!!(isDataLoaded && data.length)}>
             <>
                 <Section>
-                    <HeadingSection>
+                    <HeadingSection style={{ padding: 0 }}>
                         <BackLink to="/" tabIndex={7}>
                             <ArrowLeft width={100} height={25} />
                         </BackLink>

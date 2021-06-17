@@ -58,7 +58,7 @@ const MainPage = (): JSX.Element => {
                                 </div>
 
                                 <PoliticianBar limit={POLITICIAN_BAR_LIMIT} />
-                                <div>
+                                <div style={{ textAlign: "center" }}>
                                     <StyledLink to="/politicians/details" tabIndex={7}>
                                         <span>
                                             <FormattedMessage id="link.details" />
@@ -91,7 +91,7 @@ const MainPage = (): JSX.Element => {
                                     />
                                 </div>
                                 <ExpertBar limit={EXPERT_BAR_LIMIT} />
-                                <div>
+                                <div style={{ textAlign: "center" }}>
                                     <StyledLink to="/experts/details" tabIndex={7}>
                                         <span>
                                             <FormattedMessage id="link.details" />
@@ -174,7 +174,7 @@ const MainPage = (): JSX.Element => {
                     </HeadingSection>
                     <Network />
                     <div style={{ marginTop: "100px" }}>
-                        <div>
+                        <div style={{ padding: "0 25px" }}>
                             <FormattedTitle
                                 placeholder={formatMessage({ id: "arrow_chart.title" })}
                                 level={HeadingLevel.H3}

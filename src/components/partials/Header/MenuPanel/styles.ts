@@ -8,11 +8,16 @@ export const MenuContainer = styled.div`
     align-items: center;
     flex-wrap: wrap;
     ${NoSelectCSS};
+    //padding-right: 10px;
     
     > a {
       ${NoActiveOutlineCSS};
       ${CustomFontCSS};
-      margin: 0 10px;
+      
+      &:not(:last-child) {
+        margin: 0 10px;
+      }
+      
       text-decoration: none;
       font-size: 16px;
       font-weight: 500;

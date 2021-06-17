@@ -233,7 +233,7 @@ const useDrawNetwork = (
         }
 
         const width = currentWidth / 1.5;
-        const height = currentHeight / 1.4;
+        const height = currentHeight / 1.2;
 
         const limitDraggableX = (x: number) => limitNumber(x, MAX_RADIUS, width - MAX_RADIUS);
         const limitDraggableY = (y: number) => limitNumber(y, MAX_RADIUS, height - MAX_RADIUS);

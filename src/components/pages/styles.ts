@@ -22,6 +22,7 @@ export const Section = styled.div`
   flex-direction: column;
   margin-top: 10px;
   opacity: 0;
+  padding: 0 100px;
   
   animation: ${FadeInAnimation} 1.5s ease-out both;
 `;
@@ -29,7 +30,7 @@ export const Section = styled.div`
 export const HeadingSection = styled.div<IHeadingSectionProps>`
   ${CustomFontCSS};
   display: flex;
-  padding: 0 10px;
+  padding: 0 20px;
   ${({ noMargin }) => !noMargin && "margin-bottom: 50px"};
 `;
 
@@ -60,7 +61,7 @@ export const LeftColumn = styled.div<IColumnProps>`
   ${({ primaryAlign }) => getPrimaryAlign(primaryAlign)};
   ${({ secondaryAlign }) => getSecondaryAlign(secondaryAlign)};
   width: 400px;
-  text-align: center;
+  //text-align: center;
   
   > *:not(:last-child) {
     margin-bottom: 20px;
@@ -117,6 +118,7 @@ export const BackLink = styled(StyledLink)`
   align-items: center;
   
   > svg {
+    width: 75px;
     top: 0.121em;
     path {
       fill: ${({ theme }) => theme.palette.black.base};
