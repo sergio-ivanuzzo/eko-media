@@ -15,10 +15,6 @@ export const ReferenceList = styled.div`
   border-radius: 5px;
   ${NoSelectCSS};
   margin-top: 50px;
-  
-  > * {
-    overflow-y: hidden;
-  }
 `;
 
 export const ReferenceHeader = styled.div`
@@ -60,6 +56,10 @@ export const ReferenceItemContainer = styled.div`
   white-space: nowrap;
   margin: 0 5px;
   font-size: 14px;
+  
+  > * {
+    overflow-y: hidden;
+  }
   
   &:hover {
     background: ${({ theme }) => brighten(theme.palette.gray.silver, 50)};

@@ -37,5 +37,10 @@ export const SocialButton = styled.button`
 
 export const Copyright = styled.div`
   margin-top: 75px;
-  color: ${({ theme }) => brighten(theme.palette.gray.silver, 50)};
+  color: ${({ theme }) => brighten(theme.palette.gray.silver, 25)};
+  padding: 10px;
+  
+  &:hover {
+    color: ${({ theme }) => theme.palette.gray.silver};
+  }
 `
