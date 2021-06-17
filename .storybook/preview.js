@@ -1,6 +1,6 @@
 import React from "react";
 import { IntlProvider } from "react-intl";
-import { BrowserRouter as Router, MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import { ThemeProvider } from 'styled-components';
 
 import theme from "~/common/theme";

@@ -1,7 +1,7 @@
 import { IntlProvider } from "react-intl";
+import { MemoryRouter } from "react-router-dom";
 import React from "react";
 import ReactDOM from "react-dom";
-import { MemoryRouter, BrowserRouter as Router } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import smoothScroll from "smoothscroll-polyfill";
 
