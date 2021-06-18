@@ -39,6 +39,7 @@ export const SocialButton = styled.button`
 `;
 
 export const Copyright = styled.div`
+  ${CustomFontCSS};
   margin-top: 75px;
   color: ${({ theme }) => brighten(theme.palette.gray.silver, 25)};
   padding: 20px;
@@ -50,6 +51,7 @@ export const Copyright = styled.div`
 `
 
 export const LastUpdatedContainer = styled.div`
+  ${CustomFontCSS};
   width: 100%;
   text-align: left;
   
