@@ -2,7 +2,10 @@ import styled from "styled-components";
 
 import brighten from "~/helpers/color/brighten";
 
+import { CustomFontCSS } from "~/components/global.styles";
+
 export const FooterContainer = styled.div`
+  ${CustomFontCSS};
   display: flex;
   width: 100%;
   border-top: 1px solid ${({ theme }) => theme.palette.gray.silver};
