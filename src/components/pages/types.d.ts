@@ -14,3 +14,7 @@ declare interface IColumnProps {
 declare interface IHeadingSectionProps {
     noMargin?: boolean;
 }
+
+declare interface ISectionProps {
+    allowSelection?: boolean;
+}

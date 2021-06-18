@@ -36,8 +36,8 @@ const useData = (): IUseDataResponse => {
         // all media for current month
         allMedia,
         setAllMedia,
-        dateUpdated,
-        setDateUpdated,
+        lastUpdated,
+        setLastUpdated,
     } = useContext<IDataProviderContext<IItem>>(DataContext);
 
     const { formatMessage } = useIntl();
@@ -85,15 +85,16 @@ const useData = (): IUseDataResponse => {
     }, []);
 
     useEffect(() => {
-        if (!dateUpdated) {
-            // initial loading of last_updated.txt to set proper date
+        if (!lastUpdated) {
+            // set initial date from last_updated.txt
             (async () => {
-                const { data: date } = await load(ROOT_DIR, "last_updated.txt");
-                setDate(new Date(date as any));
-                setDateUpdated(true);
+                const { data: dateString } = await load(ROOT_DIR, "last_updated.txt");
+                const lastUpdatedDate = new Date(dateString as any);
+                setDate(lastUpdatedDate);
+                setLastUpdated(lastUpdatedDate)
             })();
         }
-    }, [ dateUpdated ]);
+    }, [ lastUpdated ]);
 
     const loadCategoriesAndMedia = useCallback(async (): Promise<[IData<IItem>, string[], string[]]> => {
         const { month, year } = getMonthAndYear();
@@ -256,7 +257,7 @@ const useData = (): IUseDataResponse => {
         allMedia,
         isDataLoaded,
         getMonthAndYear,
-        dateUpdated,
+        lastUpdated,
         selectedDate,
     }
 };

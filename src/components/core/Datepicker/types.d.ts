@@ -6,7 +6,7 @@ declare interface IDatePickerProps extends ISelectableComponent, IStylableCompon
 
 declare interface IDatePickerTriggerProps extends IDropdownTriggerProps {
     selectedDate: Date;
-    dateUpdated: boolean;
+    lastUpdated: Date;
 }
 
 declare interface IDatePickerItemProps extends IActivableComponent {

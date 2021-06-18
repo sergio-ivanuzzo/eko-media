@@ -203,7 +203,7 @@ const useDrawConnections = (
 
             percentageText
                 .attr("x", (d: any, i: number) => i % 2 === 0 ? d.x - offsetX/2 : d.x + offsetX/2)
-                .attr("y", (d: any, i: number) => offsetY / 2);
+                .attr("y", () => offsetY / 2);
         });
 
     }, [ originNodes, originEdges ]);

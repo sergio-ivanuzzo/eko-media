@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useRef } from "react";
 import * as d3 from "d3";
 
 import limitNumber from "~/helpers/limitNumber";

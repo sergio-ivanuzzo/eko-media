@@ -13,6 +13,6 @@ declare interface IUseDataResponse {
     allMedia: string[];
     isDataLoaded: boolean;
     getMonthAndYear: () => { month: string, year: string };
-    dateUpdated: boolean;
+    lastUpdated?: Date;
     selectedDate: Date;
 }

@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
 
-import Hint from "~/components/core/Hint";
 import Placeholder from "~/components/core/Placeholder";
 
 import { FadeInAnimation } from "~/components/global.animations";
@@ -14,9 +13,9 @@ const ColumnCSS = css`
   padding: 5px;
 `;
 
-export const Section = styled.div`
+export const Section = styled.div<ISectionProps>`
   ${CustomFontCSS};
-  ${NoSelectCSS};
+  ${({ allowSelection }) => !allowSelection && `${NoSelectCSS}`};
   border-bottom: 1px solid ${({ theme }) => theme.palette.gray.silver};
   display: flex;
   flex-direction: column;
@@ -118,9 +117,14 @@ export const BackLink = styled(StyledLink)`
   display: flex;
   align-items: center;
   
+  > *:first-child {
+    margin-right: 0;
+  }
+  
   > svg {
     width: 75px;
     top: 0.121em;
+    
     path {
       fill: ${({ theme }) => theme.palette.black.base};
       font-size: 50px;

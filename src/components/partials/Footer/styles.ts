@@ -38,9 +38,25 @@ export const SocialButton = styled.button`
 export const Copyright = styled.div`
   margin-top: 75px;
   color: ${({ theme }) => brighten(theme.palette.gray.silver, 25)};
-  padding: 10px;
+  padding: 20px;
   
   &:hover {
     color: ${({ theme }) => theme.palette.gray.silver};
+    transition: filter 0.5s linear;
   }
 `
+
+export const LastUpdatedContainer = styled.div`
+  width: 100%;
+  text-align: left;
+  
+  > :first-child {
+    margin-left: 125px;
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  
+  > * {
+    white-space: nowrap;
+  }
+`;

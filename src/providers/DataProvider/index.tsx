@@ -14,8 +14,8 @@ export const DataContext = createContext<IDataProviderContext<IItem>>({
     setTopCategories: () => undefined,
     allMedia: [],
     setAllMedia: () => undefined,
-    dateUpdated: false,
-    setDateUpdated: () => undefined,
+    lastUpdated: new Date(),
+    setLastUpdated: () => undefined,
 });
 
 const DataProvider = ({ children }: IDataProviderProps): JSX.Element => {
@@ -27,7 +27,7 @@ const DataProvider = ({ children }: IDataProviderProps): JSX.Element => {
     const [ topCategories, setTopCategories ] = useState<string[]>([]);
     const [ allMedia, setAllMedia ] = useState<string[]>([]);
 
-    const [ dateUpdated, setDateUpdated ] = useState(false);
+    const [ lastUpdated, setLastUpdated ] = useState();
 
     const context = { 
         data, 
@@ -42,8 +42,8 @@ const DataProvider = ({ children }: IDataProviderProps): JSX.Element => {
         setTopCategories,
         allMedia,
         setAllMedia,
-        dateUpdated,
-        setDateUpdated,
+        lastUpdated,
+        setLastUpdated,
     };
 
     return (

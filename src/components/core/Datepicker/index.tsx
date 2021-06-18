@@ -15,14 +15,14 @@ import { DatePickerItem, StyledDropdown, TriggerContainer, TriggerItem } from ".
 const MIN_YEAR = 2019;
 const MAX_YEAR = 2050;
 
-const DefaultTrigger = ({ selectedDate, toggle, dateUpdated }: IDatePickerTriggerProps): JSX.Element => {
+const DefaultTrigger = ({ selectedDate, toggle, lastUpdated }: IDatePickerTriggerProps): JSX.Element => {
     const { locale } = useIntl();
     const month = selectedDate.toLocaleString(locale, { month: "long" });
 
     return (
         <TriggerContainer onClick={() => toggle()}>
             <TriggerItem>
-                <ConditionalRender condition={dateUpdated}>
+                <ConditionalRender condition={!!lastUpdated}>
                     <>
                         {month} {selectedDate.getFullYear()}
                     </>
@@ -54,7 +54,7 @@ const DatePicker = (props: IDatePickerProps): JSX.Element => {
     const monthsList = getMonthsList(locale);
     const yearRange = getRange(MIN_YEAR, MAX_YEAR);
 
-    const { dateUpdated } = useData();
+    const { lastUpdated } = useData();
 
     const { date, setDate } = useContext<IDataProviderContext<IItem>>(DataContext);
     const [ mode, setMode ] = useState<DatePickerMode>(DatePickerMode.SELECTING_MONTH);
@@ -119,11 +119,11 @@ const DatePicker = (props: IDatePickerProps): JSX.Element => {
     // fixing race condition, bc onDataChange should be fired after date was changed
     useEffect(() => {
         // allow loading only after sync with last_updated
-        if (dateUpdated) {
+        if (lastUpdated) {
             onDateChange();
             history.push("/");
         }
-    }, [ date, dateUpdated ]);
+    }, [ date, lastUpdated ]);
 
     return (
         <StyledDropdown
@@ -135,7 +135,7 @@ const DatePicker = (props: IDatePickerProps): JSX.Element => {
             renderTrigger={
                 (props: IDropdownTriggerProps) => renderTrigger({
                     selectedDate: date,
-                    dateUpdated,
+                    lastUpdated,
                     ...props
                 })
             }

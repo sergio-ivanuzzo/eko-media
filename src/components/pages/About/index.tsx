@@ -4,7 +4,7 @@ import { Section } from "~/components/pages/styles";
 
 const AboutPage = (): JSX.Element => {
     return (
-        <Section>
+        <Section allowSelection>
             <>
                 <h1>МЕТОДОЛОГІЇ</h1>
 

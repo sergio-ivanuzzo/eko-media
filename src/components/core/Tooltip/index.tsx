@@ -47,9 +47,9 @@ const Tooltip = (props: ITooltipProps): JSX.Element => {
         children
     } = props;
 
-    const [ tooltipRef, entry ] = useIntersectionObserver<HTMLDivElement>({ rootMargin: "0px" });
-    const { ref, height } = useElementSize(tooltipRef);
-    const [ direction, setDirection ] = useState(DIRECTION.TO_BOTTOM);
+    const [ tooltipRef ] = useIntersectionObserver<HTMLDivElement>({ rootMargin: "0px" });
+    const { ref } = useElementSize(tooltipRef);
+    const [ direction ] = useState(DIRECTION.TO_BOTTOM);
     const [ offset, setOffset ] = useState<{ offsetX: number, offsetY: number }>({
         offsetX: 0,
         offsetY: 0,
@@ -58,17 +58,6 @@ const Tooltip = (props: ITooltipProps): JSX.Element => {
     const renderChildren = () => {
         return renderItem({ text, color, ...offset, backgroundColor, direction });
     }
-
-    // useEffect(() => {
-    //     if (!entry.isIntersecting) {
-    //         // handling vertical re-position
-    //         if ((entry.boundingClientRect?.top || 0) - height < 0) {
-    //             setDirection(DIRECTION.TO_BOTTOM);
-    //         } else {
-    //             setDirection(DIRECTION.TO_TOP);
-    //         }
-    //     }
-    // }, [ entry, height ]);
 
     return (
         <StyledDropdown
