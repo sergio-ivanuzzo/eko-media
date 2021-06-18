@@ -62,7 +62,6 @@ export const LeftColumn = styled.div<IColumnProps>`
   ${({ secondaryAlign }) => getSecondaryAlign(secondaryAlign)};
   width: 400px;
   height: max-content;
-  //text-align: center;
   
   > *:not(:last-child) {
     margin-bottom: 20px;

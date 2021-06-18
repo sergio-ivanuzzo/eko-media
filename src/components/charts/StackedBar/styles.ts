@@ -30,5 +30,6 @@ export const StyledChart = styled(Chart)`
 
 export const StyledPlaceholder = styled(Placeholder)`
   margin-left: ${MARGIN_LEFT}px;
+  width: fit-content;
 `;
 
