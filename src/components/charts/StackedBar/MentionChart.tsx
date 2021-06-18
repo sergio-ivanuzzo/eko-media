@@ -1,10 +1,12 @@
+import { FormattedMessage } from "react-intl";
 import React, { useMemo } from "react";
 
+import ConditionalRender from "~/components/core/ConditionalRender";
 import useData from "~/hooks/useData";
 import useDrawStackedBar, { BAR_HEIGHT, MARGIN_LEFT } from "~/hooks/useChart/draw/useDrawStackedBar";
 
-import { StyledChart } from "./styles";
 import { Mention, NON_MEDIA_KEYS, TYPES } from "~/common/constants";
+import { StyledChart, StyledPlaceholder } from "./styles";
 
 import { LegendsContainer } from "~/components/core/Chart/styles";
 import theme from "~/common/theme";
@@ -64,10 +66,15 @@ const MentionChart = ({ politicianName = "" }: IMentionChartProps): JSX.Element 
     const { draw } = useDrawStackedBar({ data, xData: categories, yData: media });
 
     return (
-        <>
-            <LegendsContainer className="legends" offset={MARGIN_LEFT} />
-            <StyledChart draw={draw} height={height} colors={[ green.salad, gray.silver, orange.carrot ]} />
-        </>
+        <ConditionalRender condition={!!height}>
+            <>
+                <LegendsContainer className="legends" offset={MARGIN_LEFT} />
+                <StyledChart draw={draw} height={height} colors={[ green.salad, gray.silver, orange.carrot ]} />
+            </>
+            <StyledPlaceholder>
+                <FormattedMessage id="placeholder.category_media.empty_data" />
+            </StyledPlaceholder>
+        </ConditionalRender>
     );
 };
 

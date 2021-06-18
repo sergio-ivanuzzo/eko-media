@@ -9,6 +9,7 @@ import useDrawStackedBar, { BAR_HEIGHT, MARGIN_LEFT } from "~/hooks/useChart/dra
 import { StyledChart } from "./styles";
 import { CATEGORIES_MAP, CATEGORY_KEYS, TYPES } from "~/common/constants";
 
+import { StyledPlaceholder } from "./styles";
 import theme from "~/common/theme";
 import { ChartHint, LegendsContainer } from "~/components/core/Chart/styles";
 
@@ -67,21 +68,26 @@ const StackedBar = (): JSX.Element => {
         : [ baseColors[topCategories.findIndex((category) => category === CATEGORIES_MAP[selectedCategory])] ];
 
     return (
-        <>
-            <LegendsContainer className="legends" offset={MARGIN_LEFT} />
-            <StyledChart
-                draw={draw}
-                height={height}
-                colors={colors}
-            />
-            <ConditionalRender condition={!!(categories.length && media.length && data.length)}>
-                <ChartHint>
+        <ConditionalRender condition={!!height}>
+            <>
+                <LegendsContainer className="legends" offset={MARGIN_LEFT} />
+                <StyledChart
+                    draw={draw}
+                    height={height}
+                    colors={colors}
+                />
+                <ConditionalRender condition={!!(categories.length && media.length && data.length)}>
+                    <ChartHint>
                     <span>
                         <FormattedMessage id="zoomable_chart.hint" />
                     </span>
-                </ChartHint>
-            </ConditionalRender>
-        </>
+                    </ChartHint>
+                </ConditionalRender>
+            </>
+            <StyledPlaceholder>
+                <FormattedMessage id="placeholder.category_media.empty_data" />
+            </StyledPlaceholder>
+        </ConditionalRender>
     );
 };
 

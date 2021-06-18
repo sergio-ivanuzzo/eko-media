@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 
+import ConditionalRender from "~/components/core/ConditionalRender";
 import useData from "~/hooks/useData";
-
 import useDrawBar from "~/hooks/useChart/draw/useDrawBar";
 
 import { StyledChart } from "./styles";
@@ -42,7 +42,11 @@ const ArticleBar = ({ onClick = () => null }: IArticleBarProps): JSX.Element => 
 
     const { draw } = useDrawBar({ data, yData: topics, onClick });
 
-    return <StyledChart draw={draw} height={height} colors={[ gray.silver, orange.carrot ]} />;
+    return (
+        <ConditionalRender condition={!!height}>
+            <StyledChart draw={draw} height={height} colors={[ gray.silver, orange.carrot ]} />
+        </ConditionalRender>
+    );
 };
 
 export default ArticleBar;

@@ -65,6 +65,9 @@
   "placeholder.empty_select": "Ще нічого не вибрано",
   "placeholder.empty_data": "Для обраної дати немає даних",
   "placeholder.category.empty_data": "Для обраної категорії немає даних",
+  "placeholder.category_media.empty_data": "Для обраної категорії та(або) медіа немає даних",
+  "placeholder.no_media.empty_data": "Не обрано жодного медіа",
+  "placeholder.no_data": "Немає даних",
 
   "zoomable_chart.hint": "Shift + Wheel щоб призумити",
   "draggable_chart.hint": "Shift + ЛКМ (Drag) щоб перетягнути",

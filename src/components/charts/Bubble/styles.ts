@@ -3,6 +3,9 @@ import styled from "styled-components";
 import Chart from "~/components/core/Chart";
 
 import { NoSelectCSS } from "~/components/global.styles";
+import Placeholder from "~/components/core/Placeholder";
+
+import { MARGIN_LEFT } from "~/hooks/useChart/draw/useDrawStackedBar";
 
 export const StyledChart = styled(Chart)`
   .bubble {
@@ -35,4 +38,8 @@ export const StyledChart = styled(Chart)`
       cursor: pointer;
     }
   }
+`;
+
+export const StyledPlaceholder = styled(Placeholder)`
+  margin-left: ${MARGIN_LEFT}px;
 `;

@@ -1,5 +1,8 @@
+import { FormattedMessage } from "react-intl";
 import React, { useMemo } from "react";
 
+import ConditionalRender from "~/components/core/ConditionalRender";
+import Placeholder from "~/components/core/Placeholder";
 import useData from "~/hooks/useData";
 import useDrawBar from "~/hooks/useChart/draw/useDrawBar";
 
@@ -60,7 +63,16 @@ const SphereBar = (): JSX.Element => {
 
     const { draw } = useDrawBar({ data, yData: spheres });
 
-    return <StyledChart draw={draw} height={height} colors={[ gray.silver, orange.carrot ]} />;
+    return (
+        <ConditionalRender condition={!!height}>
+            <StyledChart draw={draw} height={height} colors={[ gray.silver, orange.carrot ]} />
+            <div style={{ marginBottom: "20px" }}>
+                <Placeholder>
+                    <FormattedMessage id="placeholder.category.empty_data" />
+                </Placeholder>
+            </div>
+        </ConditionalRender>
+    );
 };
 
 export default SphereBar;
