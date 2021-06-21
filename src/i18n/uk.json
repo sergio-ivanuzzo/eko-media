@@ -25,6 +25,7 @@
   "link.feedback": "Зворотний зв’язок",
   "link.about": "Про Проєкт",
   "link.details": "Детальніше",
+  "link.details.info": "Інфоприводи в категоріях",
 
   "app.name": "Медійна Екосистема",
 
@@ -44,9 +45,9 @@
   "stacked_bar.hint": "Новини розбиваються на 15 тем за допомогою навченого алгоритму SVM. Для його навчання частину новин ми розмітили власноруч, а іншу частину розмічених новин зібрали із сайтів.",
   "stacked_bar.hint.urlText": "Докладніше",
   "stacked_bar.title.category": "Частка новин категорії {0} серед ТОП-5 категорій на обраних медіа",
-  "stacked_bar.politician.title": "Як медія згадують про {0}: (% серед усіх згадок)",
+  "stacked_bar.politician.title": "Як медіa згадують про {0}: (% серед усіх згадок)",
   "stacked_bar.no_data.tooltip.text": "Немає даних",
-  "topic_media_bar.title": "Які медіа найбільше цікавляться темою \"{0}\": (% серед усіх новин)",
+  "topic_media_bar.title": "Які медіа найбільше цікавляться темою \"{0}\": (% серед усіх новин категорії {1} у окремого медіа)",
   "sphere_bar.title": "Сфера діяльності експертів у категорії {0}",
   "sphere_bar.hint": "Це кількості новин з коментарями кожного експерта за обраний період.",
   "sphere_bar.hint.urlText": "Докладніше",
@@ -57,10 +58,11 @@
   "politician_bar.hint": "Це кількості новин зі згадками кожного політика за обраний період. Кожна новина має емоційне забарвлення: позитивне, нейтральне, негативне.",
   "politician_bar.hint.urlText": "Докладніше",
   "expert_bar.title": "Найбільше категорію {0} на обраних медіа коментували",
-  "expert_info.work_at": "Працює",
+  "expert_info.work_at": "Посада",
   "expert_info.education": "Освіта",
   "expert_info.categories": "Які теми коментує",
   "expert_info.no_data": "Немає даних",
+  "topic.title": "Інфоприводи в категорії {0}",
 
   "placeholder.empty_select": "Ще нічого не вибрано",
   "placeholder.empty_data": "Для обраної дати немає даних",
@@ -84,7 +86,7 @@
   "pluralize.mention.third_case": "згадок",
 
   "pluralize.comment.first_case": "коментар",
-  "pluralize.comment.second_case": "коментаря",
+  "pluralize.comment.second_case": "коментарі",
   "pluralize.comment.third_case": "коментарів",
 
   "error_label.file_name": "Помилка в файлі \"{0}\" !",

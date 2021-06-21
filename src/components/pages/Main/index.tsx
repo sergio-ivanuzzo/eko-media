@@ -128,7 +128,7 @@ const MainPage = (): JSX.Element => {
 
                                 <StyledLink to="/topic" tabIndex={7}>
                                     <span>
-                                        <FormattedMessage id="link.details" />
+                                        <FormattedMessage id="link.details.info" />
                                     </span>
                                     <ArrowRight width={18} height={14} />
                                 </StyledLink>

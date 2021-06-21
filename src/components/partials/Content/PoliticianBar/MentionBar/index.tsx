@@ -28,9 +28,9 @@ const MentionBar = ({ positive, neutral, negative, hoverable = true }: IMentionB
     const neutralBarValue = positiveValue + neutralValue;
     const negativeBarValue = positiveValue + neutralValue + negativeValue;
 
-    const positiveBarText = `${Mention.POSITIVE} ${positiveBarValue}`;
-    const neutralBarText = `${Mention.NEUTRAL} ${neutralBarValue}`;
-    const negativeBarText = `${Mention.NEGATIVE} ${negativeBarValue}`;
+    const positiveBarText = `${Mention.POSITIVE} ${positiveValue}%`;
+    const neutralBarText = `${Mention.NEUTRAL} ${neutralValue}%`;
+    const negativeBarText = `${Mention.NEGATIVE} ${negativeValue}%`;
 
     return (
         <MentionBarContainer>

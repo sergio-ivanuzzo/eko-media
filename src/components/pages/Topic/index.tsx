@@ -48,7 +48,7 @@ const TopicPage = (): JSX.Element => {
                             <ArrowLeft width={100} height={25} />
                         </BackLink>
                         <FormattedTitle
-                            placeholder={formatMessage({ id: "politician_bar.title" })}
+                            placeholder={formatMessage({ id: "topic.title" })}
                             params={[ CATEGORIES_MAP[selectedCategory] ]} level={HeadingLevel.H2} />
                     </HeadingSection>
                     <SubSection>
@@ -57,7 +57,7 @@ const TopicPage = (): JSX.Element => {
                             <ConditionalRender condition={!!topic}>
                                 <FormattedTitle
                                     placeholder={formatMessage({ id: "topic_media_bar.title" })}
-                                    params={[ topic ]}
+                                    params={[ topic, CATEGORIES_MAP[selectedCategory] ]}
                                     level={HeadingLevel.H3}
                                 />
                             </ConditionalRender>

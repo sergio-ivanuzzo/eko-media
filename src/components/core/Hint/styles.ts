@@ -37,6 +37,7 @@ export const HintText = styled.div<Partial<IHintProps>>`
     
     &:hover {
       color: ${({ theme }) => theme.palette.green.salad};
+      text-decoration: underline;
     }
   }
 `;
