@@ -87,6 +87,7 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
         const paddingX = centerX / 1.8;
         const paddingY = centerY / 2;
 
+        // TODO: move all magic numbers to constants
         const offsetX = categoriesCount === 1 ? 150 : 0;
 
         // according to current requirements we can build 5 or 1 bubble chart

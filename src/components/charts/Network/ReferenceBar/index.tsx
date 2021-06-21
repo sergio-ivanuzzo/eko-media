@@ -22,7 +22,7 @@ import {
 } from "./styles";
 
 const DEFAULT_TARGET_SORTED_ASC = true;
-const DEFAULT_COUNT_SORTED_ASC = true;
+const DEFAULT_COUNT_SORTED_ASC = false;
 
 const ReferenceItem = ({ from, to, direction, referenceCount, ...props }: IReferenceItemProps): JSX.Element => {
 
@@ -73,6 +73,8 @@ const ReferenceItem = ({ from, to, direction, referenceCount, ...props }: IRefer
 const ReferenceBar = ({ items: originItems, ...props }: IReferenceBarProps): JSX.Element => {
 
     const { setSelectedNodeName, setHoveredNodeName, setConnection } = props;
+
+    originItems.sort((a, b) => b.referenceCount - a.referenceCount);
 
     const [ items, setItems ] = useState(originItems);
     const [ targetSortedASC, setTargetSortedASC ] = useState(DEFAULT_TARGET_SORTED_ASC);

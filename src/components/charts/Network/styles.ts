@@ -3,6 +3,8 @@ import styled from "styled-components";
 import Chart from "~/components/core/Chart";
 import brighten from "~/helpers/color/brighten";
 
+import { DEFAULT_TEXT_SIZE } from "~/hooks/useChart/draw/useDrawNetwork";
+
 export const NetworkChartContainer = styled.div`
   display: flex;
   max-height: 800px;
@@ -38,6 +40,7 @@ export const StyledChart = styled(Chart)`
     //font-weight: bold;
     &.node-text {
       font-weight: bold;
+      font-size: ${DEFAULT_TEXT_SIZE}px;
     }
   }
 `;

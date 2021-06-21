@@ -2,23 +2,19 @@ import { useCallback, useRef } from "react";
 import * as d3 from "d3";
 
 import limitNumber from "~/helpers/limitNumber";
+import useCanvas from "~/hooks/useCanvas";
+import usePreviousState from "~/hooks/usePreviousState";
 
 import { ChartTooltipCSS } from "~/components/core/Chart/styles";
 import theme from "~/common/theme";
 
 import { MEDIA_LOGOS_DIR } from "~/common/constants";
-import usePreviousState from "~/hooks/usePreviousState";
 
-// edges size
-const MAX_DISTANCE = 2000;
-const MIN_DISTANCE = 300;
-// node size
-const RADIUS = 10;
-
-// multipliers to use for scaling
+const BASE_RADIUS = 12;
 const RADIUS_MULTIPLIER = 1.3;
-const MAX_RADIUS = RADIUS * RADIUS_MULTIPLIER;
+const MAX_RADIUS = BASE_RADIUS * RADIUS_MULTIPLIER;
 
+export const DEFAULT_TEXT_SIZE = 18; // px
 // offset from node
 const TEXT_X_OFFSET = 15;
 const TEXT_Y_OFFSET = 5;
@@ -34,7 +30,6 @@ const CUSTOM_EVENT_HOVER_NODE_NAME = "custom.hover_node_name";
 const useDrawNetwork = (
     { nodes, edges, handleNodeClick, isSelected, setSelected, ...props }: IUseNetworkProps
 ): { draw: (props: IChartDrawProps) => void } => {
-
     const {
         selectedNodeName,
         setSelectedNodeName,
@@ -48,7 +43,8 @@ const useDrawNetwork = (
     const [ prevHoveredNodeName ] = usePreviousState(hoveredNodeName);
 
     const highlight = useCallback((
-        node: d3.Selection<SVGGElement, unknown, SVGSVGElement | null, unknown>
+        node: d3.Selection<SVGGElement, unknown, SVGSVGElement | null, unknown>,
+        fallbackRadius: number,
     ) => (
         selectedNode: any,
         linkedNodeColor: string,
@@ -89,7 +85,7 @@ const useDrawNetwork = (
                 if (node.index === selectedNode.index) {
                     return selectedNodeRadius;
                 } else {
-                    return RADIUS;
+                    return fallbackRadius;
                 }
             });
 
@@ -157,7 +153,7 @@ const useDrawNetwork = (
                     handleNodeClick(selectedNode.id);
                     (doFade as CallableFunction)(selectedNode, MIN_FADE, MAX_FADE);
                     (doHighlight as CallableFunction)(
-                        selectedNode, green.jade, cyan.azure, cyan.azure, RADIUS * RADIUS_MULTIPLIER
+                        selectedNode, green.jade, cyan.azure, cyan.azure, BASE_RADIUS * RADIUS_MULTIPLIER
                     );
                 }
             }
@@ -183,14 +179,14 @@ const useDrawNetwork = (
 
                 (doFade as CallableFunction)(sourceNode, MIN_FADE, MAX_FADE, targetNode);
                 (doHighlight as CallableFunction)(
-                    sourceNode, green.jade, cyan.azure, cyan.azure, RADIUS * RADIUS_MULTIPLIER, targetNode
+                    sourceNode, green.jade, cyan.azure, cyan.azure, BASE_RADIUS * RADIUS_MULTIPLIER, targetNode
                 );
             } else if (nodeName) {
                 const selectedNode = nodes.find((node: any) => node.name === nodeName) || { id: -1 };
 
                 (doFade as CallableFunction)(selectedNode, MIN_FADE, MAX_FADE);
                 (doHighlight as CallableFunction)(
-                    selectedNode, green.jade, cyan.azure, cyan.azure, RADIUS * RADIUS_MULTIPLIER
+                    selectedNode, green.jade, cyan.azure, cyan.azure, BASE_RADIUS * RADIUS_MULTIPLIER
                 );
             }
         } else {
@@ -198,7 +194,9 @@ const useDrawNetwork = (
         }
     }, [ tempFunctionsRef, prevHoveredNodeName, connection, nodes, edges ]);
 
-     const draw = useCallback(({ width: currentWidth, height: currentHeight, ...props }: IChartDrawProps): void => {
+    const { getTextWidth } = useCanvas();
+
+    const draw = useCallback(({ width, height, ...props }: IChartDrawProps): void => {
         const { chartRef, tooltip } = props;
 
         document.dispatchEvent(
@@ -232,29 +230,33 @@ const useDrawNetwork = (
             return;
         }
 
-        const width = currentWidth / 1.5;
-        const height = currentHeight / 1.2;
-
         const limitDraggableX = (x: number) => limitNumber(x, MAX_RADIUS, width - MAX_RADIUS);
         const limitDraggableY = (y: number) => limitNumber(y, MAX_RADIUS, height - MAX_RADIUS);
 
         const svg = d3.select(chartRef.current)
             .attr("viewBox", `0 0 ${width} ${height}`)
             .attr("preserveAspectRatio", "xMidYMid meet")
-            .attr("height", currentHeight)
-            .attr("width", currentWidth);
+            .attr("height", height)
+            .attr("width", width);
 
         // clear svg before draw new content
         svg.selectAll("svg > *").remove();
 
+        // links size
+        const minDistance = width / 3.125;
+        const maxDistance = width;
+        // node radius
+        // const radius = Math.min(BASE_RADIUS, width / 150);
+        const radius = BASE_RADIUS;
+
         const simulation: any = d3.forceSimulation(nodes as any)
-            .force("link", d3.forceLink().id((d: any) => d.id).distance(MIN_DISTANCE))
+            .force("link", d3.forceLink().id((d: any) => d.id).distance(minDistance))
             .force("charge", d3.forceManyBody()
-                .strength((d: any, i) => i === 0 ? -MAX_DISTANCE : -(MAX_DISTANCE / 2))
-                .distanceMin(MIN_DISTANCE)
-                .distanceMax(MAX_DISTANCE)
+                .strength((d: any, i) => i === 0 ? -maxDistance : -(maxDistance / 2))
+                .distanceMin(minDistance)
+                .distanceMax(maxDistance)
             )
-            .force("x", d3.forceX(width / 2).strength(0.00015))
+            .force("x", d3.forceX(width / 2).strength(0.015))
             .force("y", d3.forceY(height / 2).strength(0.15))
             .force("center", d3.forceCenter(width / 2, height / 2));
 
@@ -262,9 +264,12 @@ const useDrawNetwork = (
             simulation.force("link").links(edges);
         }
 
+        simulation.tick(Math.ceil(Math.log(simulation.alphaMin()) / Math.log(1 - simulation.alphaDecay())));
+
         // disable animation
-        simulation.stop();
-        simulation.tick(nodes.length);
+        // simulation.stop();
+        // simulation.tick(nodes.length);
+         // See https://github.com/d3/d3-force/blob/master/README.md#simulation_tick
 
         const link = svg.append("g")
             .attr("class", "links")
@@ -306,7 +311,7 @@ const useDrawNetwork = (
         node.append("circle")
             .attr("cx", (d: any) => limitDraggableX(d.x))
             .attr("cy", (d: any) => limitDraggableY(d.y))
-            .attr("r", RADIUS);
+            .attr("r", radius);
 
         node.append("text")
             .text((d: any) => d.name)
@@ -325,27 +330,30 @@ const useDrawNetwork = (
             node.selectAll("circle")
                 .attr("cx", (d: any) => limitDraggableX(d.x))
                 .attr("cy", (d: any) => limitDraggableY(d.y))
-                .attr("r", RADIUS);
+                .attr("r", radius);
 
             node.selectAll("text")
-                .attr("x", (d: any) => limitDraggableX(d.x + TEXT_X_OFFSET))
+                .attr("x", (d: any) => {
+                    const textSize = getTextWidth(nodes[d.index].name, `bold ${DEFAULT_TEXT_SIZE}px NeueHaasUnica`);
+                    return limitNumber(d.x + TEXT_X_OFFSET, TEXT_X_OFFSET, width - (textSize + TEXT_X_OFFSET));
+                })
                 .attr("y", (d: any) => limitDraggableY(d.y + TEXT_Y_OFFSET));
-        })
+        });
 
         const doFade = fade(link);
-        const doHighlight = highlight(node);
+        const doHighlight = highlight(node, radius);
 
         const mouseOverFade = (event: MouseEvent, d: any) => {
             if (!isSelected) {
                 doFade(d, MIN_FADE, MAX_FADE);
-                doHighlight(d, green.jade, cyan.azure, cyan.azure, RADIUS * RADIUS_MULTIPLIER);
+                doHighlight(d, green.jade, cyan.azure, cyan.azure, radius * RADIUS_MULTIPLIER);
             }
         };
 
         const mouseOutFade = (event: MouseEvent, d: any) => {
             if (!isSelected) {
                 doFade(d);
-                doHighlight(d, orange.carrot, orange.carrot, black.base, RADIUS);
+                doHighlight(d, orange.carrot, orange.carrot, black.base, radius);
             }
         };
 
@@ -360,7 +368,7 @@ const useDrawNetwork = (
 
             handleNodeClick(d.id);
             doFade(d, MIN_FADE, MAX_FADE);
-            doHighlight(d, green.jade, cyan.azure, cyan.azure, RADIUS * RADIUS_MULTIPLIER);
+            doHighlight(d, green.jade, cyan.azure, cyan.azure, radius * RADIUS_MULTIPLIER);
         });
 
         // unselect nodes when click outside of it (somewhere on svg)
