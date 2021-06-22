@@ -1,6 +1,6 @@
 import React from "react";
 import { IntlProvider } from "react-intl";
-import { MemoryRouter } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import { ThemeProvider } from 'styled-components';
 
 import theme from "~/common/theme";
@@ -25,9 +25,9 @@ export const decorators = [
       <IntlProvider locale={defaultLocale} messages={translations[defaultLocale]}>
         <DataProvider>
           <ThemeProvider theme={theme}>
-            <MemoryRouter>
+            <Router>
                 <Story />
-            </MemoryRouter>
+            </Router>
           </ThemeProvider>
         </DataProvider>
       </IntlProvider>
