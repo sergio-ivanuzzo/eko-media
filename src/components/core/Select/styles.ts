@@ -5,6 +5,8 @@ import { DropdownItem, Frame } from "~/components/core/Dropdown/styles";
 
 const BASE_FONT_SIZE = 14;
 
+const TRIGGER_PADDING = 4;
+
 const MenuItemCss = css`
   font-size: ${BASE_FONT_SIZE}px;
   color: ${({ theme }) => theme.palette.black.base};
@@ -30,12 +32,13 @@ export const MenuItem = styled(DropdownItem)<IActivableComponent>`
 
 export const TriggerContainer = styled.div`
   ${MenuItemCss};
-  padding: 8px;
+  padding: ${TRIGGER_PADDING}px;
   display: flex;
   border-radius: 10px;
   border: 1px solid ${({ theme }) => theme.palette.gray.border};
   height: 38px;
   justify-content: space-between;
+  font-size: 18px;
   
   > div:first-child {
     display: flex;
@@ -54,7 +57,7 @@ export const TriggerContainer = styled.div`
     
     > span {
       margin-right: 10px;
-      font-size: 14px;
+      font-size: 18px;
       font-weight: bold;
     }
   }
@@ -62,14 +65,25 @@ export const TriggerContainer = styled.div`
 
 export const Badge = styled.div`
   border-radius: 50%;
-  background: ${({ theme }) => theme.palette.cyan.azure};
-  color: ${({ theme }) => theme.palette.white.base};
+  color: ${({ theme }) => theme.palette.black.base};
+  border: 1px solid ${({ theme }) => theme.palette.orange.carrot};
   padding: 8px;
   width: ${BASE_FONT_SIZE}px;
   height: ${BASE_FONT_SIZE}px;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-weight: bold;
+`;
+
+export const BadgeContainer = styled.div`
+  display: flex;
+  white-space: nowrap;
+  align-items: center;
+  
+  > *:first-child {
+    margin-right: 5px;
+  }
 `;
 
 export const TriggerItem = styled.div<ITriggerItemProps>`
@@ -90,6 +104,10 @@ export const CloseButton = styled.button`
   background: transparent;
   border: none;
   
+  > * {
+    margin-top: 2px;
+  }
+  
   &:hover {
     svg {
       cursor: pointer;
@@ -107,6 +125,16 @@ export const CloseButton = styled.button`
 
 export const StyledDropdown = styled(Dropdown)`
   ${Frame} {
-    top: -8px;
+    top: -${TRIGGER_PADDING + 2}px;
+  }
+`;
+
+export const IconContainer = styled.div`
+  margin: 0 10px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  > * {
+    margin-top: 2px;
   }
 `;

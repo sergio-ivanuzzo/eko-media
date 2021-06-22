@@ -1,6 +1,8 @@
 import { FormattedMessage, useIntl } from "react-intl";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 
+import CaretDown from "~/components/icons/CaretDown";
+import CaretUp from "~/components/icons/CaretUp";
 import Close from "~/components/icons/Close";
 import ConditionalRender from "~/components/core/ConditionalRender";
 import Placeholder from "~/components/core/Placeholder";
@@ -9,7 +11,16 @@ import useElementSize from "~/hooks/useElementSize";
 
 import { JustifyContent } from "~/components/global.constants";
 import { MOUSE_BUTTON } from "~/common/constants";
-import { Badge, CloseButton, MenuItem, StyledDropdown, TriggerContainer, TriggerItem } from "./styles";
+import {
+    Badge,
+    BadgeContainer,
+    CloseButton,
+    IconContainer,
+    MenuItem,
+    StyledDropdown,
+    TriggerContainer,
+    TriggerItem
+} from "./styles";
 
 const DefaultItem = ({ option, isActive = false, ...props }: ISelectItemProps): JSX.Element => {
     const {
@@ -29,7 +40,7 @@ const DefaultItem = ({ option, isActive = false, ...props }: ISelectItemProps): 
 };
 
 const DefaultTrigger = ({ selected: originSelected, ...props }: ISelectTriggerProps): JSX.Element => {
-    const { toggle, multiple = false, handleUnselect, allMultipleSelected = false } = props;
+    const { toggle, multiple = false, handleUnselect, allMultipleSelected = false, isOpen } = props;
 
     // show only itemAll (in case if all selected) only for multiple mode
     // for single mode always show itemAll and rest of items
@@ -90,14 +101,18 @@ const DefaultTrigger = ({ selected: originSelected, ...props }: ISelectTriggerPr
                             </TriggerItem>
                         ))}
                     </div>
-                    <div>
-                        <ConditionalRender condition={!!wrappedAmount && multiple}>
-                            <>
-                                <span>{badgeLabel}</span>
-                                <Badge>{wrappedAmount}</Badge>
-                            </>
+                    <ConditionalRender condition={!!wrappedAmount && multiple}>
+                        <BadgeContainer>
+                            <span>{badgeLabel}</span>
+                            <Badge>{wrappedAmount}</Badge>
+                        </BadgeContainer>
+                    </ConditionalRender>
+                    <IconContainer>
+                        <ConditionalRender condition={isOpen}>
+                            <CaretUp width={14} />
+                            <CaretDown width={14} />
                         </ConditionalRender>
-                    </div>
+                    </IconContainer>
                 </>
                 <Placeholder primaryAlign={JustifyContent.START}>
                     <FormattedMessage id="placeholder.empty_select" />

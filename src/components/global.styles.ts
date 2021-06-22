@@ -46,6 +46,7 @@ export const DisabledCSS = css`
 
 export const CustomFontCSS = css`
   font-family: "NeueHaasUnica", sans-serif;
+  line-height: 18px;
 `;
 
 const PrimaryStartCSS = css`

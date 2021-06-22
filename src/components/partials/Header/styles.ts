@@ -6,11 +6,8 @@ export const HeaderContainer = styled.div<IHeaderProps>`
   ${CustomFontCSS};
   display: flex;
   flex-direction: column;
-  //width: auto;
   background: ${({ theme }) => theme.palette.white.base};
-  //padding: 10px;
-  //padding: 10px 100px 20px 100px;
-  padding: 10px 125px 20px 125px;
+  padding: 10px 125px 0 125px;
     
   ${({ sticky }: IHeaderProps) => sticky && `
       position: sticky;
