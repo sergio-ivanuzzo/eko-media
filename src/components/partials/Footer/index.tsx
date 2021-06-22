@@ -3,7 +3,9 @@ import React from "react";
 import { useIntl } from "react-intl";
 
 import FacebookIcon from "~/components/icons/FacebookIcon";
+import Instagram from "~/components/icons/Instagram";
 import TwitterIcon from "~/components/icons/TwitterIcon";
+import Youtube from "~/components/icons/Youtube";
 import useData from "~/hooks/useData";
 
 import { Copyright, FooterContainer, LastUpdatedContainer, SocialButton, SocialContainer } from "./styles";
@@ -34,6 +36,16 @@ const Footer = (): JSX.Element => {
                 <SocialButton>
                     <Link to={{ pathname: "https://twitter.com/Vox_UA?s=09" }} target="_blank">
                         <TwitterIcon width={48} />
+                    </Link>
+                </SocialButton>
+                <SocialButton>
+                    <Link to={{ pathname: "https://www.youtube.com/channel/UCR6MsnwJpQUJMYbef2vRbvw" }} target="_blank">
+                        <Youtube width={48} />
+                    </Link>
+                </SocialButton>
+                <SocialButton>
+                    <Link to={{ pathname: "https://www.instagram.com/voxukraine/" }} target="_blank">
+                        <Instagram width={48} />
                     </Link>
                 </SocialButton>
             </SocialContainer>

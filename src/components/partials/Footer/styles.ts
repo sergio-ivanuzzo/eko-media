@@ -19,10 +19,10 @@ export const SocialContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 20px auto;
+  margin-bottom: 20px;
   
   > * {
-    margin: 25px;
+    margin: 5px;
   }
 `;
 
@@ -40,9 +40,7 @@ export const SocialButton = styled.button`
 
 export const Copyright = styled.div`
   ${CustomFontCSS};
-  margin-top: 75px;
   color: ${({ theme }) => brighten(theme.palette.gray.silver, 25)};
-  padding: 20px;
   
   &:hover {
     color: ${({ theme }) => theme.palette.gray.silver};
@@ -54,8 +52,10 @@ export const LastUpdatedContainer = styled.div`
   ${CustomFontCSS};
   width: 100%;
   text-align: left;
+  margin-top: 10px;
   
   > :first-child {
+    margin-top: 10px;
     margin-left: 125px;
     font-weight: bold;
     margin-right: 10px;
