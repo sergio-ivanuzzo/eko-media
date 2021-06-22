@@ -40,8 +40,8 @@ const MainPage = (): JSX.Element => {
 
     const { month, year } = getMonthAndYear();
 
-    const networkFileName = `${TYPES.NETWORK}_${selectedCategory}_${month}_${year}.csv`;
-    const connectionFileName = `${TYPES.CONNECTION}_${selectedCategory}_${month}_${year}.csv`;
+    const networkFileName = `${TYPES.NETWORK}_${selectedCategory}_${month}_${year}.json`;
+    const connectionFileName = `${TYPES.CONNECTION}_${selectedCategory}_${month}_${year}.json`;
 
     const getDirPath = (fileName: string) => {
         return `${ROOT_DIR}/${year}/${month}/${fileName}`;
