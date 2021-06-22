@@ -5,6 +5,7 @@ import ArrowChart from "~/components/charts/Arrow";
 import ArrowRight from "~/components/icons/ArrowRight";
 import Bubble from "~/components/charts/Bubble";
 import ConditionalRender from "~/components/core/ConditionalRender";
+import DownloadLink from "~/components/core/DownloadLink";
 import ExpertBar from "~/components/partials/Content/ExpertBar";
 import FormattedTitle from "~/components/core/FormattedTitle";
 import Hint from "~/components/core/Hint";
@@ -15,10 +16,10 @@ import StackedBar from "~/components/charts/StackedBar";
 import formatString from "~/helpers/formatString";
 import useData from "~/hooks/useData";
 
-import { CATEGORIES_MAP } from "~/common/constants";
 import { HeadingLevel } from "~/components/core/FormattedTitle/constants";
 import { MARGIN_LEFT } from "~/hooks/useChart/draw/useDrawStackedBar";
 import { AlignItems, JustifyContent } from "~/components/global.constants";
+import { CATEGORIES_MAP, ROOT_DIR, TYPES } from "~/common/constants";
 import {
     HeadingSection,
     LeftColumn,
@@ -34,8 +35,17 @@ const EXPERT_BAR_LIMIT = 3;
 
 const MainPage = (): JSX.Element => {
 
-    const { selectedCategory, isDataLoaded } = useData();
+    const { selectedCategory, isDataLoaded, getMonthAndYear } = useData();
     const { formatMessage } = useIntl();
+
+    const { month, year } = getMonthAndYear();
+
+    const networkFileName = `${TYPES.NETWORK}_${selectedCategory}_${month}_${year}.csv`;
+    const connectionFileName = `${TYPES.CONNECTION}_${selectedCategory}_${month}_${year}.csv`;
+
+    const getDirPath = (fileName: string) => {
+        return `${ROOT_DIR}/${year}/${month}/${fileName}`;
+    }
 
     return (
         <ConditionalRender condition={isDataLoaded}>
@@ -173,6 +183,9 @@ const MainPage = (): JSX.Element => {
                         </div>
                     </HeadingSection>
                     <Network />
+                    <SubSection primaryAlign={JustifyContent.CENTER} secondaryAlign={AlignItems.CENTER}>
+                        <DownloadLink filePath={getDirPath(networkFileName)} fileName={networkFileName} />
+                    </SubSection>
                     <div style={{ marginTop: "100px" }}>
                         <div style={{ padding: "0 25px" }}>
                             <FormattedTitle
@@ -187,6 +200,9 @@ const MainPage = (): JSX.Element => {
                             />
                         </div>
                         <ArrowChart />
+                        <SubSection primaryAlign={JustifyContent.CENTER} secondaryAlign={AlignItems.CENTER}>
+                            <DownloadLink filePath={getDirPath(connectionFileName)} fileName={connectionFileName} />
+                        </SubSection>
                     </div>
                 </Section>
             </>
