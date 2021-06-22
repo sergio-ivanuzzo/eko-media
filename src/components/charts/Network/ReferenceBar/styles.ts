@@ -5,7 +5,7 @@ import ArrowRight from "~/components/icons/ArrowRight";
 
 import brighten from "~/helpers/color/brighten";
 
-import { DisabledCSS, NoActiveOutlineCSS, NoSelectCSS, OverflowCSS } from "~/components/global.styles";
+import { DisabledCSS, NoActiveOutlineCSS, OverflowCSS } from "~/components/global.styles";
 
 export const ReferenceList = styled.div`
   overflow-y: auto;
@@ -13,7 +13,6 @@ export const ReferenceList = styled.div`
   box-shadow: 0 0 3px 0 ${({ theme }) => theme.palette.gray.silver};
   padding: 2px;
   border-radius: 5px;
-  ${NoSelectCSS};
   margin-top: 50px;
 `;
 

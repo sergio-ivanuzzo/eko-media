@@ -36,6 +36,11 @@ export const TriggerItem = styled.div`
   display: flex;
   align-items: center;
   text-transform: capitalize;
+  
+  svg {
+    margin-top: -3px;
+    margin-left: 5px;
+  }
 `;
 
 export const StyledDropdown = styled(Dropdown)`
