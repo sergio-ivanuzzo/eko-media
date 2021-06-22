@@ -28,6 +28,8 @@ export const HintText = styled.div<Partial<IHintProps>>`
   border-radius: ${BORDER_RADIUS}px;
   padding: 10px;
   color: ${({ theme }) => theme.palette.white.base};
+  user-select: text;
+  line-height: 20px;
   
   a {
     margin-left: 5px;

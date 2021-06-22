@@ -34,7 +34,7 @@ const PoliticiansDetailsPage = (): JSX.Element => {
     return (
         <ConditionalRender condition={isDataLoaded}>
             <>
-                <Section>
+                <Section allowSelection>
                     <HeadingSection style={{ padding: 0 }}>
                         <BackLink to="/" tabIndex={7}>
                             <ArrowLeft width={100} height={25} />

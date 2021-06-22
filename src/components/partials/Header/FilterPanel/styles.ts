@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Datepicker from "~/components/core/Datepicker";
 import Select from "~/components/core/Select";
 
+import { Frame } from "~/components/core/Dropdown/styles";
 import { NoSelectCSS } from "~/components/global.styles";
 
 export const FilterContainer = styled.div`
@@ -38,10 +39,15 @@ export const FilterItemContainer = styled.div`
   }
 `;
 
-export const StyledSelect = styled(Select).attrs(({ tabIndex }) => ({
-    tabIndex: tabIndex || 0
+export const StyledSelect = styled(Select).attrs(({ tabIndex, height }) => ({
+    tabIndex: tabIndex || 0,
+    height,
 }))`
-  //margin-right: 20px;
+  ${Frame} {
+    ${({ height }) => height && `
+        max-height: ${height}px;
+    `};
+  }
 `;
 export const StyledDatepicker = styled(Datepicker).attrs(({ tabIndex }) => ({
     tabIndex: tabIndex || 0

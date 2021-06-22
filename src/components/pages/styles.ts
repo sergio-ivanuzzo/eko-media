@@ -23,6 +23,10 @@ export const Section = styled.div<ISectionProps>`
   opacity: 0;
   padding: 0 100px;
   
+  p {
+    line-height: 24px;
+  }
+  
   animation: ${FadeInAnimation} 1.5s ease-out both;
 `;
 
@@ -35,7 +39,6 @@ export const HeadingSection = styled.div<IHeadingSectionProps>`
 
 export const SubSection = styled.div<IRowProps>`
   ${CustomFontCSS};
-  ${NoSelectCSS};
   width: 100%;
   display: flex;
   ${({ primaryAlign }) => getPrimaryAlign(primaryAlign)};

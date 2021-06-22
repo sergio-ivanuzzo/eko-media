@@ -40,7 +40,7 @@ const MainPage = (): JSX.Element => {
     return (
         <ConditionalRender condition={isDataLoaded}>
             <>
-                <Section>
+                <Section allowSelection>
                     <SubSection primaryAlign={JustifyContent.SPACE_BETWEEN} secondaryAlign={AlignItems.INHERIT}>
                         <LeftColumn primaryAlign={JustifyContent.SPACE_BETWEEN} secondaryAlign={AlignItems.START}>
                             <div>
@@ -151,7 +151,7 @@ const MainPage = (): JSX.Element => {
                         </RightColumn>
                     </SubSection>
                 </Section>
-                <Section>
+                <Section allowSelection>
                     <HeadingSection noMargin>
                         <FormattedTitle
                             placeholder={formatMessage({ id: "network.title" })}

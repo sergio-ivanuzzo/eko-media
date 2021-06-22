@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { CustomFontCSS, NoSelectCSS } from "~/components/global.styles";
+import { CustomFontCSS } from "~/components/global.styles";
 
 export const Heading = styled.h1<IFormattedTitleProps>`
   ${CustomFontCSS};

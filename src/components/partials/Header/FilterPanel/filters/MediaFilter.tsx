@@ -4,6 +4,8 @@ import React, { useMemo } from "react";
 import useData from "~/hooks/useData";
 import { FilterItemContainer, StyledSelect } from "~/components/partials/Header/FilterPanel/styles";
 
+const MAX_HEIGHT = 520;
+
 const MediaFilter = (): JSX.Element => {
     const { setMedia, allMedia } = useData();
 
@@ -27,6 +29,7 @@ const MediaFilter = (): JSX.Element => {
                 multiple
                 allowSelectAll
                 tabIndex={6}
+                height={MAX_HEIGHT}
             />
         </FilterItemContainer>
     );

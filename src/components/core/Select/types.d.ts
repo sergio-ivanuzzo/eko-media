@@ -8,6 +8,7 @@ declare interface ISelectProps extends ISelectableComponent, IStylableComponent 
     allowSelectAll?: boolean;
     renderSelectAll?: (props: Partial<ISelectItemProps>) => JSX.Element;
     allowUnselect?: boolean;
+    height?: number;
 }
 
 declare interface IDefaultSelectItemProps {
