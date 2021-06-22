@@ -57,7 +57,7 @@ const ExpertsDetailsPage = (): JSX.Element => {
 
     const { month, year } = getMonthAndYear();
     const fileName = `${TYPE}_${selectedCategory}_${month}_${year}.csv`;
-    const dirPath = `${ROOT_DIR}/${year}/${month}/${fileName}`;
+    const dirPath = `../${ROOT_DIR}/${year}/${month}/${fileName}`;
 
     return (
         <ConditionalRender condition={(isDataLoaded)}>

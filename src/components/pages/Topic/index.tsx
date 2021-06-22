@@ -32,7 +32,7 @@ const TopicPage = (): JSX.Element => {
 
     const { month, year } = getMonthAndYear();
     const fileName = `${TYPE}_${selectedCategory}_${month}_${year}.csv`;
-    const dirPath = `${ROOT_DIR}/${year}/${month}/${fileName}`;
+    const dirPath = `../${ROOT_DIR}/${year}/${month}/${fileName}`;
 
     // reset topic on change category
     useEffect(() => {
