@@ -76,20 +76,6 @@ const Bubble = (): JSX.Element => {
             <>
                 <StyledChart draw={draw} colors={colors} />
                 <LegendsContainer id="bubble-legends" offset={MARGIN_LEFT} />
-                <ConditionalRender condition={!!(data?.length && selectedCategories.length)}>
-                    <>
-                        <ChartHint>
-                        <span>
-                            <FormattedMessage id="zoomable_chart.hint" />
-                        </span>
-                        </ChartHint>
-                        <ChartHint>
-                        <span>
-                            <FormattedMessage id="draggable_chart.hint" />
-                        </span>
-                        </ChartHint>
-                    </>
-                </ConditionalRender>
             </>
             <StyledPlaceholder>
                 <FormattedMessage id="placeholder.category_media.empty_data" />

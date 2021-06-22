@@ -9,6 +9,7 @@ import useNotifyError from "~/hooks/useNotifyError";
 
 import { ChartTooltipCSS } from "~/components/core/Chart/styles";
 import { TYPES } from "~/common/constants";
+import formatString from "~/helpers/formatString";
 
 export const MAX_BUBBLE_RADIUS = 150;
 
@@ -52,7 +53,13 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
 
     const { formatMessage } = useIntl();
     const legendsText = formatMessage({ id: "bubble.legends_text" });
-    const tooltipText = formatMessage({ id: "bubble.tooltip_text.total" })
+
+    const getTooltipText = (category: string, word: string, wordCount: string): string => {
+        return formatString({
+            initial: formatMessage({ id: "bubble.tooltip_text.total" }),
+            params: [ category, word, wordCount ],
+        });
+    }
 
     const totals = categoriesAllData.reduce((acc, item) => {
         acc[item.category as string] = Object.values(item)
@@ -258,7 +265,7 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
             .on("mouseover", () => tooltip.style("display", ""))
             .on("mouseout", () => tooltip.style("display", "none").style("left", "-9999px"))
             .on("mousemove", (event: MouseEvent, d: any) => {
-                const text = `${tooltipText} ${d.wordCount}`;
+                const text = getTooltipText(d.category, d.word, d.wordCount);
 
                 const color = getColor({
                     index: categoriesCount === 1 ? 0 : getColorIndexByCategory(d.category),
@@ -270,9 +277,10 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
 
                 tooltip.html(`${text}`)
                     .style("text-transform", "none")
+                    .style("width", "200px")
                     .style("background", brighten(color, 25))
-                    .style("left", `${event.pageX - 85}px`)
-                    .style("top", `${event.pageY - 100}px`);
+                    .style("left", `${event.pageX - 120}px`)
+                    .style("top", `${event.pageY - 120}px`);
             });
 
         // draw legends
