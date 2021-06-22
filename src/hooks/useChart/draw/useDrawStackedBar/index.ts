@@ -169,7 +169,7 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
 
         // draw tooltip
         group.selectAll("rect,text")
-            .on("mouseover", () => tooltip.style("display", null))
+            .on("mouseover", () => tooltip.style("display", ""))
             .on("mouseout", () => tooltip.style("display", "none").style("left", "-9999px"))
             .on("mousemove", (event: MouseEvent, d: any) => {
                 const hasNoData = d3.select(event.currentTarget as any).classed("no-data");
