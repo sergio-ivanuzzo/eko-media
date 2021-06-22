@@ -1,7 +1,8 @@
-import { IntlProvider } from "react-intl";
-import { MemoryRouter } from "react-router-dom";
 import React from "react";
 import ReactDOM from "react-dom";
+
+import { IntlProvider } from "react-intl";
+import { HashRouter as Router } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import smoothScroll from "smoothscroll-polyfill";
 
@@ -25,9 +26,9 @@ ReactDOM.render(
             <ThemeProvider theme={theme}>
                 <>
                     <GlobalStyle />
-                    <MemoryRouter>
+                    <Router>
                         <App />
-                    </MemoryRouter>
+                    </Router>
                 </>
             </ThemeProvider>
         </DataProvider>
