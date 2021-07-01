@@ -1,3 +1,4 @@
+// polyfill
 import { ResizeObserver as Observer } from "resize-observer";
 import { useEffect } from "react";
 

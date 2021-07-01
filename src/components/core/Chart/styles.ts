@@ -15,7 +15,8 @@ export const ChartTooltipCSS = css`
   width: min-content;
   white-space: pre-line;
   text-align: center;
-  filter: drop-shadow( 5px 5px 5px rgba(0, 0, 0, .7));
+  //filter: drop-shadow( 5px 5px 5px rgba(0, 0, 0, .7));
+  box-shadow: 0 0 3px 0 rgba(0, 0, 0, .7);
   z-index: 10;
 `;
 
