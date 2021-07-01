@@ -276,11 +276,12 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
                 (tooltip.node() as HTMLElement).style.cssText = ChartTooltipCSS.toString();
 
                 tooltip.html(`${text}`)
+                    .style("text-align", "left")
                     .style("text-transform", "none")
-                    .style("width", "200px")
+                    .style("white-space", "nowrap")
                     .style("background", brighten(color, 25))
                     .style("left", `${event.pageX - 120}px`)
-                    .style("top", `${event.pageY - 120}px`);
+                    .style("top", `${event.pageY - 80}px`);
             });
 
         // draw legends

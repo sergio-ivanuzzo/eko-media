@@ -7,6 +7,7 @@ const DEFAULT_CHART_HEIGHT = 800;
 
 export const ChartTooltipCSS = css`
   ${NoSelectCSS};
+  ${CustomFontCSS};
   position: absolute;
   display: inline-block;
   border-radius: 10px;
