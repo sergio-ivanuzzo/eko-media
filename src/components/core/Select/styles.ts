@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 
 import Dropdown from "~/components/core/Dropdown";
+import { OverflowCSS } from "~/components/global.styles";
 import { DropdownItem, Frame } from "~/components/core/Dropdown/styles";
 
 const BASE_FONT_SIZE = 14;
@@ -92,6 +93,11 @@ export const TriggerItem = styled.div<ITriggerItemProps>`
   padding: 5px;
   margin: 5px;
   border-radius: 5px;
+  
+  > span {
+    ${OverflowCSS};
+    max-width: 80px;
+  }
   
   ${({ multiple, theme }) => multiple && `
     background: ${theme.palette.gray.silver};

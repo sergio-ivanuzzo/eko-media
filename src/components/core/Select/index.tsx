@@ -87,7 +87,9 @@ const DefaultTrigger = ({ selected: originSelected, ...props }: ISelectTriggerPr
                                              }
                                          }}
                             >
-                                {`${item.value}`}
+                                <span title={item.value}>
+                                    {`${item.value}`}
+                                </span>
                                 <ConditionalRender condition={multiple}>
                                     <CloseButton tabIndex={-1} onClick={
                                         (e) => {

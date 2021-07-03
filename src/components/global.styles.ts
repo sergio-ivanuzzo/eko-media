@@ -11,7 +11,7 @@ export const GlobalStyle = createGlobalStyle`
 `;
 
 export const OverflowCSS = css`
-  overflow-x: hidden;
+  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 `;

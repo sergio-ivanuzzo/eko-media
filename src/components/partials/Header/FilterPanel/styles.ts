@@ -37,6 +37,10 @@ export const FilterItemContainer = styled.div`
     font-size: 18px;
     ${NoSelectCSS};
   }
+  
+  > :last-child {
+    min-width: 150px;
+  }
 `;
 
 export const StyledSelect = styled(Select).attrs(({ tabIndex, height }) => ({
