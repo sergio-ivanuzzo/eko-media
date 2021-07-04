@@ -38,6 +38,8 @@ const useData = (): IUseDataResponse => {
         setAllMedia,
         lastUpdated,
         setLastUpdated,
+        isDataLoading,
+        setDataLoading,
     } = useContext<IDataProviderContext<IItem>>(DataContext);
 
     const { formatMessage } = useIntl();
@@ -124,6 +126,7 @@ const useData = (): IUseDataResponse => {
 
         // reset
         setData({});
+        setDataLoading(true);
 
         const [ categoryItem, parsedCategories ] = await loadCategoriesAndMedia();
 
@@ -173,6 +176,8 @@ const useData = (): IUseDataResponse => {
         };
 
         setData(items);
+        setDataLoading(false);
+
     }, [ load, getMonthAndYear, setData ]);
 
     const getDataset = useCallback(
@@ -244,8 +249,8 @@ const useData = (): IUseDataResponse => {
     );
 
     const isDataLoaded = useMemo((): boolean => {
-        return !!Object.keys(data).filter((key) => !SHOULD_LOAD_ONLY_ONCE.includes(key)).length;
-    }, [ data ]);
+        return !!Object.keys(data).filter((key) => !SHOULD_LOAD_ONLY_ONCE.includes(key)).length && !isDataLoading;
+    }, [ data, isDataLoading ]);
 
     return {
         data,
@@ -262,6 +267,7 @@ const useData = (): IUseDataResponse => {
         getMonthAndYear,
         lastUpdated,
         selectedDate,
+        isDataLoading,
     }
 };
 

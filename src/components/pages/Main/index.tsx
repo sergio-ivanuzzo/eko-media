@@ -35,7 +35,7 @@ const EXPERT_BAR_LIMIT = 3;
 
 const MainPage = (): JSX.Element => {
 
-    const { selectedCategory, isDataLoaded, getMonthAndYear, data } = useData();
+    const { selectedCategory, isDataLoaded, getMonthAndYear, isDataLoading } = useData();
     const { formatMessage } = useIntl();
 
     const { month, year } = getMonthAndYear();
@@ -206,11 +206,14 @@ const MainPage = (): JSX.Element => {
                     </div>
                 </Section>
             </>
-            <StyledPlaceholder primaryAlign={JustifyContent.CENTER}>
-                <ConditionalRender condition={!!Object.keys(data).length}>
-                    <FormattedMessage id="placeholder.empty_data"/>
-                </ConditionalRender>
-            </StyledPlaceholder>
+            <ConditionalRender condition={!isDataLoading}>
+                <StyledPlaceholder primaryAlign={JustifyContent.CENTER}>
+                    <FormattedMessage id="placeholder.empty_data" />
+                </StyledPlaceholder>
+                <StyledPlaceholder primaryAlign={JustifyContent.CENTER}>
+                    <FormattedMessage id="placeholder.loading" />
+                </StyledPlaceholder>
+            </ConditionalRender>
         </ConditionalRender>
     );
 };

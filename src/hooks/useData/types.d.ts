@@ -15,4 +15,5 @@ declare interface IUseDataResponse {
     getMonthAndYear: () => { month: string, year: string };
     lastUpdated?: Date;
     selectedDate: Date;
+    isDataLoading?: boolean;
 }

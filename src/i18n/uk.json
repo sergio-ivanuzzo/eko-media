@@ -72,6 +72,7 @@
   "placeholder.category_media.empty_data": "Для обраної категорії та(або) медіа немає даних",
   "placeholder.no_media.empty_data": "Не обрано жодного медіа",
   "placeholder.no_data": "Немає даних",
+  "placeholder.loading": "Завантаження даних... Почекайте трохи...",
 
   "zoomable_chart.hint": "Shift + Wheel щоб призумити",
   "draggable_chart.hint": "Shift + ЛКМ (Drag) щоб перетягнути",

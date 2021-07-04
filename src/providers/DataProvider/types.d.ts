@@ -29,4 +29,6 @@ declare interface IDataProviderContext<T extends IItem> {
     // used with last_updated.txt
     lastUpdated?: Date;
     setLastUpdated: Dispatch<SetStateAction<Date>>;
+    isDataLoading?: boolean;
+    setDataLoading: Dispatch<SetStateAction<boolean>>;
 }

@@ -16,6 +16,8 @@ export const DataContext = createContext<IDataProviderContext<IItem>>({
     setAllMedia: () => undefined,
     lastUpdated: new Date(),
     setLastUpdated: () => undefined,
+    isDataLoading: false,
+    setDataLoading: () => undefined,
 });
 
 const DataProvider = ({ children }: IDataProviderProps): JSX.Element => {
@@ -28,6 +30,7 @@ const DataProvider = ({ children }: IDataProviderProps): JSX.Element => {
     const [ allMedia, setAllMedia ] = useState<string[]>([]);
 
     const [ lastUpdated, setLastUpdated ] = useState();
+    const [ isDataLoading, setDataLoading ] = useState(true);
 
     const context = { 
         data, 
@@ -44,6 +47,8 @@ const DataProvider = ({ children }: IDataProviderProps): JSX.Element => {
         setAllMedia,
         lastUpdated,
         setLastUpdated,
+        isDataLoading,
+        setDataLoading,
     };
 
     return (
