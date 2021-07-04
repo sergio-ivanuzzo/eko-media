@@ -6,7 +6,6 @@ import { CustomFontCSS, NoSelectCSS } from "~/components/global.styles";
 const DEFAULT_CHART_HEIGHT = 800;
 
 export const ChartTooltipCSS = css`
-  ${NoSelectCSS};
   ${CustomFontCSS};
   position: absolute;
   display: inline-block;

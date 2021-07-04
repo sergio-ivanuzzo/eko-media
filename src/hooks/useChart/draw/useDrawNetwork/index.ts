@@ -391,7 +391,9 @@ const useDrawNetwork = (
                 const imageSrc = `${MEDIA_LOGOS_DIR}/${d.name}.png`;
 
                 // apply main tooltip css
-                (tooltip.node() as HTMLElement).style.cssText = ChartTooltipCSS.toString();
+                (tooltip.node() as HTMLElement).style.cssText = ChartTooltipCSS
+                    .map((item) => (item as string).trim()).filter((item) => item.length > 1)
+                    .toString();
 
                 tooltip.html(`<img src="${imageSrc}" width="100px" alt="">`)
                     .style("background", "transparent")

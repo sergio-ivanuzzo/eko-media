@@ -273,7 +273,9 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
                 });
 
                 // apply main tooltip css
-                (tooltip.node() as HTMLElement).style.cssText = ChartTooltipCSS.toString();
+                (tooltip.node() as HTMLElement).style.cssText = ChartTooltipCSS
+                    .map((item) => (item as string).trim()).filter((item) => item.length > 1)
+                    .toString();
 
                 tooltip.html(`${text}`)
                     .style("text-align", "left")
