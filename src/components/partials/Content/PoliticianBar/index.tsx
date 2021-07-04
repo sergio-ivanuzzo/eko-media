@@ -2,15 +2,15 @@ import { FormattedMessage } from "react-intl";
 import React, { useEffect, useState } from "react";
 
 import ConditionalRender from "~/components/core/ConditionalRender";
-import PaginatedList from "~/components/core/PaginatedList";
 import PoliticianCard from "~/components/partials/Content/PoliticianBar/PoliticianCard";
-import useData from "~/hooks/useData";
+import ScrollableList from "~/components/core/ScrollableList";
 
-import { Mention, NON_MEDIA_KEYS, POLITICIANS_PHOTOS_DIR, TYPES } from "~/common/constants";
+import useData from "~/hooks/useData";
 
 import { JustifyContent } from "~/components/global.constants";
 import { PoliticianBarContainer } from "./styles";
 import { StyledPlaceholder } from "~/components/partials/Content/styles";
+import { Mention, NON_MEDIA_KEYS, POLITICIANS_PHOTOS_DIR, TYPES } from "~/common/constants";
 
 const TYPE = TYPES.POLITICIAN;
 
@@ -88,9 +88,9 @@ const PoliticianBar = ({ limit, selectable = false, onSelect = () => null }: IPo
     return (
         <PoliticianBarContainer>
             <ConditionalRender condition={!!data.length}>
-                <PaginatedList>
+                <ScrollableList limit={limit}>
                     {children}
-                </PaginatedList>
+                </ScrollableList>
                 <StyledPlaceholder primaryAlign={JustifyContent.CENTER}>
                     <FormattedMessage id="placeholder.category_media.empty_data" />
                 </StyledPlaceholder>

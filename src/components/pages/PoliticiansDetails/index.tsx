@@ -5,6 +5,7 @@ import ArrowLeft from "~/components/icons/ArrowLeft";
 import ConditionalRender from "~/components/core/ConditionalRender";
 import DownloadLink from "~/components/core/DownloadLink";
 import FormattedTitle from "~/components/core/FormattedTitle";
+import Hint from "~/components/core/Hint";
 import MentionChart from "~/components/charts/StackedBar/MentionChart";
 import PoliticianBar from "~/components/partials/Content/PoliticianBar";
 import formatString from "~/helpers/formatString";
@@ -14,9 +15,9 @@ import { HeadingLevel } from "~/components/core/FormattedTitle/constants";
 import { MARGIN_LEFT } from "~/hooks/useChart/draw/useDrawStackedBar";
 import { AlignItems, JustifyContent } from "~/components/global.constants";
 import { BackLink, HeadingSection, LeftColumn, RightColumn, Section, SubSection } from "~/components/pages/styles";
-import { CATEGORIES_MAP, ROOT_DIR, TYPES } from "~/common/constants";
 
 import { StyledPlaceholder } from "./styles";
+import { CATEGORIES_MAP, ROOT_DIR, TYPES } from "~/common/constants";
 
 const TYPE = TYPES.POLITICIAN;
 
@@ -53,7 +54,8 @@ const PoliticiansDetailsPage = (): JSX.Element => {
                                         params={[ formatString({
                                             initial: formatMessage({ id: "topXPoliticians" }),
                                             params: [ `${dataset.length}` ]
-                                        }) ]} />
+                                        }) ]} inline />
+                                    <Hint text={formatMessage({ id: "politician_bar.hint2" })} />
                                 </div>
                                 <PoliticianBar onSelect={setPoliticianName} selectable />
                             </LeftColumn>
