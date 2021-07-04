@@ -6,15 +6,16 @@ import useChartColor from "~/hooks/useChart/color/useChartColor";
 
 import { ChartTooltipCSS } from "~/components/core/Chart/styles";
 import brighten from "~/helpers/color/brighten";
+import formatString from "~/helpers/formatString";
 import theme from "~/common/theme";
 
 export const BAR_HEIGHT = 32;
 export const MARGIN_LEFT = 230;
 
-const MIN_ZOOM = 1;
-const MAX_ZOOM = 15;
-
-const TEXT_MARGIN_LEFT = 10;
+// const MIN_ZOOM = 1;
+// const MAX_ZOOM = 15;
+//
+// const TEXT_MARGIN_LEFT = 10;
 
 const { white, black } = theme.palette;
 
@@ -112,36 +113,36 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
             .classed("no-data", (d: any) => !d.data.values.some((value: number) => !!value));
 
         // add text on segments
-        const text = group.selectAll("text.label").data((d: any) => d);
-        text.join("text")
-            .text((d: any, i: any, n: any) => {
-                const parent = d3.select(n[i]).node().parentNode;
-                const parentClass = d3.select(parent).attr("class");
-                const groupIndex = Number(parentClass.replace( /^\D+/g, ""));
-                const value = d.data.values[groupIndex];
-                const total = d.data.total;
-                const percentage = (100 * value / total || 0).toFixed(1);
-
-                return xData.length === 1 ? value : `${percentage}%`;
-            })
-            .attr("class", (d: any, i: any, n: any) => {
-                const parent = d3.select(n[i]).node().parentNode;
-                const parentClass = d3.select(parent).attr("class");
-                const groupIndex = Number(parentClass.replace( /^\D+/g, ""));
-
-                return `label label-group-${groupIndex}`;
-            })
-            // check for zero-width segments
-            .attr("stroke", (d: any) => {
-                if (!d.data.values.some((value: number) => !!value)) {
-                    return "white";
-                }
-            })
-            .attr("dy", () => "1.3em")
-            .attr("x", (d: any) => xScale(d[0]) + TEXT_MARGIN_LEFT)
-            .attr("y", (d: any) => yScale(d.data.key))
-            .attr("width", (d: any) => xScale(d[1]) - xScale(d[0]))
-            .attr("height", yScale.bandwidth());
+        // const text = group.selectAll("text.label").data((d: any) => d);
+        // text.join("text")
+        //     .text((d: any, i: any, n: any) => {
+        //         const parent = d3.select(n[i]).node().parentNode;
+        //         const parentClass = d3.select(parent).attr("class");
+        //         const groupIndex = Number(parentClass.replace( /^\D+/g, ""));
+        //         const value = d.data.values[groupIndex];
+        //         const total = d.data.total;
+        //         const percentage = (100 * value / total || 0).toFixed(1);
+        //
+        //         return xData.length === 1 ? value : `${percentage}%`;
+        //     })
+        //     .attr("class", (d: any, i: any, n: any) => {
+        //         const parent = d3.select(n[i]).node().parentNode;
+        //         const parentClass = d3.select(parent).attr("class");
+        //         const groupIndex = Number(parentClass.replace( /^\D+/g, ""));
+        //
+        //         return `label label-group-${groupIndex}`;
+        //     })
+        //     // check for zero-width segments
+        //     .attr("stroke", (d: any) => {
+        //         if (!d.data.values.some((value: number) => !!value)) {
+        //             return "white";
+        //         }
+        //     })
+        //     .attr("dy", () => "1.3em")
+        //     .attr("x", (d: any) => xScale(d[0]) + TEXT_MARGIN_LEFT)
+        //     .attr("y", (d: any) => yScale(d.data.key))
+        //     .attr("width", (d: any) => xScale(d[1]) - xScale(d[0]))
+        //     .attr("height", yScale.bandwidth());
 
         // draw legends
         const svgElement = chartRef.current;
@@ -177,20 +178,31 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
                 const parentClass = d3.select(currentNode.parentNode).attr("class");
                 const groupIndex = Number(parentClass.replace( /^\D+/g, ""));
 
+                const value = d.data.values[groupIndex];
+                const total = d.data.total;
+                const percentage = (100 * value / total || 0).toFixed(1);
+
                 const text = hasNoData
                     ? formatMessage({ id: "stacked_bar.no_data.tooltip.text" })
-                    : `${xData[groupIndex]} ${d.data.values[groupIndex]}`;
+                    // : `${xData[groupIndex]} ${d.data.values[groupIndex]}`;
+                    : formatString({
+                        initial: formatMessage({ id: "stacked_bar.tooltip.text" }),
+                        params: [ xData[groupIndex], percentage, value ],
+                    });
 
                 // apply main tooltip css
                 (tooltip.node() as HTMLElement).style.cssText = ChartTooltipCSS.toString();
 
                 tooltip.html(text)
+                    .style("text-align", "left")
+                    .style("text-transform", "none")
+                    .style("white-space", "nowrap")
                     .style("background", hasNoData
                         ? "gray"
                         : brighten(d3.select(currentNode.parentNode).attr("fill"), 25)
                     )
                     .style("color", hasNoData ? white.base : black.base)
-                    .style("left", `${event.pageX}px`)
+                    .style("left", `${event.pageX - 200}px`)
                     .style("top", `${event.pageY + 10}px`).append("span");
 
                 if (hasNoData) {
@@ -200,40 +212,40 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
             });
 
         // add zoom for chart (horizontal scale)
-        const zoom = d3.zoom()
-            .scaleExtent([ MIN_ZOOM, MAX_ZOOM ])
-            .translateExtent([ [ 0, 0 ], [ width, height ] ])
-            .extent([ [ 0, 0 ], [ width, height ] ])
-            // allow zoom if condition true
-            .filter((event: WheelEvent) => event.shiftKey && xData.length !== 1 && event.offsetX > MARGIN_LEFT)
-            .on("zoom", (event: d3.D3ZoomEvent<any, any>) => {
-
-                const transform = event.transform;
-
-                // https://stackoverflow.com/a/67761701/5397119
-                const newScaleX = transform.rescaleX(xScale).clamp(true);
-                xAxis.scale(newScaleX)
-                svg.select("g.axis-x").call(xAxis);
-
-                svg.selectAll("rect.segment")
-                    // not zoom bars with zero width
-                    .filter((d: any) => d[0] || d[1])
-                    .attr("x", (d: any) => newScaleX(d[0]))
-                    .attr("width", (d: any) => newScaleX(d[1]) - newScaleX(d[0]))
-                    .each((d: any, index: number, n: any) => {
-                        const parent = d3.select(n[index].parentNode);
-
-                        parent.selectAll("text.label")
-                            .each((d: any, i: number, n: any) => {
-                                const textNode = d3.select(n[i]).node();
-                                d3.select(textNode)
-                                    .attr("x", (d: any) => newScaleX(d[0]))
-                                    .attr("transform", `translate(${TEXT_MARGIN_LEFT}, 0)`)
-                            });
-                    });
-            })
-
-        svg.call(zoom);
+        // const zoom = d3.zoom()
+        //     .scaleExtent([ MIN_ZOOM, MAX_ZOOM ])
+        //     .translateExtent([ [ 0, 0 ], [ width, height ] ])
+        //     .extent([ [ 0, 0 ], [ width, height ] ])
+        //     // allow zoom if condition true
+        //     .filter((event: WheelEvent) => event.shiftKey && xData.length !== 1 && event.offsetX > MARGIN_LEFT)
+        //     .on("zoom", (event: d3.D3ZoomEvent<any, any>) => {
+        //
+        //         const transform = event.transform;
+        //
+        //         // https://stackoverflow.com/a/67761701/5397119
+        //         const newScaleX = transform.rescaleX(xScale).clamp(true);
+        //         xAxis.scale(newScaleX)
+        //         svg.select("g.axis-x").call(xAxis);
+        //
+        //         svg.selectAll("rect.segment")
+        //             // not zoom bars with zero width
+        //             .filter((d: any) => d[0] || d[1])
+        //             .attr("x", (d: any) => newScaleX(d[0]))
+        //             .attr("width", (d: any) => newScaleX(d[1]) - newScaleX(d[0]))
+        //             .each((d: any, index: number, n: any) => {
+        //                 const parent = d3.select(n[index].parentNode);
+        //
+        //                 parent.selectAll("text.label")
+        //                     .each((d: any, i: number, n: any) => {
+        //                         const textNode = d3.select(n[i]).node();
+        //                         d3.select(textNode)
+        //                             .attr("x", (d: any) => newScaleX(d[0]))
+        //                             .attr("transform", `translate(${TEXT_MARGIN_LEFT}, 0)`)
+        //                     });
+        //             });
+        //     })
+        //
+        // svg.call(zoom);
 
         // disable drag for zoomed
         svg.on("mousedown.zoom", null);

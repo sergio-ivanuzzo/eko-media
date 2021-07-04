@@ -175,65 +175,68 @@ const useData = (): IUseDataResponse => {
         setData(items);
     }, [ load, getMonthAndYear, setData ]);
 
-    const getDataset = useCallback((type: TYPES, category = "all", withDate = true): IItem[] => {
-        const flags: number = `${type}_${category}` in FILTER_MASK_MAP
-            ? FILTER_MASK_MAP[`${type}_${category}`]
-            : FILTER_MASK_MAP[type];
+    const getDataset = useCallback(
+        (type: TYPES, category = "all", withDate = true, allowFilterByCategory = true): IItem[] => {
+            const flags: number = `${type}_${category}` in FILTER_MASK_MAP
+                ? FILTER_MASK_MAP[`${type}_${category}`]
+                : FILTER_MASK_MAP[type];
 
-        const filteredData: IData<IItem> = Object.keys(data)
-            .filter((key: string) => key.startsWith(`${type}_${category}`))
-            .reduce((result: IData<IItem>, key: string) => {
-                result[key] = [ ...data[key] ];
-                return result;
-            }, {});
+            const filteredData: IData<IItem> = Object.keys(data)
+                .filter((key: string) => key.startsWith(`${type}_${category}`))
+                .reduce((result: IData<IItem>, key: string) => {
+                    result[key] = [ ...data[key] ];
+                    return result;
+                }, {});
 
-        if (flags & FILTER_FLAGS.BY_MEDIA) {
-            Object.keys(filteredData).forEach((key: string) => {
-                const items = filteredData[key];
+            if (flags & FILTER_FLAGS.BY_MEDIA) {
+                Object.keys(filteredData).forEach((key: string) => {
+                    const items = filteredData[key];
 
-                const allKeys = Object.keys(items[0]);
-                const nonMediaKeys = allKeys.filter(
-                    (key) => !allMedia.some((mediaName) => key.includes(mediaName))
-                );
-                const selectedMediaKeys = selectedMedia.includes("all")
-                    ? allKeys
-                    : allKeys.filter((key) => selectedMedia.some((mediaName) => key.includes(mediaName)));
-
-                filteredData[key] = items.map((item) => {
-                    return nonMediaKeys.concat(selectedMediaKeys).reduce((acc, key) => ({
-                        ...acc,
-                        [key]: item[key]
-                    }), {});
-                });
-            })
-        }
-
-        if (flags & FILTER_FLAGS.BY_CATEGORY) {
-            Object.keys(filteredData).forEach((key: string) => {
-                const items = filteredData[key];
-                filteredData[key] = (selectedCategory === "all") ? items : items
-                    .filter((dataItem: IItem) =>
-                        CATEGORY_KEYS.some(
-                            (index: string) => {
-                                const category = (dataItem[index]?.toString() ?? "").toLowerCase();
-                                return category === CATEGORIES_MAP[selectedCategory]?.toLowerCase();
-                            }
-                        )
+                    const allKeys = Object.keys(items[0]);
+                    const nonMediaKeys = allKeys.filter(
+                        (key) => !allMedia.some((mediaName) => key.includes(mediaName))
                     );
-            })
-        }
-        const { month, year } = getMonthAndYear();
+                    const selectedMediaKeys = selectedMedia.includes("all")
+                        ? allKeys
+                        : allKeys.filter((key) => selectedMedia.some((mediaName) => key.includes(mediaName)));
 
-        let key = `${type}_${selectedCategory}`;
-        let fallbackKey = `${type}_${category}`;
+                    filteredData[key] = items.map((item) => {
+                        return nonMediaKeys.concat(selectedMediaKeys).reduce((acc, key) => ({
+                            ...acc,
+                            [key]: item[key]
+                        }), {});
+                    });
+                })
+            }
 
-        if (withDate) {
-            key = `${key}_${month}_${year}`;
-            fallbackKey = `${fallbackKey}_${month}_${year}`;
-        }
+            if (flags & FILTER_FLAGS.BY_CATEGORY && allowFilterByCategory) {
+                Object.keys(filteredData).forEach((key: string) => {
+                    const items = filteredData[key];
+                    filteredData[key] = (selectedCategory === "all") ? items : items
+                        .filter((dataItem: IItem) =>
+                            CATEGORY_KEYS.some(
+                                (index: string) => {
+                                    const category = (dataItem[index]?.toString() ?? "").toLowerCase();
+                                    return category === CATEGORIES_MAP[selectedCategory]?.toLowerCase();
+                                }
+                            )
+                        );
+                })
+            }
+            const { month, year } = getMonthAndYear();
 
-        return (key in filteredData) ? filteredData[key] : filteredData[fallbackKey] || [];
-    }, [ data, getMonthAndYear, selectedCategory, selectedMedia ]);
+            let key = `${type}_${selectedCategory}`;
+            let fallbackKey = `${type}_${category}`;
+
+            if (withDate) {
+                key = `${key}_${month}_${year}`;
+                fallbackKey = `${fallbackKey}_${month}_${year}`;
+            }
+
+            return (key in filteredData) ? filteredData[key] : filteredData[fallbackKey] || [];
+        },
+        [ data, getMonthAndYear, selectedCategory, selectedMedia ]
+    );
 
     const selectedCategories = useMemo(
         () => selectedCategory === "all" ? topCategories : [ CATEGORIES_MAP[selectedCategory] ],

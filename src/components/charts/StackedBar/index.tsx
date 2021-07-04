@@ -9,9 +9,9 @@ import useDrawStackedBar, { BAR_HEIGHT, MARGIN_LEFT } from "~/hooks/useChart/dra
 import { StyledChart } from "./styles";
 import { CATEGORIES_MAP, CATEGORY_KEYS, TYPES } from "~/common/constants";
 
+import { LegendsContainer } from "~/components/core/Chart/styles";
 import { StyledPlaceholder } from "./styles";
 import theme from "~/common/theme";
-import { ChartHint, LegendsContainer } from "~/components/core/Chart/styles";
 
 const TYPE = TYPES.CATEGORY;
 
@@ -23,6 +23,8 @@ const StackedBar = (): JSX.Element => {
     const { getDataset, selectedCategory, topCategories } = useData();
 
     const dataset: ICategorizedItem[] = getDataset(TYPE, "all") as Array<ICategorizedItem>;
+    // this dataset used for evaluate percentages
+    const datasetAll: ICategorizedItem[] = getDataset(TYPE, "all", true, false) as Array<ICategorizedItem>;
 
     const categories: string[] = useMemo(
         () => dataset.length ? dataset.map((item: ICategorizedItem) => item.category) : [],
@@ -54,7 +56,7 @@ const StackedBar = (): JSX.Element => {
                     result[category] = Number(dataset[index][media])
                     return result;
                 }, {}),
-                total: categories.reduce((sum, category, index) => sum + Number(dataset[index][media]), 0),
+                total: topCategories.reduce((sum, category, index) => sum + Number(datasetAll[index][media]), 0),
                 values: categories.map((category, index) => Number(dataset[index][media])),
             }
         });
@@ -76,13 +78,6 @@ const StackedBar = (): JSX.Element => {
                     height={height}
                     colors={colors}
                 />
-                <ConditionalRender condition={!!(categories.length && media.length && data.length)}>
-                    <ChartHint>
-                    <span>
-                        <FormattedMessage id="zoomable_chart.hint" />
-                    </span>
-                    </ChartHint>
-                </ConditionalRender>
             </>
             <StyledPlaceholder>
                 <FormattedMessage id="placeholder.category_media.empty_data" />
