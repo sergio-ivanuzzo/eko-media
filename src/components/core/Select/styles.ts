@@ -95,8 +95,10 @@ export const TriggerItem = styled.div<ITriggerItemProps>`
   border-radius: 5px;
   
   > span {
-    ${OverflowCSS};
-    max-width: 80px;
+    ${({ multiple }) => multiple && `
+      ${OverflowCSS};
+      max-width: 80px;
+    `}
   }
   
   ${({ multiple, theme }) => multiple && `
