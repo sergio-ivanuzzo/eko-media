@@ -12,7 +12,6 @@ import Hint from "~/components/core/Hint";
 import Network from "~/components/charts/Network";
 import PoliticianBar from "~/components/partials/Content/PoliticianBar";
 import SphereBar from "~/components/charts/Bar/SphereBar";
-import Spinner from "~/components/core/Spinner";
 import StackedBar from "~/components/charts/StackedBar";
 import formatString from "~/helpers/formatString";
 import useData from "~/hooks/useData";
@@ -215,7 +214,7 @@ const MainPage = (): JSX.Element => {
                     <FormattedMessage id="placeholder.empty_data" />
                 </StyledPlaceholder>
                 <StyledPlaceholder primaryAlign={JustifyContent.CENTER}>
-                    <Spinner />
+                    <FormattedMessage id="placeholder.loading" />
                 </StyledPlaceholder>
             </ConditionalRender>
         </>
