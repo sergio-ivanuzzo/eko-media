@@ -15,7 +15,7 @@ import { Mention, NON_MEDIA_KEYS, POLITICIANS_PHOTOS_DIR, TYPES } from "~/common
 const TYPE = TYPES.POLITICIAN;
 
 const PoliticianBar = ({ limit, selectable = false, onSelect = () => null }: IPoliticianBarProps): JSX.Element => {
-    const { getDataset, selectedCategory, allMedia } = useData();
+    const { getDataset, selectedCategory, allMedia, isDataLoaded } = useData();
     const dataset = getDataset(TYPE, selectedCategory) || [];
 
     const validMediaKeys = Object.keys(dataset[0] || {})
@@ -87,7 +87,7 @@ const PoliticianBar = ({ limit, selectable = false, onSelect = () => null }: IPo
 
     return (
         <PoliticianBarContainer>
-            <ConditionalRender condition={!!data.length}>
+            <ConditionalRender condition={!!data.length && isDataLoaded}>
                 <ScrollableList limit={limit}>
                     {children}
                 </ScrollableList>

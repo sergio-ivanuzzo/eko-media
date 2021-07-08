@@ -2,6 +2,7 @@ declare interface IDatePickerProps extends ISelectableComponent, IStylableCompon
     onDateChange: () => void;
     renderTrigger?: (props: IDatePickerTriggerProps) => JSX.Element;
     renderItem?: (props: IDatePickerItemProps) => JSX.Element;
+    disabled?: boolean;
 }
 
 declare interface IDatePickerTriggerProps extends IDropdownTriggerProps {

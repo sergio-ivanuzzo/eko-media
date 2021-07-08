@@ -15,12 +15,12 @@ import { DatePickerItem, StyledDropdown, TriggerContainer, TriggerItem } from ".
 const MIN_YEAR = 2019;
 const MAX_YEAR = 2050;
 
-const DefaultTrigger = ({ selectedDate, toggle, lastUpdated }: IDatePickerTriggerProps): JSX.Element => {
+const DefaultTrigger = ({ selectedDate, toggle, lastUpdated, disabled }: IDatePickerTriggerProps): JSX.Element => {
     const { locale } = useIntl();
     const month = selectedDate.toLocaleString(locale, { month: "long" });
 
     return (
-        <TriggerContainer onClick={() => toggle()}>
+        <TriggerContainer onClick={() => !disabled && toggle()} disabled={disabled}>
             <TriggerItem>
                 <ConditionalRender condition={!!lastUpdated}>
                     <>
@@ -46,6 +46,7 @@ const DatePicker = (props: IDatePickerProps): JSX.Element => {
         renderItem = DefaultItem,
         className = "",
         tabIndex,
+        disabled = false,
     } = props;
 
     const history = useHistory();
@@ -142,6 +143,7 @@ const DatePicker = (props: IDatePickerProps): JSX.Element => {
             onClose={
                 () => setMode(DatePickerMode.SELECTING_MONTH)
             }
+            disabled={disabled}
         >
             {renderChildren}
         </StyledDropdown>

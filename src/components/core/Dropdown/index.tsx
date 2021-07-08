@@ -11,9 +11,9 @@ const NAVIGATE_START_POSITION = 0;
 // we will jump to first element (index eq 0) on open (see useEffect below)
 const NAVIGATE_INITIAL = -1;
 
-const DefaultTrigger = ({ toggle, isOpen }: IDropdownTriggerProps): JSX.Element => {
+const DefaultTrigger = ({ toggle, isOpen, disabled = false }: IDropdownTriggerProps): JSX.Element => {
     return (
-        <TriggerContainer onClick={toggle}>
+        <TriggerContainer onClick={() => !disabled && toggle()} disabled={disabled}>
             <button>{isOpen}</button>
         </TriggerContainer>
     );
@@ -39,6 +39,7 @@ const Dropdown = React.forwardRef((props: IDropdownProps<HTMLDivElement>, extern
         // misc
         className = "",
         tabIndex,
+        disabled = false,
         children: renderChildren,
     } = props;
 
@@ -138,6 +139,7 @@ const Dropdown = React.forwardRef((props: IDropdownProps<HTMLDivElement>, extern
                     close,
                     toggle,
                     isOpen,
+                    disabled,
                 })}
             </TriggerContainer>
             <ConditionalRender condition={isOpen}>

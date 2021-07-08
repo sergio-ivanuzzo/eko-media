@@ -16,7 +16,7 @@ const { orange, gray } = theme.palette;
 const ARTICLE_BAR_HEIGHT = 50;
 
 const ArticleBar = ({ onClick = () => null }: IArticleBarProps): JSX.Element => {
-    const { selectedCategory, getDataset } = useData();
+    const { selectedCategory, getDataset, isDataLoaded } = useData();
     const dataset = getDataset(TYPE, selectedCategory) || [];
 
     const topics: string[] = useMemo(
@@ -43,7 +43,7 @@ const ArticleBar = ({ onClick = () => null }: IArticleBarProps): JSX.Element => 
     const { draw } = useDrawBar({ data, yData: topics, onClick });
 
     return (
-        <ConditionalRender condition={!!height}>
+        <ConditionalRender condition={!!height && isDataLoaded}>
             <StyledChart draw={draw} height={height} colors={[ gray.silver, orange.carrot ]} />
         </ConditionalRender>
     );

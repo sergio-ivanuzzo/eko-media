@@ -4,6 +4,7 @@ declare interface IDropdownTriggerProps {
     toggle: () => void;
     isOpen: boolean;
     color?: string;
+    disabled?: boolean;
 }
 
 declare interface IRenderDropdownChildrenProps {
@@ -12,7 +13,7 @@ declare interface IRenderDropdownChildrenProps {
 }
 
 declare interface IDropdownProps<T extends HTMLElement>
-    extends ISelectableComponent, IStylableComponent, IReferencableComponent<T> {
+    extends ISelectableComponent, IStylableComponent, IDisableableComponent, IReferencableComponent<T> {
         children: (props: IRenderDropdownChildrenProps) => JSX.Element | JSX.Element[];
         renderTrigger?: <D extends IDropdownTriggerProps>(props: D) => JSX.Element;
         multiple?: boolean;

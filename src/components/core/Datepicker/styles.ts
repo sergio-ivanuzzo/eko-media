@@ -1,9 +1,10 @@
 import styled from "styled-components";
 
 import Dropdown from "~/components/core/Dropdown";
+import brighten from "~/helpers/color/brighten";
 import { DropdownItem, Frame } from "~/components/core/Dropdown/styles";
 
-export const TriggerContainer = styled.div`
+export const TriggerContainer = styled.div<{ disabled?: boolean }>`
   font-size: 18px;
   color: ${({ theme }) => theme.palette.black.base};
   background: ${({ theme }) => theme.palette.white.base};
@@ -13,6 +14,11 @@ export const TriggerContainer = styled.div`
   border-radius: 10px;
   height: 38px;
   overflow: hidden;
+  
+  ${({ disabled, theme }) => disabled && `
+    background: ${brighten(theme.palette.gray.silver, 75)};
+    cursor: wait;
+  `};
 `;
 
 export const DatePickerItem = styled(DropdownItem)<IActivableComponent>`

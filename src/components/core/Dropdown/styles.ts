@@ -16,10 +16,15 @@ export const DropdownContainer = styled.div`
   }
 `;
 
-export const TriggerContainer = styled.div`
+export const TriggerContainer = styled.div<{ disabled?: boolean }>`
   ${NoSelectCSS};
   ${NoActiveOutlineCSS};
   ${CustomFontCSS};
+  
+  ${({ disabled, theme }) => disabled && `
+    background: ${theme.palette.gray.silver};
+    cursor: wait;
+  `};
 `;
 
 export const FrameContainer = styled.div`

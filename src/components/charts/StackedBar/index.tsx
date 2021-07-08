@@ -20,7 +20,7 @@ const { orange, gray, cyan, green } = theme.palette;
 const baseColors = [ orange.carrot, gray.silver, green.jade, green.salad, cyan.azure ];
 
 const StackedBar = (): JSX.Element => {
-    const { getDataset, selectedCategory, topCategories } = useData();
+    const { getDataset, selectedCategory, topCategories, isDataLoaded, isDataLoading } = useData();
 
     const dataset: ICategorizedItem[] = getDataset(TYPE, "all") as Array<ICategorizedItem>;
     // this dataset used for evaluate percentages
@@ -69,8 +69,10 @@ const StackedBar = (): JSX.Element => {
         // detect color attached to selected category
         : [ baseColors[topCategories.findIndex((category) => category === CATEGORIES_MAP[selectedCategory])] ];
 
+    const flag = useMemo(() => !!media.length && isDataLoaded, [ media, isDataLoaded ]);
+
     return (
-        <ConditionalRender condition={!!height}>
+        <ConditionalRender condition={flag}>
             <>
                 <LegendsContainer className="legends" offset={MARGIN_LEFT} />
                 <StyledChart

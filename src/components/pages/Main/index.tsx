@@ -208,14 +208,14 @@ const MainPage = (): JSX.Element => {
                         </div>
                     </Section>
                 </>
-            </ConditionalRender>
-            <ConditionalRender condition={!isDataLoading}>
-                <StyledPlaceholder primaryAlign={JustifyContent.CENTER}>
-                    <FormattedMessage id="placeholder.empty_data" />
-                </StyledPlaceholder>
-                <StyledPlaceholder primaryAlign={JustifyContent.CENTER}>
-                    <FormattedMessage id="placeholder.loading" />
-                </StyledPlaceholder>
+                <ConditionalRender condition={!isDataLoading}>
+                    <StyledPlaceholder primaryAlign={JustifyContent.CENTER}>
+                        <FormattedMessage id="placeholder.empty_data" />
+                    </StyledPlaceholder>
+                    <StyledPlaceholder primaryAlign={JustifyContent.CENTER}>
+                        <FormattedMessage id="placeholder.loading" />
+                    </StyledPlaceholder>
+                </ConditionalRender>
             </ConditionalRender>
         </>
     );

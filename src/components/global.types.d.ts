@@ -14,3 +14,7 @@ declare interface IActivableComponent {
 declare interface IReferencableComponent<T extends HTMLElement | null> {
     ref?: React.RefObject<T>;
 }
+
+declare interface IDisableableComponent {
+    disabled?: boolean;
+}

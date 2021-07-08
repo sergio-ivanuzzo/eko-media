@@ -17,7 +17,7 @@ const { orange, gray, green } = theme.palette;
 
 const MentionChart = ({ politicianName = "" }: IMentionChartProps): JSX.Element => {
 
-    const { getDataset, selectedCategory, allMedia } = useData();
+    const { getDataset, selectedCategory, allMedia, isDataLoaded } = useData();
     const dataset = getDataset(TYPE, selectedCategory);
 
     const validMediaKeys = Object.keys(dataset[0] || {})
@@ -66,7 +66,7 @@ const MentionChart = ({ politicianName = "" }: IMentionChartProps): JSX.Element 
     const { draw } = useDrawStackedBar({ data, xData: categories, yData: media });
 
     return (
-        <ConditionalRender condition={!!height}>
+        <ConditionalRender condition={!!height && isDataLoaded}>
             <>
                 <LegendsContainer className="legends" offset={MARGIN_LEFT} />
                 <StyledChart draw={draw} height={height} colors={[ green.salad, gray.silver, orange.carrot ]} />

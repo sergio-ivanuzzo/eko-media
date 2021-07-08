@@ -60,7 +60,7 @@ const ExpertsDetailsPage = (): JSX.Element => {
     const dirPath = `../${ROOT_DIR}/${year}/${month}/${fileName}`;
 
     return (
-        <ConditionalRender condition={(isDataLoaded)}>
+        <ConditionalRender condition={isDataLoaded}>
             <>
                 <Section allowSelection>
                     <HeadingSection style={{ padding: 0 }}>

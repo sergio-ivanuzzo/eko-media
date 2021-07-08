@@ -15,7 +15,6 @@ import {
     FILTER_FLAGS,
     FILTER_MASK_MAP,
     ROOT_DIR,
-    SHOULD_LOAD_ONLY_ONCE,
     TYPES,
 } from "~/common/constants";
 
@@ -40,6 +39,7 @@ const useData = (): IUseDataResponse => {
         setLastUpdated,
         isDataLoading,
         setDataLoading,
+        isDataLoaded,
     } = useContext<IDataProviderContext<IItem>>(DataContext);
 
     const { formatMessage } = useIntl();
@@ -178,7 +178,7 @@ const useData = (): IUseDataResponse => {
         setData(items);
         setDataLoading(false);
 
-    }, [ load, getMonthAndYear, setData ]);
+    }, [ load, getMonthAndYear, setData, setDataLoading ]);
 
     const getDataset = useCallback(
         (type: TYPES, category = "all", withDate = true, allowFilterByCategory = true): IItem[] => {
@@ -247,10 +247,6 @@ const useData = (): IUseDataResponse => {
         () => selectedCategory === "all" ? topCategories : [ CATEGORIES_MAP[selectedCategory] ],
         [ selectedCategory, topCategories ]
     );
-
-    const isDataLoaded = useMemo((): boolean => {
-        return !!Object.keys(data).filter((key) => !SHOULD_LOAD_ONLY_ONCE.includes(key)).length && !isDataLoading;
-    }, [ data, isDataLoading ]);
 
     return {
         data,
