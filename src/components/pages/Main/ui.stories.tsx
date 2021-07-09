@@ -14,7 +14,7 @@ export default {
 
 export const MainPage = (): JSX.Element => {
     // for story we use similar flow as we use for datepicker, bc we need to load some data into data provider
-    const { isDataLoaded, loadAll } = useData();
+    const { isDataLoading, loadAll } = useData();
     const { date, setDate } = useContext<IDataProviderContext<IItem>>(DataContext);
 
     useEffect(() => {
@@ -30,7 +30,7 @@ export const MainPage = (): JSX.Element => {
     }, [ date ]);
 
     return (
-        <ConditionalRender condition={isDataLoaded}>
+        <ConditionalRender condition={!isDataLoading}>
             <UIPage />
         </ConditionalRender>
     );
