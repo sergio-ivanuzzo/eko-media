@@ -12,7 +12,7 @@ const Instagram = ({ width = "100%", height = "100%" }: IIconProps): JSX.Element
                 gradientUnits="userSpaceOnUse">
                 <stop offset="0" stopColor="#FFC107"/>
                     <stop offset=".507" stopColor="#F44336"/>
-                    <stop offset=".99" stop-color="#9C27B0"/>
+                    <stop offset=".99" stopColor="#9C27B0"/>
             </linearGradient>
             <path fill="url(#a)" d="M11 0H5a5 5 0 0 0-5 5v6a5 5 0 0 0 5 5h6a5 5 0 0 0 5-5V5a5 5 0 0 0-5-5zm3.5 11c0
             1.93-1.57 3.5-3.5 3.5H5c-1.93 0-3.5-1.57-3.5-3.5V5c0-1.93 1.57-3.5 3.5-3.5h6c1.93 0 3.5 1.57 3.5 3.5v6z"/>
