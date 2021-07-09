@@ -49,7 +49,6 @@ const MainPage = (): JSX.Element => {
 
     return (
         <>
-            <div>{`${!isDataEmpty}`}</div>
             <ConditionalRender condition={!isDataLoading}>
                 <ConditionalRender condition={!isDataEmpty}>
                     <>
