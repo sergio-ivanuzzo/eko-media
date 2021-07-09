@@ -22,7 +22,7 @@ import { CATEGORIES_MAP, ROOT_DIR, TYPES } from "~/common/constants";
 const TYPE = TYPES.POLITICIAN;
 
 const PoliticiansDetailsPage = (): JSX.Element => {
-    const { selectedCategory, isDataLoaded, getDataset, getMonthAndYear, selectedMedia  } = useData();
+    const { selectedCategory, isDataLoading, getDataset, getMonthAndYear, selectedMedia  } = useData();
     const { formatMessage } = useIntl();
     const [ politicianName, setPoliticianName ] = useState<string>("");
 
@@ -33,7 +33,7 @@ const PoliticiansDetailsPage = (): JSX.Element => {
     const dirPath = `../${ROOT_DIR}/${year}/${month}/${fileName}`;
 
     return (
-        <ConditionalRender condition={isDataLoaded}>
+        <ConditionalRender condition={!isDataLoading}>
             <>
                 <Section allowSelection>
                     <HeadingSection style={{ padding: 0 }}>

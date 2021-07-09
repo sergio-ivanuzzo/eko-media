@@ -1,6 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
-
-import { SHOULD_LOAD_ONLY_ONCE } from "~/common/constants";
+import React, { createContext, useState } from "react";
 
 export const DataContext = createContext<IDataProviderContext<IItem>>({
     data: {},
@@ -20,8 +18,6 @@ export const DataContext = createContext<IDataProviderContext<IItem>>({
     setLastUpdated: () => undefined,
     isDataLoading: false,
     setDataLoading: () => undefined,
-    isDataLoaded: false,
-    setDataLoaded: () => undefined,
 });
 
 const DataProvider = ({ children }: IDataProviderProps): JSX.Element => {
@@ -35,14 +31,6 @@ const DataProvider = ({ children }: IDataProviderProps): JSX.Element => {
 
     const [ lastUpdated, setLastUpdated ] = useState();
     const [ isDataLoading, setDataLoading ] = useState(true);
-    const [ isDataLoaded, setDataLoaded ] = useState(true);
-
-    useEffect(() => {
-        const flag = !!Object.keys(data).filter((key) => !SHOULD_LOAD_ONLY_ONCE.includes(key)).length;
-        if (flag !== isDataLoaded) {
-            setDataLoaded(flag);
-        }
-    }, [ data ]);
 
     const context = { 
         data, 
@@ -61,8 +49,6 @@ const DataProvider = ({ children }: IDataProviderProps): JSX.Element => {
         setLastUpdated,
         isDataLoading,
         setDataLoading,
-        isDataLoaded,
-        setDataLoaded,
     };
 
     return (

@@ -14,7 +14,7 @@ export default {
 
 export const Network = (): JSX.Element => {
     // for story we use similar flow as we use for datepicker, bc we need to load some data into data provider
-    const { loadAll, isDataLoaded } = useData();
+    const { loadAll, isDataLoading } = useData();
     const { date, setDate } = useContext<IDataProviderContext<IItem>>(DataContext);
 
     useEffect(() => {
@@ -30,7 +30,7 @@ export const Network = (): JSX.Element => {
     }, [ date ]);
 
     return (
-        <ConditionalRender condition={isDataLoaded}>
+        <ConditionalRender condition={!isDataLoading}>
             <UINetwork />
         </ConditionalRender>
     );

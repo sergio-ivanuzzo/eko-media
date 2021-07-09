@@ -14,7 +14,7 @@ import {
     FILE_EXTENSION,
     FILTER_FLAGS,
     FILTER_MASK_MAP,
-    ROOT_DIR,
+    ROOT_DIR, SHOULD_LOAD_ONLY_ONCE,
     TYPES,
 } from "~/common/constants";
 
@@ -39,7 +39,6 @@ const useData = (): IUseDataResponse => {
         setLastUpdated,
         isDataLoading,
         setDataLoading,
-        isDataLoaded,
     } = useContext<IDataProviderContext<IItem>>(DataContext);
 
     const { formatMessage } = useIntl();
@@ -248,6 +247,8 @@ const useData = (): IUseDataResponse => {
         [ selectedCategory, topCategories ]
     );
 
+    const isDataEmpty = !Object.keys(data).filter((key) => !SHOULD_LOAD_ONLY_ONCE.includes(key)).length;
+
     return {
         data,
         loadAll,
@@ -259,7 +260,7 @@ const useData = (): IUseDataResponse => {
         selectedMedia,
         setMedia,
         allMedia,
-        isDataLoaded,
+        isDataEmpty,
         getMonthAndYear,
         lastUpdated,
         selectedDate,

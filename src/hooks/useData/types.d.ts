@@ -11,9 +11,9 @@ declare interface IUseDataResponse {
     selectedMedia: string[];
     setMedia: Dispatch<SetStateAction<string[]>>;
     allMedia: string[];
-    isDataLoaded: boolean;
     getMonthAndYear: () => { month: string, year: string };
     lastUpdated?: Date;
     selectedDate: Date;
     isDataLoading?: boolean;
+    isDataEmpty: boolean;
 }

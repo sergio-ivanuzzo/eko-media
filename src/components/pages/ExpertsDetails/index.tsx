@@ -25,7 +25,7 @@ import { ExpertInfo, ExpertInfoContainer } from "~/components/pages/ExpertsDetai
 const TYPE = TYPES.EXPERT;
 
 const ExpertsDetailsPage = (): JSX.Element => {
-    const { isDataLoaded, selectedCategory, getDataset, allMedia, data: allData, getMonthAndYear } = useData();
+    const { isDataLoading, selectedCategory, getDataset, allMedia, data: allData, getMonthAndYear } = useData();
     const { formatMessage } = useIntl();
 
     const dataset = getDataset(TYPE, selectedCategory) || [];
@@ -60,7 +60,7 @@ const ExpertsDetailsPage = (): JSX.Element => {
     const dirPath = `../${ROOT_DIR}/${year}/${month}/${fileName}`;
 
     return (
-        <ConditionalRender condition={isDataLoaded}>
+        <ConditionalRender condition={!isDataLoading}>
             <>
                 <Section allowSelection>
                     <HeadingSection style={{ padding: 0 }}>

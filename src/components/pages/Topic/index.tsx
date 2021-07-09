@@ -25,7 +25,7 @@ import { CATEGORIES_MAP, ROOT_DIR, TYPES } from "~/common/constants";
 const TYPE = TYPES.TOPIC;
 
 const TopicPage = (): JSX.Element => {
-    const { isDataLoaded, selectedCategory, getMonthAndYear } = useData();
+    const { isDataLoading, selectedCategory, getMonthAndYear } = useData();
     const { formatMessage } = useIntl();
 
     const [ topic, setTopic ] = useState<string>("");
@@ -40,7 +40,7 @@ const TopicPage = (): JSX.Element => {
     }, [ selectedCategory ]);
 
     return (
-        <ConditionalRender condition={isDataLoaded}>
+        <ConditionalRender condition={!isDataLoading}>
             <>
                 <Section allowSelection>
                     <HeadingSection style={{ padding: 0 }}>
@@ -77,7 +77,7 @@ const TopicPage = (): JSX.Element => {
                 </Section>
             </>
             <StyledPlaceholder>
-                <FormattedMessage id="placeholder.empty_data" />
+                <FormattedMessage id="placeholder.loading" />
             </StyledPlaceholder>
         </ConditionalRender>
     );
