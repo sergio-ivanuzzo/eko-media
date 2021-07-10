@@ -15,7 +15,7 @@ const App = (): JSX.Element => {
             console.log(location.pathname);
             history.push(location.pathname);
         }, 0);
-    }, []);
+    }, [ location ]);
 
     return (
         <>
