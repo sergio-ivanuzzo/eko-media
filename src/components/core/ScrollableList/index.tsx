@@ -4,7 +4,7 @@ import { ScrollableListContainer } from "./styles";
 
 const ScrollableList = ({ children, limit }: IScrollableListProps): JSX.Element => {
     return (
-        <ScrollableListContainer>
+        <ScrollableListContainer limit={limit}>
             {limit ? children.slice(0, limit) : children}
         </ScrollableListContainer>
     );

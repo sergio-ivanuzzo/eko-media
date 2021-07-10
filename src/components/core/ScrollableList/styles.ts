@@ -1,10 +1,12 @@
 import styled from "styled-components";
 
-export const ScrollableListContainer = styled.div`
+export const ScrollableListContainer = styled.div<Partial<IScrollableListProps>>`
   display: flex;
   flex-direction: column;
-  height: 980px;
-  overflow-y: auto;
+  ${({ limit }) => !limit && `
+    height: 980px;
+    overflow-y: auto;
+  `};
   
   > * {
     margin: 10px 0;
