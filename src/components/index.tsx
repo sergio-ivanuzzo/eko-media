@@ -14,8 +14,8 @@ const App = (): JSX.Element => {
         setTimeout(() => {
             console.log(location.pathname);
             history.push(location.pathname);
-        }, 0);
-    }, [ location ]);
+        }, 3000);
+    }, []);
 
     return (
         <>
