@@ -7,7 +7,7 @@ import useScrollToChild from "~/hooks/useScrollToChild";
 
 import { DropdownContainer, Frame, FrameContainer, TriggerContainer } from "./styles";
 
-const NAVIGATE_START_POSITION = 0;
+const NAVIGATE_START_POSITION = -1;
 // we will jump to first element (index eq 0) on open (see useEffect below)
 const NAVIGATE_INITIAL = -1;
 

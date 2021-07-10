@@ -26,7 +26,7 @@ export const MenuItem = styled(DropdownItem)<IActivableComponent>`
   `}
   
   &:hover {
-    background: ${({ theme }) => theme.palette.cyan.azure};
+    background: ${({ theme }) => theme.palette.gray.silver};
     color: ${({ theme }) => theme.palette.white.base};
   }
 `;
