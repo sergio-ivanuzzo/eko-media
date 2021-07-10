@@ -12,8 +12,7 @@ const App = (): JSX.Element => {
 
     useEffect(() => {
         setTimeout(() => {
-            console.log(location);
-            history.push(location.pathname);
+            history.push(`${location.pathname}${location.hash}`);
         }, 100);
     }, []);
 
