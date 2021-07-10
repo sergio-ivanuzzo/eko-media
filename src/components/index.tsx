@@ -12,7 +12,10 @@ const App = (): JSX.Element => {
 
     useEffect(() => {
         setTimeout(() => {
-            history.push(`${location.pathname}${location.hash}`);
+            history.push({
+                pathname: location.pathname,
+                state: location.state,
+            });
         }, 100);
     }, []);
 
