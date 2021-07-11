@@ -7,8 +7,7 @@ import useDrawBubble, { MAX_BUBBLE_RADIUS } from "~/hooks/useChart/draw/useDrawB
 
 import { CATEGORIES_MAP, TYPES } from "~/common/constants";
 
-import { MARGIN_LEFT } from "~/hooks/useChart/draw/useDrawStackedBar";
-import { ChartHint, LegendsContainer } from "~/components/core/Chart/styles";
+import { LegendsContainer } from "~/components/core/Chart/styles";
 import { StyledChart, StyledPlaceholder } from "./styles";
 
 import theme from "~/common/theme";
@@ -75,7 +74,7 @@ const Bubble = (): JSX.Element => {
         <ConditionalRender condition={Object.values(totals).some((value) => !!value)}>
             <>
                 <StyledChart draw={draw} colors={colors} />
-                <LegendsContainer id="bubble-legends" offset={MARGIN_LEFT} />
+                <LegendsContainer id="bubble-legends" style={{ margin: "0 15%", maxWidth: "1000px" }} />
             </>
             <StyledPlaceholder>
                 <FormattedMessage id="placeholder.category_media.empty_data" />

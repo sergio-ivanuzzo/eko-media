@@ -170,35 +170,41 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
             .attr("class", "bubble")
             .attr("pointer-events", "all");
 
-        const hideText = () => {
-            const offset = 1;
-            node.call((selection) => {
-                selection.each((d, i, n) => {
-                    const group = n[i];
-                    const textNode = d3.select(group).select("text").node() as SVGSVGElement;
-                    const circleNode = d3.select(group).select("circle").node() as SVGSVGElement;
-
-                    const textBBox = textNode.getBBox();
-                    const circleBBox = circleNode.getBBox();
-
-                    if (textBBox.width - offset > circleBBox.width) {
-                        d3.select(group).select("text").style("font-size", "0px");
-                    }
-                })
-            });
-        }
+        // const hideText = () => {
+        //     const offset = 1;
+        //     node.call((selection) => {
+        //         selection.each((d, i, n) => {
+        //             const group = n[i];
+        //             const textNode = d3.select(group).select("text").node() as SVGSVGElement;
+        //             const circleNode = d3.select(group).select("circle").node() as SVGSVGElement;
+        //
+        //             const textBBox = textNode.getBBox();
+        //             const circleBBox = circleNode.getBBox();
+        //
+        //             if (textBBox.width - offset > circleBBox.width) {
+        //                 d3.select(group).select("text").style("font-size", "0px");
+        //             }
+        //         })
+        //     });
+        // }
 
         svg.call(d3.zoom()
             .scaleExtent([ MIN_ZOOM, MAX_ZOOM ])
             .filter((event: WheelEvent) => event.shiftKey)
             .on("zoom", (event: d3.D3ZoomEvent<any, any>) => {
-                const scale = event.transform.k;
-                const textSize = defaultTextSize * scale > MAX_TEXT_SIZE ? MAX_TEXT_SIZE / scale : defaultTextSize;
+                // const scale = event.transform.k;
+                // const textSize = defaultTextSize * scale > MAX_TEXT_SIZE ? MAX_TEXT_SIZE / scale : defaultTextSize;
 
                 node.selectAll("circle,text").attr("transform", event.transform.toString());
-                node.selectAll("text").style("font-size", `${textSize}px`);
+                node.selectAll("text").style("font-size", (d: any) => {
+                    const len = d.word.substring(0, d.r / 3).length;
+                    let size = d.r / 3;
+                    size *= 10 / len;
+                    size += 1;
+                    return `${Math.round(size)}px`;
+                });
 
-                hideText();
+                // hideText();
 
              }) as any);
 
@@ -217,7 +223,14 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
         node.append("text")
             .text((d) => d.word)
             .attr("dy", () => "0.3em")
-            .attr("font-size", defaultTextSize)
+            // .attr("font-size", defaultTextSize)
+            .style("font-size", (d) => {
+                const len = d.word.substring(0, d.r / 3).length;
+                let size = d.r / 3;
+                size *= 10 / len;
+                size += 1;
+                return `${Math.round(size)}px`;
+            })
             .attr("text-anchor", "middle")
             // .attr("pointer-events", "none")
             .attr("x", (d: any) => d.x)
@@ -235,7 +248,7 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
                 .attr("y", (d: any) => d.y);
         });
 
-        hideText();
+        // hideText();
 
         // animate bubble hover
         node.on("mouseover.hover", (event: MouseEvent) => {
@@ -306,7 +319,7 @@ const useDrawBubble = ({ data, selectedCategories }: IUseBubbleProps): { draw: (
                         .attr("class", "marker")
                         .style("background", getColor({ index, colors }));
 
-                    item.append("div").attr("class", "text").html(category);
+                    item.append("div").attr("class", "text").style("flex", "1 1 33%").html(category);
                     item.select(".text").append("div").html(`${legendsText} ${totals[category]}`);
                 });
         }
