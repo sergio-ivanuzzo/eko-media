@@ -15,7 +15,7 @@ const App = (): JSX.Element => {
             history.push(location.pathname);
             const hash = location.hash.trim();
             if (hash) {
-                window.location.href = `${location.pathname}${location.hash}`;
+                window.location.href = `#/${location.pathname}${location.hash}`;
 
                 const id = hash.replace("#", "");
                 const element = document.getElementById(id);
