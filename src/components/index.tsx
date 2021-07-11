@@ -12,10 +12,23 @@ const App = (): JSX.Element => {
 
     useEffect(() => {
         setTimeout(() => {
-            history.push({
-                pathname: location.pathname,
-                state: location.state,
-            });
+            history.push(location.pathname);
+            const hash = location.hash.trim();
+            if (hash) {
+                console.log(hash, `${location.pathname}${location.hash}`);
+                window.location.href = `${location.pathname}${location.hash}`;
+
+                const id = hash.replace("#", "");
+                const element = document.getElementById(id);
+                if (element) {
+                    const elementPosition = element.offsetTop - 20;
+                    window.scroll({
+                        top: elementPosition,
+                        left: 0,
+                        behavior: "smooth"
+                    });
+                }
+            }
         }, 100);
     }, []);
 
