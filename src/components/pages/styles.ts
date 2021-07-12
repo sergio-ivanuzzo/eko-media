@@ -47,7 +47,6 @@ export const SubSection = styled.div<IRowProps>`
     flex-wrap: wrap;
     
     > * {
-      flex: 1 0 21%;
       height: 200px;
     }
   `};

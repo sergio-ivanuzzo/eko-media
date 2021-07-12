@@ -8,7 +8,8 @@ export const ExpertInfoContainer = styled.div`
   height: 200px;
   
   > :first-child {
-    flex: 2;
+    //flex: 2;
+    margin-right: 20px;
   }
   
   > :last-child :nth-child(odd) {
@@ -26,5 +27,9 @@ export const ExpertInfoContainer = styled.div`
 export const ExpertInfo = styled.div`
   > div {
     overflow-y: hidden;
+  }
+  
+  > div:nth-child(odd) {
+    margin-top: 20px;
   }
 `;
