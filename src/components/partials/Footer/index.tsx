@@ -4,10 +4,11 @@ import { useIntl } from "react-intl";
 
 import FacebookIcon from "~/components/icons/FacebookIcon";
 import Instagram from "~/components/icons/Instagram";
+import TelegramIcon from "~/components/icons/TelegramIcon";
 import TwitterIcon from "~/components/icons/TwitterIcon";
 import Youtube from "~/components/icons/Youtube";
-import useData from "~/hooks/useData";
 
+import useData from "~/hooks/useData";
 import { Copyright, FooterContainer, LastUpdatedContainer, SocialButton, SocialContainer } from "./styles";
 
 const Footer = (): JSX.Element => {
@@ -36,6 +37,11 @@ const Footer = (): JSX.Element => {
                 <SocialButton>
                     <Link to={{ pathname: "https://twitter.com/Vox_UA?s=09" }} target="_blank">
                         <TwitterIcon width={48} />
+                    </Link>
+                </SocialButton>
+                <SocialButton>
+                    <Link to={{ pathname: "https://t.me/vox_ukraine" }} target="_blank">
+                        <TelegramIcon width={48} />
                     </Link>
                 </SocialButton>
                 <SocialButton>
