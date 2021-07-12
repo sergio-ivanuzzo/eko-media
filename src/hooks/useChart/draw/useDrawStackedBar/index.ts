@@ -123,7 +123,8 @@ const useDrawStackedBar = ({ data, xData, yData }: IUseStackedBarProps): { draw:
                 const total = d.data.total;
                 const percentage = (100 * value / total || 0).toFixed(1);
 
-                return xData.length === 1 ? value : `${percentage}%`;
+                // return xData.length === 1 ? value : `${percentage}%`;
+                return `${percentage}%`;
             })
             .attr("class", (d: any, i: any, n: any) => {
                 const parent = d3.select(n[i]).node().parentNode;
