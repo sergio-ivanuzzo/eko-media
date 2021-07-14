@@ -7,6 +7,7 @@ import {
     RightColumn,
     Section,
     StyledPlaceholder,
+    StyledPlaceholderMini,
     SubSection
 } from "~/components/pages/styles";
 
@@ -22,11 +23,15 @@ import { HeadingLevel } from "~/components/core/FormattedTitle/constants";
 import { AlignItems, JustifyContent } from "~/components/global.constants";
 import { CATEGORIES_MAP, ROOT_DIR, TYPES } from "~/common/constants";
 
+import { StyledHint } from "./styles";
+
 const TYPE = TYPES.TOPIC;
 
 const TopicPage = (): JSX.Element => {
-    const { isDataLoading, selectedCategory, getMonthAndYear } = useData();
+    const { isDataLoading, selectedCategory, getMonthAndYear, getDataset } = useData();
     const { formatMessage } = useIntl();
+
+    const dataset = getDataset(TYPE, selectedCategory) || [];
 
     const [ topic, setTopic ] = useState<string>("");
 
@@ -47,33 +52,55 @@ const TopicPage = (): JSX.Element => {
                         <BackLink to="/" tabIndex={7}>
                             <ArrowLeft width={100} height={25} />
                         </BackLink>
-                        <FormattedTitle
-                            placeholder={formatMessage({ id: "topic.title" })}
-                            params={[ CATEGORIES_MAP[selectedCategory] ]} level={HeadingLevel.H2} />
+                        <div>
+                            <FormattedTitle
+                                placeholder={formatMessage({ id: "topic.title" })}
+                                params={[ CATEGORIES_MAP[selectedCategory] ]}
+                                level={HeadingLevel.H2}
+                                inline
+                            />
+                            <StyledHint text={formatMessage({ id: "topic.hint" })} />
+                        </div>
                     </HeadingSection>
-                    <SubSection>
-                        <LeftColumn />
-                        <RightColumn primaryAlign={JustifyContent.START} secondaryAlign={AlignItems.START}>
-                            <ConditionalRender condition={!!topic}>
+                    <ConditionalRender condition={!!topic}>
+                        <SubSection>
+                            <LeftColumn />
+                            <RightColumn primaryAlign={JustifyContent.START} secondaryAlign={AlignItems.START}>
                                 <FormattedTitle
                                     placeholder={formatMessage({ id: "topic_media_bar.title" })}
                                     params={[ topic, CATEGORIES_MAP[selectedCategory] ]}
                                     level={HeadingLevel.H3}
                                 />
+                            </RightColumn>
+                        </SubSection>
+                    </ConditionalRender>
+                    <ConditionalRender condition={!!topic}>
+                        <>
+                            <SubSection primaryAlign={JustifyContent.SPACE_BETWEEN} secondaryAlign={AlignItems.INHERIT}>
+                                <LeftColumn primaryAlign={JustifyContent.SPACE_BETWEEN} secondaryAlign={AlignItems.START}>
+                                    <ArticleBar onClick={({ key }) => setTopic(key)} />
+                                </LeftColumn>
+                                <RightColumn>
+                                    <TopicMediaBar selectedTopic={topic} />
+                                </RightColumn>
+                            </SubSection>
+                            <SubSection primaryAlign={JustifyContent.CENTER} secondaryAlign={AlignItems.CENTER}>
+                                <DownloadLink filePath={dirPath} fileName={fileName} />
+                            </SubSection>
+                        </>
+                        <SubSection
+                            primaryAlign={JustifyContent.CENTER}
+                            secondaryAlign={AlignItems.INHERIT}
+                            style={{ minHeight: "50vh", marginBottom: "50px" }}
+                        >
+                            <ConditionalRender condition={!!dataset.length}>
+                                <ArticleBar onClick={({ key }) => setTopic(key)} />
+                                <StyledPlaceholderMini primaryAlign={JustifyContent.CENTER}>
+                                    <FormattedMessage id="placeholder.category.empty_data" />
+                                </StyledPlaceholderMini>
                             </ConditionalRender>
-                        </RightColumn>
-                    </SubSection>
-                    <SubSection primaryAlign={JustifyContent.SPACE_BETWEEN} secondaryAlign={AlignItems.INHERIT}>
-                        <LeftColumn primaryAlign={JustifyContent.SPACE_BETWEEN} secondaryAlign={AlignItems.START}>
-                            <ArticleBar onClick={({ key }) => setTopic(key)} />
-                        </LeftColumn>
-                        <RightColumn>
-                            <TopicMediaBar selectedTopic={topic} />
-                        </RightColumn>
-                    </SubSection>
-                    <SubSection primaryAlign={JustifyContent.CENTER} secondaryAlign={AlignItems.CENTER}>
-                        <DownloadLink filePath={dirPath} fileName={fileName} />
-                    </SubSection>
+                        </SubSection>
+                    </ConditionalRender>
                 </Section>
             </>
             <StyledPlaceholder>

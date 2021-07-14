@@ -83,6 +83,12 @@ export const StyledPlaceholder = styled(Placeholder)`
   font-size: 30px;
 `;
 
+export const StyledPlaceholderMini = styled(Placeholder)`
+  width: 100%;
+  height: 50vh;
+  font-size: 30px;
+`;
+
 export const StyledLink = styled(Link)`
   ${CustomFontCSS};
   ${NoSelectCSS};
@@ -125,7 +131,6 @@ export const BackLink = styled(StyledLink)`
   
   > svg {
     width: 75px;
-    top: 0.121em;
     
     path {
       fill: ${({ theme }) => theme.palette.black.base};

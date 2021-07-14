@@ -3,6 +3,11 @@ import * as d3 from "d3";
 
 import useChartColor from "~/hooks/useChart/color/useChartColor";
 
+import { ChartTooltipCSS } from "~/components/core/Chart/styles";
+import theme from "~/common/theme";
+
+const { orange, white } = theme.palette;
+
 const useDrawBar = ({ onClick = () => null, ...props }: IDrawBarProps): { draw: (props: IChartDrawProps) => void } => {
 
     const { data, yData } = props;
@@ -11,7 +16,7 @@ const useDrawBar = ({ onClick = () => null, ...props }: IDrawBarProps): { draw: 
 
     const hover = (node: any, isHovered: boolean) => node.classed("hovered", isHovered);
 
-    const draw = useCallback(({ chartRef, width, height, colors }: IChartDrawProps): void => {
+    const draw = useCallback(({ chartRef, width, height, colors, tooltip }: IChartDrawProps): void => {
         const svg = d3.select(chartRef.current)
             .attr("viewBox", `0 0 ${width} ${height}`)
             .attr("height", height)
@@ -86,6 +91,31 @@ const useDrawBar = ({ onClick = () => null, ...props }: IDrawBarProps): { draw: 
 
             hover(target, false);
         });
+
+        // draw tooltip
+        container.selectAll("rect,text")
+            .on("mouseover", () => tooltip.style("display", ""))
+            .on("mouseout", () => tooltip.style("display", "none").style("left", "-9999px"))
+            .on("mousemove", (event: MouseEvent, d: any) => {
+                const text = d.tooltipText ?? "";
+
+                if (text) {
+                    // apply main tooltip css
+                    (tooltip.node() as HTMLElement).style.cssText = ChartTooltipCSS
+                        .map((item) => (item as string).trim()).filter((item) => item.length > 1)
+                        .toString();
+
+                    tooltip.html(text)
+                        .style("text-align", "left")
+                        .style("text-transform", "none")
+                        .style("white-space", "nowrap")
+                        .style("background", orange.carrot)
+                        .style("color", white.base)
+                        .style("left", `${event.pageX}px`)
+                        .style("top", `${event.pageY + 30}px`).append("span");
+                }
+
+            });
 
     }, [ data, yData ]);
 

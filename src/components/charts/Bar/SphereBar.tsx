@@ -1,15 +1,15 @@
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import React, { useMemo } from "react";
 
 import ConditionalRender from "~/components/core/ConditionalRender";
 import Placeholder from "~/components/core/Placeholder";
+import formatString from "~/helpers/formatString";
 import useData from "~/hooks/useData";
 import useDrawBar from "~/hooks/useChart/draw/useDrawBar";
 
-import { CATEGORIES_MAP, CATEGORY_KEYS, TYPES } from "~/common/constants";
-
 import { StyledChart } from "./styles";
 import theme from "~/common/theme";
+import { CATEGORIES_MAP, CATEGORY_KEYS, TYPES } from "~/common/constants";
 
 const TYPE = TYPES.SPHERE;
 
@@ -19,6 +19,7 @@ const SPHERE_BAR_HEIGHT = 50;
 
 const SphereBar = (): JSX.Element => {
     const { getDataset, selectedCategory } = useData();
+    const { formatMessage } = useIntl();
 
     const dataset = getDataset(TYPE, "all") as Array<ICategorizedItem>;
 
@@ -54,9 +55,15 @@ const SphereBar = (): JSX.Element => {
                 .keys(categoriesData)
                 .reduce((acc: number, key: string) => acc + (Number(categoriesData[key]) || 0), 0);
 
+            const value = categoriesData[CATEGORIES_MAP[selectedCategory]];
+
             return {
                 key: media,
-                value: categoriesData[CATEGORIES_MAP[selectedCategory]],
+                value,
+                tooltipText: formatString({
+                    initial: formatMessage({ id: "sphere_bar.tooltip.text" }),
+                    params: [ `${value}` ],
+                })
             }
         });
     }, [ dataset ]);
