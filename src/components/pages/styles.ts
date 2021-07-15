@@ -1,3 +1,4 @@
+import { HashLink } from "react-router-hash-link";
 import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
 
@@ -118,6 +119,13 @@ export const StyledLink = styled(Link)`
     svg > path {
       fill: ${({ theme }) => theme.palette.orange.carrot};
     }
+  }
+`;
+
+export const StyledHashLink = styled(HashLink)`
+  svg {
+    position: relative;
+    top: 0.3em;
   }
 `;
 

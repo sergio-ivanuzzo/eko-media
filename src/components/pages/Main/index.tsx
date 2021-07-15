@@ -11,6 +11,7 @@ import FormattedTitle from "~/components/core/FormattedTitle";
 import Hint from "~/components/core/Hint";
 import Network from "~/components/charts/Network";
 import PoliticianBar from "~/components/partials/Content/PoliticianBar";
+import Share from "~/components/icons/Share";
 import SphereBar from "~/components/charts/Bar/SphereBar";
 import StackedBar from "~/components/charts/StackedBar";
 import formatString from "~/helpers/formatString";
@@ -24,7 +25,7 @@ import {
     HeadingSection,
     LeftColumn,
     RightColumn,
-    Section,
+    Section, StyledHashLink,
     StyledLink,
     StyledPlaceholder,
     SubSection
@@ -42,6 +43,8 @@ const MainPage = (): JSX.Element => {
 
     const networkFileName = `${TYPES.NETWORK}_${selectedCategory}_${month}_${year}.json`;
     const connectionFileName = `${TYPES.CONNECTION}_${selectedCategory}_${month}_${year}.json`;
+    const stackedBarFileName = `${TYPES.CATEGORY}_${selectedCategory}_${month}_${year}.csv`;
+    const bubbleFileName = `${TYPES.WORD_CLOUD}_${selectedCategory}_${month}_${year}.csv`;
 
     const getDirPath = (fileName: string) => {
         return `${ROOT_DIR}/${year}/${month}/${fileName}`;
@@ -115,7 +118,7 @@ const MainPage = (): JSX.Element => {
                                 </LeftColumn>
                                 <RightColumn secondaryAlign={AlignItems.START}>
                                     <SubSection primaryAlign={JustifyContent.START} secondaryAlign={AlignItems.END}>
-                                        <div style={{ marginLeft: `${MARGIN_LEFT}px` }}>
+                                        <div style={{ marginLeft: `${MARGIN_LEFT}px` }} id="stacked_bar">
                                             <ConditionalRender condition={selectedCategory === "all"}>
                                                 <FormattedTitle
                                                     placeholder={formatMessage({ id: "stacked_bar.title.all" })}
@@ -136,18 +139,27 @@ const MainPage = (): JSX.Element => {
                                                 linkUrl={"/about#categories"}
                                                 linkText={formatMessage({ id: "stacked_bar.hint.urlText" })}
                                             />
+                                            <StyledHashLink to={"/#stacked_bar"}>
+                                                <Share width={24} />
+                                            </StyledHashLink>
                                         </div>
 
                                         <StyledLink to="/topic" tabIndex={7}>
-                                    <span>
-                                        <FormattedMessage id="link.details.info" />
-                                    </span>
+                                            <span>
+                                                <FormattedMessage id="link.details.info" />
+                                            </span>
                                             <ArrowRight width={18} height={14} />
                                         </StyledLink>
                                     </SubSection>
 
                                     <StackedBar />
-                                    <div style={{ marginLeft: `${MARGIN_LEFT}px`, marginTop: "100px" }}>
+                                    <SubSection primaryAlign={JustifyContent.CENTER} secondaryAlign={AlignItems.CENTER}>
+                                        <DownloadLink
+                                            filePath={getDirPath(stackedBarFileName)}
+                                            fileName={stackedBarFileName}
+                                        />
+                                    </SubSection>
+                                    <div style={{ marginLeft: `${MARGIN_LEFT}px`, marginTop: "100px" }} id="bubble">
                                         <FormattedTitle
                                             placeholder={formatMessage({ id: "bubble.title" })}
                                             level={HeadingLevel.H3}
@@ -158,8 +170,17 @@ const MainPage = (): JSX.Element => {
                                             linkUrl={"/about#word-cloud"}
                                             linkText={formatMessage({ id: "bubble.hint.urlText" })}
                                         />
+                                        <StyledHashLink to={"/#bubble"}>
+                                            <Share width={24} />
+                                        </StyledHashLink>
                                     </div>
                                     <Bubble />
+                                    <SubSection primaryAlign={JustifyContent.CENTER} secondaryAlign={AlignItems.CENTER}>
+                                        <DownloadLink
+                                            filePath={getDirPath(bubbleFileName)}
+                                            fileName={bubbleFileName}
+                                        />
+                                    </SubSection>
                                 </RightColumn>
                             </SubSection>
                         </Section>

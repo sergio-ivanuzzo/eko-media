@@ -16,9 +16,11 @@ const App = (): JSX.Element => {
             const hash = location.hash.trim();
             if (hash) {
                 window.location.href = `#${location.pathname}${location.hash}`;
+                console.log(`#${location.pathname}${location.hash}`);
 
                 const id = hash.replace("#", "");
                 const element = document.getElementById(id);
+                console.log("element:", element, id);
                 if (element) {
                     const elementPosition = element.offsetTop - 20;
                     window.scroll({

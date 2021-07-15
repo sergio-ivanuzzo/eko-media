@@ -2,9 +2,8 @@ import { FormattedMessage } from "react-intl";
 import React, { useEffect, useState } from "react";
 
 import ConditionalRender from "~/components/core/ConditionalRender";
+import PaginatedList from "~/components/core/PaginatedList";
 import PoliticianCard from "~/components/partials/Content/PoliticianBar/PoliticianCard";
-import ScrollableList from "~/components/core/ScrollableList";
-
 import useData from "~/hooks/useData";
 
 import { JustifyContent } from "~/components/global.constants";
@@ -88,9 +87,9 @@ const PoliticianBar = ({ limit, selectable = false, onSelect = () => null }: IPo
     return (
         <PoliticianBarContainer>
             <ConditionalRender condition={!!data.length}>
-                <ScrollableList limit={limit}>
+                <PaginatedList limit={limit}>
                     {children}
-                </ScrollableList>
+                </PaginatedList>
                 <StyledPlaceholder primaryAlign={JustifyContent.CENTER}>
                     <FormattedMessage id="placeholder.category_media.empty_data" />
                 </StyledPlaceholder>
