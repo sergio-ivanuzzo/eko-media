@@ -6,6 +6,7 @@ declare interface IHintProps extends ISelectableComponent, IStylableComponent, I
 
 declare interface IHintItemProps {
     text: string;
+    extraText?: string;
     linkUrl?: string;
     linkText?: string;
     background?: string;

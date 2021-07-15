@@ -9,4 +9,8 @@ export const FileLink = styled.a`
   > * {
     margin: 0 15px;
   }
+  
+  &:hover {
+    text-decoration: underline;
+  }
 `;

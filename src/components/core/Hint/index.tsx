@@ -15,7 +15,7 @@ const DefaultTrigger = ({ toggle, color }: IDropdownTriggerProps): JSX.Element =
     );
 }
 
-const DefaultItem = ({ text, linkUrl, linkText, background, color }: IHintItemProps): JSX.Element => {
+const DefaultItem = ({ text, extraText = "", linkUrl, linkText, background, color }: IHintItemProps): JSX.Element => {
     return (
         <HintText background={background} color={color}>
             {text}
@@ -24,12 +24,15 @@ const DefaultItem = ({ text, linkUrl, linkText, background, color }: IHintItemPr
                     {linkText}
                 </Link>
             </ConditionalRender>
+            <ConditionalRender condition={!!extraText}>
+                <div dangerouslySetInnerHTML={{ __html: extraText }} style={{ marginTop: "20px" }} />
+            </ConditionalRender>
         </HintText>
     );
 };
 
 const Hint = ({ renderTrigger = DefaultTrigger, renderItem = DefaultItem, ...props }: IHintProps): JSX.Element => {
-    const { className, tabIndex, text, linkUrl, linkText, background, color, toRight = false } = props;
+    const { className, tabIndex, text, linkUrl, linkText, background, color, toRight = false, extraText } = props;
 
     return (
         <StyledDropdown
@@ -43,7 +46,7 @@ const Hint = ({ renderTrigger = DefaultTrigger, renderItem = DefaultItem, ...pro
             color={color}
             toRight={toRight}
         >
-            {() => renderItem({ text, linkUrl, linkText, background, color })}
+            {() => renderItem({ text, linkUrl, linkText, background, color, extraText })}
         </StyledDropdown>
     );
 };

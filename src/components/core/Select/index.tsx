@@ -91,11 +91,14 @@ const DefaultTrigger = ({ selected: originSelected, ...props }: ISelectTriggerPr
                                     {`${item.value}`}
                                 </span>
                                 <ConditionalRender condition={multiple}>
-                                    <CloseButton tabIndex={-1} onClick={
-                                        (e) => {
-                                            e.stopPropagation();
-                                            handleUnselect({ option: item });
-                                        }}
+                                    <CloseButton
+                                        tabIndex={-1}
+                                        onClick={
+                                            (e) => {
+                                                e.stopPropagation();
+                                                handleUnselect({ option: item });
+                                            }}
+                                        title={formatMessage({ id: "close.title" })}
                                     >
                                         <Close />
                                     </CloseButton>

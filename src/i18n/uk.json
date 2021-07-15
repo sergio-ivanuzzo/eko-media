@@ -85,6 +85,12 @@
 
   "footer.last_updated.label": "Останнє оновлення:",
 
+  "close.title": "Вилучити",
+
+  "multi_paragraph2": "{0} <br/> {1}",
+  "multi_paragraph3": "{0} <br/><br/> {1} <br/><br/> {2}",
+  "multi_paragraph4": "{0} <br/><br/> {1} <br/> {2} <br /><br/> {3}",
+
   "badge.text": "та ще: ",
   "download_link.text": "Завантажити масив",
 

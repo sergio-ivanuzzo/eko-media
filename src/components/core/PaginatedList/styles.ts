@@ -20,4 +20,8 @@ export const NavigationButton = styled.button`
   > svg {
     width: 44px;
   }
+  
+  &:hover {
+    cursor: pointer;
+  }
 `;

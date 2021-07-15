@@ -137,6 +137,7 @@ const MainPage = (): JSX.Element => {
                                             </ConditionalRender>
                                             <Hint
                                                 text={formatMessage({ id: "stacked_bar.hint" })}
+                                                extraText={formatMessage({ id: "zoomable_chart.hint" })}
                                                 linkUrl={"/about#categories"}
                                                 linkText={formatMessage({ id: "stacked_bar.hint.urlText" })}
                                             />
@@ -171,6 +172,13 @@ const MainPage = (): JSX.Element => {
                                         />
                                         <Hint
                                             text={formatMessage({ id: "bubble.hint" })}
+                                            extraText={formatString({
+                                                initial: formatMessage({ id: "multi_paragraph2" }),
+                                                params: [
+                                                    formatMessage({ id: "draggable_chart.hint" }) ,
+                                                    formatMessage({ id: "zoomable_chart.hint" }) ,
+                                                ],
+                                            })}
                                             linkUrl={"/about#word-cloud"}
                                             linkText={formatMessage({ id: "bubble.hint.urlText" })}
                                         />
@@ -207,6 +215,13 @@ const MainPage = (): JSX.Element => {
                                     />
                                     <Hint
                                         text={formatMessage({ id: "network.hint" })}
+                                        extraText={formatString({
+                                            initial: formatMessage({ id: "multi_paragraph2" }),
+                                            params: [
+                                                formatMessage({ id: "clickable_chart.nodes.hint" }) ,
+                                                formatMessage({ id: "draggable_chart.no_shift.hint" }) ,
+                                            ],
+                                        })}
                                         linkUrl={"/about#network"}
                                         linkText={formatMessage({ id: "network.hint.urlText" })}
                                     />

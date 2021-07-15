@@ -26,6 +26,7 @@ export const MenuContainer = styled.div`
       
       &:hover {
         color: ${({ theme }) => theme.palette.orange.carrot};
+        text-decoration: underline;
       }
       
       &:active, &:focus, &:focus-visible {

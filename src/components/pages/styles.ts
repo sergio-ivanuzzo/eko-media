@@ -115,6 +115,7 @@ export const StyledLink = styled(Link)`
   
   &:hover {
     color: ${({ theme }) => theme.palette.orange.carrot};
+    text-decoration: underline;
     
     svg > path {
       fill: ${({ theme }) => theme.palette.orange.carrot};
