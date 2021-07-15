@@ -15,6 +15,7 @@ import Share from "~/components/icons/Share";
 import SphereBar from "~/components/charts/Bar/SphereBar";
 import StackedBar from "~/components/charts/StackedBar";
 import formatString from "~/helpers/formatString";
+import scrollWithOffset from "~/helpers/scrollWithOffset";
 import useData from "~/hooks/useData";
 
 import { HeadingLevel } from "~/components/core/FormattedTitle/constants";
@@ -139,7 +140,7 @@ const MainPage = (): JSX.Element => {
                                                 linkUrl={"/about#categories"}
                                                 linkText={formatMessage({ id: "stacked_bar.hint.urlText" })}
                                             />
-                                            <StyledHashLink to={"/#stacked_bar"}>
+                                            <StyledHashLink to={"/#stacked_bar"} scroll={(el) => scrollWithOffset(el, 20)}>
                                                 <Share width={24} />
                                             </StyledHashLink>
                                         </div>
@@ -170,7 +171,7 @@ const MainPage = (): JSX.Element => {
                                             linkUrl={"/about#word-cloud"}
                                             linkText={formatMessage({ id: "bubble.hint.urlText" })}
                                         />
-                                        <StyledHashLink to={"/#bubble"}>
+                                        <StyledHashLink to={"/#bubble"} scroll={(el) => scrollWithOffset(el, 20)}>
                                             <Share width={24} />
                                         </StyledHashLink>
                                     </div>
@@ -203,7 +204,7 @@ const MainPage = (): JSX.Element => {
                                         linkUrl={"/about#network"}
                                         linkText={formatMessage({ id: "network.hint.urlText" })}
                                     />
-                                    <StyledHashLink to={"/#network"}>
+                                    <StyledHashLink to={"/#network"} scroll={(el) => scrollWithOffset(el, 20)}>
                                         <Share width={24} />
                                     </StyledHashLink>
                                 </div>
@@ -224,7 +225,7 @@ const MainPage = (): JSX.Element => {
                                         linkUrl={"/about#connections"}
                                         linkText={formatMessage({ id: "arrow_chart.hint.urlText" })}
                                     />
-                                    <StyledHashLink to={"/#arrow"}>
+                                    <StyledHashLink to={"/#arrow"} scroll={(el) => scrollWithOffset(el, 20)}>
                                         <Share width={24} />
                                     </StyledHashLink>
                                 </div>
