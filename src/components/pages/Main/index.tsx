@@ -75,9 +75,9 @@ const MainPage = (): JSX.Element => {
                                         <PoliticianBar limit={POLITICIAN_BAR_LIMIT} />
                                         <div style={{ textAlign: "center" }}>
                                             <StyledLink to="/politicians/details" tabIndex={7}>
-                                        <span>
-                                            <FormattedMessage id="link.details" />
-                                        </span>
+                                                <span>
+                                                    <FormattedMessage id="link.details" />
+                                                </span>
                                                 <ArrowRight width={18} height={14} />
                                             </StyledLink>
                                         </div>
@@ -108,9 +108,9 @@ const MainPage = (): JSX.Element => {
                                         <ExpertBar limit={EXPERT_BAR_LIMIT} />
                                         <div style={{ textAlign: "center" }}>
                                             <StyledLink to="/experts/details" tabIndex={7}>
-                                        <span>
-                                            <FormattedMessage id="link.details" />
-                                        </span>
+                                                <span>
+                                                    <FormattedMessage id="link.details" />
+                                                </span>
                                                 <ArrowRight width={18} height={14} />
                                             </StyledLink>
                                         </div>
@@ -192,7 +192,7 @@ const MainPage = (): JSX.Element => {
                                 />
                             </HeadingSection>
                             <HeadingSection>
-                                <div>
+                                <div id="network">
                                     <FormattedTitle
                                         placeholder={formatMessage({ id: "network.subtitle" })}
                                         level={HeadingLevel.H3}
@@ -203,6 +203,9 @@ const MainPage = (): JSX.Element => {
                                         linkUrl={"/about#network"}
                                         linkText={formatMessage({ id: "network.hint.urlText" })}
                                     />
+                                    <StyledHashLink to={"/#network"}>
+                                        <Share width={24} />
+                                    </StyledHashLink>
                                 </div>
                             </HeadingSection>
                             <Network />
@@ -210,7 +213,7 @@ const MainPage = (): JSX.Element => {
                                 <DownloadLink filePath={getDirPath(networkFileName)} fileName={networkFileName} />
                             </SubSection>
                             <div style={{ marginTop: "100px" }}>
-                                <div style={{ padding: "0 25px" }}>
+                                <div style={{ padding: "0 25px" }} id="arrow">
                                     <FormattedTitle
                                         placeholder={formatMessage({ id: "arrow_chart.title" })}
                                         level={HeadingLevel.H3}
@@ -221,10 +224,16 @@ const MainPage = (): JSX.Element => {
                                         linkUrl={"/about#connections"}
                                         linkText={formatMessage({ id: "arrow_chart.hint.urlText" })}
                                     />
+                                    <StyledHashLink to={"/#arrow"}>
+                                        <Share width={24} />
+                                    </StyledHashLink>
                                 </div>
                                 <ArrowChart />
                                 <SubSection primaryAlign={JustifyContent.CENTER} secondaryAlign={AlignItems.CENTER}>
-                                    <DownloadLink filePath={getDirPath(connectionFileName)} fileName={connectionFileName} />
+                                    <DownloadLink
+                                        filePath={getDirPath(connectionFileName)}
+                                        fileName={connectionFileName}
+                                    />
                                 </SubSection>
                             </div>
                         </Section>
